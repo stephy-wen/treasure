@@ -4,6 +4,10 @@ import router from './router'
 import i18n from './i18n/i18n';
 import App from './App.vue'
 
+// 引入 Bootstrap 的 CSS
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+
 createApp(App)
 .use(router)
 .use(i18n)
