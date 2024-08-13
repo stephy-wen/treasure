@@ -5,8 +5,8 @@ import i18n from './i18n/i18n';
 import App from './App.vue'
 
 // 引入 Bootstrap 的 CSS
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 createApp(App)
 .use(router)
