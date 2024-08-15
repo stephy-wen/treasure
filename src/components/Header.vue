@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto ms-2 mb-2 mb-lg-0">
             <li
-              v-for="item in navItems"
+              v-for="item in navLinks"
               :key="item.id"
               class="nav-item"
               :class="{ dropdown: item.dropdown }"
@@ -564,12 +564,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const userId = ref("winnie33527");
 const balance = ref("3,969,443");
 const loggedIn = true;
+
+// const { user } = storeToRefs(useUserStore());
+const user = ref({ username: "anonym" });
+
+/*
+display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
+display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in 和 Sign up）。
+display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
+*/
 const navItems = ref([
-  { id: "0", label: "Hunting Game", dropdown: false, url: "hunting_game" },
+  {
+    id: "0",
+    label: "Hunting Game",
+    dropdown: false,
+    url: "hunting_game",
+    display: "all",
+  },
   {
     id: "1",
     label: "Treasure Spot",
@@ -609,10 +624,42 @@ const navItems = ref([
         ],
       },
     ],
+    display: "authorized",
   },
-  { id: "2", label: "Leaderboard", dropdown: false, url: "leaderboard" },
-  { id: "3", label: "Learn", dropdown: false, url: "about" },
+  {
+    id: "2",
+    label: "Leaderboard",
+    dropdown: false,
+    url: "leaderboard",
+    display: "all",
+  },
+  // { id: "3", label: "Learn", dropdown: false, url: "about", display: "anonym" },
 ]);
+
+//username.value 有值 displayStatus=>authorized
+// const username = computed(() => user.value?.username);
+
+// const displayStatus = computed(() =>
+//   username.value ? "authorized" : "anonym"
+// );
+// const navLinks = computed(() =>
+//   navItems.value.filter(
+//     (item) => item.display === displayStatus.value || item.display === "all"
+//   )
+// );
+
+// 根据用户名判断用户状态 暫時替代
+const displayStatus = computed(() =>
+  user.value.username === "authorized" ? "authorized" : "anonym"
+);
+
+const navLinks = computed(() =>
+  navItems.value.filter(
+    (item) => item.display === displayStatus.value || item.display === "all"
+  )
+);
+
+console.log(displayStatus.value);
 </script>
 
 <style scoped>
