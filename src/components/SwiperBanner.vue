@@ -1,20 +1,23 @@
 <template>
   <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
     <Swiper
-      class="mySwiper"
+      :class="swiperClass"
       :autoplay="{ delay: autoplayDelay }"
       loop
-      :pagination="{ clickable: true }"
-      :scrollbar="{ draggable: true }"
-      :modules="[Autoplay, Pagination, Navigation]"
+      :pagination="pagination ? { clickable: true } : false"
+      :scrollbar="scrollbar ? { draggable: true } : false"
+      :modules="modules"
+      :effect="effect"
+      :coverflow-effect="coverflowEffect"
+      :breakpoints="breakpoints"
     >
       <SwiperSlide
-        v-for="(banner, index) in banners"
+        v-for="(item, index) in swiperData"
         :key="index"
         class="index-banner"
       >
-        <a :href="banner.link">
-          <img class="img-fluid" :src="banner.image" :alt="banner.alt" />
+        <a :href="item.link">
+          <img class="img-fluid" :src="item.image" :alt="item.alt" />
         </a>
       </SwiperSlide>
     </Swiper>
@@ -26,21 +29,55 @@ import { Swiper, SwiperSlide } from "swiper/vue"; // Import Swiper Vue.js compon
 import "swiper/css"; // Import Swiper styles
 import "swiper/css/pagination"; // Import Swiper pagination styles
 import "swiper/css/scrollbar"; // Import Swiper scrollbar styles
-import { Autoplay, Navigation, Pagination, Scrollbar } from "swiper/modules";
+import {
+  Autoplay,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  EffectCoverflow,
+} from "swiper/modules";
 // loop: 啟用幻燈片循環播放。
 // :pagination="{ clickable: true }": 顯示可點擊的分頁點。
 // :scrollbar="{ draggable: true }": 顯示可拖動的滾動條。
 // :modules="[Autoplay, Pagination, Navigation]": 指定 Swiper 使用的功能模組
 
-// Props definition
+// Props definition 未傳遞部分使用預設值
 const props = defineProps({
-  banners: {
+  swiperData: {
     type: Array,
     required: true,
   },
   autoplayDelay: {
     type: Number,
     default: 3000,
+  },
+  pagination: {
+    type: Boolean,
+    default: false,
+  },
+  scrollbar: {
+    type: Boolean,
+    default: false,
+  },
+  effect: {
+    type: String,
+    default: "slide",
+  },
+  coverflowEffect: {
+    type: Object,
+    default: () => ({}),
+  },
+  breakpoints: {
+    type: Object,
+    default: () => ({}),
+  },
+  modules: {
+    type: Array,
+    default: () => [Autoplay, Pagination, Scrollbar, EffectCoverflow],
+  },
+  swiperClass: {
+    type: String,
+    default: "",
   },
 });
 </script>
