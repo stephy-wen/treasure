@@ -15,7 +15,7 @@ const routes = [
     component: About,
   },
   {
-    path: "/about",
+    path: "/game/game-list",
     name: "Game",
     component: () => import("../views/game/index.vue"), // 动态导入
   },
