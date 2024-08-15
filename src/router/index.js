@@ -14,6 +14,11 @@ const routes = [
     name: "About",
     component: About,
   },
+  {
+    path: "/about",
+    name: "Game",
+    component: () => import("../views/game/index.vue"), // 动态导入
+  },
 ];
 
 const router = createRouter({
