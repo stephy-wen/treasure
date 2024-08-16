@@ -9,4 +9,14 @@ import App from "./App.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-createApp(App).use(router).use(i18n).mount("#app");
+
+
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+/* import specific icons */
+import { faPowerOff, faCircleUser, faCrosshairs, faRocket, faChartSimple, faCircleInfo, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
+library.add(faPowerOff, faCircleUser, faCrosshairs, faRocket, faChartSimple, faCircleInfo, faCircleQuestion)
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+createApp(App).component('font-awesome-icon', FontAwesomeIcon).use(router).use(i18n).mount("#app");
