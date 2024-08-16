@@ -20,7 +20,7 @@
       <div class="game-card mt-5">
         <div class="card-intro text-center mx-2">
           <h1 class="fw-bolder">
-            Dive into the most thrilling treasure hunt of your life!
+            DIVE INTO THE MOST THRILLING TREASURE HUNT OF YOUR LIFE!
           </h1>
           <p class="mt-3 fs-5 d-none d-lg-block">
             Lorem ipsum dolor sit amet consectetur, Aliquam cursus sed eu id
@@ -88,8 +88,8 @@
           />PLATFORM STATS
         </h1>
       </div>
-      <div class="d-flex justify-content-center mt-5">
-        <div v-for="(item, index) in statsData" :key="index" class="d-flex">
+      <div class="row justify-content-center mt-5">
+        <div v-for="(item, index) in statsData" :key="index" class="col-7 col-lg-3 mt-3 mt-lg-0">
           <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
           <StatsCard :title="item.title" :number="item.number" />
           <hr
@@ -222,8 +222,8 @@ const statsData = [
 
 /* card */
 .game-intro{
-  width: 70%;
-  max-width: 1800px;
+  width: 100%;
+  max-width: 1280px;
 }
 
 .game-card .more-btn {
@@ -247,29 +247,6 @@ const statsData = [
 /* @media (min-width: 575.98px) {
   .stats {
     width: 70%;
-  }
-}
-
-.stats-number{
-  font-size: 2rem;
-}
-@media (min-width: 991.98px) {
-  .stats-number {
-      font-size: 2.85rem;
-  }
-}
-@media (min-width: 1399.98px) {
-  .stats-number {
-      font-size: 4rem;
-  }
-}
-
-.stats-title{
-  font-size: 10rem !important;
-}
-@media (min-width: 1399.98px) {
-  .stats-title {
-      font-size: 1.25rem;
   }
 } */
 
@@ -296,6 +273,43 @@ const statsData = [
 }
 
 .partnerships {
-  background-color: black; /*測試用*/
+  width: 100%;
+  max-width: 1280px;
 }
+
+.partner-logo {
+  max-width: 100%;
+  transition: opacity 0.3s ease;
+  position: relative;
+}
+
+.partner-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.partner-logo:hover img {
+  opacity: 0;
+}
+
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const partnerLogos = document.querySelectorAll(".partner-logo");
+
+    partnerLogos.forEach(logo => {
+        const originalSrc = logo.src;
+        const colorSrc = originalSrc.replace('white', 'color');
+
+        logo.addEventListener("mouseover", function() {
+            logo.src = colorSrc;
+        });
+
+        logo.addEventListener("mouseout", function() {
+            logo.src = originalSrc;
+        });
+    });
+});
+</script>
