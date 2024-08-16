@@ -212,17 +212,66 @@ const statsData = [
 </script>
 
 <style scoped>
+.swiper-banner {
+  max-width: 1280px;
+}
+
 .swiper-card-slide img {
   border-radius: 10px;
+}
+
+/* card */
+.game-intro{
+  width: 70%;
+  max-width: 1800px;
 }
 
 .game-card .more-btn {
   background-color: #fcd535;
   color: #181a20;
   border-radius: 50px;
-  font-weight: 500;
+  font-weight: 700;
   border: none;
 }
+
+.game-card .more-btn:hover {
+  background-color: #fcd535;
+}
+
+/* stats */
+.stats{
+  width: 100%;
+  max-width: 1280px;
+}
+
+/* @media (min-width: 575.98px) {
+  .stats {
+    width: 70%;
+  }
+}
+
+.stats-number{
+  font-size: 2rem;
+}
+@media (min-width: 991.98px) {
+  .stats-number {
+      font-size: 2.85rem;
+  }
+}
+@media (min-width: 1399.98px) {
+  .stats-number {
+      font-size: 4rem;
+  }
+}
+
+.stats-title{
+  font-size: 10rem !important;
+}
+@media (min-width: 1399.98px) {
+  .stats-title {
+      font-size: 1.25rem;
+  }
+} */
 
 /* state hr */
 .vertical-divider {
