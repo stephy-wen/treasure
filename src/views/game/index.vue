@@ -37,6 +37,7 @@
           :peopleIconSrc="game.peopleIconSrc"
           :participants="game.participants"
           :totalParticipants="game.totalParticipants"
+          :gameId="game.gameId"
         />
       </div>
     </div>
@@ -50,6 +51,7 @@ import { images } from "@/assets/images.js";
 // 資料要改從第三張開始要置換成正確資料
 const games = [
   {
+    gameId: "eth123", // 作为唯一标识
     link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
@@ -63,6 +65,7 @@ const games = [
     totalParticipants: 568,
   },
   {
+    gameId: "bnb456",
     link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
@@ -76,6 +79,7 @@ const games = [
     totalParticipants: 300,
   },
   {
+    gameId: "eth123", // 作为唯一标识
     link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
@@ -89,6 +93,7 @@ const games = [
     totalParticipants: 568,
   },
   {
+    gameId: "bnb456",
     link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
@@ -102,6 +107,35 @@ const games = [
     totalParticipants: 300,
   },
   {
+    gameId: "bnb456",
+    link: "/play-bnb",
+    imageSrc: images.bnbCard,
+    gid: "GID 1300",
+    gameName: "BNB",
+    gameType: "BNB",
+    phoneIconSrc: images.dollarPhoneIcon,
+    feeIconSrc: images.bnbAccountIcon,
+    fee: 1,
+    peopleIconSrc: images.peopleIcon,
+    participants: 150,
+    totalParticipants: 300,
+  },
+  {
+    gameId: "bnb456",
+    link: "/play-bnb",
+    imageSrc: images.bnbCard,
+    gid: "GID 1300",
+    gameName: "BNB",
+    gameType: "BNB",
+    phoneIconSrc: images.dollarPhoneIcon,
+    feeIconSrc: images.bnbAccountIcon,
+    fee: 1,
+    peopleIconSrc: images.peopleIcon,
+    participants: 150,
+    totalParticipants: 300,
+  },
+  {
+    gameId: "eth123", // 作为唯一标识
     link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
@@ -115,6 +149,7 @@ const games = [
     totalParticipants: 568,
   },
   {
+    gameId: "bnb456",
     link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
@@ -127,33 +162,6 @@ const games = [
     participants: 150,
     totalParticipants: 300,
   },
-  {
-    link: "/play-eth",
-    imageSrc: images.ethCard,
-    gid: "GID 1225",
-    gameName: "ETH",
-    gameType: "ETHEREUM",
-    phoneIconSrc: images.dollarPhoneIcon /*固定 */,
-    feeIconSrc: images.ethAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon /*固定 */,
-    participants: 312,
-    totalParticipants: 568,
-  },
-  {
-    link: "/play-bnb",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-  // 添加更多游戏对象...
 ];
 </script>
 

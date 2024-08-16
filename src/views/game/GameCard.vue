@@ -1,6 +1,6 @@
 <template>
   <div class="col-6 col-sm-4 col-lg-3 winnie-xs-style">
-    <router-link :to="link">
+    <router-link :to="{ name: 'GameDetail', params: { gameId: gameId } }">
       <div class="card winnie-p-xs-2 p-3">
         <div class="game-card-img position-relative">
           <img
@@ -66,6 +66,7 @@
 
 <script setup>
 defineProps({
+  gameId: String, // 接收 gameId
   link: String,
   imageSrc: String,
   gid: String,
