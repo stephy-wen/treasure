@@ -3,7 +3,7 @@
   <header>
     <nav style="height: 30px" class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <div class="logo ps-3 ps-md-4 ps-lg-5 pe-lg-5">
+        <div class="logo ps-3 ps-md-4 pe-lg-5">
           <a href="index" class="text-white">
             <img
               style="height: 25px"
@@ -96,7 +96,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i class="fa-solid fa-circle-user me-2"></i>
+                <font-awesome-icon icon="fa-solid fa-circle-user" class="me-2" />
                   <p class="personal-id text-center fs-6 fw-bold mb-0">
                     {{ userId }}
                   </p>
@@ -170,7 +170,7 @@
                       class="dropdown-item winnie-member-info fs-6 fw-bold"
                       href="account/login"
                     >
-                      <i class="fa-solid fa-power-off me-3"></i>Log Out
+                    <font-awesome-icon icon="fa-solid fa-power-off" class="me-3" />Log Out
                     </a>
                   </li>
                 </ul>
@@ -299,8 +299,7 @@
                       <img src="../assets/images/icon/NFT/09.png" alt="" />
                     </div>
                     <p class="personal-id text-center fs-5 fw-bold">
-                      <i class="fa-solid fa-circle-user mt-3 me-2"></i
-                      >{{ userId }}
+                      <font-awesome-icon icon="fa-solid fa-circle-user" class="mt-3 me-2" />{{ userId }}
                     </p>
                   </div>
                   <div class="personal-balance-info mt-5">
@@ -391,7 +390,7 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="game/game-list"
-                        ><i class="fa-solid fa-rocket me-3"></i>Hunt</a
+                        ><font-awesome-icon icon="fa-solid fa-rocket" class="me-3" />Hunt</a
                       >
                     </div>
                   </div>
@@ -405,7 +404,7 @@
                         aria-expanded="false"
                         aria-controls="collapseSix"
                       >
-                        <i class="fa-solid fa-crosshairs me-3"></i>Treasure Spot
+                      <font-awesome-icon icon="fa-solid fa-crosshairs" class="me-3" />Treasure Spot
                       </button>
                     </div>
                     <div
@@ -454,15 +453,15 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="leaderboard"
-                        ><i class="fa-solid fa-chart-simple me-3"></i
-                        >Leaderboard</a
+                        ><font-awesome-icon icon="fa-solid fa-chart-simple" class="me-3"/>
+                        Leaderboard</a
                       >
                     </div>
                   </div>
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingThree">
                       <a class="accordion-button fs-5 fw-bold" href="about">
-                        <i class="fa-solid fa-circle-info me-3"></i>Learn
+                        <font-awesome-icon icon="fa-solid fa-circle-info" class="me-3" />Learn
                       </a>
                     </div>
                   </div>
@@ -476,7 +475,7 @@
                         aria-expanded="false"
                         aria-controls="collapseFour"
                       >
-                        <i class="fa-regular fa-circle-question me-3"></i>Docs
+                        <font-awesome-icon icon="fa-solid fa-circle-question" class="me-3"/>Docs
                       </button>
                     </div>
                     <div
@@ -529,7 +528,7 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="account/login"
-                        ><i class="fa-solid fa-power-off me-3"></i>Log Out</a
+                        ><font-awesome-icon icon="fa-solid fa-power-off" class="me-3" />Log Out</a
                       >
                     </div>
                   </div>
@@ -687,6 +686,59 @@ header nav ul li a:hover {
 
 .custom-navbar-toggler:focus {
   outline: none;
+}
+
+.winnie-nav-link {
+  color: #F8F8f8;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.dropdown-menu {
+  background-color: #1E2329;
+}
+
+.dropdown-title{
+  font-size: 1rem;
+  color: #F8F8F8;
+  font-weight: 600;
+}
+
+.red-circle{
+  width: 10px;
+  height: 10px;
+  background-color: #F63E3D;
+  border: 1px solid #35485D;
+  border-radius: 50%;
+  display: inline-block
+}
+
+.green-circle{
+  width: 10px;
+  height: 10px;
+  background-color: #71F63D;
+  border: 1px solid #35485D;
+  border-radius: 50%;
+  display: inline-block
+}
+
+.winnie-dropdown-item {
+  color: #F8F8F8; 
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #2B3139;
+  border-radius: 10px;
+}
+
+.winnie-dropdown-item:hover {
+  background-color: #414D5A;
+}
+.winnie-dropdown-item:hover .game-type-name{
+  color: #F8F8F8 !important;
+}
+.winnie-dropdown-item:hover .room-number{
+  color: #BBB !important;
 }
 
 .collapse .dropdown-member-info p {
