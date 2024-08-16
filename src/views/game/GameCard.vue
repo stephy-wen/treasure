@@ -23,7 +23,7 @@
               <span
                 class="d-none d-xxl-inline card-title game-list-type ms-1"
                 style="font-size: 14px"
-                >{{ gameDetailName }}</span
+                >{{ gameType }}</span
               >
             </div>
             <img
@@ -71,7 +71,7 @@ defineProps({
   imageSrc: String,
   gid: String,
   gameName: String,
-  gameType: String,
+  gameType: String, //先叫這個名字到時候再改gameDetailName
   phoneIconSrc: String,
   feeIconSrc: String,
   fee: Number,

@@ -1,7 +1,7 @@
 <template>
   <div v-if="gameDetails" class="container play-container mt-2 mt-md-3 mt-lg-5">
     <div class="play-cover">
-      <img class="w-100" :src="playEth" alt="" />
+      <img class="w-100" :src="gameDetails.imageSrc" alt="" />
     </div>
     <div class="d-flex align-items-center justify-content-between mt-3">
       <div class="col-8 d-sm-flex align-items-center">
@@ -36,9 +36,10 @@
       <div class="col-6"></div>
     </div>
 
+    <img :src="HexagonImage" alt="Test Image" />
     <HexagonButton
       @openModal="showModal = true"
-      backgroundImage="../images/icon/NFT/08.png"
+      :backgroundImage="HexagonImage"
     />
 
     <PlayerListModal
@@ -58,6 +59,8 @@ import ethAccount from "@/assets/images/icon/ETH-account.svg";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 import playBnb from "@/assets/images/common/play_bnb.png";
 import bnbAccount from "@/assets/images/icon/BNB-account.svg";
+import HexagonImage from "@/assets/images/icon/NFT/08.png";
+
 import HexagonButton from "./HexagonButton.vue";
 import PlayerListModal from "./PlayerListModal.vue";
 
