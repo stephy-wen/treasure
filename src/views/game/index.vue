@@ -26,7 +26,6 @@
         <GameCard
           v-for="(game, index) in games"
           :key="index"
-          :link="game.link"
           :imageSrc="game.imageSrc"
           :gid="game.gid"
           :gameName="game.gameName"
@@ -52,7 +51,6 @@ import { images } from "@/assets/images.js";
 const games = [
   {
     gameId: "eth123", // 作为唯一标识
-    link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
     gameName: "ETH",
@@ -66,7 +64,6 @@ const games = [
   },
   {
     gameId: "bnb456",
-    link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
     gameName: "BNB",
@@ -80,7 +77,6 @@ const games = [
   },
   {
     gameId: "eth123", // 作为唯一标识
-    link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
     gameName: "ETH",
@@ -94,7 +90,6 @@ const games = [
   },
   {
     gameId: "bnb456",
-    link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
     gameName: "BNB",
@@ -108,7 +103,6 @@ const games = [
   },
   {
     gameId: "bnb456",
-    link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
     gameName: "BNB",
@@ -122,7 +116,6 @@ const games = [
   },
   {
     gameId: "bnb456",
-    link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
     gameName: "BNB",
@@ -136,7 +129,6 @@ const games = [
   },
   {
     gameId: "eth123", // 作为唯一标识
-    link: "/play-eth",
     imageSrc: images.ethCard,
     gid: "GID 1225",
     gameName: "ETH",
@@ -150,7 +142,6 @@ const games = [
   },
   {
     gameId: "bnb456",
-    link: "/play-bnb",
     imageSrc: images.bnbCard,
     gid: "GID 1300",
     gameName: "BNB",

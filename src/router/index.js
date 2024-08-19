@@ -25,6 +25,11 @@ const routes = [
     component: () => import("../views/game/GameDetailPage.vue"), // 动态导入
     props: true, // 传递路由参数作为组件的 props
   },
+  {
+    path: "/leaderboard",
+    name: "Leaderboard",
+    component: () => import("../views/Leaderboard/index.vue"), // 动态导入
+  },
 ];
 
 const router = createRouter({

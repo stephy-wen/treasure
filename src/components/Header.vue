@@ -4,7 +4,7 @@
     <nav style="height: 30px" class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <div class="logo ps-3 ps-md-4 pe-lg-5">
-          <router-link href="index" class="text-white">
+          <router-link :to="{ name: 'Index' }" class="text-white">
             <img
               style="height: 25px"
               src="@/assets/images/icon/logo name.svg"
@@ -74,9 +74,11 @@
                 </ul>
               </template>
               <template v-else>
-                <router-link class="winnie-nav-link fs-6" :to="item.url">{{
-                  item.label
-                }}</router-link>
+                <router-link
+                  class="winnie-nav-link fs-6"
+                  :to="{ name: item.routeName }"
+                  >{{ item.label }}</router-link
+                >
               </template>
             </li>
           </ul>
@@ -96,7 +98,10 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                <font-awesome-icon icon="fa-solid fa-circle-user" class="me-2" />
+                  <font-awesome-icon
+                    icon="fa-solid fa-circle-user"
+                    class="me-2"
+                  />
                   <p class="personal-id text-center fs-6 fw-bold mb-0">
                     {{ userId }}
                   </p>
@@ -170,7 +175,10 @@
                       class="dropdown-item winnie-member-info fs-6 fw-bold"
                       href="account/login"
                     >
-                    <font-awesome-icon icon="fa-solid fa-power-off" class="me-3" />Log Out
+                      <font-awesome-icon
+                        icon="fa-solid fa-power-off"
+                        class="me-3"
+                      />Log Out
                     </a>
                   </li>
                 </ul>
@@ -299,7 +307,10 @@
                       <img src="../assets/images/icon/NFT/09.png" alt="" />
                     </div>
                     <p class="personal-id text-center fs-5 fw-bold">
-                      <font-awesome-icon icon="fa-solid fa-circle-user" class="mt-3 me-2" />{{ userId }}
+                      <font-awesome-icon
+                        icon="fa-solid fa-circle-user"
+                        class="mt-3 me-2"
+                      />{{ userId }}
                     </p>
                   </div>
                   <div class="personal-balance-info mt-5">
@@ -390,7 +401,10 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="game/game-list"
-                        ><font-awesome-icon icon="fa-solid fa-rocket" class="me-3" />Hunt</a
+                        ><font-awesome-icon
+                          icon="fa-solid fa-rocket"
+                          class="me-3"
+                        />Hunt</a
                       >
                     </div>
                   </div>
@@ -404,7 +418,10 @@
                         aria-expanded="false"
                         aria-controls="collapseSix"
                       >
-                      <font-awesome-icon icon="fa-solid fa-crosshairs" class="me-3" />Treasure Spot
+                        <font-awesome-icon
+                          icon="fa-solid fa-crosshairs"
+                          class="me-3"
+                        />Treasure Spot
                       </button>
                     </div>
                     <div
@@ -453,7 +470,10 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="leaderboard"
-                        ><font-awesome-icon icon="fa-solid fa-chart-simple" class="me-3"/>
+                        ><font-awesome-icon
+                          icon="fa-solid fa-chart-simple"
+                          class="me-3"
+                        />
                         Leaderboard</a
                       >
                     </div>
@@ -461,7 +481,10 @@
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingThree">
                       <a class="accordion-button fs-5 fw-bold" href="about">
-                        <font-awesome-icon icon="fa-solid fa-circle-info" class="me-3" />Learn
+                        <font-awesome-icon
+                          icon="fa-solid fa-circle-info"
+                          class="me-3"
+                        />Learn
                       </a>
                     </div>
                   </div>
@@ -475,7 +498,10 @@
                         aria-expanded="false"
                         aria-controls="collapseFour"
                       >
-                        <font-awesome-icon icon="fa-solid fa-circle-question" class="me-3"/>Docs
+                        <font-awesome-icon
+                          icon="fa-solid fa-circle-question"
+                          class="me-3"
+                        />Docs
                       </button>
                     </div>
                     <div
@@ -528,7 +554,10 @@
                       <a
                         class="accordion-button fs-5 fw-bold"
                         href="account/login"
-                        ><font-awesome-icon icon="fa-solid fa-power-off" class="me-3" />Log Out</a
+                        ><font-awesome-icon
+                          icon="fa-solid fa-power-off"
+                          class="me-3"
+                        />Log Out</a
                       >
                     </div>
                   </div>
@@ -611,6 +640,7 @@ const navItems = ref([
     id: "0",
     label: "Hunting Game",
     dropdown: false,
+    routeName: "Game", // 使用路由名称
     url: "game/game-list", // 内部导航 URL
     display: "all",
   },
@@ -661,6 +691,7 @@ const navItems = ref([
     id: "2",
     label: "Leaderboard",
     dropdown: false,
+    routeName: "Leaderboard", // 使用路由名称
     url: "leaderboard",
     display: "all",
   },
@@ -768,56 +799,56 @@ header nav ul li a:hover {
 }
 
 .winnie-nav-link {
-  color: #F8F8f8;
+  color: #f8f8f8;
   display: flex;
   align-items: center;
   height: 100%;
 }
 
 .dropdown-menu {
-  background-color: #1E2329;
+  background-color: #1e2329;
 }
 
-.dropdown-title{
+.dropdown-title {
   font-size: 1rem;
-  color: #F8F8F8;
+  color: #f8f8f8;
   font-weight: 600;
 }
 
-.red-circle{
+.red-circle {
   width: 10px;
   height: 10px;
-  background-color: #F63E3D;
-  border: 1px solid #35485D;
+  background-color: #f63e3d;
+  border: 1px solid #35485d;
   border-radius: 50%;
-  display: inline-block
+  display: inline-block;
 }
 
-.green-circle{
+.green-circle {
   width: 10px;
   height: 10px;
-  background-color: #71F63D;
-  border: 1px solid #35485D;
+  background-color: #71f63d;
+  border: 1px solid #35485d;
   border-radius: 50%;
-  display: inline-block
+  display: inline-block;
 }
 
 .winnie-dropdown-item {
-  color: #F8F8F8; 
+  color: #f8f8f8;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #2B3139;
+  background-color: #2b3139;
   border-radius: 10px;
 }
 
 .winnie-dropdown-item:hover {
-  background-color: #414D5A;
+  background-color: #414d5a;
 }
-.winnie-dropdown-item:hover .game-type-name{
-  color: #F8F8F8 !important;
+.winnie-dropdown-item:hover .game-type-name {
+  color: #f8f8f8 !important;
 }
-.winnie-dropdown-item:hover .room-number{
-  color: #BBB !important;
+.winnie-dropdown-item:hover .room-number {
+  color: #bbb !important;
 }
 
 .collapse .dropdown-member-info p {
