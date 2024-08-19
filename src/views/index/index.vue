@@ -89,7 +89,11 @@
         </h1>
       </div>
       <div class="row justify-content-center mt-5">
-        <div v-for="(item, index) in statsData" :key="index" class="col-7 col-lg-3 mt-3 mt-lg-0">
+        <div
+          v-for="(item, index) in statsData"
+          :key="index"
+          class="col-7 col-lg-3 mt-3 mt-lg-0"
+        >
           <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
           <StatsCard :title="item.title" :number="item.number" />
           <hr
@@ -153,6 +157,8 @@ import StatsCard from "./StatsCard.vue"; // 引入 StatsCard 組件
 
 import banner01 from "@/assets/images/common/banner01.png";
 import banner02 from "@/assets/images/common/banner02.png";
+import bannerSM01 from "@/assets/images/common/banner-sm01.png";
+import bannerSM02 from "@/assets/images/common/banner-sm02.png";
 
 import diamondSM from "@/assets/images/common/diamond-sm.png";
 
@@ -173,8 +179,18 @@ import equalizer from "@/assets/images/icon/md-equalizer 1.svg";
 
 // 輪播圖片數據
 const bannerData = [
-  { image: banner01, link: "#", alt: "Banner 1" },
-  { image: banner02, link: "#", alt: "Banner 2" },
+  {
+    image: banner01,
+    mobileImage: bannerSM01,
+    link: "#",
+    alt: "Banner 1",
+  },
+  {
+    image: banner02,
+    mobileImage: bannerSM02,
+    link: "#",
+    alt: "Banner 2",
+  },
 ];
 
 const cardData = [
@@ -221,7 +237,7 @@ const statsData = [
 }
 
 /* card */
-.game-intro{
+.game-intro {
   width: 100%;
   max-width: 1280px;
 }
@@ -239,7 +255,7 @@ const statsData = [
 }
 
 /* stats */
-.stats{
+.stats {
   width: 100%;
   max-width: 1280px;
 }
@@ -292,24 +308,24 @@ const statsData = [
 .partner-logo:hover img {
   opacity: 0;
 }
-
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const partnerLogos = document.querySelectorAll(".partner-logo");
+// 下面四張圖 hover 換顏色
+document.addEventListener("DOMContentLoaded", function () {
+  const partnerLogos = document.querySelectorAll(".partner-logo");
 
-    partnerLogos.forEach(logo => {
-        const originalSrc = logo.src;
-        const colorSrc = originalSrc.replace('white', 'color');
+  partnerLogos.forEach((logo) => {
+    const originalSrc = logo.src;
+    const colorSrc = originalSrc.replace("white", "color");
 
-        logo.addEventListener("mouseover", function() {
-            logo.src = colorSrc;
-        });
-
-        logo.addEventListener("mouseout", function() {
-            logo.src = originalSrc;
-        });
+    logo.addEventListener("mouseover", function () {
+      logo.src = colorSrc;
     });
+
+    logo.addEventListener("mouseout", function () {
+      logo.src = originalSrc;
+    });
+  });
 });
 </script>
