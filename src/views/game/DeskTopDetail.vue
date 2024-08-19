@@ -1,5 +1,5 @@
 <template>
-  <div>手機板</div>
+  <div>桌面板</div>
 </template>
 
 <script setup></script>

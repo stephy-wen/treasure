@@ -1,5 +1,28 @@
 <template>
-  <div v-if="gameDetails" class="container play-container mt-2 mt-md-3 mt-lg-5">
+  <div>
+    <div class="container play-container mt-2 mt-md-3 mt-lg-5">
+      <div class="play-cover">
+        <img class="w-100" :src="gameDetails.imageSrc" alt="" />
+      </div>
+      <MobileDetail v-if="isMobile" />
+      <DeskTopDetail v-else />
+    </div>
+    <hr class="my-5" />
+    <div class="history">
+      <History :items="currentItems" />
+    </div>
+    <!-- 分頁組件 -->
+    <Pagination
+      :totalItems="totalItems"
+      :itemsPerPage="itemsPerPage"
+      @page-changed="fetchPageData"
+    />
+  </div>
+
+  <div
+    v-if="gameDetails && 1 === '1'"
+    class="container play-container mt-2 mt-md-3 mt-lg-5"
+  >
     <div class="play-cover">
       <img class="w-100" :src="gameDetails.imageSrc" alt="" />
     </div>
@@ -128,9 +151,58 @@ import { images } from "@/assets/images.js";
 
 import HexagonButton from "./HexagonButton.vue";
 import PlayerListModal from "./PlayerListModal.vue";
+import MobileDetail from "./MobileDetail.vue";
+import DeskTopDetail from "./DeskTopDetail.vue";
+import History from "./History.vue";
+import Pagination from "@/components/Pagination.vue";
 
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
+
+// 監聽螢幕變化起
+const isMobile = ref(window.innerWidth < 768);
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768;
+};
+
+// 監聽頁面寬度變化
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+});
+
+// 组件銷毀時移除監聽
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
+// 監聽螢幕變化 始
+
+// 模擬歷史紀錄 功能開始
+// 項目總數和每頁項目數
+const totalItems = ref(100); // 從後端獲取的總項目數
+const itemsPerPage = ref(10);
+
+// 當前頁面的數據
+const currentItems = ref([]);
+
+// 模擬從後端獲取數據的函數
+// const fetchPageData = (page) => {
+//   const startIndex = (page - 1) * itemsPerPage.value;
+//   currentItems.value = getItemsFromBackend(startIndex, itemsPerPage.value);
+// };
+
+// 模擬 API 返回的數據
+// const getItemsFromBackend = (startIndex, itemsPerPage) => {
+//   const items = [];
+//   for (let i = startIndex; i < startIndex + itemsPerPage; i++) {
+//     items.push(`Item ${i + 1}`);
+//   }
+//   return items;
+// };
+
+// 初始化加載第一頁數據
+// fetchPageData(1);
+// 模擬歷史紀錄 功能結束
 
 const route = useRoute();
 const gameId = route.params.gameId; // 获取游戏 ID
