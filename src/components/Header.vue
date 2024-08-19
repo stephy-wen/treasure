@@ -4,13 +4,13 @@
     <nav style="height: 30px" class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <div class="logo ps-3 ps-md-4 pe-lg-5">
-          <a href="index" class="text-white">
+          <router-link href="index" class="text-white">
             <img
               style="height: 25px"
-              src="../assets/images/icon/logo name.svg"
-              alt=""
+              src="@/assets/images/icon/logo name.svg"
+              alt="Logo"
             />
-          </a>
+          </router-link>
         </div>
         <button
           class="custom-navbar-toggler d-lg-none"
@@ -26,25 +26,25 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto ms-2 mb-2 mb-lg-0">
             <li
-              v-for="item in navItems"
+              v-for="item in navLinks"
               :key="item.id"
               class="nav-item"
               :class="{ dropdown: item.dropdown }"
             >
               <template v-if="item.dropdown">
-                <a
+                <router-link
                   :class="
                     'winnie-nav-link fs-6 ' +
                     (item.dropdown ? 'dropdown-toggle' : '')
                   "
-                  href="#"
+                  to="#"
                   :id="item.id"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{ item.label }}
-                </a>
+                  {{ item.label + 20 }}
+                </router-link>
                 <ul class="dropdown-menu px-4 py-3" :aria-labelledby="item.id">
                   <p class="dropdown-title">{{ item.dropdownTitle }}</p>
                   <div
@@ -60,23 +60,23 @@
                       :key="link.roomNumber"
                       class="mx-0"
                     >
-                      <a
+                      <router-link
                         class="dropdown-item winnie-dropdown-item my-2"
-                        :href="link.url"
+                        :to="link.url"
                       >
                         <span class="me-5 room-number">{{
                           link.roomNumber
                         }}</span>
                         <span class="game-type-name">{{ link.gameType }}</span>
-                      </a>
+                      </router-link>
                     </li>
                   </div>
                 </ul>
               </template>
               <template v-else>
-                <a class="winnie-nav-link fs-6" :href="item.url">{{
+                <router-link class="winnie-nav-link fs-6" :to="item.url">{{
                   item.label
-                }}</a>
+                }}</router-link>
               </template>
             </li>
           </ul>
@@ -563,12 +563,57 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const userId = ref("winnie33527");
 const balance = ref("3,969,443");
 const loggedIn = true;
+
+// const { user } = storeToRefs(useUserStore());
+const user = ref({ username: "authorized" });
+// const user = ref({ username: "anonym" });
+
+/*
+display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
+display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in 和 Sign up）。
+display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
+*/
+
+// 參加的遊戲url處理
+// 模拟用户参与的游戏数据
+const userGames = ref([
+  {
+    url: "game/play-bnb.html",
+    roomNumber: "GID 1225",
+    gameType: "BINANCE",
+    status: "drawn",
+  },
+  {
+    url: "game/play-trx.html",
+    roomNumber: "GID 1136",
+    gameType: "TRON",
+    status: "in-progress",
+  },
+  // 更多游戏数据
+]);
+
+// const drawnGames = userGames.value.filter((game) => game.status === "drawn");
+// const inProgressGames = userGames.value.filter(
+//   (game) => game.status === "in-progress"
+// );
+
+// 大致流程
+// 1.拿到使用者參加的所有遊戲
+// 2.用狀態去分類 遊戲群
+// 3.拿到遊戲群組 去跑url (把下面的links取代掉)
+
 const navItems = ref([
-  { id: "0", label: "Hunting Game", dropdown: false, url: "hunting_game" },
+  {
+    id: "0",
+    label: "Hunting Game",
+    dropdown: false,
+    url: "game/game-list", // 内部导航 URL
+    display: "all",
+  },
   {
     id: "1",
     label: "Treasure Spot",
@@ -590,6 +635,7 @@ const navItems = ref([
             gameType: "TRON",
           },
         ],
+        // links: drawnGames.value, // 渲染已结束的游戏 等api
       },
       {
         circleClass: "green-circle",
@@ -606,12 +652,45 @@ const navItems = ref([
             gameType: "TRON",
           },
         ],
+        // links: inProgressGames.value, // 渲染进行中的游戏 等api
       },
     ],
+    display: "authorized",
   },
-  { id: "2", label: "Leaderboard", dropdown: false, url: "leaderboard" },
-  { id: "3", label: "Learn", dropdown: false, url: "about" },
+  {
+    id: "2",
+    label: "Leaderboard",
+    dropdown: false,
+    url: "leaderboard",
+    display: "all",
+  },
+  // { id: "3", label: "Learn", dropdown: false, url: "about", display: "anonym" },
 ]);
+
+//username.value 有值 displayStatus=>authorized
+// const username = computed(() => user.value?.username);
+
+// const displayStatus = computed(() =>
+//   username.value ? "authorized" : "anonym"
+// );
+// const navLinks = computed(() =>
+//   navItems.value.filter(
+//     (item) => item.display === displayStatus.value || item.display === "all"
+//   )
+// );
+
+// 根据用户名判断用户状态 暫時替代
+const displayStatus = computed(() =>
+  user.value.username === "authorized" ? "authorized" : "anonym"
+);
+
+const navLinks = computed(() =>
+  navItems.value.filter(
+    (item) => item.display === displayStatus.value || item.display === "all"
+  )
+);
+
+console.log(displayStatus.value);
 </script>
 
 <style scoped>
