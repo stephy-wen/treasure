@@ -82,4 +82,21 @@ const props = defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.index-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.game-card .index-banner img {
+  border-radius: 10px;
+}
+
+@media (min-width: 991.98px) {
+.index-banner img{
+  border-radius: 30px;
+}
+}
+</style>
