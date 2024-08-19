@@ -9,7 +9,7 @@
     </div>
     <hr class="my-5" />
     <div class="history">
-      <History :items="currentItems" />
+      <TableComponent Title="History" :headers="headers" :data="historyData" />
     </div>
     <!-- 分頁組件 -->
     <Pagination
@@ -154,6 +154,7 @@ import PlayerListModal from "./PlayerListModal.vue";
 import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
 import History from "./History.vue";
+import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
 
 import { onMounted, ref, onBeforeUnmount } from "vue";
@@ -202,6 +203,106 @@ const currentItems = ref([]);
 
 // 初始化加載第一頁數據
 // fetchPageData(1);
+const headers = [
+  { text: "Round", class: "text-center" },
+  { text: "Winner" },
+  { text: "Time", class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0" },
+  { text: "Verify", class: "text-end pe-3 pe-sm-5" },
+];
+
+const historyData = ref([
+  [
+    { text: "1546", class: "text-center", image: null },
+    {
+      text: "hehe15235",
+      class: "leaderboard-name",
+      image: "../images/icon/NFT/09.png",
+    },
+    {
+      text: "2024/06/13 18:24:53",
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null,
+      class: "text-end pe-3 pe-sm-5",
+      image: "../images/icon/arcoDesign-launch 1.svg",
+    },
+  ],
+  [
+    { text: "1545", class: "text-center", image: null },
+    {
+      text: "1515djijiedd",
+      class: "leaderboard-name",
+      image: "../images/icon/NFT/01.png",
+    },
+    {
+      text: "2024/06/12 20:16:03",
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null,
+      class: "text-end pe-3 pe-sm-5",
+      image: "../images/icon/arcoDesign-launch 1.svg",
+    },
+  ],
+  [
+    { text: "1544", class: "text-center", image: null },
+    {
+      text: "ohjiemdl88556",
+      class: "leaderboard-name",
+      image: "../images/icon/NFT/02.png",
+    },
+    {
+      text: "2024/06/11 14:08:23",
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null,
+      class: "text-end pe-3 pe-sm-5",
+      image: "../images/icon/arcoDesign-launch 1.svg",
+    },
+  ],
+  [
+    { text: "1543", class: "text-center", image: null },
+    {
+      text: "12345678",
+      class: "leaderboard-name",
+      image: "../images/icon/NFT/03.png",
+    },
+    {
+      text: "2024/06/10 09:30:15",
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null,
+      class: "text-end pe-3 pe-sm-5",
+      image: "../images/icon/arcoDesign-launch 1.svg",
+    },
+  ],
+  [
+    { text: "1542", class: "text-center", image: null },
+    {
+      text: "abcdefg",
+      class: "leaderboard-name",
+      image: "../images/icon/NFT/04.png",
+    },
+    {
+      text: "2024/06/09 16:45:50",
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null,
+      class: "text-end pe-3 pe-sm-5",
+      image: "../images/icon/arcoDesign-launch 1.svg",
+    },
+  ],
+  // 你的歷史數據
+]);
 // 模擬歷史紀錄 功能結束
 
 const route = useRoute();
