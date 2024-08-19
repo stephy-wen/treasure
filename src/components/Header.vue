@@ -43,7 +43,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{ item.label + 20 }}
+                  {{ item.label }}
                 </router-link>
                 <ul class="dropdown-menu px-4 py-3" :aria-labelledby="item.id">
                   <p class="dropdown-title">{{ item.dropdownTitle }}</p>
@@ -318,7 +318,7 @@
                       class="d-flex justify-content-between align-items-center mx-3"
                     >
                       <p class="personal-balance-title fs-5 fw-bold mb-0">
-                        Estimated Balance
+                        Total Balance
                       </p>
                       <img
                         src="../assets/images/icon/antOutline-eye.svg"
@@ -478,7 +478,7 @@
                       >
                     </div>
                   </div>
-                  <div class="accordion-item">
+                  <!-- <div class="accordion-item">
                     <div class="accordion-header" id="headingThree">
                       <a class="accordion-button fs-5 fw-bold" href="about">
                         <font-awesome-icon
@@ -487,7 +487,7 @@
                         />Learn
                       </a>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingFour">
                       <button
@@ -498,10 +498,7 @@
                         aria-expanded="false"
                         aria-controls="collapseFour"
                       >
-                        <font-awesome-icon
-                          icon="fa-solid fa-circle-question"
-                          class="me-3"
-                        />Docs
+                        <font-awesome-icon icon="fa-solid fa-circle-question" class="me-3"/>FAQ
                       </button>
                     </div>
                     <div
@@ -511,11 +508,10 @@
                       data-bs-parent="#accordionNav"
                     >
                       <div class="accordion-body pt-0">
-                        <ul>
-                          <li class="my-2 py-2">
+                        <ul class="ps-0">
+                          <li class="my-2 py-2 text-start">
                             <a class="fs-5" href="about">
                               <img
-                                class="me-1"
                                 style="width: 24px"
                                 src="../assets/images/icon/md-info.svg"
                                 alt=""
@@ -523,10 +519,9 @@
                               About OneChance
                             </a>
                           </li>
-                          <li class="my-2 py-2">
+                          <li class="my-2 py-2 text-start">
                             <a class="fs-5" href="terms-of-service">
                               <img
-                                class="me-1"
                                 style="width: 24px"
                                 src="../assets/images/icon/ze-label-o 1.svg"
                                 alt=""
@@ -574,7 +569,7 @@
                         for="flexSwitchCheckChecked"
                       >
                         <img
-                          src="../assets/imagesimages/icon/md-wb_sunny.svg"
+                          src="../assets/images/icon/md-wb_sunny.svg"
                           alt=""
                         />
                       </label>
