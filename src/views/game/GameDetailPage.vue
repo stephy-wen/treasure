@@ -36,17 +36,81 @@
       <div class="col-6"></div>
     </div>
 
-    <img :src="HexagonImage" alt="Test Image" />
-    <HexagonButton
-      @openModal="showModal = true"
-      :backgroundImage="HexagonImage"
-    />
+    <!-- 手機板 -->
+    <div
+      class="d-flex mt-2 justify-content-center player-list-hexagon d-sm-none"
+    >
+      <HexagonButton
+        v-for="(image, index) in hexagonImages"
+        :key="index"
+        :backgroundImage="image"
+        :isClickable="index === hexagonImages.length - 1"
+        @openModal="openModalHandler(index)"
+      />
 
-    <PlayerListModal
-      :showModal="showModal"
-      :players="playersList"
-      @close="showModal = false"
-    />
+      <PlayerListModal
+        :showModal="showModal"
+        :players="playersList"
+        @close="showModal = false"
+      />
+    </div>
+
+    <div
+      class="d-flex d-sm-none mt-3 justify-content-between align-items-center"
+    >
+      <p>ROUND {{ gameDetails.round }}</p>
+      <div class="player-limit d-flex align-items-center">
+        <p class="d-flex align-items-center me-3">
+          <img class="me-2" style="max-width: 24px" :src="mdiVote" alt="" />Vote
+        </p>
+        <span>{{ gameDetails.votes }} / {{ gameDetails.totalVotes }}</span>
+      </div>
+    </div>
+
+    <div class="game-intro mt-3">
+      <div class="row">
+        <div class="col-12 col-sm-7">
+          <div
+            class="game-intro-title d-flex justify-content-between align-items-center align-items-sm-start"
+          >
+            <h1 class="fw-bold">HUNTING GAME</h1>
+            <div class="d-flex flex-column">
+              <p class="d-none d-sm-block">ROUND 1547</p>
+              <img
+                class="dollar-width"
+                style="cursor: pointer"
+                src="../images/icon/dollar-phone2.png"
+                alt=""
+                data-bs-toggle="modal"
+                data-bs-target="#joinModal"
+              />
+            </div>
+          </div>
+          <div class="game-intro-content fs-5">
+            The Game is an interactive onchain survival game where contestants
+            buy in, join tribes, compete in daily challenges, and vote each
+            other out over the course of ten days, until one person wins the
+            entire pot.
+          </div>
+        </div>
+        <!-- 手機板結束 -->
+        <div
+          class="col-12 col-sm-5 col-md-4 ms-md-auto d-flex flex-column justify-content-between"
+        >
+          <div
+            class="mt-2 justify-content-center player-list-hexagon d-none d-sm-flex"
+          >
+            <HexagonButton
+              v-for="(image, index) in hexagonImages"
+              :key="index"
+              :backgroundImage="image"
+              :isClickable="index === hexagonImages.length - 1"
+              @openModal="() => openModalHandler(index)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
 
     <h1>游戏详情页</h1>
     <p>游戏 ID: {{ gameId }}</p>
@@ -60,6 +124,7 @@ import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 import playBnb from "@/assets/images/common/play_bnb.png";
 import bnbAccount from "@/assets/images/icon/BNB-account.svg";
 import HexagonImage from "@/assets/images/icon/NFT/08.png";
+import { images } from "@/assets/images.js";
 
 import HexagonButton from "./HexagonButton.vue";
 import PlayerListModal from "./PlayerListModal.vue";
@@ -77,7 +142,6 @@ const gameDetails = ref({});
 
 // 模擬參加人數數據
 const hexagonNumber = ref({});
-
 // playersList data
 const playersList = [
   {
@@ -95,6 +159,26 @@ const playersList = [
   // 其他玩家数据...
 ];
 
+// 定义 HexagonButton 的图片
+const hexagonImages = [
+  images.nft01,
+  images.nft02,
+  images.nft03,
+  images.nft04,
+  images.nft05,
+  images.nft06,
+  images.nft07,
+  images.HexagonImage,
+];
+
+// 打开模态框
+const openModalHandler = (index) => {
+  console.log(`點了第 ${index + 1} 個 HexagonButton`);
+  showModal.value = true;
+};
+
+console.log(hexagonImages.length, "nub");
+
 // 模拟游戏数据
 const games = {
   eth123: {
@@ -105,6 +189,7 @@ const games = {
     voteIcon: mdiVote, // 动态投票图标
     votes: 8, // 动态投票数
     totalVotes: 535, // 总票数
+    round: 1547,
   },
   bnb456: {
     imageSrc: playBnb,
@@ -114,6 +199,7 @@ const games = {
     voteIcon: mdiVote,
     votes: 12,
     totalVotes: 600,
+    round: 1258,
   },
   // 添加更多游戏数据...
 };

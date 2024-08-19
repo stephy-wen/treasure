@@ -1,10 +1,10 @@
 <template>
   <div
-    class="hexagon"
+    class="hexagon hexagon-more"
     :style="{ backgroundImage: `url(${backgroundImage})` }"
     @click="handleClick"
   >
-    <div class="overlay">
+    <div v-if="isClickable" class="overlay">
       <div class="dots">
         <div class="dot"></div>
         <div class="dot"></div>
@@ -17,12 +17,16 @@
 <script setup>
 const props = defineProps({
   backgroundImage: String,
+  isClickable: Boolean, // 用于控制按钮是否可以点击
 });
+console.log(props.isClickable);
 
 const emit = defineEmits(["openModal"]);
 
 const handleClick = () => {
-  emit("openModal");
+  if (props.isClickable) {
+    emit("openModal");
+  }
 };
 </script>
 
@@ -36,6 +40,12 @@ const handleClick = () => {
   background-repeat: no-repeat;
   position: relative;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hexagon-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .overlay {
