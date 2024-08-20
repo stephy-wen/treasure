@@ -16,7 +16,23 @@
         :key="index"
         class="index-banner"
       >
-        <a :href="item.link">
+        <!-- 圖片有手機板 區分時 -->
+        <!-- 如果有區分手機和桌面圖片 -->
+        <a :href="item.link" v-if="item.mobileImage && item.image">
+          <img
+            class="img-fluid d-md-none rounded-0"
+            :src="item.mobileImage"
+            :alt="item.alt"
+          />
+          <img
+            class="img-fluid d-none d-md-block"
+            :src="item.image"
+            :alt="item.alt"
+          />
+        </a>
+
+        <!-- 如果沒有區分，只有一個通用圖片 -->
+        <a :href="item.link" v-else>
           <img class="img-fluid" :src="item.image" :alt="item.alt" />
         </a>
       </SwiperSlide>
@@ -95,8 +111,8 @@ const props = defineProps({
 }
 
 @media (min-width: 991.98px) {
-.index-banner img{
-  border-radius: 30px;
-}
+  .index-banner img {
+    border-radius: 30px;
+  }
 }
 </style>
