@@ -72,3 +72,25 @@ const changePage = (page) => {
   }
 };
 </script>
+
+<style scoped>
+.leaderboard-page-nav .pagination {
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-color: none;
+    --bs-pagination-focus-color: #FCD535;
+    --bs-pagination-hover-bg: transparent;
+    --bs-pagination-focus-bg: transparent;
+    --bs-pagination-hover-color: #FCD535;
+    --bs-pagination-color: #415058;
+    --bs-pagination-focus-box-shadow: none;
+}
+.disabled>.page-link, .page-link.disabled {
+  color: #415058;
+  background-color: transparent;
+}
+.active>.page-link, .page-link.active{
+  border-color: transparent;
+  color: #FCD535;
+  background-color: transparent;  
+}
+</style>

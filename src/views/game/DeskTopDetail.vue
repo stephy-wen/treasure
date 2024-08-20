@@ -1,7 +1,675 @@
 <template>
-  <div>桌面板</div>
+      <div class="play-container mt-2 mt-md-3 mt-lg-5">
+        <div class="d-flex align-items-center justify-content-between mt-3">
+            <div class="col-8 d-flex align-items-center">
+                <p class="fw-bold">THE POT</p>
+                <div class="play-prize d-flex align-items-center justify-content-end ps-5">
+                    <img class="" src="@/assets/images/icon/ETH-account.svg" alt="">
+                    <p class="ms-2 fw-bold">1.5</p>
+                </div>
+            </div>
+            <div>
+                <div class="player-limit d-flex ps-3 align-items-center">
+                  <p class="d-flex align-items-center me-3"><img class="me-2" style="max-width: 24px;" src="@/assets/images/icon/mdi_vote-outline.svg" alt="">Vote</p>
+                  <span>8 / 535</span>
+                </div>
+            </div>
+        </div>
+        <div class="game-intro mt-3">
+            <div class="row">
+              <div class="col-7">
+                <div class="game-intro-title d-flex justify-content-between align-items-start">
+                    <h1 class="fw-bold">HUNTING GAME</h1>
+                    <div class="d-flex flex-column">
+                    <p class="d-block">ROUND 1547</p>
+                    <img class="dollar-width" style="cursor: pointer;" src="@/assets/images/icon/dollar-phone2.png" alt="" data-bs-toggle="modal" data-bs-target="#joinModal">
+                    </div>
+                </div>
+                <div class="game-intro-content fs-5">
+                    The Game is an interactive onchain survival game where contestants buy in, join tribes, compete in daily challenges, and vote each other out over the course of ten days, until one person wins the entire pot.
+                </div>
+              </div>
+            <div class="col-5 col-xl-4 ms-md-auto d-flex flex-column justify-content-between">
+                <div class="mt-2 d-flex justify-content-center player-list-hexagon">
+                  <HexagonButton
+                  v-for="(image, index) in hexagonImages"
+                  :key="index"
+                  class="ms-1"
+                  :backgroundImage="image"
+                  :isClickable="index === hexagonImages.length - 1"
+                  @openModal="openModalHandler(index)"
+                  />
+
+                  <!-- Player list Modal large size-->
+                  <div class="modal fade" id="playerListSmModal" tabindex="-1" aria-labelledby="playerListSmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                      <div class="modal-content">
+                        <div class="modal-header pb-0 d-flex justify-content-between">
+                          <h5 class="modal-title" id="playerListSmModalLabel"></h5>
+                          <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <h4 class="modal-title ms-2 mb-5 fw-bold" id="playerListSmModalLabel">Player List</h4>
+                          <table class="table table-borderless fw-bold">
+                            <thead>
+                              <tr>
+                                <th scope="col">Player</th>
+                                <th class="text-end pe-3 pe-sm-0" scope="col">Vote</th>
+                                <th class="text-end" scope="col">Rate</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/08.png" alt="">hehe15235</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 24px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/01.png" alt="">1515djijiedd</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/02.png" alt="">ohjiemdl88556</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/03.png" alt="">o45jhji3n56</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/04.png" alt="">hellokittyomg</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/05.png" alt="">goodmorning</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-2" style="max-width: 32px;" src="@/assets/images/icon/NFT/06.png" alt="">48e8ddtgtgg</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                              <tr>
+                                <td class="player-list-name"><img class="img-fluid me-1" style="max-width: 32px;" src="@/assets/images/icon/NFT/07.png" alt="">ddeehyh74</td>
+                                <td class="text-end pe-3 pe-sm-0"><span>1 <img class="img-fluid" style="max-width: 26px;" src="@/assets/images/icon/balance-icon.png" alt=""></span></td>
+                                <td class="text-end">12.5%</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="game-attend mt-3">
+                    <button class="game-attend-btn py-4 fs-1 fw-bold" data-bs-toggle="modal" data-bs-target="#joinModal">
+                        START
+                    </button>
+                    <!-- Join Modal -->
+                    <div class="modal fade" id="joinModal" tabindex="-1" aria-labelledby="joinModalLabel" aria-hidden="true">
+                      <div class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down">
+                        <div class="modal-content modal-background" style="background-image: url('@/assets/images/common/attend_eth.png');">
+                          <div class="modal-header pb-0 d-flex justify-content-between">
+                            <h5 class="modal-title" id="joinModalLabel"></h5>
+                            <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                              <i class="fa-solid fa-xmark"></i>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center d-flex flex-column justify-content-center">
+                            <div class="game-round-name">
+                            <p>ROUND 1547</p>
+                            <p class="fs-2 fw-bold">ETHEREUM</p>
+                            </div> 
+                            <div class="attend-fee mt-5">
+                              <p>Total Amount Deducted</p>
+                              <p class="fs-3 fw-bold"><img class="me-2" style="width: 50px;" src="@/assets/images/icon/balance-icon.png" alt="">1</p>
+                              <div class="attend-times-btn d-flex justify-content-center mt-2">
+                                <button>1</button>
+                                <button class="mx-3 mx-md-4">5</button>
+                                <button>10</button>
+                              </div>
+                              <div class="attend-times-input mt-5">
+                                <span>x</span>
+                                <input class="fs-6" value="1" type="text">
+                                <!-- <span>Times</span> -->
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer mx-auto">
+                            <button type="button" class="btn attend-confirm-btn mb-5" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#winnerModal">Confirm</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- maxParticipantsModal-->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#maxParticipantsModal">
+                      Launch demo modal
+                    </button>
+                    <div class="modal fade" id="maxParticipantsModal" tabindex="-1" aria-labelledby="maxParticipantsModalLabel" aria-hidden="true">
+                      <div class="modal-dialog mx-auto modal-dialog-centered">
+                        <div class="modal-content modal-background" style="background-color: #181A20;border: 1px solid #414D5A;">
+                          <div class="modal-header pb-0 d-flex justify-content-between">
+                            <h5 class="modal-title" id="maxParticipantsModalLabel"></h5>
+                            <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                              <i class="fa-solid fa-xmark"></i>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center d-flex flex-column justify-content-center">
+                            <div class="vote-full-reminder mx-auto">
+                              <img class="mb-3" style="width: 50px;" src="@/assets/images/icon/logo.svg" alt="">
+                              <p class="fs-5">Voting is full. <br>Please wait for the next round.</p>
+                              <p class="winnie-color-gray mt-5 fs-1">5</p>
+                            </div> 
+                          </div>
+                          <div class="modal-footer">
+                          </div>
+                        </div>
+                      </div>
+                    </div>                    
+                    <!-- winner Modal -->
+                    <div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="winnerModalLabel" aria-hidden="true">
+                      <div class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down">
+                        <div class="modal-content modal-background" style="background-image: url('@/assets/images/common/attend_eth.png');">
+                          <div class="modal-header pb-0 d-flex justify-content-between">
+                            <h5 class="modal-title" id="winnerModalLabel"></h5>
+                            <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                              <i class="fa-solid fa-xmark"></i>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center d-flex flex-column justify-content-center">
+                            <div class="game-winner-title">
+                            <p class="fs-2 fw-bold">WINNER</p>
+                            </div> 
+                            <div class="winner-info mt-5">
+                              <img src="@/assets/images/icon/NFT/09.png" alt="">
+                              <p class="fs-5 fw-bold mt-2">hehe15235</p>
+                            </div>
+                          </div>
+                          <div class="modal-footer mx-auto">
+                            <p class="winnie-color-gray">Next Round 5 seconds</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { images } from "@/assets/images.js";
+import HexagonButton from "./HexagonButton.vue";
+const hexagonImages = [
+  images.nft01,
+  images.nft02,
+  images.nft03,
+  images.nft04,
+  images.nft05,
+  images.nft06,
+  images.nft07,
+  images.HexagonImage,
+];
+</script>
 
-<style scoped></style>
+<style scoped>
+.play-container {
+    flex: 1;
+  }
+
+@media (min-width: 575.98px) and (max-width: 991.98px) {
+    .play-container .dot {
+        width: 4px;
+        height: 4px;
+        background-color: #F8F8F8;
+        border-radius: 50%;
+    }
+}
+
+.play-container .player-limit p{
+    border: 1px solid #BBB;
+    padding: 2px 4px;
+}
+
+.play-container .game-attend-btn {
+    background-image: url('@/assets/images/common/play_button.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: 1px solid #BBB;
+    color: #F8F8F8;
+    width: 100%;
+}
+
+.play-container .game-attend-btn {
+    position: relative;
+    /* 确保伪元素覆盖按钮 */
+    z-index: 1;
+}
+
+.play-container .game-attend-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+}
+
+.play-container .game-attend-btn:hover::after {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.play-container .game-attend-btn.disable {
+    color: #F8F8F8;
+}
+
+@media (min-width: 575.98px) {
+    .game-intro-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .game-intro-title .flex-column {
+        flex-direction: row !important;
+        align-items: center;
+    }
+    .game-intro-title .flex-column p {
+        padding-right: 20px;
+    }
+}
+
+.game-attend-btn { 
+  border-radius: 0px;
+}
+
+.winnie-btn-close {
+    background-color: #1E2329;
+    color: #F8F8F8;
+    border-radius: 50px;
+    border: none;
+}
+
+.winnie-btn-close:hover {
+    background-color: #414D5A;
+    color: #F8F8F8;
+    border-radius: 50px;
+    border: none;
+}
+
+.winnie-text-white {
+    color: #F8F8F8;
+}
+
+.winnie-text-gray {
+    color: #BBB;
+}
+
+@media (max-width: 767.98px) {
+    .custom-rounded {
+        border-radius: 0px;
+    }
+}
+
+/* game-attend-modal & winner-modal */
+.game-attend .modal-dialog {
+    width: 100%;
+}
+
+@media (min-width: 575.98px) {
+    .game-attend .modal-dialog {
+        max-width: 400px;
+    }
+}
+
+.game-attend #joinModal .modal-background,
+#winnerModal .modal-background,
+#maxParticipantsModal .modal-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.game-attend #joinModal .modal-content {
+    color: #F8F8F8;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+}
+
+.game-attend #joinModal .attend-times-btn button {
+    background-color: transparent;
+    border: 1px solid #F8F8F8;
+    padding: 8px 30px;
+    color: #F8F8F8;
+    border-radius: 10px;
+}
+
+.game-attend #joinModal .modal-header,
+#winnerModal .modal-header,
+#playerListModal .modal-header,
+#playerListSmModal .modal-header,
+#insufficientBalanceModal .modal-header,
+#maxParticipantsModal .modal-header {
+    border-bottom: none;
+}
+
+.game-attend #joinModal .modal-footer, 
+#winnerModal .modal-footer,
+#playerListModal .modal-footer,
+#playerListSmModal .modal-footer,
+#insufficientBalanceModal .modal-footer,
+#maxParticipantsModal .modal-footer {
+    border-top: none;
+}
+
+.game-attend #joinModal .modal-body input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #F8F8F8;
+    color: #F8F8F8;
+    text-align: center;
+    border-radius: 0px;
+}
+
+.game-attend #joinModal .modal-body input:focus {
+    outline: none;
+}
+
+.game-attend #joinModal .modal-footer button.attend-confirm-btn {
+    background-color: #FCD535;
+    border: none;
+    color: #181A20;
+    padding: 8px 90px;
+}
+
+#winnerModal .modal-dialog .modal-content {
+    min-height: 500px;
+}
+
+#winnerModal .modal-footer .winnie-color-gray,
+#maxParticipantsModal .winnie-color-gray{
+    color: #BBB;
+}
+
+#playerListModal .table,
+#playerListSmModal .table {
+    --bs-table-bg: transparent;
+    color: #F8F8F8;
+    --bs-table-color: none;
+    width: 100%;
+    margin: 0;
+}
+
+#playerListModal .table .player-list-name {
+    font-size: 1rem;
+
+}
+
+#playerListModal .table td, 
+#playerListModal .table th {
+    vertical-align: middle;
+}
+
+#insufficientBalanceModal .modal-dialog {
+    max-width: 576px;
+}
+
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .modal-dialog {
+        max-width: 750px;
+    }
+}
+
+
+#insufficientBalanceModal a p {
+    color: #F8F8F8;
+}
+
+#insufficientBalanceModal a button {
+    color: #F8F8F8;
+    background-color: #2B3139;
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+}
+
+#insufficientBalanceModal a button:hover,
+#insufficientBalanceModal a button:focus {
+    color: #F8F8F8;
+    background-color: #414D5A;
+}
+
+#insufficientBalanceModal .vertical-line {
+    width: 1px;
+    background-color: #414D5A;
+    height: 100px;
+    margin: 0 20px;
+}
+
+#insufficientBalanceModal .vertical-line.active {
+    background-color: #F8F8F8;
+}
+
+#insufficientBalanceModal .divider {
+    width: 1px;
+    height: 30px;
+    background-color:#BBB;
+    margin: 0px 30px;
+}
+
+@media (min-width: 575.98px) {
+#insufficientBalanceModal .step-container {
+        display: flex;
+        align-items: flex-start;
+        /* margin-bottom: 30px; */
+    }
+}
+
+#insufficientBalanceModal .circle-number {
+    width: 40px;
+    height: 40px;
+    background-color: #2B3139;
+    color: #3D3D3D;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#insufficientBalanceModal .circle-number.active{
+    background-color: #414D5A;
+    color: #F8F8F8;
+}
+
+#insufficientBalanceModal .step-title {
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 10px; */
+}
+
+#insufficientBalanceModal .dropdown-menu{
+    background-color: #2B3139;
+    --bs-dropdown-link-hover-bg: #414D5A;
+}
+
+#insufficientBalanceModal .step-container .dropdown-toggle{
+    width: 280px;
+    background-color: transparent;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+    #insufficientBalanceModal .step-container .dropdown-toggle {
+            width: 380px;
+        }
+}
+@media (min-width: 575.98px) {
+    #insufficientBalanceModal .step-container .dropdown-toggle {
+        width: 400px;
+    }
+}
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .step-container .dropdown-toggle{
+        width: 534px;
+    }
+}
+@media (min-width: 991.98px) {
+    #insufficientBalanceModal .step-container .dropdown-toggle{
+        width: 600px;
+    }
+}
+
+#insufficientBalanceModal .step-container ul.dropdown-menu {
+    width: 280px;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+    #insufficientBalanceModal .step-container ul.dropdown-menu {
+        width: 380px;
+    }
+}
+@media (min-width: 575.98px) {
+    #insufficientBalanceModal .step-container ul.dropdown-menu {
+        width: 400px;
+    }
+}
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .step-container ul.dropdown-menu {
+        width: 534px;
+    }
+}
+@media (min-width: 991.98px) {
+    #insufficientBalanceModal .step-container ul.dropdown-menu {
+        width: 600px;
+    }
+}
+
+#insufficientBalanceModal .deposit-notice-color {
+    color: #F8F8F8;
+}
+
+#insufficientBalanceModal .deposit-notice-bk-color {
+    background-color: #414D5A;
+    border-radius: 8px;
+}
+
+#insufficientBalanceModal .winnie-fs-small {
+    font-size: 12px;
+}
+
+#insufficientBalanceModal .company-address {
+    border: 1px solid #565e64;
+    color: #F8F8F8;
+    border-radius: 8px;
+}
+
+#insufficientBalanceModal .deposit-notice-bottom {
+    width: 280px;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+    #insufficientBalanceModal .deposit-notice-bottom {
+            width: 380px;
+    }
+}
+@media (min-width: 575.98px) {
+    #insufficientBalanceModal .deposit-notice-bottom {
+        width: 400px;
+    }
+}
+
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .deposit-notice-bottom {
+        width: 534px;
+    }
+}
+@media (min-width: 991.98px) {
+    #insufficientBalanceModal .deposit-notice-bottom {
+        width: 600px;
+    }
+}
+
+#insufficientBalanceModal .company-address p {
+    font-size: 16px;
+}
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .company-address p {
+        font-size: 14px;
+    }
+}
+
+#insufficientBalanceModal .qrcode-pic {
+    width: 160px;
+}
+
+@media (min-width: 767.98px) {
+    #insufficientBalanceModal .qrcode-pic {
+        width: 120px;
+    }
+}
+@media (min-width: 991.98px) {
+    #insufficientBalanceModal .qrcode-pic {
+        width: 170px;
+    }
+}
+
+@media (max-width: 768px) {
+    #insufficientBalanceModal .company-address p {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+}
+
+#insufficientBalanceModal .form-control {
+    box-shadow: none;
+}
+
+#insufficientBalanceModal .form-control:focus {
+    box-shadow: none;
+}
+
+#insufficientBalanceModal ul li a img {
+    max-width: 24px;
+}
+
+#insufficientBalanceModal ul li a .abbr{
+    font-weight: bold;
+    color: #F8F8F8;
+}
+#insufficientBalanceModal ul li a .full-name{
+    color: #BBB;
+}
+
+.game-intro-title .dollar-width {
+    height: 60px;
+}
+
+@media (max-width: 400px) {
+    .game-intro-title h1 {
+        font-size: 22px;
+    }
+    .game-intro-title .dollar-width {
+        height: 46px;
+    }
+}
+
+#maxParticipantsModal .modal-dialog .modal-content {
+    min-height: 300px;
+}
+
+#maxParticipantsModal {
+    background-color: rgba(0, 0, 0, 0.50);
+}
+
+</style>

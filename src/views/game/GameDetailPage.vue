@@ -6,10 +6,10 @@
       </div>
       <MobileDetail v-if="isMobile" />
       <DeskTopDetail v-else />
-    </div>
-    <hr class="my-5" />
-    <div class="history">
-      <TableComponent Title="History" :headers="headers" :data="historyData" />
+      <hr class="my-5" />
+      <div class="history">
+        <TableComponent Title="History" :headers="headers" :data="historyData" />
+      </div>
     </div>
     <!-- 分頁組件 -->
     <Pagination
@@ -147,6 +147,12 @@ import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 import playBnb from "@/assets/images/common/play_bnb.png";
 import bnbAccount from "@/assets/images/icon/BNB-account.svg";
 import HexagonImage from "@/assets/images/icon/NFT/08.png";
+import verify from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import nft01 from "@/assets/images/icon/NFT/01.png";
+import nft02 from "@/assets/images/icon/NFT/02.png";
+import nft03 from "@/assets/images/icon/NFT/03.png";
+import nft04 from "@/assets/images/icon/NFT/04.png";
+import nft05 from "@/assets/images/icon/NFT/05.png";
 import { images } from "@/assets/images.js";
 
 import HexagonButton from "./HexagonButton.vue";
@@ -216,7 +222,7 @@ const historyData = ref([
     {
       text: "hehe15235",
       class: "leaderboard-name",
-      image: "../images/icon/NFT/09.png",
+      image: nft01,
     },
     {
       text: "2024/06/13 18:24:53",
@@ -226,7 +232,7 @@ const historyData = ref([
     {
       text: null,
       class: "text-end pe-3 pe-sm-5",
-      image: "../images/icon/arcoDesign-launch 1.svg",
+      image: verify,
     },
   ],
   [
@@ -234,7 +240,7 @@ const historyData = ref([
     {
       text: "1515djijiedd",
       class: "leaderboard-name",
-      image: "../images/icon/NFT/01.png",
+      image: nft02,
     },
     {
       text: "2024/06/12 20:16:03",
@@ -244,7 +250,7 @@ const historyData = ref([
     {
       text: null,
       class: "text-end pe-3 pe-sm-5",
-      image: "../images/icon/arcoDesign-launch 1.svg",
+      image: verify,
     },
   ],
   [
@@ -252,7 +258,7 @@ const historyData = ref([
     {
       text: "ohjiemdl88556",
       class: "leaderboard-name",
-      image: "../images/icon/NFT/02.png",
+      image: nft03,
     },
     {
       text: "2024/06/11 14:08:23",
@@ -262,7 +268,7 @@ const historyData = ref([
     {
       text: null,
       class: "text-end pe-3 pe-sm-5",
-      image: "../images/icon/arcoDesign-launch 1.svg",
+      image: verify,
     },
   ],
   [
@@ -270,7 +276,7 @@ const historyData = ref([
     {
       text: "12345678",
       class: "leaderboard-name",
-      image: "../images/icon/NFT/03.png",
+      image: nft04,
     },
     {
       text: "2024/06/10 09:30:15",
@@ -280,7 +286,7 @@ const historyData = ref([
     {
       text: null,
       class: "text-end pe-3 pe-sm-5",
-      image: "../images/icon/arcoDesign-launch 1.svg",
+      image: verify,
     },
   ],
   [
@@ -288,7 +294,7 @@ const historyData = ref([
     {
       text: "abcdefg",
       class: "leaderboard-name",
-      image: "../images/icon/NFT/04.png",
+      image: nft05,
     },
     {
       text: "2024/06/09 16:45:50",
@@ -298,7 +304,7 @@ const historyData = ref([
     {
       text: null,
       class: "text-end pe-3 pe-sm-5",
-      image: "../images/icon/arcoDesign-launch 1.svg",
+      image: verify,
     },
   ],
   // 你的歷史數據
@@ -384,3 +390,9 @@ onMounted(() => {
   console.log(gameDetails.value);
 });
 </script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+</style>
