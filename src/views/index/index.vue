@@ -89,18 +89,16 @@
         </h1>
       </div>
       <div class="row justify-content-center mt-5">
-        <div
-          v-for="(item, index) in statsData"
-          :key="index"
-          class="col-7 col-lg-3 mt-3 mt-lg-0"
-        >
-          <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
-          <StatsCard :title="item.title" :number="item.number" />
+        <template v-for="(item, index) in statsData" :key="index">
+          <div class="col-7 col-lg-3 mt-3 mt-lg-0">
+            <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
+            <StatsCard :title="item.title" :number="item.number" />
+          </div>
           <hr
             class="vertical-divider d-none d-lg-block"
             v-if="index < statsData.length - 1"
           />
-        </div>
+        </template>
       </div>
     </div>
 
@@ -110,39 +108,18 @@
         <h1 class="fw-bolder my-5">PARTNERSHIPS</h1>
       </div>
       <div class="row text-center align-items-center">
-        <div class="col-6 col-lg-3 mt-3">
+        <div
+          class="col-6 col-lg-3 mt-3"
+          v-for="(logo, index) in logos"
+          :key="index"
+        >
           <a href="#">
             <img
               class="partner-logo hover-logo"
-              :src="binanceWhite"
-              alt="binanceWhite"
-            />
-          </a>
-        </div>
-        <div class="col-6 col-lg-3">
-          <a href="#">
-            <img
-              class="partner-logo hover-logo mt-3"
-              :src="tronWhite"
-              alt="tronWhite"
-            />
-          </a>
-        </div>
-        <div class="col-6 col-lg-3">
-          <a href="#">
-            <img
-              class="partner-logo hover-logo mt-3"
-              :src="chainLink"
-              alt="chainLink"
-            />
-          </a>
-        </div>
-        <div class="col-6 col-lg-3">
-          <a href="#">
-            <img
-              class="partner-logo hover-logo mt-3"
-              :src="monoWhite"
-              alt="monoWhite"
+              :src="hoverIndex === index ? logo.colorSrc : logo.whiteSrc"
+              alt="logo.alt"
+              @mouseover="hoverIndex = index"
+              @mouseout="hoverIndex = null"
             />
           </a>
         </div>
@@ -152,6 +129,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import SwiperBanner from "@/components/SwiperBanner.vue"; // 引入輪播組件
 import StatsCard from "./StatsCard.vue"; // 引入 StatsCard 組件
 
@@ -175,8 +153,14 @@ import tronWhite from "@/assets/images/common/tron-white.png";
 import chainLink from "@/assets/images/common/chainlink-logo-white.png";
 import monoWhite from "@/assets/images/common/mono-white.png";
 
+import binanceColor from "@/assets/images/common/binance-color.png";
+import tronColor from "@/assets/images/common/tron-color.png";
+import chainLinkColor from "@/assets/images/common/chainlink-logo-color.png";
+import monoColor from "@/assets/images/common/mono-color.png";
+
 import equalizer from "@/assets/images/icon/md-equalizer 1.svg";
 
+const hoverIndex = ref(null);
 // 輪播圖片數據
 const bannerData = [
   {
@@ -224,6 +208,29 @@ const statsData = [
   { title: "Total Players", number: "99,167" },
   { title: "Total Game Volume", number: "$367,872" },
   { title: "Total Game Rounds", number: "223,164" },
+];
+
+const logos = [
+  {
+    whiteSrc: binanceWhite,
+    colorSrc: binanceColor,
+    alt: "binanceWhite",
+  },
+  {
+    whiteSrc: tronWhite,
+    colorSrc: tronColor,
+    alt: "tronWhite",
+  },
+  {
+    whiteSrc: chainLink,
+    colorSrc: chainLinkColor,
+    alt: "chainLink",
+  },
+  {
+    whiteSrc: monoWhite,
+    colorSrc: monoColor,
+    alt: "monoWhite",
+  },
 ];
 </script>
 
@@ -309,23 +316,3 @@ const statsData = [
   opacity: 0;
 }
 </style>
-
-<script>
-// 下面四張圖 hover 換顏色
-document.addEventListener("DOMContentLoaded", function () {
-  const partnerLogos = document.querySelectorAll(".partner-logo");
-
-  partnerLogos.forEach((logo) => {
-    const originalSrc = logo.src;
-    const colorSrc = originalSrc.replace("white", "color");
-
-    logo.addEventListener("mouseover", function () {
-      logo.src = colorSrc;
-    });
-
-    logo.addEventListener("mouseout", function () {
-      logo.src = originalSrc;
-    });
-  });
-});
-</script>
