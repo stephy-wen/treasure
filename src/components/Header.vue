@@ -42,7 +42,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{ item.label + 20 }}
+                  {{ item.label }}
                 </router-link>
                 <ul class="dropdown-menu px-4 py-3" :aria-labelledby="item.id">
                   <p class="dropdown-title">{{ item.dropdownTitle }}</p>
