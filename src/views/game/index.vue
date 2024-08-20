@@ -17,7 +17,9 @@
           type="button"
           id="button-addon2"
         >
-          <i class="fas fa-search"></i>
+        <font-awesome-icon
+          icon="fa-solid fa-magnifying-glass"
+        />
         </button>
       </div>
     </div>
@@ -156,4 +158,31 @@ const games = [
 ];
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+.container .search-bar .form-control {
+    background-color: transparent;
+    color: #F8F8F8;
+    border-color: #BBB;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.container .search-bar button{
+    border-color: #BBB;
+}
+
+.container .search-bar button{
+    color: #BBB;
+}
+
+.container .search-bar button:hover{
+    color: #F8F8F8;
+}
+
+.container .search-bar .form-control::placeholder {
+    color: #BBB;
+}
+</style>
