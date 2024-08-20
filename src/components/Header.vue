@@ -81,6 +81,7 @@
               </template>
             </li>
           </ul>
+
           <div class="d-flex align-items-center">
             <!-- 根據是否登入顯示不同內容 -->
             <!-- 右側區塊 -->
@@ -397,52 +398,60 @@
                 </template>
 
                 <div class="accordion mt-4" id="accordionNav">
-                  <div class="accordion-item">
-                    <div class="accordion-header" id="headingOne">
-                      <a
-                        class="accordion-button fs-5 fw-bold"
-                        href="game/game-list"
-                        ><font-awesome-icon
-                          icon="fa-solid fa-rocket"
-                          class="me-3"
-                        />Hunt</a
-                      >
+                  <div
+                    class="accordion-item"
+                    v-for="(item, index) in navPhoneLinks"
+                    :key="item.id"
+                  >
+                    <div class="accordion-header" :id="`heading${index}`">
+                      <!-- 判斷是否為 dropdown -->
+                      <template v-if="item.dropdown">
+                        <button
+                          class="accordion-button collapsed fs-5 fw-bold"
+                          type="button"
+                          :data-bs-toggle="'collapse'"
+                          :data-bs-target="`#collapse${index}`"
+                          aria-expanded="false"
+                          :aria-controls="`collapse${index}`"
+                        >
+                          <font-awesome-icon :icon="item.icon" class="me-3" />{{
+                            item.label
+                          }}
+                        </button>
+                      </template>
+
+                      <template v-else>
+                        <a
+                          class="accordion-button fs-5 fw-bold"
+                          :href="item.url"
+                        >
+                          <font-awesome-icon :icon="item.icon" class="me-3" />{{
+                            item.label
+                          }}
+                        </a>
+                      </template>
                     </div>
-                  </div>
-                  <!-- 登入後出現 start -->
-                  <div class="accordion-item" v-if="loggedIn">
-                    <div class="accordion-header" id="headinSix">
-                      <button
-                        class="accordion-button collapsed fs-5 fw-bold"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseSix"
-                        aria-expanded="false"
-                        aria-controls="collapseSix"
-                      >
-                        <font-awesome-icon
-                          icon="fa-solid fa-crosshairs"
-                          class="me-3"
-                        />Treasure Spot
-                      </button>
-                    </div>
+
+                    <!-- 動態生成 accordion body，僅當 item.dropdown 為 true 時顯示 -->
                     <div
-                      id="collapseSix"
+                      v-if="item.dropdown"
+                      :id="`collapse${index}`"
                       class="accordion-collapse collapse"
-                      aria-labelledby="headingSix"
+                      :aria-labelledby="`heading${index}`"
                       data-bs-parent="#accordionNav"
                     >
                       <div class="accordion-body pt-0">
                         <ul class="px-4 py-0">
                           <div
-                            v-for="section in dropdownSections"
+                            v-for="section in item.dropdownSections"
                             :key="section.title"
                           >
-                            <div class="dropdown-subtitle mt-1">
+                            <div class="dropdown-subtitle text-start mt-1">
                               <div :class="section.circleClass"></div>
-                              <span class="dropdown-title fs-5 fw-regular">{{
-                                section.title
-                              }}</span>
+                              <span
+                                class="dropdown-title fs-5 fw-regular ms-1"
+                                >{{ section.title }}</span
+                              >
                             </div>
                             <li
                               v-for="game in section.games"
@@ -467,30 +476,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- 登入後出現 end -->
-                  <div class="accordion-item">
-                    <div class="accordion-header" id="headingTwo">
-                      <a
-                        class="accordion-button fs-5 fw-bold"
-                        href="leaderboard"
-                        ><font-awesome-icon
-                          icon="fa-solid fa-chart-simple"
-                          class="me-3"
-                        />
-                        Leaderboard</a
-                      >
-                    </div>
-                  </div>
-                  <div class="accordion-item">
-                    <div class="accordion-header" id="headingThree">
-                      <a class="accordion-button fs-5 fw-bold" href="about">
-                        <font-awesome-icon
-                          icon="fa-solid fa-circle-info"
-                          class="me-3"
-                        />Learn
-                      </a>
-                    </div>
-                  </div>
+
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingFour">
                       <button
@@ -589,6 +575,8 @@
           </div>
         </div>
         <!-- modal-end -->
+
+        <!-- 手機板彈窗 -->
       </div>
     </nav>
   </header>
@@ -725,6 +713,54 @@ const navLinks = computed(() =>
 );
 
 console.log(displayStatus.value);
+
+const navPhoneLinks = ref([
+  {
+    id: 1,
+    label: "Hunt",
+    icon: "fa-solid fa-rocket",
+    url: "/game/game-list",
+    dropdown: false,
+  },
+  {
+    id: 2,
+    label: "Treasure Spot",
+    icon: "fa-solid fa-crosshairs",
+    dropdown: true,
+    dropdownSections: [
+      {
+        title: "Drawn",
+        circleClass: "red-circle",
+        games: [
+          { gid: "GID 1225", type: "BINANCE", link: "/game/play-bnb" },
+          { gid: "GID 1136", type: "TRON", link: "/game/play-trx" },
+        ],
+      },
+      {
+        title: "In Progress",
+        circleClass: "green-circle",
+        games: [
+          { gid: "GID 1234", type: "ETH", link: "/game/play-eth" },
+          { gid: "GID 5678", type: "BTC", link: "/game/play-btc" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    label: "Leaderboard",
+    icon: "fa-solid fa-chart-simple",
+    url: "/leaderboard",
+    dropdown: false,
+  },
+  {
+    id: 4,
+    label: "Learn",
+    icon: "fa-solid fa-circle-info",
+    url: "/about",
+    dropdown: false,
+  },
+]);
 </script>
 
 <style scoped>
