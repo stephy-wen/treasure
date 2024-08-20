@@ -1,5 +1,5 @@
 <template>
-  <div class="col-6 col-sm-4 col-lg-3 winnie-xs-style">
+  <div class="col-6 col-sm-4 col-lg-3 winnie-xs-style px-1 px-md-2">
     <router-link :to="{ name: 'GameDetail', params: { gameId: gameId } }">
       <div class="card winnie-p-xs-2 p-3">
         <div class="game-card-img position-relative">
@@ -81,4 +81,60 @@ defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.game-container .card{
+    background-color: #2B3139;
+    width: 100%;
+    font-size: 0.85rem;
+}
+
+.container .game-container .card .game-list-name,
+.container .game-container .card .game-list-fee {
+    color: #F8F8F8;
+}
+
+.container .game-container .card .game-list-round,
+.container .game-container .card .game-list-type,
+.container .game-container .card .game-list-people {
+    color: #BBB;
+}
+
+.container .game-container .card img {
+    border-radius: 0px;
+}
+
+.container .game-container .card-body {
+    padding-bottom: 0px;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1); 
+    transition: transform 0.3s ease; 
+}
+
+.card-img-top {
+    transition: transform 0.3s ease; 
+}
+
+.game-card-img {
+    overflow: hidden; 
+}
+
+@media (max-width: 420px) {
+    .winnie-xs-style{
+        padding: .25rem;
+    }
+
+    .winnie-xs-style .game-list-name,
+    .winnie-xs-style .game-list-round,
+    .winnie-xs-style .game-list-fee,
+    .winnie-xs-style .game-list-people,
+    .winnie-xs-style .fa-user {
+        font-size: 13px;
+    }
+
+    .winnie-p-xs-2{
+        padding: .5rem !important;
+    }
+  }
+</style>

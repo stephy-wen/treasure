@@ -52,7 +52,7 @@
     <div class="game-intro mx-auto mt-5">
       <div class="row">
         <div class="col-12 col-xl-8 my-auto text-center text-xl-start">
-          <h1 class="fw-bolder">Lost Treasure</h1>
+          <h1 class="fw-bolder">LOST TREASURE</h1>
           <p class="mt-3 fs-5 d-block d-sm-none">
             It's teeming with stories of sudden wealth in various forms.
           </p>
@@ -82,7 +82,6 @@
         <h1 class="fw-bolder mt-5">
           <img
             class="me-1 img-fluid"
-            style="max-width: 36px"
             :src="equalizer"
             alt=""
           />PLATFORM STATS
@@ -105,7 +104,7 @@
     <!-- Partnerships -->
     <div class="partnerships mx-auto">
       <div class="partnerships-intro text-center text-lg-start">
-        <h1 class="fw-bolder my-5">PARTNERSHIPS</h1>
+        <h1 class="fw-bolder my-5">OUR FRIENDS</h1>
       </div>
       <div class="row text-center align-items-center">
         <div
@@ -293,6 +292,22 @@ const logos = [
   .vertical-divider {
     margin: 0 1rem;
   }
+}
+
+.stats-intro img {
+  width: 24px;
+}
+
+@media (min-width: 576.98px) {
+  .stats-intro img {
+  width: 30px;
+}
+}
+
+@media (min-width: 1199.98px) {
+  .stats-intro img {
+  width: 36px;
+}
 }
 
 .partnerships {

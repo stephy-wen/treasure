@@ -31,8 +31,8 @@ body {
   /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
-  background-color: #181A20 !important;
-  color: #F8F8F8 !important;
+  background-color: #181A20;
+  color: #F8F8F8;
 }
 
 .container {
@@ -75,7 +75,7 @@ h5 {
 }
 
 p {
-  margin: 0 !important;
+  margin: 0;
 }
 
 ul,
@@ -86,7 +86,7 @@ li {
 }
 
 a {
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 button {
@@ -98,9 +98,14 @@ button {
 #app {
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0rem;
 }
+
+@media (min-width: 575.98px) {
+  #app {
+    padding: 1rem;
+  }
+  }
 
 @media (prefers-color-scheme: light) {
   :root {

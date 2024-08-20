@@ -320,7 +320,7 @@
                       class="d-flex justify-content-between align-items-center mx-3"
                     >
                       <p class="personal-balance-title fs-5 fw-bold mb-0">
-                        Estimated Balance
+                        Total Balance
                       </p>
                       <img
                         src="../assets/images/icon/antOutline-eye.svg"
@@ -490,7 +490,7 @@
                         <font-awesome-icon
                           icon="fa-solid fa-circle-question"
                           class="me-3"
-                        />Docs
+                        />FAQ
                       </button>
                     </div>
                     <div
@@ -500,11 +500,10 @@
                       data-bs-parent="#accordionNav"
                     >
                       <div class="accordion-body pt-0">
-                        <ul>
-                          <li class="my-2 py-2">
+                        <ul class="ps-0">
+                          <li class="my-2 py-2 text-start">
                             <a class="fs-5" href="about">
                               <img
-                                class="me-1"
                                 style="width: 24px"
                                 src="../assets/images/icon/md-info.svg"
                                 alt=""
@@ -512,10 +511,9 @@
                               About OneChance
                             </a>
                           </li>
-                          <li class="my-2 py-2">
+                          <li class="my-2 py-2 text-start">
                             <a class="fs-5" href="terms-of-service">
                               <img
-                                class="me-1"
                                 style="width: 24px"
                                 src="../assets/images/icon/ze-label-o 1.svg"
                                 alt=""
@@ -563,7 +561,7 @@
                         for="flexSwitchCheckChecked"
                       >
                         <img
-                          src="../assets/imagesimages/icon/md-wb_sunny.svg"
+                          src="../assets/images/icon/md-wb_sunny.svg"
                           alt=""
                         />
                       </label>

@@ -24,6 +24,7 @@
             <img v-if="cell.image" class="img-fluid" :src="cell.image" alt="" />
             {{ cell.text }}
           </td>
+          
         </tr>
       </tbody>
     </table>
@@ -41,5 +42,56 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* 在此添加樣式 */
+.leaderboard-container .table {
+    --bs-table-bg: #1E2329;
+    color: #F8F8F8;
+    --bs-table-color: none;
+    width: 100%;
+    margin: 0;
+}
+
+.leaderboard-container .table th, .leaderboard-container .table td {
+    vertical-align: middle;
+}
+
+.leaderboard-container thead {
+    color: #BBB;
+}
+
+.leaderboard-container .table tbody tr th {
+    color: #BBB;
+    text-align: center;
+}
+
+.leaderboard-container .table tbody tr:hover {
+    background-color: #414D5A;
+}
+
+.leaderboard-container .table img {
+    max-width: 35px;
+    margin-right: 10px;
+}
+
+.custom-rounded {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+    .leaderboard-container .table {
+        --bs-table-bg: none;
+    }
+    .leaderboard-container .table img {
+        max-width: 24px;
+    }
+    .leaderboard-name {
+        font-size: 0.75rem;
+    }   
+    .leaderboard-container .table img {
+        margin-right: 5px;
+    }
+    .custom-rounded {
+        border-radius: 0px;
+    }
+}
 </style>
