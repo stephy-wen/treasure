@@ -33,10 +33,9 @@
             >
               <template v-if="item.dropdown">
                 <router-link
-                  :class="
-                    'winnie-nav-link fs-6 ' +
-                    (item.dropdown ? 'dropdown-toggle' : '')
-                  "
+                  :class="`winnie-nav-link fs-6 ${
+                    item.dropdown ? 'dropdown-toggle' : ''
+                  }`"
                   to="#"
                   :id="item.id"
                   role="button"
@@ -84,6 +83,7 @@
           </ul>
           <div class="d-flex align-items-center">
             <!-- 根據是否登入顯示不同內容 -->
+            <!-- 右側區塊 -->
             <template v-if="loggedIn">
               <!-- 登入後出現 -->
               <div
@@ -202,6 +202,7 @@
               </button>
             </template>
 
+            <!-- 語系及導覽 -->
             <div class="d-flex">
               <div
                 class="dropdown dropdown-language"
@@ -408,6 +409,7 @@
                       >
                     </div>
                   </div>
+                  <!-- 登入後出現 start -->
                   <div class="accordion-item" v-if="loggedIn">
                     <div class="accordion-header" id="headinSix">
                       <button
@@ -465,6 +467,7 @@
                       </div>
                     </div>
                   </div>
+                  <!-- 登入後出現 end -->
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingTwo">
                       <a
