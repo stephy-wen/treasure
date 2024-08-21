@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- banner 輪播 -->
-    <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
+    <div class="swiper-banner justify-content-center mx-auto mt-4 mt-lg-5">
       <SwiperBanner
         :swiperClass="'mySwiper'"
         :swiperData="bannerData"
@@ -80,11 +80,7 @@
     <div class="stats mx-auto mt-5">
       <div class="stats-intro text-center text-lg-start">
         <h1 class="fw-bolder mt-5">
-          <img
-            class="me-1 img-fluid"
-            :src="equalizer"
-            alt=""
-          />PLATFORM STATS
+          <img class="me-1 img-fluid" :src="equalizer" alt="" />PLATFORM STATS
         </h1>
       </div>
       <div class="row justify-content-center mt-5">
@@ -300,14 +296,14 @@ const logos = [
 
 @media (min-width: 576.98px) {
   .stats-intro img {
-  width: 30px;
-}
+    width: 30px;
+  }
 }
 
 @media (min-width: 1199.98px) {
   .stats-intro img {
-  width: 36px;
-}
+    width: 36px;
+  }
 }
 
 .partnerships {
