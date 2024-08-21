@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="container play-container mt-2 mt-md-3 mt-lg-5">
+      <!-- 遊戲banner -->
       <div class="play-cover">
         <img class="w-100" :src="gameDetails.imageSrc" alt="" />
       </div>
-      <MobileDetail v-if="isMobile" />
-      <DeskTopDetail v-else />
+      <p>{{ gameDetails }}</p>
+      <p>{{ 456 }}</p>
+      <!-- 遊戲區塊 -->
+      <MobileDetail v-if="isMobile" :gameDetails="gameDetails" />
+      <DeskTopDetail v-else :gameDetails="gameDetails" />
       <hr class="my-5" />
+
+      <!-- 歷史得獎紀錄 -->
       <div class="history">
-        <TableComponent Title="History" :headers="headers" :data="historyData" />
+        <TableComponent
+          Title="History"
+          :headers="headers"
+          :data="historyData"
+        />
       </div>
     </div>
     <!-- 分頁組件 -->
@@ -155,11 +165,10 @@ import nft04 from "@/assets/images/icon/NFT/04.png";
 import nft05 from "@/assets/images/icon/NFT/05.png";
 import { images } from "@/assets/images.js";
 
-import HexagonButton from "./HexagonButton.vue";
-import PlayerListModal from "./PlayerListModal.vue";
+import HexagonButton from "./components/HexagonButton.vue";
+import PlayerListModal from "./components/PlayerListModal.vue";
 import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
-import History from "./History.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
 
@@ -317,7 +326,7 @@ const gameId = route.params.gameId; // 获取游戏 ID
 const showModal = ref(false); //player list modal
 
 // 模拟加载游戏详情数据
-const gameDetails = ref({});
+const gameDetails = ref({ a: "1" });
 
 // 模擬參加人數數據
 const hexagonNumber = ref({});
@@ -356,8 +365,6 @@ const openModalHandler = (index) => {
   showModal.value = true;
 };
 
-console.log(hexagonImages.length, "nub");
-
 // 模拟游戏数据
 const games = {
   eth123: {
@@ -385,9 +392,8 @@ const games = {
 
 onMounted(() => {
   const gameId = route.params.gameId; // 获取路由参数 gameId
-
   gameDetails.value = games[gameId]; // 加载对应的游戏数据
-  console.log(gameDetails.value);
+  console.log("父層", gameDetails.value);
 });
 </script>
 

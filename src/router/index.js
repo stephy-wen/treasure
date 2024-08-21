@@ -22,7 +22,7 @@ const routes = [
   {
     path: "/game/:gameId", // 动态路由，使用游戏的 ID 作为参数
     name: "GameDetail",
-    component: () => import("../views/game/GameDetailPage.vue"), // 动态导入
+    component: () => import("../views/gameDetail/GameDetailPage.vue"), // 动态导入
     props: true, // 传递路由参数作为组件的 props
   },
   {
