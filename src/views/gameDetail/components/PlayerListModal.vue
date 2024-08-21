@@ -1,11 +1,14 @@
 <template>
   <div
-    v-if="showModal"
-    class="modal fade"
+    v-if="isOpen"
+    ref="modal"
+    class="modal fade show"
     id="playerListModal"
     tabindex="-1"
     aria-labelledby="playerListModalLabel"
-    aria-hidden="true"
+    aria-modal="true"
+    role="dialog"
+    style="display: block"
   >
     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
       <div class="modal-content">
@@ -14,7 +17,7 @@
           <button
             type="button"
             class="btn winnie-btn-close"
-            data-bs-dismiss="modal"
+            @click="closeModal"
             aria-label="Close"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -66,12 +69,34 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, defineProps, defineEmits } from "vue";
+
+const modal = ref(null); // 用於存儲模態框的 DOM 元素
+
+onMounted(() => {
+  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
+  //console.log(modalElement, "modalElement");
+  //const isHidden = window.getComputedStyle(modalElement).display === "none";
+  //console.log(isHidden); // 檢查模態框是否隱藏
+});
+
 const props = defineProps({
-  showModal: Boolean,
+  isOpen: Boolean,
   players: Array,
 });
 
+console.log("isOpen prop in PlayerListModal:", props.isOpen);
+
+const emit = defineEmits(["closeModal"]);
+
+// 計算屬性 getImageClass
+const getImageClass = computed(() => {
+  return "img-fluid"; // 根據需求可動態返回不同的 class
+});
+
+const closeModal = () => {
+  emit("closeModal");
+};
 // 計算不同裝置下的圖片大小
 const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
 </script>

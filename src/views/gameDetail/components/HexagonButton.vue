@@ -15,16 +15,18 @@
 </template>
 
 <script setup>
+import { defineProps, defineEmits, ref } from "vue";
+
 const props = defineProps({
   backgroundImage: String,
   isClickable: Boolean, // 用于控制按钮是否可以点击
 });
-console.log(props.isClickable);
 
 const emit = defineEmits(["openModal"]);
 
 const handleClick = () => {
   if (props.isClickable) {
+    console.log("openModal event triggered");
     emit("openModal");
   }
 };

@@ -6,8 +6,8 @@
         <div
           class="play-prize d-flex align-items-center justify-content-end ps-5"
         >
-          <!-- <img :src="gameDetails.prizeIcon" alt="prize icon" />
-          <p class="ms-2">{{ gameDetails.prizeAmount }}</p> -->
+          <img :src="gameDetails.prizeIcon" alt="prize icon" />
+          <p class="ms-2">{{ gameDetails.prizeAmount }}</p>
         </div>
       </div>
       <div>
@@ -16,11 +16,12 @@
             <img
               class="me-2"
               style="max-width: 24px"
-              src="@/assets/images/icon/mdi_vote-outline.svg"
+              :src="gameDetails.voteIcon"
               alt=""
             />Vote
           </p>
-          <span>8 / 535</span>
+          <span>{{ gameDetails.votes }} / {{ gameDetails.totalVotes }}</span>
+          <!-- 動態的參加数 -->
         </div>
       </div>
     </div>
@@ -32,11 +33,11 @@
           >
             <h1 class="fw-bold">HUNTING GAME</h1>
             <div class="d-flex flex-column">
-              <p class="d-block">ROUND 1547</p>
+              <p class="d-block">ROUND {{ gameDetails.round }}</p>
               <img
                 class="dollar-width"
                 style="cursor: pointer"
-                src="@/assets/images/icon/dollar-phone2.png"
+                :src="gameDetails.dollarIcon"
                 alt=""
                 data-bs-toggle="modal"
                 data-bs-target="#joinModal"
@@ -60,226 +61,18 @@
               class="ms-1"
               :backgroundImage="image"
               :isClickable="index === hexagonImages.length - 1"
-              @openModal="openModalHandler(index)"
+              @openModal="openModal"
             />
 
             <!-- Player list Modal large size-->
-            <div
-              class="modal fade"
-              id="playerListSmModal"
-              tabindex="-1"
-              aria-labelledby="playerListSmModalLabel"
-              aria-hidden="true"
-            >
-              <div
-                class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down"
-              >
-                <div class="modal-content">
-                  <div class="modal-header pb-0 d-flex justify-content-between">
-                    <h5 class="modal-title" id="playerListSmModalLabel"></h5>
-                    <button
-                      type="button"
-                      class="btn winnie-btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <i class="fa-solid fa-xmark"></i>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <h4
-                      class="modal-title ms-2 mb-5 fw-bold"
-                      id="playerListSmModalLabel"
-                    >
-                      Player List
-                    </h4>
-                    <table class="table table-borderless fw-bold">
-                      <thead>
-                        <tr>
-                          <th scope="col">Player</th>
-                          <th class="text-end pe-3 pe-sm-0" scope="col">
-                            Vote
-                          </th>
-                          <th class="text-end" scope="col">Rate</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/08.png"
-                              alt=""
-                            />hehe15235
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 24px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/01.png"
-                              alt=""
-                            />1515djijiedd
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/02.png"
-                              alt=""
-                            />ohjiemdl88556
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/03.png"
-                              alt=""
-                            />o45jhji3n56
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/04.png"
-                              alt=""
-                            />hellokittyomg
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/05.png"
-                              alt=""
-                            />goodmorning
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-2"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/06.png"
-                              alt=""
-                            />48e8ddtgtgg
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                        <tr>
-                          <td class="player-list-name">
-                            <img
-                              class="img-fluid me-1"
-                              style="max-width: 32px"
-                              src="@/assets/images/icon/NFT/07.png"
-                              alt=""
-                            />ddeehyh74
-                          </td>
-                          <td class="text-end pe-3 pe-sm-0">
-                            <span
-                              >1
-                              <img
-                                class="img-fluid"
-                                style="max-width: 26px"
-                                src="@/assets/images/icon/balance-icon.png"
-                                alt=""
-                            /></span>
-                          </td>
-                          <td class="text-end">12.5%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="modal-footer"></div>
-                </div>
-              </div>
-            </div>
+            <!-- PlayListModal -->
+            <PlayerListModal
+              :isOpen="showModal"
+              :players="playersList"
+              @closeModal="showModal = false"
+            />
           </div>
+
           <div class="game-attend mt-3">
             <button
               class="game-attend-btn py-4 fs-1 fw-bold"
@@ -466,9 +259,20 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref, defineProps } from "vue";
 import { images } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
+import PlayerListModal from "./components/PlayerListModal.vue";
+
+const showModal = ref(false); //player list modal 控制模態框是否顯示
+
+// 打开模态框
+// 打開模態框的函數
+const openModal = () => {
+  console.log("openModal function called in Desktop.vue"); // 檢查是否觸發
+  showModal.value = true; // 當接收到 openModal 事件時顯示模態框
+  console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
+};
 
 const props = defineProps({
   gameDetails: {
@@ -476,8 +280,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-console.log(props.gameDetails, "尼遊戲");
 
 // 右側定義六角形頭像圖片
 const hexagonImages = [
@@ -489,6 +291,23 @@ const hexagonImages = [
   images.nft06,
   images.nft07,
   images.HexagonImage,
+];
+
+// playersList data
+const playersList = [
+  {
+    name: "hehe15235",
+    image: "../images/icon/NFT/01.png",
+    vote: 1,
+    rate: 12.5,
+  },
+  {
+    name: "1515djijiedd",
+    image: "../images/icon/NFT/02.png",
+    vote: 1,
+    rate: 12.5,
+  },
+  // 其他玩家数据...
 ];
 </script>
 
