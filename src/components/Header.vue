@@ -174,12 +174,12 @@
                   <li class="mt-2">
                     <a
                       class="dropdown-item winnie-member-info fs-6 fw-bold"
-                      href="account/login"
+                      @click="handleLogout"
                     >
                       <font-awesome-icon
                         icon="fa-solid fa-power-off"
                         class="me-3"
-                      />Log Out
+                      />Log Out 123
                     </a>
                   </li>
                 </ul>
@@ -582,6 +582,23 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { logout } from "../services/auth"; // 引入登出函數
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const handleLogout = async () => {
+  try {
+    // 調用登出函數
+    await logout();
+
+    // 跳轉到登入頁面
+    router.push("/login");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
+
 const userId = ref("winnie33527");
 const balance = ref("3,969,443");
 const loggedIn = true;
