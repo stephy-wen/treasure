@@ -17,6 +17,7 @@
 </template>
 
 <script setup>
+import api from "../services/modules"; // 導入 API modules
 import { ref } from "vue";
 import { login } from "../services/auth";
 import { useRouter } from "vue-router";
@@ -33,11 +34,11 @@ const handleLogin = async () => {
   };
   try {
     const data = await login(loginData);
-    //console.log(data, "data 拿回的資料");
-    // 假設回應中包含 token
+    // 將 token 設置到 localStorage
     localStorage.setItem("token", data.data);
-    router.push("/game/game-list"); // 登入成功後跳轉到 遊戲頁面
-    // router.push("/dashboard"); // 登入成功後跳轉到 dashboard
+    await api.auth.getUserInfo(); // 獲取用戶信息
+    // router.push("/game/game-list"); // 登入成功後跳轉到 遊戲頁面
+    router.push("/"); // 登入成功後跳轉到 /
   } catch (error) {
     errorMessage.value = "Login failed. Please check your credentials.";
   }

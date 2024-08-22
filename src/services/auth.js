@@ -14,7 +14,7 @@ export const login = async (credentials) => {
 // 定義登出函數
 export const logout = async () => {
   try {
-    // 如果後端有登出 API，你可以調用它
+    // 調用它API
     await apiClient.post("/Account/Logout");
 
     // 移除本地存儲的 token

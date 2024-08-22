@@ -6,7 +6,7 @@ const apiClient = axios.create({
   baseURL: "https://tyche-testapi.doubleplus.online/api",
   headers: {
     "Content-Type": "application/json",
-    Accept: "text/plain", // 新增這行
+    Accept: "text/plain",
   },
 });
 
