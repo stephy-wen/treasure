@@ -4,7 +4,7 @@
   </div>
   <div>
     <!-- banner 輪播 -->
-    <div class="swiper-banner justify-content-center mx-auto mt-4 mt-lg-5">
+    <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
       <SwiperBanner
         :swiperClass="'mySwiper'"
         :swiperData="bannerData"

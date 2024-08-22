@@ -1,12 +1,12 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import Header from './components/Header.vue';
-import Footer from './components/Footer.vue';
+import HelloWorld from "./components/HelloWorld.vue";
+import Header from "./components/Header/Header.vue";
+import Footer from "./components/Footer.vue";
 </script>
 
 <template>
   <Header />
-    <router-view />
+  <router-view />
   <Footer />
 </template>
 
@@ -23,6 +23,4 @@ import Footer from './components/Footer.vue';
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
-   
-
 </style>
