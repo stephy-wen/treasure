@@ -12,6 +12,7 @@
             />
           </router-link>
         </div>
+        <!-- 漢堡排btn start -->
         <button
           class="custom-navbar-toggler d-lg-none"
           type="button"
@@ -22,8 +23,10 @@
           <span class="custom-navbar-toggler-icon"></span>
           <span class="custom-navbar-toggler-icon"></span>
         </button>
-
+        <!-- 漢堡排btn end -->
+        <!-- 電腦版nav 從hunting game到月亮icon --> 
         <div class="collapse navbar-collapse">
+          <!-- hunting game 到 leaderboard -->
           <ul class="navbar-nav me-auto ms-2 mb-2 mb-lg-0">
             <li
               v-for="item in navLinks"
@@ -44,6 +47,7 @@
                 >
                   {{ item.label }}
                 </router-link>
+                <!-- 電腦版treasure spot 下拉式dropdown-->
                 <ul class="dropdown-menu px-4 py-3" :aria-labelledby="item.id">
                   <p class="dropdown-title">{{ item.dropdownTitle }}</p>
                   <div
@@ -71,6 +75,7 @@
                     </li>
                   </div>
                 </ul>
+                <!-- 電腦版treasure spot 下拉式dropdown end-->
               </template>
               <template v-else>
                 <router-link
@@ -205,6 +210,7 @@
 
             <!-- 語系及導覽 -->
             <div class="d-flex">
+              <!-- 語系下拉式 -->
               <div
                 class="dropdown dropdown-language"
                 style="display: inline-flex"
@@ -235,6 +241,7 @@
                   </li>
                 </ul>
               </div>
+              <!-- 導覽下拉式 -->
               <div class="dropdown dropdown-faq" style="display: inline-flex">
                 <a
                   class="d-flex align-items-center dropdown-toggle mx-1 mx-xl-3"
@@ -283,6 +290,7 @@
                   </li>
                 </ul>
               </div>
+              <!-- 切換主題顏色 月亮icon -->
               <a href="#">
                 <img src="../assets/images/icon/arcoDesign-moon.svg" alt="" />
               </a>
@@ -290,7 +298,7 @@
           </div>
         </div>
 
-        <!-- modal-start -->
+        <!-- 以下為手機版 漢堡排展開的modal-start -->
         <div class="modal winnie-modal" tabindex="-1" id="navbarModal">
           <div class="modal-dialog modal-md-half modal-fullscreen-lg-down">
             <div class="modal-content">
@@ -303,7 +311,9 @@
                 ></button>
               </div>
               <div class="modal-body">
+                <!-- 以下為登入後出現 -->
                 <template v-if="loggedIn">
+                  <!-- 個人資料-照片 & id -->
                   <div class="personal-info">
                     <div class="personal-photo text-center">
                       <img src="../assets/images/icon/NFT/09.png" alt="" />
@@ -315,6 +325,7 @@
                       />{{ userId }}
                     </p>
                   </div>
+                  <!-- 目前餘額 -->
                   <div class="personal-balance-info mt-5">
                     <div
                       class="d-flex justify-content-between align-items-center mx-3"
@@ -339,6 +350,7 @@
                       </p>
                     </div>
                   </div>
+                  <!-- deposit & dashboard btn -->
                   <div class="personal-function mt-4">
                     <div class="row justify-content-center">
                       <div
@@ -375,6 +387,7 @@
                   </div>
                 </template>
                 <template v-else>
+                  <!-- 未登入時，要出現log in & sign up btn -->
                   <div class="row">
                     <div class="col">
                       <button
@@ -398,6 +411,7 @@
                 </template>
 
                 <div class="accordion mt-4" id="accordionNav">
+                  <!-- 每個選項都是一個item, 分別是Hunt/treasure spot/leaderboard -->
                   <div
                     class="accordion-item"
                     v-for="(item, index) in navPhoneLinks"
@@ -433,6 +447,7 @@
                     </div>
 
                     <!-- 動態生成 accordion body，僅當 item.dropdown 為 true 時顯示 -->
+                    <!-- treasure spot下拉式內容 -->
                     <div
                       v-if="item.dropdown"
                       :id="`collapse${index}`"
@@ -476,7 +491,7 @@
                       </div>
                     </div>
                   </div>
-
+                  <!-- FAQ以及他的下拉式選項 -->
                   <div class="accordion-item">
                     <div class="accordion-header" id="headingFour">
                       <button
@@ -525,6 +540,7 @@
                       </div>
                     </div>
                   </div>
+                  <!-- 語言下拉式 -->
                   <div class="accordion-item mt-3">
                     <div class="accordion-header" id="headingFive">
                       <select
@@ -536,6 +552,7 @@
                       </select>
                     </div>
                   </div>
+                  <!-- 登出按鈕 -->
                   <div class="accordion-item mt-3" v-if="loggedIn">
                     <div class="accordion-header" id="headingSeven">
                       <a
@@ -548,6 +565,7 @@
                       >
                     </div>
                   </div>
+                  <!-- 更換主題色的選項 -->
                   <div class="accordion-item mt-3">
                     <div class="form-check form-switch me-auto ms-4">
                       <input
