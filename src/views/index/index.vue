@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h1>Welcome, {{ userStore.userInfo?.name }}</h1>
+  </div>
+  <div>
     <!-- banner 輪播 -->
     <div class="swiper-banner justify-content-center mx-auto mt-4 mt-lg-5">
       <SwiperBanner
@@ -124,6 +127,8 @@
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
+
 import { ref } from "vue";
 import SwiperBanner from "@/components/SwiperBanner.vue"; // 引入輪播組件
 import StatsCard from "./StatsCard.vue"; // 引入 StatsCard 組件
@@ -155,6 +160,8 @@ import monoColor from "@/assets/images/common/mono-color.png";
 
 import equalizer from "@/assets/images/icon/md-equalizer 1.svg";
 
+const userStore = useUserStore();
+console.log(userStore.userInfo?.name, "NAME");
 const hoverIndex = ref(null);
 // 輪播圖片數據
 const bannerData = [

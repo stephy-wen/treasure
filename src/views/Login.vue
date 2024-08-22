@@ -21,23 +21,29 @@ import api from "../services/modules"; // 導入 API modules
 import { ref } from "vue";
 import { login } from "../services/auth";
 import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user"; // 引入 Pinia Store
 
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
 const router = useRouter();
 
+const userStore = useUserStore(); // 使用 Pinia Store
+
 const handleLogin = async () => {
   const loginData = {
     email: email.value,
     password: password.value,
   };
+
   try {
-    const data = await login(loginData);
-    // 將 token 設置到 localStorage
-    localStorage.setItem("token", data.data);
-    await api.auth.getUserInfo(); // 獲取用戶信息
-    // router.push("/game/game-list"); // 登入成功後跳轉到 遊戲頁面
+    await userStore.loginUser(loginData);
+    await userStore.fetchUserInfo(); // 登入成功後從 API 獲取使用者資訊並存到 Pinia
+    // 如果登入壞掉就是這兩隻api 其中一支有問題 先註解其一
+
+    // const UserInfo = await api.auth.getUserInfo(); // 獲取用戶信息
+    // console.log(UserInfo.data.data, "userData");
+    // userInfoData.value = UserInfo.data.data;
     router.push("/"); // 登入成功後跳轉到 /
   } catch (error) {
     errorMessage.value = "Login failed. Please check your credentials.";
