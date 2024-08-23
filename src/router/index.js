@@ -10,7 +10,17 @@ const routes = [
     name: "Index",
     component: Index,
   },
-  { path: "/login", component: Login },
+  { path: "/login", name: "Login", component: Login },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/register/index.vue"),
+  },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("../views/forgotPassword/index.vue"),
+  },
   {
     path: "/about",
     name: "About",
@@ -31,6 +41,16 @@ const routes = [
     path: "/leaderboard",
     name: "Leaderboard",
     component: () => import("../views/Leaderboard/index.vue"), // 動態導入
+  },
+  {
+    path: "/account/deposit",
+    name: "Deposit",
+    component: () => import("../views/Deposit/index.vue"), // 動態導入
+  },
+  {
+    path: "/account/withdrawal",
+    name: "Withdrawal",
+    component: () => import("../views/Withdrawal/index.vue"), // 動態導入
   },
 ];
 
