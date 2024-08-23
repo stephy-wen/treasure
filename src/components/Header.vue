@@ -56,6 +56,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const isMobile = ref(window.innerWidth < 575.98);
+
 window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 575.98;
 });
@@ -67,7 +68,7 @@ const userAvatar = ref(UserAvat);
 let loggedIn = ref(true);
 
 // const { user } = storeToRefs(useUserStore());
-const user = ref({ username: "anonym" });
+const user = ref({ username: "authorized" });
 // const user = ref({ username: "anonym" });
 
 /*
