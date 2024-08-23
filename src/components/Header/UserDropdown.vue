@@ -102,7 +102,6 @@ export default {
     },
     userAvatar: {
       type: String,
-      default: "../assets/images/icon/NFT/09.png",
     },
   },
 };
