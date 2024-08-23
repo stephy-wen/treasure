@@ -20,12 +20,7 @@
 
       <template v-else>
         <!-- 未登入時顯示登入和註冊按鈕 -->
-        <LoginButtons
-          loginButtonClass="fs-6"
-          signupButtonClass="fs-6"
-          @login="redirectTo('account/login')"
-          @signup="redirectTo('account/register')"
-        />
+        <LoginButtons loginButtonClass="fs-6" signupButtonClass="fs-6" />
       </template>
 
       <!-- 語系及導覽 -->
@@ -85,16 +80,6 @@ const faqOptions = [
   },
 ];
 
-const switchLanguage = (item) => {
-  // 根據選擇的語言進行切換
-  console.log("切換語言:", item.code);
-};
-
-const navigateTo = (item) => {
-  // 導向相應的頁面
-  window.location.href = item.href;
-};
-
 const props = defineProps({
   navLinks: Array,
   loggedIn: Boolean,
@@ -112,6 +97,22 @@ const emit = defineEmits([
 
 const handleLogout = () => {
   emit("logout");
+};
+
+const handleRecharge = () => {
+  emit("recharge");
+};
+
+const switchLanguage = (item) => {
+  emit("switchLanguage");
+  // 根據選擇的語言進行切換
+  console.log("切換語言:", item.code);
+};
+
+const navigateTo = (item) => {
+  emit("navigateTo");
+  // 導向相應的頁面
+  window.location.href = item.href;
 };
 </script>
 
