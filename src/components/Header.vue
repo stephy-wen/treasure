@@ -351,59 +351,6 @@ header nav ul li a:hover {
   outline: none;
 }
 
-.winnie-nav-link {
-  color: #f8f8f8;
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.dropdown-menu {
-  background-color: #1e2329;
-}
-
-.dropdown-title {
-  font-size: 1rem;
-  color: #f8f8f8;
-  font-weight: 600;
-}
-
-.red-circle {
-  width: 10px;
-  height: 10px;
-  background-color: #f63e3d;
-  border: 1px solid #35485d;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.green-circle {
-  width: 10px;
-  height: 10px;
-  background-color: #71f63d;
-  border: 1px solid #35485d;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.winnie-dropdown-item {
-  color: #f8f8f8;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #2b3139;
-  border-radius: 10px;
-}
-
-.winnie-dropdown-item:hover {
-  background-color: #414d5a;
-}
-.winnie-dropdown-item:hover .game-type-name {
-  color: #f8f8f8 !important;
-}
-.winnie-dropdown-item:hover .room-number {
-  color: #bbb !important;
-}
-
 .collapse .dropdown-member-info p {
   color: #f8f8f8;
 }
@@ -539,15 +486,5 @@ header nav ul li a:hover {
 
 .personal-balance-info .personal-balance {
   font-size: 2.2rem;
-}
-
-.personal-function-deposit {
-  border-radius: 10px;
-  background-color: #2b3139;
-}
-
-.personal-function-dashboard {
-  border-radius: 10px;
-  background-color: #2b3139;
 }
 </style>

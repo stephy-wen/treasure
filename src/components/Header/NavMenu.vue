@@ -122,10 +122,6 @@ const props = defineProps({
   color: #bbb !important;
 }
 
-.collapse .dropdown-member-info p {
-  color: #f8f8f8;
-}
-
 ul li a {
   color: #f8f8f8;
   text-decoration: none;
