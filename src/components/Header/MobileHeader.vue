@@ -337,4 +337,27 @@ console.log(props.loggedIn, "loggedIn");
   border-color: transparent;
   box-shadow: none;
 }
+
+/* 漢堡選單 */
+.custom-navbar-toggler {
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+}
+
+.custom-navbar-toggler-icon {
+  width: 20px;
+  height: 1px;
+  background-color: #f8f8f8;
+  display: block;
+  margin: 5px auto;
+  transition: background-color 0.2s;
+}
+
+.custom-navbar-toggler:focus {
+  outline: none;
+}
 </style>
