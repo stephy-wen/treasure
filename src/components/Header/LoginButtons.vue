@@ -8,7 +8,7 @@
       Log In
     </button>
     <button
-      :class="['btn btn-outline-primary me-1 me-xl-2', signupButtonClass]"
+      :class="['btn btn-primary me-1 me-xl-2', signupButtonClass]"
       type="button"
       @click="signup"
     >
@@ -19,6 +19,9 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
 const props = defineProps({
   loginButtonClass: {
     type: String,
@@ -31,16 +34,37 @@ const props = defineProps({
 // define
 const emit = defineEmits(["login", "signup"]);
 
-// send
+// send 暫時沒用
+// const login = () => {
+//   emit("login");
+// };
+
+// const signup = () => {
+//   emit("signup");
+// };
 const login = () => {
-  emit("login");
+  router.push("/login"); // 直接跳轉到登錄頁面
 };
 
 const signup = () => {
-  emit("signup");
+  router.push("/account/register"); // 直接跳轉到註冊頁面
 };
 </script>
 
 <style scoped>
 /* 可在此處加入 LoginButtons 的樣式 */
+.btn-outline-primary {
+  border-color: #fcd535;
+  color: #f8f8f8;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background-color: #fcd535;
+  border-color: #fcd535;
+  color: #181a20;
+  font-weight: 600;
+  border-radius: 10px;
+}
 </style>
