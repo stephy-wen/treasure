@@ -21,6 +21,8 @@
       <template v-else>
         <!-- 未登入時顯示登入和註冊按鈕 -->
         <LoginButtons
+          loginButtonClass="fs-6"
+          signupButtonClass="fs-6"
           @login="redirectTo('account/login')"
           @signup="redirectTo('account/register')"
         />
@@ -107,6 +109,10 @@ const emit = defineEmits([
   "switchLanguage",
   "navigateTo",
 ]);
+
+const handleLogout = () => {
+  emit("logout");
+};
 </script>
 
 <style scoped></style>

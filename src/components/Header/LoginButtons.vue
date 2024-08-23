@@ -1,14 +1,14 @@
 <template>
   <div class="login-buttons">
     <button
-      class="btn btn-outline-primary me-1 me-xl-2 fs-6"
+      :class="['btn btn-outline-primary me-1 me-xl-2', loginButtonClass]"
       type="button"
       @click="login"
     >
       Log In
     </button>
     <button
-      class="btn btn-primary me-lg-2 me-xl-5 ms-lg-2 fs-6"
+      :class="['btn btn-outline-primary me-1 me-xl-2', signupButtonClass]"
       type="button"
       @click="signup"
     >
@@ -19,9 +19,19 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
+const props = defineProps({
+  loginButtonClass: {
+    type: String,
+  },
+  signupButtonClass: {
+    type: String,
+  },
+});
 
+// define
 const emit = defineEmits(["login", "signup"]);
 
+// send
 const login = () => {
   emit("login");
 };
