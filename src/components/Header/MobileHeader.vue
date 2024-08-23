@@ -192,7 +192,7 @@
                       <a class="fs-5" href="about">
                         <img
                           style="width: 24px"
-                          src="../assets/images/icon/md-info.svg"
+                          src="@/assets/images/icon/md-info.svg"
                           alt=""
                         />
                         About OneChance
@@ -202,7 +202,7 @@
                       <a class="fs-5" href="terms-of-service">
                         <img
                           style="width: 24px"
-                          src="../assets/images/icon/ze-label-o 1.svg"
+                          src="@/assets/images/icon/ze-label-o 1.svg"
                           alt=""
                         />
                         Terms of Service
