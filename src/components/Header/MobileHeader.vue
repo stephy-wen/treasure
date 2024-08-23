@@ -77,6 +77,7 @@
               </div>
             </div>
           </template>
+
           <template v-else>
             <!-- 未登入時，要出現log in & sign up btn -->
             <div class="row">
@@ -89,80 +90,13 @@
 
           <div class="accordion mt-4" id="accordionNav">
             <!-- 每個選項都是一個item, 分別是Hunt/treasure spot/leaderboard -->
-            <div
-              class="accordion-item"
+            <MobileNavMenu
               v-for="(item, index) in navPhoneLinks"
               :key="item.id"
-            >
-              <div class="accordion-header" :id="`heading${index}`">
-                <!-- 判斷是否為 dropdown -->
-                <template v-if="item.dropdown">
-                  <button
-                    class="accordion-button collapsed fs-5 fw-bold"
-                    type="button"
-                    :data-bs-toggle="'collapse'"
-                    :data-bs-target="`#collapse${index}`"
-                    aria-expanded="false"
-                    :aria-controls="`collapse${index}`"
-                  >
-                    <font-awesome-icon :icon="item.icon" class="me-3" />{{
-                      item.label
-                    }}
-                  </button>
-                </template>
+              :item="item"
+              :index="index"
+            />
 
-                <template v-else>
-                  <a class="accordion-button fs-5 fw-bold" :href="item.url">
-                    <font-awesome-icon :icon="item.icon" class="me-3" />{{
-                      item.label
-                    }}
-                  </a>
-                </template>
-              </div>
-
-              <!-- 動態生成 accordion body，僅當 item.dropdown 為 true 時顯示 -->
-              <!-- treasure spot下拉式內容 -->
-              <div
-                v-if="item.dropdown"
-                :id="`collapse${index}`"
-                class="accordion-collapse collapse"
-                :aria-labelledby="`heading${index}`"
-                data-bs-parent="#accordionNav"
-              >
-                <div class="accordion-body pt-0">
-                  <ul class="px-4 py-0">
-                    <div
-                      v-for="section in item.dropdownSections"
-                      :key="section.title"
-                    >
-                      <div class="dropdown-subtitle text-start mt-1">
-                        <div :class="section.circleClass"></div>
-                        <span class="dropdown-title fs-5 fw-regular ms-1">{{
-                          section.title
-                        }}</span>
-                      </div>
-                      <li
-                        v-for="game in section.games"
-                        :key="game.gid"
-                        class="mx-0"
-                      >
-                        <a
-                          class="dropdown-item winnie-dropdown-item my-2 px-2 py-1"
-                          :href="game.link"
-                        >
-                          <span class="me-5 room-number fs-5 fw-regular">{{
-                            game.gid
-                          }}</span>
-                          <span class="game-type-name fs-5 fw-regular">{{
-                            game.type
-                          }}</span>
-                        </a>
-                      </li>
-                    </div>
-                  </ul>
-                </div>
-              </div>
-            </div>
             <!-- FAQ以及他的下拉式選項 -->
             <div class="accordion-item">
               <div class="accordion-header" id="headingFour">
@@ -272,6 +206,7 @@
 
 <script setup>
 import LoginButtons from "@/components/Header/LoginButtons.vue";
+import MobileNavMenu from "./MobileNavMenu.vue";
 
 const props = defineProps({
   loggedIn: Boolean,
@@ -289,11 +224,8 @@ const emit = defineEmits([
 ]);
 
 const handleLogout = () => {
-  console.log(1);
   emit("logout");
 };
-
-console.log(props.loggedIn, "loggedIn");
 </script>
 
 <style scoped>
@@ -319,18 +251,6 @@ console.log(props.loggedIn, "loggedIn");
 
 .winnie-modal .accordion {
   --bs-accordion-border-color: transparent;
-}
-
-.accordion-button:not([data-bs-toggle])::after {
-  display: none;
-}
-
-.accordion-button.collapsed::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-.accordion-button:not(.collapsed)::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 
 .winnie-modal .accordion .form-select:focus {
