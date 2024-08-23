@@ -55,7 +55,7 @@
             class="btn btn-primary fs-6 mt-1 px-4"
             style="border-radius: 50px"
             type="button"
-            @click="$emit('recharge')"
+            @click="router.push('/account/deposit')"
           >
             Recharge Now
           </button>
@@ -88,23 +88,24 @@
     </ul>
   </div>
 </template>
+<script setup>
+import { useRouter } from "vue-router";
 
-<script>
-export default {
-  props: {
-    userId: {
-      type: String,
-      required: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-    },
-    userAvatar: {
-      type: String,
-    },
+const router = useRouter();
+
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
   },
-};
+  balance: {
+    type: Number,
+    required: true,
+  },
+  userAvatar: {
+    type: String,
+  },
+});
 </script>
 
 <style scoped>

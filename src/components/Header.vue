@@ -23,7 +23,6 @@
             :userAvatar="userAvatar"
             :userId="userId"
             :balance="balance"
-            @recharge="handleRecharge"
             @logout="handleLogout"
             @switchLanguage="switchLanguage"
             @navigateTo="navigateTo"
@@ -179,10 +178,6 @@ const navItems = ref([
 //     (item) => item.display === displayStatus.value || item.display === "all"
 //   )
 // );
-
-const handleRecharge = () => {
-  // 處理充值邏輯
-};
 
 const handleLogout = async () => {
   try {

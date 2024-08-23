@@ -13,7 +13,6 @@
           :userId="userId"
           :balance="balance"
           :userAvatar="userAvatar"
-          @recharge="handleRecharge"
           @logout="handleLogout"
         />
       </template>
@@ -88,19 +87,10 @@ const props = defineProps({
   userAvatar: String,
 });
 
-const emit = defineEmits([
-  "recharge",
-  "logout",
-  "switchLanguage",
-  "navigateTo",
-]);
+const emit = defineEmits(["logout", "switchLanguage", "navigateTo"]);
 
 const handleLogout = () => {
   emit("logout");
-};
-
-const handleRecharge = () => {
-  emit("recharge");
 };
 
 const switchLanguage = (item) => {
