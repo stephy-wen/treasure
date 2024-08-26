@@ -1,7 +1,7 @@
 <template>
   <div class="leaderboard-page-nav mt-5 d-flex justify-content-center">
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
+      <ul class="pagination flex-wrap justify-content-center">
         <li :class="['page-item', { disabled: currentPage === 1 }]">
           <a
             class="page-link"

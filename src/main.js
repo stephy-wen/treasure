@@ -22,6 +22,7 @@ import {
   faCircleInfo,
   faCircleQuestion,
   faMagnifyingGlass,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faPowerOff,
@@ -31,7 +32,8 @@ library.add(
   faChartSimple,
   faCircleInfo,
   faCircleQuestion,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faXmark,
 );
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";

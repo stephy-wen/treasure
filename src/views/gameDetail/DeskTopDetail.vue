@@ -39,8 +39,7 @@
                 style="cursor: pointer"
                 :src="gameDetails.dollarIcon"
                 alt=""
-                data-bs-toggle="modal"
-                data-bs-target="#joinModal"
+                @click="openJoinGameModal"
               />
             </div>
           </div>
@@ -72,140 +71,32 @@
               @closeModal="showModal = false"
             />
           </div>
-
           <div class="game-attend mt-3">
             <button
               class="game-attend-btn py-4 fs-1 fw-bold"
-              data-bs-toggle="modal"
-              data-bs-target="#joinModal"
+              @click="openJoinGameModal"
             >
               START
             </button>
             <!-- Join Modal -->
-            <div
-              class="modal fade"
-              id="joinModal"
-              tabindex="-1"
-              aria-labelledby="joinModalLabel"
-              aria-hidden="true"
-            >
-              <div
-                class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down"
-              >
-                <div
-                  class="modal-content modal-background"
-                  style="
-                    background-image: url('@/assets/images/common/attend_eth.png');
-                  "
-                >
-                  <div class="modal-header pb-0 d-flex justify-content-between">
-                    <h5 class="modal-title" id="joinModalLabel"></h5>
-                    <button
-                      type="button"
-                      class="btn winnie-btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <i class="fa-solid fa-xmark"></i>
-                    </button>
-                  </div>
-                  <div
-                    class="modal-body text-center d-flex flex-column justify-content-center"
-                  >
-                    <div class="game-round-name">
-                      <p>ROUND 1547</p>
-                      <p class="fs-2 fw-bold">ETHEREUM</p>
-                    </div>
-                    <div class="attend-fee mt-5">
-                      <p>Total Amount Deducted</p>
-                      <p class="fs-3 fw-bold">
-                        <img
-                          class="me-2"
-                          style="width: 50px"
-                          src="@/assets/images/icon/balance-icon.png"
-                          alt=""
-                        />1
-                      </p>
-                      <div
-                        class="attend-times-btn d-flex justify-content-center mt-2"
-                      >
-                        <button>1</button>
-                        <button class="mx-3 mx-md-4">5</button>
-                        <button>10</button>
-                      </div>
-                      <div class="attend-times-input mt-5">
-                        <span>x</span>
-                        <input class="fs-6" value="1" type="text" />
-                        <!-- <span>Times</span> -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer mx-auto">
-                    <button
-                      type="button"
-                      class="btn attend-confirm-btn mb-5"
-                      data-bs-dismiss="modal"
-                      data-bs-toggle="modal"
-                      data-bs-target="#winnerModal"
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <JoinGameModal
+              :isOpen="showJoinGameModal"
+              :gameInfo="JoinGame"
+              @closeModal="showJoinGameModal = false"
+            />
+
             <!-- maxParticipantsModal-->
             <button
-              type="button"
               class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#maxParticipantsModal"
+              @click="openVotingFullModal"
             >
               Launch demo modal
             </button>
-            <div
-              class="modal fade"
-              id="maxParticipantsModal"
-              tabindex="-1"
-              aria-labelledby="maxParticipantsModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog mx-auto modal-dialog-centered">
-                <div
-                  class="modal-content modal-background"
-                  style="background-color: #181a20; border: 1px solid #414d5a"
-                >
-                  <div class="modal-header pb-0 d-flex justify-content-between">
-                    <h5 class="modal-title" id="maxParticipantsModalLabel"></h5>
-                    <button
-                      type="button"
-                      class="btn winnie-btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <i class="fa-solid fa-xmark"></i>
-                    </button>
-                  </div>
-                  <div
-                    class="modal-body text-center d-flex flex-column justify-content-center"
-                  >
-                    <div class="vote-full-reminder mx-auto">
-                      <img
-                        class="mb-3"
-                        style="width: 50px"
-                        src="@/assets/images/icon/logo.svg"
-                        alt=""
-                      />
-                      <p class="fs-5">
-                        Voting is full. <br />Please wait for the next round.
-                      </p>
-                      <p class="winnie-color-gray mt-5 fs-1">5</p>
-                    </div>
-                  </div>
-                  <div class="modal-footer"></div>
-                </div>
-              </div>
-            </div>
+            <VotingFullModal 
+              :isOpen="showVotingFullModal"
+              @closeModal="showVotingFullModal = false"
+            />
+
             <!-- winner Modal -->
             <div
               class="modal fade"
@@ -263,8 +154,16 @@ import { ref, defineProps } from "vue";
 import { images } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
+import JoinGameModal from "./components/JoinGameModal.vue";
+import NFT01 from "@/assets/images/icon/NFT/01.png";
+import NFT02 from "@/assets/images/icon/NFT/02.png";
+import backgroundImage01 from "@/assets/images/common/attend_eth.png";
+import VotingFullModal from "./components/VotingFullModal.vue";
 
 const showModal = ref(false); //player list modal 控制模態框是否顯示
+const showJoinGameModal = ref(false);
+const showVotingFullModal = ref(false);
+
 
 // 打开模态框
 // 打開模態框的函數
@@ -273,6 +172,17 @@ const openModal = () => {
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
   console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
 };
+const openJoinGameModal = () => {
+  console.log("openJoinGameModal function called in Desktop.vue"); 
+  showJoinGameModal.value = true;  // 确保将showJoinGameModal设置为true
+  console.log("showJoinGameModal value after openModal:", showJoinGameModal.value);
+}
+
+const openVotingFullModal = () => {
+  console.log("openVotingFullModal function called in Desktop.vue"); 
+  showVotingFullModal.value = true;  // 确保将showVotingFullModal设置为true
+  console.log("showVotingFullModal value after openModal:", showVotingFullModal.value);
+}
 
 const props = defineProps({
   gameDetails: {
@@ -297,18 +207,26 @@ const hexagonImages = [
 const playersList = [
   {
     name: "hehe15235",
-    image: "../images/icon/NFT/01.png",
+    image: NFT01,
     vote: 1,
     rate: 12.5,
   },
   {
     name: "1515djijiedd",
-    image: "../images/icon/NFT/02.png",
+    image: NFT02,
     vote: 1,
     rate: 12.5,
   },
   // 其他玩家数据...
 ];
+
+// join game data
+const JoinGame = ref({
+  backgroundImage: backgroundImage01,
+  round: 1501,
+  title: "Game Title",
+  vote : 1
+});
 </script>
 
 <style scoped>

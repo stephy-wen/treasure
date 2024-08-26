@@ -58,10 +58,10 @@ import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 
 // 監聽螢幕變化起
-const isMobile = ref(window.innerWidth < 768);
+const isMobile = ref(window.innerWidth < 575.98);
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 768;
+  isMobile.value = window.innerWidth < 575.98;
 };
 
 // 監聽頁面寬度變化
@@ -216,13 +216,13 @@ const hexagonNumber = ref({});
 const playersList = [
   {
     name: "hehe15235",
-    image: "../images/icon/NFT/01.png",
+    image: "@/assets/images/icon/NFT/01.png",
     vote: 1,
     rate: 12.5,
   },
   {
     name: "1515djijiedd",
-    image: "../images/icon/NFT/02.png",
+    image: "@/assets/images/icon/NFT/02.png",
     vote: 1,
     rate: 12.5,
   },

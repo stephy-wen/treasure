@@ -1,15 +1,49 @@
 <template>
-  <div>
-    <h1>register</h1>
+  <div class="winnie-bg-dark">
+    <div class="register-container d-flex mx-auto">
+      <FormSide/>
+      <ImageSide/>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import FormSide from '../../components/FormSide.vue';
+import ImageSide from '../../components/ImageSide.vue';
+</script>
 
 <style scoped>
-h1 {
-  width: 200px;
-  margin: 0 auto;
-  margin-top: 30px;
+.winnie-bg-dark{
+    background-color: #181A20;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px;
 }
+@media (max-width: 991px) {
+  .winnie-bg-dark {
+    padding: 0px;
+    height: 100%;
+  }
+}
+
+.register-container{
+  background: linear-gradient(to left, transparent 0%, transparent 25%, #F8F8F8 50%, #F8F8F8 75%, #F8F8F8 100%);
+  overflow: hidden;
+  position: relative;
+  max-width: 1200px;
+  border-radius: 30px;
+}
+
+@media (max-width: 991px) {
+  .register-container {
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    border-radius: 0px;
+    width: 100%;
+    background-color: #F8F8F8;
+  }
+}
+
 </style>
