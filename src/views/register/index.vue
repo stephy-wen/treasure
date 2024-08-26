@@ -1,24 +1,24 @@
 <template>
   <div class="winnie-bg-dark">
     <div class="register-container d-flex mx-auto">
-      <FormSide/>
-      <ImageSide/>
+      <FormSide />
+      <ImageSide />
     </div>
   </div>
 </template>
 
 <script setup>
-import FormSide from '../../components/FormSide.vue';
-import ImageSide from '../../components/ImageSide.vue';
+import FormSide from "@/components/FormSide.vue";
+import ImageSide from "@/components/ImageSide.vue";
 </script>
 
 <style scoped>
-.winnie-bg-dark{
-    background-color: #181A20;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 20px;
+.winnie-bg-dark {
+  background-color: #181a20;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 20px;
 }
 @media (max-width: 991px) {
   .winnie-bg-dark {
@@ -27,8 +27,15 @@ import ImageSide from '../../components/ImageSide.vue';
   }
 }
 
-.register-container{
-  background: linear-gradient(to left, transparent 0%, transparent 25%, #F8F8F8 50%, #F8F8F8 75%, #F8F8F8 100%);
+.register-container {
+  background: linear-gradient(
+    to left,
+    transparent 0%,
+    transparent 25%,
+    #f8f8f8 50%,
+    #f8f8f8 75%,
+    #f8f8f8 100%
+  );
   overflow: hidden;
   position: relative;
   max-width: 1200px;
@@ -42,8 +49,7 @@ import ImageSide from '../../components/ImageSide.vue';
     justify-content: center;
     border-radius: 0px;
     width: 100%;
-    background-color: #F8F8F8;
+    background-color: #f8f8f8;
   }
 }
-
 </style>

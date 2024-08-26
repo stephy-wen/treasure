@@ -47,7 +47,7 @@ const login = () => {
 };
 
 const signup = () => {
-  router.push("/account/register"); // 直接跳轉到註冊頁面
+  router.push("/register"); // 直接跳轉到註冊頁面
 };
 </script>
 
