@@ -52,8 +52,8 @@
             <div class="personal-function mt-4">
               <div class="row justify-content-center">
                 <div class="col-5 text-center personal-function-deposit mx-2">
-                  <a
-                    href="account/deposit"
+                  <router-link
+                    to="account/deposit"
                     class="d-flex flex-column align-items-center justify-content-center text-decoration-none"
                     style="color: #f8f8f8; height: 100px"
                   >
@@ -62,17 +62,17 @@
                       alt=""
                     />
                     <p class="mt-2 mb-0 fs-5 fw-bold">Deposit</p>
-                  </a>
+                  </router-link>
                 </div>
                 <div class="col-5 text-center personal-function-dashboard mx-2">
-                  <a
-                    href="dashboard"
+                  <router-link
+                    to="/dashboard"
                     class="d-flex flex-column align-items-center justify-content-center text-decoration-none"
                     style="color: #f8f8f8; height: 100px"
                   >
                     <img src="@/assets/images/icon/md-dashboard.svg" alt="" />
                     <p class="mt-2 mb-0 fs-5 fw-bold">Dashboard</p>
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -123,24 +123,24 @@
                 <div class="accordion-body pt-0">
                   <ul class="ps-0">
                     <li class="my-2 py-2 text-start">
-                      <a class="fs-5" href="about">
+                      <router-link class="fs-5" to="about">
                         <img
                           style="width: 24px"
                           src="@/assets/images/icon/md-info.svg"
                           alt=""
                         />
                         About OneChance
-                      </a>
+                      </router-link>
                     </li>
                     <li class="my-2 py-2 text-start">
-                      <a class="fs-5" href="terms-of-service">
+                      <router-link class="fs-5" to="terms-of-service">
                         <img
                           style="width: 24px"
                           src="@/assets/images/icon/ze-label-o 1.svg"
                           alt=""
                         />
                         Terms of Service
-                      </a>
+                      </router-link>
                     </li>
                   </ul>
                 </div>

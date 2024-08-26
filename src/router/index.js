@@ -43,6 +43,11 @@ const routes = [
     component: () => import("../views/Leaderboard/index.vue"), // 動態導入
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: () => import("../views/Dashboard/index.vue"), // 動態導入
+  },
+  {
     path: "/account/deposit",
     name: "Deposit",
     component: () => import("../views/Deposit/index.vue"), // 動態導入
