@@ -1,15 +1,17 @@
 <template>
-  <div>
-    <h1>deposit</h1>
+  <div class="app-container">
+    <DepositPage/>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import DepositPage from '../../components/DepositPage.vue';
+</script>
 
 <style scoped>
-h1 {
-  width: 200px;
-  margin: 0 auto;
-  margin-top: 30px;
+.app-container {
+  min-height: 77vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
