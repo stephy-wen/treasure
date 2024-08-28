@@ -16,8 +16,8 @@
           :buttonText="buttonText"
           :totalSteps="4"
           :currentStep="currentStep"
-          @update:currentStep="handleStepChange"
           @goToLogin="returnToLogin"
+          :handleButtonClick="handleButtonClick"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
           <template v-slot:email-input v-if="currentStep === 1">
@@ -81,14 +81,14 @@
               </p>
               <p id="resendMessage" v-if="currentStep === 2" class="resend">
                 Didn't receive anything? <br />
-                <span
+                <button
                   id="resendCode"
                   class="resend-link"
                   @click="resendCode"
                   :disabled="isTimerActive"
                 >
                   Resend code
-                </span>
+                </button>
                 <span v-if="isTimerActive"> ({{ timer }}s)</span>
               </p>
             </div>
@@ -138,12 +138,18 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import AuthForm from "@/components/AuthForm/AuthForm.vue";
 import FormSide from "@/components/FormSide.vue";
 import ImageSide from "@/components/ImageSide.vue";
+import modules from "@/services/modules.js"; // import API module
+
+// const { sendVerificationCode } = modules.account;
+const {
+  account: { sendVerificationCode, CheckVerificationCode, register },
+} = modules;
 
 const router = useRouter();
 
@@ -161,6 +167,56 @@ const timer = ref(60);
 const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
+const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
+const testEmail = "nalsonlionmedia+12@gmail.com";
+const verificationError = ref(null);
+
+// 發驗證信
+const sendVerificationEmail = async () => {
+  try {
+    const response = await sendVerificationCode(verificationType, testEmail); //這邊到時候測試完要改掉
+    console.log(response, "驗證信已發送");
+    // 如果成功 就到下一步
+    if (response.data.success) {
+      handleStepChange(currentStep.value + 1);
+    }
+  } catch (error) {
+    if (error.response && error.response.data.systemCode === 2007) {
+      errorMessage.value = "Email already exists ";
+    }
+    console.error("發送驗證信失敗", error);
+  }
+};
+
+// 註冊函數
+const registerAccount = async () => {
+  try {
+    // 構建註冊請求的資料
+    const userData = {
+      email: testEmail, // 使用者 Email
+      password: password.value, // 密碼
+      code: verificationCode.value, // 驗證碼
+      refererId: referralCode.value || null, // 推薦碼（可選）
+    };
+
+    // 發送註冊請求
+    const response = await register(userData);
+    if (response.data.success) {
+      handleStepChange(currentStep.value + 1);
+    }
+    console.log("註冊成功", response.data);
+
+    // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
+  } catch (error) {
+    console.error("註冊失敗", error.response ? error.response.data : error);
+    // 處理錯誤（例如顯示錯誤訊息給使用者）
+  }
+};
+
+// 在頁面加載時自動發送驗證信
+onMounted(() => {
+  //sendVerificationEmail();
+});
 
 // 開始倒數計時
 const startTimer = () => {
@@ -177,32 +233,50 @@ const startTimer = () => {
   }, 1000);
 };
 
+// 驗證驗證碼
+const verifyCode = async () => {
+  // isTimerActive.value = false; // 發驗證信的按鈕
+  // isVerifying.value = true; // 驗證碼按鈕
+  verificationError.value = null;
+
+  try {
+    const response = await CheckVerificationCode(
+      verificationType,
+      testEmail,
+      verificationCode.value
+    );
+    console.log(response, "拿到的驗證資料");
+    if (response.data.success) {
+      console.log("驗證成功");
+      // 跳轉到下一步或其他處理
+      handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
+      errorMessage.value = "";
+    }
+  } catch (error) {
+    // 檢查錯誤響應中是否有 systemCode
+    if (error.response && error.response.data.systemCode === 2005) {
+      errorMessage.value = "驗證碼錯誤，請重新輸入。";
+    } else if (error.response && error.response.data.systemCode === 2006) {
+      errorMessage.value = "驗證碼已過期。";
+    } else {
+      errorMessage.value = "驗證失敗，請稍後再試。";
+    }
+    console.error("驗證失敗", error);
+  } finally {
+    // isVerifying.value = false;
+  }
+};
+
 // 重新發送驗證碼
 const resendCode = () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
     console.log("Resend code clicked");
-
+    sendVerificationEmail();
     // 開始新的倒數計時
     startTimer();
   }
 };
-
-// 計算當前步驟的按鈕文字
-const buttonText = computed(() => {
-  switch (currentStep.value) {
-    case 1:
-      return "Next";
-    case 2:
-      return "Verify Code";
-    case 3:
-      return "Register";
-    case 4:
-      return "Go to Homepage";
-    default:
-      return "Next";
-  }
-});
 
 // 監聽 currentStep，當進入步驟 2 時自動啟動倒數計時
 watch(currentStep, (newStep) => {
@@ -216,13 +290,29 @@ const returnToLogin = () => {
   router.push("/login");
 };
 
+// 針對不同步驟的處理邏輯
+const handleButtonClick = () => {
+  if (currentStep.value === 1) {
+    sendVerificationEmail(); // 點下一步之後可以發驗證信
+  } else if (currentStep.value === 2) {
+    verifyCode(); //驗證 驗證碼
+  } else if (currentStep.value === 3) {
+    registerAccount();
+  } else {
+    returnToLogin();
+  }
+};
+
 // 步驟變更邏輯
 const handleStepChange = (newStep) => {
-  if (validateStep()) {
-    if (currentStep.value <= 4) {
-      currentStep.value = newStep;
-    }
+  if (currentStep.value <= 4) {
+    currentStep.value = newStep;
   }
+  // if (validateStep()) {
+  //   if (currentStep.value <= 4) {
+  //     currentStep.value = newStep;
+  //   }
+  // }
 };
 
 // 表單驗證函數
@@ -243,6 +333,22 @@ const validateStep = () => {
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validatePassword = (password) => password.length >= 6;
+
+// 計算當前步驟的按鈕文字
+const buttonText = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return "Next";
+    case 2:
+      return "Verify Code";
+    case 3:
+      return "Register";
+    case 4:
+      return "Go to Homepage";
+    default:
+      return "Next";
+  }
+});
 </script>
 
 <style scoped>

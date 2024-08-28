@@ -22,7 +22,7 @@
     <!-- 錯誤訊息插槽 -->
     <slot name="error"></slot>
 
-    <button class="btn btn-primary w-100 mb-3 mt-3" @click="nextStep()">
+    <button class="btn btn-primary w-100 mb-3 mt-3" @click="handleButtonClick">
       {{ buttonText }}
     </button>
 
@@ -46,6 +46,7 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  handleButtonClick: Function,
 });
 
 const emit = defineEmits(["update:currentStep"]);

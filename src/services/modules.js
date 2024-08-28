@@ -1,7 +1,7 @@
 // src/services/modules.js
 import apiClient from "./api";
 
-// 認證模組
+// auth module
 const auth = {
   getUserInfo: (withGamePlayData = true, withRewardData = true) =>
     apiClient.get("/Account/AccountInfo", {
@@ -12,23 +12,32 @@ const auth = {
     }),
 };
 
-// 帳戶模組
+// account module
+// 發送註冊驗證信
 const account = {
   register: (userData) => apiClient.post("/Account/Register", userData),
+
   sendVerificationCode: (verificationType, email) =>
     apiClient.post("/Account/SendVerificationCode", {
       verificationType,
       email,
-    }), // 發送註冊驗證信
+    }),
+
+  CheckVerificationCode: (verificationType, email, code) =>
+    apiClient.post("/Account/CheckVerificationCode", {
+      verificationType,
+      email,
+      code,
+    }),
 };
 
-// 使用者模組
+// user module
 const userInfo = {
   changeNickname: (name) => apiClient.post("/Account/ChangeNickname", { name }), // 變更暱稱
   getAvatarList: () => apiClient.get("/Account/AvatarList"), // 取得頭像列表
 };
 
-// 遊戲模組
+// game module
 const game = {
   getGameRoomList: () => apiClient.get("/Game/GetGameRoomListResultData"),
 };
