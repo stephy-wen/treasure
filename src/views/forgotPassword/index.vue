@@ -51,11 +51,11 @@
             v-slot:extra-action
             v-if="currentStep === 1 || currentStep === 4"
           >
-            <a
-              href="login"
+            <router-link
+              to="login"
               class="text-decoration-underline winnie-reset-password-link"
-              >Return to login</a
-            >
+              >Return to login
+            </router-link>
           </template>
 
           <!-- 步驟 2: 驗證碼 -->
