@@ -4,11 +4,8 @@
       <FormSide>
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
-          <button @click="goBack" class="mb-3">
-            <font-awesome-icon
-              icon="fa-solid fa-arrow-left fs-4"
-              style="color: #bbb"
-            />
+          <button @click="goBack" class="arrow mb-3">
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
           </button>
         </div>
         <!-- 返回按鈕 -->
@@ -164,7 +161,9 @@ const formTitle = computed(() => {
 
 // 返回上一頁的函數
 const goBack = () => {
-  if (currentStep.value > 1) {
+  if (currentStep.value === 1) {
+    router.go(-1);
+  } else if (currentStep.value > 1) {
     currentStep.value -= 1;
   }
 };
@@ -249,5 +248,12 @@ const validatePassword = (password) => password.length >= 6;
 
 .winnie-back-btn {
   top: 2rem;
+}
+
+.arrow {
+  border: none;
+  background: transparent;
+  font-size: x-large;
+  color: #bbb;
 }
 </style>
