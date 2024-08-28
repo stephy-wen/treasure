@@ -21,6 +21,10 @@
           :data="historyData"
         />
       </div>
+
+      <button class="btn btn-outline-primary" @click="openWinnerModal">
+        WinnerModal
+      </button>
     </div>
     <!-- 分頁組件 -->
     <Pagination

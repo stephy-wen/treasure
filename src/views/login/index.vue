@@ -10,12 +10,11 @@
         </div>
         <!-- 返回按鈕 -->
         <AuthForm
-          :title="formTitle"
+          title="Login"
           :buttonText="buttonText"
-          :totalSteps="5"
+          :totalSteps="2"
           :currentStep="currentStep"
           @update:currentStep="handleStepChange"
-          @goToLogin="returnToLogin"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
           <template v-slot:email-input v-if="currentStep === 1">
@@ -30,76 +29,34 @@
             </div>
           </template>
 
-          <!-- 步驟 1: 插入隱私政策或提醒內容 -->
-          <template v-slot:extra-content>
-            <p
-              v-if="currentStep === 1"
-              class="mb-5 text-start fs-6"
-              style="color: #75797e"
-            >
-              To protect your account, you won't be able to withdraw funds or
-              use P2P trading to sell crypto for 24 hours after you reset or
-              change your account password.
-            </p>
-            <p v-if="currentStep === 3">
-              Complete the puzzle to verify you're not a robot.
-            </p>
-          </template>
-
           <!-- 步驟 1: 插入設置密碼或返回首頁的鏈接 -->
           <template
             v-slot:extra-action
-            v-if="currentStep === 1 || currentStep === 4"
+            v-if="currentStep === 1 || currentStep === 2"
           >
-            <router-link
-              to="login"
-              class="text-decoration-underline winnie-reset-password-link"
-              >Return to login
-            </router-link>
-          </template>
-
-          <!-- 步驟 2: 驗證碼 -->
-          <template v-slot:extra-input v-if="currentStep === 2">
-            <p class="mb-5" style="color: #75797e">
-              We've sent a code to <span id="userEmail"></span>. Please enter it
-              within 30 minutes.
-            </p>
-            <input
-              type="text"
-              placeholder="Verification Code"
-              v-model="verificationCode"
-              class="input-field"
-            />
+            <div class="d-flex justify-content-between mb-3">
+              <router-link to="/forgot-password" class="winnie-forget-pw-link"
+                >Forgot your password?
+              </router-link>
+            </div>
+            <div class="text-center winnie-sign-up-link position-absolute">
+              <p class="mb-0">
+                Don't have an account?
+                <router-link to="/register" class="fw-bold"
+                  >Sign up
+                </router-link>
+              </p>
+            </div>
           </template>
 
           <!-- 步驟 4: 設置密碼 -->
-          <template v-slot:extra-password v-if="currentStep === 4">
+          <template v-slot:extra-password v-if="currentStep === 2">
             <input
               type="password"
               placeholder="New Password"
               v-model="password"
               class="input-field"
             />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              v-model="confirmPassword"
-              class="input-field"
-            />
-          </template>
-
-          <!-- 步驟 5: 成功頁面 -->
-          <template v-slot:extra-final v-if="currentStep === 5">
-            <div class="text-center">
-              <img
-                src="../../assets/images/icon/success.svg"
-                alt="Success"
-                class="success-image"
-              />
-              <p class="success-message mt-3">
-                You updated the password successfully!
-              </p>
-            </div>
           </template>
         </AuthForm>
       </FormSide>
@@ -134,28 +91,9 @@ const buttonText = computed(() => {
     case 1:
       return "Next";
     case 2:
-      return "Next";
-    case 3:
-      return "Next";
-    case 4:
-      return "Confirm";
+      return "Login";
     default:
       return "Next";
-  }
-});
-
-// 動態設置標題
-const formTitle = computed(() => {
-  if (currentStep.value === 1) {
-    return "Reset Password";
-  } else if (currentStep.value === 2) {
-    return "Enter Verification";
-  } else if (currentStep.value === 3) {
-    return "Puzzle Verification";
-  } else if (currentStep.value === 4) {
-    return "Reset Password";
-  } else if (currentStep.value === 4) {
-    return "";
   }
 });
 
