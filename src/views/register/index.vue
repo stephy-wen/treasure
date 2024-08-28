@@ -145,6 +145,7 @@ import AuthForm from "@/components/AuthForm/AuthForm.vue";
 import FormSide from "@/components/FormSide.vue";
 import ImageSide from "@/components/ImageSide.vue";
 import modules from "@/services/modules.js"; // import API module
+import { handleApiError } from "@/utils/errorHandler.js";
 
 // const { sendVerificationCode } = modules.account;
 const {
