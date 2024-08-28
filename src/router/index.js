@@ -60,12 +60,17 @@ const routes = [
   {
     path: "/account/deposit",
     name: "Deposit",
-    component: () => import("../views/Deposit/index.vue"), // 動態導入
+    component: () => import("../views/deposit/index.vue"), // 動態導入
   },
   {
     path: "/account/withdrawal",
     name: "Withdrawal",
-    component: () => import("../views/Withdrawal/index.vue"), // 動態導入
+    component: () => import("../views/withdrawal/index.vue"), // 動態導入
+  },
+  {
+    path: "/account/setting",
+    name: "accountSetting",
+    component: () => import("../views/accountSetting/index.vue"), // 動態導入
   },
 ];
 
