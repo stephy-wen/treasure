@@ -10,7 +10,12 @@ const routes = [
     name: "Index",
     component: Index,
   },
-  { path: "/login", name: "Login", component: Login },
+  { path: "/test-login", name: "testLogin", component: Login },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/login/index.vue"),
+  },
   {
     path: "/register",
     name: "Register",
@@ -20,6 +25,11 @@ const routes = [
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("../views/forgotPassword/index.vue"),
+  },
+  {
+    path: "/manage-password",
+    name: "managePassword",
+    component: () => import("../views/managePassword/index.vue"),
   },
   {
     path: "/about",
