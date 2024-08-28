@@ -1,6 +1,5 @@
 <template>
   <div class="leaderboard-container">
-    <h2 class="fw-bold mb-3">{{ Title }}</h2>
     <table class="table table-borderless fw-bold custom-rounded">
       <thead>
         <tr>
@@ -23,8 +22,9 @@
           >
             <img v-if="cell.image" class="img-fluid" :src="cell.image" alt="" />
             {{ cell.text }}
+            <img v-if="cell.USDIcon" class="img-fluid ms-1" style="max-width: 22px;" :src="cell.USDIcon" alt="" />
+            <img v-if="cell.icon" class="img-fluid ms-1" :src="cell.icon" alt="" />
           </td>
-          
         </tr>
       </tbody>
     </table>
@@ -80,9 +80,6 @@ const props = defineProps({
 @media (max-width: 767.98px) {
     .leaderboard-container .table {
         --bs-table-bg: none;
-    }
-    .leaderboard-container .table img {
-        max-width: 24px;
     }
     .leaderboard-name {
         font-size: 0.75rem;

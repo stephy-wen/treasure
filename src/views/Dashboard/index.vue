@@ -1,15 +1,17 @@
 <template>
   <div>
-    <h1>Dashboard</h1>
+
     <MobileDashboard v-if="isMobile"/>
     <DesktopDashboard/>
-
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import MobileDashboard from "./MobileDashboard.vue"
 import DesktopDashboard from "./DesktopDashboard.vue"
+
+
 
 // 監聽螢幕變化起
 const isMobile = ref(window.innerWidth < 575.98);
@@ -32,9 +34,4 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-h1 {
-  width: 200px;
-  margin: 0 auto;
-  margin-top: 30px;
-}
 </style>
