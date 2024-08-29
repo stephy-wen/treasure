@@ -116,7 +116,10 @@ const goBack = () => {
 // 針對不同步驟的處理邏輯
 const handleButtonClick = async () => {
   if (currentStep.value === 1) {
-    if (!email.value) return
+    if (!email.value) {
+      errorMessage.value = "email cannot be empty.";
+      return
+    }
     handleStepChange(currentStep.value + 1);
   } else if (currentStep.value === 2) {
     await login(); // 打登入api

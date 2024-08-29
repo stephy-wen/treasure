@@ -19,8 +19,6 @@ export const useUserStore = defineStore("user", () => {
       const response = await login(loginData);
       token.value = response.data; // 將 token 儲存到狀態
       localStorage.setItem("token", token.value); // 同時儲存到 localStorage
-
-      console.log(response.data, "store result");
     } catch (error) {
       token.value = ""; // 登入失敗時清除 token
       localStorage.removeItem("token"); // 確保 localStorage 中的 token 被清除
