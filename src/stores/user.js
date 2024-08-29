@@ -24,8 +24,12 @@ export const useUserStore = defineStore("user", () => {
     } catch (error) {
       token.value = ""; // 登入失敗時清除 token
       localStorage.removeItem("token"); // 確保 localStorage 中的 token 被清除
-      if (error.response && error.response.data.message) {
-        errorMessage.value = error.response.data.message;
+      if (error.response && error.response.data.systemCode) {
+        if ((error.response.data.systemCode = 4001)) {
+          errorMessage.value = "Incorrect email or password";
+        } else {
+          errorMessage.value = error.response.data.message;
+        }
       }
     }
   };
