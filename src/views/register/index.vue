@@ -75,7 +75,7 @@
               id="logInLink"
               class="text-center winnie-log-in-link position-absolute"
             >
-              <p class="mb-0" v-if="currentStep === 3">
+              <p class="mb-0" v-if="currentStep === 1 || currentStep === 3">
                 Already have an account?
                 <a @click="returnToLogin" class="fw-bold">Log In</a>
               </p>
