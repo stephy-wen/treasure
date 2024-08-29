@@ -1,14 +1,29 @@
-<script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-</script>
-
 <template>
-  <Header />
+  <Header v-if="showHeader" />
   <router-view />
   <Footer />
 </template>
+
+<script setup>
+import { useRoute } from "vue-router";
+import { ref, watchEffect } from "vue";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+
+// get current route
+const route = useRoute();
+const showHeader = ref(true);
+
+watchEffect(() => {
+  const pathsToHideHeader = [
+    "/manage-password",
+    "/forgot-password",
+    "/register",
+    "/login",
+  ];
+  showHeader.value = !pathsToHideHeader.includes(route.path); // false 的時候才顯示header
+});
+</script>
 
 <style scoped>
 .logo {

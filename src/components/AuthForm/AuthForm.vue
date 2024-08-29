@@ -63,15 +63,6 @@ const nextStep = () => {
 </script>
 
 <style scoped>
-.auth-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  height: 600px;
-}
-
 .btn {
   width: 100%;
   padding: 10px;
@@ -81,5 +72,11 @@ const nextStep = () => {
   background-color: #181a20;
   color: #f8f8f8;
   border: none;
+  --bs-btn-active-bg: #2B3139;
 }
+
+.btn-primary:hover {
+  background-color: #2B3139;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div 
 	v-if="isOpen"
-  ref="modal"
+    ref="modal"
 	class="modal fade show" 
 	id="getRewardsModal" 
 	tabindex="-1" 
