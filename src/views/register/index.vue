@@ -169,7 +169,7 @@ const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
 const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
-const testEmail = "nalsonlionmedia+123@gmail.com";
+const testEmail = "nalsonlionmedia+12@gmail.com";
 const verificationError = ref(null);
 
 // 發驗證信
@@ -210,6 +210,7 @@ const registerAccount = async () => {
   } catch (error) {
     console.error("註冊失敗", error.response ? error.response.data : error);
     // 處理錯誤（例如顯示錯誤訊息給使用者）
+    errorMessage.value = handleApiError(error);
   }
 };
 
@@ -254,13 +255,7 @@ const verifyCode = async () => {
     }
   } catch (error) {
     // 檢查錯誤響應中是否有 systemCode
-    if (error.response && error.response.data.systemCode === 2005) {
-      errorMessage.value = "驗證碼錯誤，請重新輸入。";
-    } else if (error.response && error.response.data.systemCode === 2006) {
-      errorMessage.value = "驗證碼已過期。";
-    } else {
-      errorMessage.value = "驗證失敗，請稍後再試。";
-    }
+    errorMessage.value = handleApiError(error);
     console.error("驗證失敗", error);
   } finally {
     // isVerifying.value = false;
