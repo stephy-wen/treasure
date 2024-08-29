@@ -1,7 +1,7 @@
 <template>
   <div class="winnie-bg-dark">
-    <div class="register-container d-flex mx-auto">
-      <FormSide>
+    <div class="reset-password-container d-flex mx-auto">
+      <FormSide class="text-center">
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
           <button @click="goBack" class="arrow mb-3">
@@ -249,11 +249,116 @@ const validatePassword = (password) => password.length >= 6;
 .winnie-back-btn {
   top: 2rem;
 }
+@media (min-width: 991px) and (max-width: 1199.98px) {
+  .winnie-back-btn {
+  top: 1rem;
+}
+}
 
 .arrow {
   border: none;
   background: transparent;
   font-size: x-large;
   color: #bbb;
+  padding: 0px;
+}
+
+.winnie-bg-dark .form-control {
+  border: none;
+  border-bottom: 1px solid #BBBBBB; 
+  background-color: transparent !important;
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+.winnie-bg-dark .form-control:focus {
+  border-bottom: 1px solid #181A20;
+  outline: none;
+}
+
+.winnie-bg-dark .form-floating label {
+  background-color: transparent;
+  color: #BBB;
+}
+
+.form-floating > input + label:after {
+  background-color: transparent !important;
+}
+
+.reset-password-container{
+  background: linear-gradient(to left, transparent 0%, transparent 25%, #F8F8F8 50%, #F8F8F8 75%, #F8F8F8 100%);
+  overflow: hidden;
+  position: relative;
+  max-width: 1200px;
+  border-radius: 30px;
+}
+
+.register-password-img{
+  flex: 2;
+}
+
+.winnie-bg-dark .reset-password-container .winnie-reset-password-btn{
+  background-color: #181A20;
+  color: #F8F8F8;
+}
+
+.winnie-bg-dark .reset-password-container .winnie-log-in-link{
+  color: #181A20;
+  transition: color 0.3s ease;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+} 
+
+.winnie-bg-dark .reset-password-container .winnie-reset-password-link{
+  color: #181A20;
+}
+
+.winnie-bg-dark .reset-password-container .winnie-reset-password-link:hover{
+  color: #FCD535;
+}
+
+.winnie-bg-dark .reset-password-container .winnie-forget-pw-link {
+  color: #181A20;
+}
+
+.winnie-bg-dark .reset-password-form .winnie-back-btn{
+  top: 2rem;
+}
+
+.winnie-bg-dark .reset-password-form .terms-remind p{
+  color: #181A20;
+}
+
+.winnie-bg-dark .reset-password-form .terms-remind p a{
+  color: #181A20;
+  text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+  .reset-password-container {
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    border-radius: 0px;
+    width: 100%;
+    background-color: #F8F8F8;
+  }
+
+  .reset-password-form {
+    width: 100%;
+    padding: 15px;
+  }
+}
+
+button.arrow {
+  border: none;
+  background-color: transparent;
+  color: #BBB;
+}
+
+button.arrow:hover {
+  color: #1E2329;
 }
 </style>

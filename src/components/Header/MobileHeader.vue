@@ -292,22 +292,4 @@ const handleLogout = () => {
   background-color: #2b3139;
 }
 
-/* Treasure Spot 展開樣式 */
-.winnie-dropdown-item {
-  color: #f8f8f8;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #2b3139;
-  border-radius: 10px;
-}
-
-.winnie-dropdown-item:hover {
-  background-color: #414d5a;
-}
-.winnie-dropdown-item:hover .game-type-name {
-  color: #f8f8f8 !important;
-}
-.winnie-dropdown-item:hover .room-number {
-  color: #bbb !important;
-}
 </style>

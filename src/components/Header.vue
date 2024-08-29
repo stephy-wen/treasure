@@ -1,7 +1,7 @@
 <!-- NavBar.vue -->
 <template>
   <header>
-    <nav style="height: 30px" class="navbar navbar-expand-lg">
+    <nav style="height: 60px" class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <!-- header 圖檔 start -->
         <div class="logo ps-3 ps-md-4 pe-lg-5">
