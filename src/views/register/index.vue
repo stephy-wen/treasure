@@ -127,7 +127,8 @@
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
             <p v-if="errorMessage" class="error-message mt-5">
-              {{ errorMessage }}
+              <pre>{{ errorMessage }}</pre>
+
             </p>
           </template>
         </AuthForm>
@@ -169,17 +170,18 @@ const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
 const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
-const testEmail = "nalsonlionmedia+12@gmail.com";
+const testEmail = "nalsonlionmedia+14@gmail.com";
 const verificationError = ref(null);
 
 // 發驗證信
 const sendVerificationEmail = async () => {
   try {
-    const response = await sendVerificationCode(verificationType, testEmail); //這邊到時候測試完要改掉
+    const response = await sendVerificationCode(verificationType, email.value); //這邊到時候測試完要改掉
     console.log(response, "驗證信已發送");
     // 如果成功 就到下一步
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
+      errorMessage.value = "";
     }
   } catch (error) {
     errorMessage.value = handleApiError(error);
@@ -193,7 +195,7 @@ const registerAccount = async () => {
   try {
     // 構建註冊請求的資料
     const userData = {
-      email: testEmail, // 使用者 Email
+      email: email.value, // 使用者 Email
       password: password.value, // 密碼
       code: verificationCode.value, // 驗證碼
       refererId: referralCode.value || null, // 推薦碼（可選）
@@ -203,6 +205,7 @@ const registerAccount = async () => {
     const response = await register(userData);
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
+      errorMessage.value = "";
     }
     console.log("註冊成功", response.data);
 
@@ -243,7 +246,7 @@ const verifyCode = async () => {
   try {
     const response = await CheckVerificationCode(
       verificationType,
-      testEmail,
+      email.value,
       verificationCode.value
     );
     console.log(response, "拿到的驗證資料");
@@ -263,11 +266,11 @@ const verifyCode = async () => {
 };
 
 // 重新發送驗證碼
-const resendCode = () => {
+const resendCode = async () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
     console.log("Resend code clicked");
-    sendVerificationEmail();
+    await sendVerificationEmail();
     // 開始新的倒數計時
     startTimer();
   }
@@ -287,6 +290,8 @@ const returnToLogin = () => {
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
+  if (!validateStep()) return; // 驗證失敗 終止後續操作
+
   if (currentStep.value === 1) {
     sendVerificationEmail(); // 點下一步之後可以發驗證信
   } else if (currentStep.value === 2) {
@@ -303,11 +308,6 @@ const handleStepChange = (newStep) => {
   if (currentStep.value <= 4) {
     currentStep.value = newStep;
   }
-  // if (validateStep()) {
-  //   if (currentStep.value <= 4) {
-  //     currentStep.value = newStep;
-  //   }
-  // }
 };
 
 // 表單驗證函數
@@ -317,9 +317,8 @@ const validateStep = () => {
     console.log("Email format is invalid");
     return false;
   }
-  if (currentStep.value === 3 && !validatePassword(password.value)) {
-    errorMessage.value = "Password must be at least 6 characters.";
-    console.log("Password is invalid");
+  if (currentStep.value === 3 && !validatePasswords(password.value)) {
+    console.log("密碼驗證");
     return false;
   }
   errorMessage.value = ""; // 驗證通過時清空錯誤消息
@@ -327,7 +326,42 @@ const validateStep = () => {
 };
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const validatePassword = (password) => password.length >= 6;
+
+const validatePasswords = () => {
+  const errors = [];
+  if (password.value !== confirmPassword.value) {
+    errors.push(
+      "Password and Confirm password are different. Please re-enter it."
+    );
+  }
+
+const rules = [
+  { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+  { regex: /[0-9]/, message: "Password must contain at least one number." },
+  { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
+  { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+];
+
+  for (const rule of rules) {
+    if (!rule.regex.test(password.value)) {
+      errors.push(`Password: ${rule.message}`);
+    }
+  }
+
+  for (const rule of rules) {
+    if (!rule.regex.test(confirmPassword.value)) {
+      errors.push(`Confirm Password: ${rule.message}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    errorMessage.value = errors.join('\n');
+    return false;
+  }
+
+  errorMessage.value = "";
+  return true;
+};
 
 // 計算當前步驟的按鈕文字
 const buttonText = computed(() => {
