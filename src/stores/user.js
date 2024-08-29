@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", () => {
   // 定義狀態 state
   const token = ref(localStorage.getItem("token") || "");
   const userInfo = ref(null);
+  const errorMessage = ref("");
 
   // 判斷是否已登入
   const isLoggedIn = computed(() => !!token.value);
@@ -18,6 +19,9 @@ export const useUserStore = defineStore("user", () => {
       const response = await login(loginData);
       token.value = response.data; // 將 token 儲存到狀態
       localStorage.setItem("token", token.value); // 同時儲存到 localStorage
+      if (error.response && error.response.data.message) {
+        errorMessage.value = error.response.data.message;
+      }
     } catch (error) {
       errorMessage.value = "Login failed. Please check your credentials.";
     }
