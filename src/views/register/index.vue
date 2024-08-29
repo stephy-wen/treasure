@@ -169,7 +169,7 @@ const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
 const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
-const testEmail = "nalsonlionmedia+12@gmail.com";
+const testEmail = "nalsonlionmedia+123@gmail.com";
 const verificationError = ref(null);
 
 // 發驗證信
@@ -182,9 +182,8 @@ const sendVerificationEmail = async () => {
       handleStepChange(currentStep.value + 1);
     }
   } catch (error) {
-    if (error.response && error.response.data.systemCode === 2007) {
-      errorMessage.value = "Email already exists ";
-    }
+    errorMessage.value = handleApiError(error);
+
     console.error("發送驗證信失敗", error);
   }
 };
