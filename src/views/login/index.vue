@@ -14,7 +14,7 @@
           :buttonText="buttonText"
           :totalSteps="2"
           :currentStep="currentStep"
-          @update:currentStep="handleStepChange"
+          :handleButtonClick="handleButtonClick"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
           <template v-slot:email-input v-if="currentStep === 1">
@@ -24,6 +24,7 @@
                 class="form-control"
                 id="floatingInputEmailReset"
                 placeholder="Email"
+                v-model="email"
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -54,9 +55,16 @@
             <input
               type="password"
               placeholder="New Password"
-              v-model="password"
               class="input-field"
+              v-model="password"
             />
+          </template>
+
+           <!-- 插入錯誤訊息 -->
+           <template v-slot:error>
+            <p v-if="errorMessage" class="error-message mt-5">
+              <pre>{{ errorMessage }}</pre>
+            </p>
           </template>
         </AuthForm>
       </FormSide>
@@ -68,6 +76,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
 import AuthForm from "@/components/AuthForm/AuthForm.vue";
 import FormSide from "@/components/FormSide.vue";
@@ -78,12 +87,10 @@ const router = useRouter();
 const currentStep = ref(1);
 
 const email = ref("");
-const referralCode = ref("");
-const verificationCode = ref("");
 const password = ref("");
-const confirmPassword = ref("");
 
 const errorMessage = ref("");
+const userStore = useUserStore();
 
 // 計算當前步驟的按鈕文字
 const buttonText = computed(() => {
@@ -105,39 +112,46 @@ const goBack = () => {
     currentStep.value -= 1;
   }
 };
-// 返回首頁邏輯
-const returnToLogin = () => {
-  router.push("/login");
+
+// 針對不同步驟的處理邏輯
+const handleButtonClick = async () => {
+  if (currentStep.value === 1) {
+    if (!email.value) return
+    handleStepChange(currentStep.value + 1);
+  } else if (currentStep.value === 2) {
+    await login(); // 打登入api
+  }
+};
+
+const login = async () => {
+  errorMessage.value = ""
+
+  if (!password.value) {
+    errorMessage.value = "Password cannot be empty.";
+    return
+  }
+
+  await userStore.loginUser({
+    email: email.value,
+    password: password.value,
+  });
+
+  if(userStore.token) {
+    router.push("/");
+  }
+
+  // 使用 store 中的 errorMessage 判斷是否有錯誤
+  if (userStore.errorMessage) {
+    errorMessage.value = userStore.errorMessage; // get store errorMessage
+  } 
 };
 
 // 步驟變更邏輯
 const handleStepChange = (newStep) => {
-  // if (validateStep()) {
-  //   if (currentStep.value <= 4) {
-  //     currentStep.value = newStep;
-  //   }
-  // }
-  currentStep.value = newStep;
-};
-
-// 表單驗證函數
-const validateStep = () => {
-  if (currentStep.value === 1 && !validateEmail(email.value)) {
-    errorMessage.value = "Invalid email format.";
-    console.log("Email format is invalid");
-    return false;
+  if (currentStep.value <= 2) {
+    currentStep.value = newStep;
   }
-  if (currentStep.value === 3 && !validatePassword(password.value)) {
-    errorMessage.value = "Password must be at least 6 characters.";
-    console.log("Password is invalid");
-    return false;
-  }
-  errorMessage.value = ""; // 驗證通過時清空錯誤消息
-  return true;
 };
-
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const validatePassword = (password) => password.length >= 6;
 </script>
 
 <style scoped>

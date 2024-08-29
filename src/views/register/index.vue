@@ -12,7 +12,7 @@
       </div>
       <FormSide>
         <AuthForm
-          title="Register"
+          :title="formTitle"
           :buttonText="buttonText"
           :totalSteps="4"
           :currentStep="currentStep"
@@ -172,6 +172,18 @@ const errorMessage = ref("");
 const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
 const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
+
+// 動態設置標題
+const formTitle = computed(() => {
+  if (currentStep.value === 1) {
+    return "Register";
+  } else if (currentStep.value === 2) {
+    return "Email Verification";
+  } else if (currentStep.value === 3) {
+    return "Create Password";
+  }
+});
+
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
