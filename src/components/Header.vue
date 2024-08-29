@@ -66,12 +66,7 @@ const userId = ref("winnie33527");
 const balance = ref(3, 969, 443);
 const userAvatar = ref(UserAvat);
 
-let loggedIn = ref(true);
 let isLoggedIn = computed(() => userStore.isLoggedIn);
-
-// const { user } = storeToRefs(useUserStore());
-const user = ref({ username: "authorized" });
-// const user = ref({ username: "anonym" });
 
 /*
 display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
@@ -167,20 +162,7 @@ const navItems = ref([
     url: "leaderboard",
     display: "all",
   },
-  // { id: "3", label: "Learn", dropdown: false, url: "about", display: "anonym" },
 ]);
-
-//username.value 有值 displayStatus=>authorized
-// const username = computed(() => user.value?.username);
-
-// const displayStatus = computed(() =>
-//   username.value ? "authorized" : "anonym"
-// );
-// const navLinks = computed(() =>
-//   navItems.value.filter(
-//     (item) => item.display === displayStatus.value || item.display === "all"
-//   )
-// );
 
 const handleLogout = async () => {
   try {
@@ -193,9 +175,9 @@ const handleLogout = async () => {
   }
 };
 
-// 根据用户名判断用户状态
+// 根據登入狀態判斷選單讀取權限
 const displayStatus = computed(() =>
-  user.value.username === "authorized" ? "authorized" : "anonym"
+  isLoggedIn.value ? "authorized" : "anonym"
 );
 
 const navLinks = computed(() =>
@@ -207,6 +189,14 @@ const navLinks = computed(() =>
 console.log(displayStatus.value);
 
 const navPhoneItems = ref([
+  {
+    id: 0,
+    label: "Setting",
+    icon: "fa-solid fa-cog",
+    url: "/account/setting",
+    dropdown: false,
+    display: "authorized",
+  },
   {
     id: 1,
     label: "Hunt",
@@ -248,14 +238,6 @@ const navPhoneItems = ref([
     dropdown: false,
     display: "all",
   },
-  // {
-  //   id: 4,
-  //   label: "Learn",
-  //   icon: "fa-solid fa-circle-info",
-  //   url: "/about",
-  //   dropdown: false,
-  //   display: "all",
-  // },
 ]);
 
 const navPhoneLinks = computed(() =>

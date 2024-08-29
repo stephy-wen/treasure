@@ -25,6 +25,7 @@ import {
   faXmark,
   faArrowLeft,
   faAngleDown,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faPowerOff,
@@ -37,7 +38,8 @@ library.add(
   faMagnifyingGlass,
   faXmark,
   faArrowLeft,
-  faAngleDown
+  faAngleDown,
+  faCog
 );
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
