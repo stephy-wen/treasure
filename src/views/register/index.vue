@@ -170,8 +170,23 @@ const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
 const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
-const testEmail = "nalsonlionmedia+14@gmail.com";
+const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
+
+// 針對不同步驟的處理邏輯
+const handleButtonClick = () => {
+  if (!validateStep()) return; // 驗證失敗 終止後續操作
+
+  if (currentStep.value === 1) {
+    sendVerificationEmail(); // 點下一步之後可以發驗證信
+  } else if (currentStep.value === 2) {
+    verifyCode(); //驗證 驗證碼
+  } else if (currentStep.value === 3) {
+    registerAccount();
+  } else {
+    returnToLogin();
+  }
+};
 
 // 發驗證信
 const sendVerificationEmail = async () => {
@@ -188,53 +203,6 @@ const sendVerificationEmail = async () => {
 
     console.error("發送驗證信失敗", error);
   }
-};
-
-// 註冊函數
-const registerAccount = async () => {
-  try {
-    // 構建註冊請求的資料
-    const userData = {
-      email: email.value, // 使用者 Email
-      password: password.value, // 密碼
-      code: verificationCode.value, // 驗證碼
-      refererId: referralCode.value || null, // 推薦碼（可選）
-    };
-
-    // 發送註冊請求
-    const response = await register(userData);
-    if (response.data.success) {
-      handleStepChange(currentStep.value + 1);
-      errorMessage.value = "";
-    }
-    console.log("註冊成功", response.data);
-
-    // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
-  } catch (error) {
-    console.error("註冊失敗", error.response ? error.response.data : error);
-    // 處理錯誤（例如顯示錯誤訊息給使用者）
-    errorMessage.value = handleApiError(error);
-  }
-};
-
-// 在頁面加載時自動發送驗證信
-onMounted(() => {
-  //sendVerificationEmail();
-});
-
-// 開始倒數計時
-const startTimer = () => {
-  isTimerActive.value = true;
-  timer.value = 60;
-
-  countdownInterval = setInterval(() => {
-    if (timer.value > 0) {
-      timer.value--;
-    } else {
-      clearInterval(countdownInterval);
-      isTimerActive.value = false;
-    }
-  }, 1000);
 };
 
 // 驗證驗證碼
@@ -283,24 +251,51 @@ watch(currentStep, (newStep) => {
   }
 });
 
+// 開始倒數計時
+const startTimer = () => {
+  isTimerActive.value = true;
+  timer.value = 60;
+
+  countdownInterval = setInterval(() => {
+    if (timer.value > 0) {
+      timer.value--;
+    } else {
+      clearInterval(countdownInterval);
+      isTimerActive.value = false;
+    }
+  }, 1000);
+};
+
+// 註冊函數
+const registerAccount = async () => {
+  try {
+    // 構建註冊請求的資料
+    const userData = {
+      email: email.value, // 使用者 Email
+      password: password.value, // 密碼
+      code: verificationCode.value, // 驗證碼
+      refererId: referralCode.value || null, // 推薦碼（可選）
+    };
+
+    // 發送註冊請求
+    const response = await register(userData);
+    if (response.data.success) {
+      handleStepChange(currentStep.value + 1);
+      errorMessage.value = "";
+    }
+    console.log("註冊成功", response.data);
+
+    // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
+  } catch (error) {
+    console.error("註冊失敗", error.response ? error.response.data : error);
+    // 處理錯誤（例如顯示錯誤訊息給使用者）
+    errorMessage.value = handleApiError(error);
+  }
+};
+
 // 返回首頁邏輯
 const returnToLogin = () => {
   router.push("/login");
-};
-
-// 針對不同步驟的處理邏輯
-const handleButtonClick = () => {
-  if (!validateStep()) return; // 驗證失敗 終止後續操作
-
-  if (currentStep.value === 1) {
-    sendVerificationEmail(); // 點下一步之後可以發驗證信
-  } else if (currentStep.value === 2) {
-    verifyCode(); //驗證 驗證碼
-  } else if (currentStep.value === 3) {
-    registerAccount();
-  } else {
-    returnToLogin();
-  }
 };
 
 // 步驟變更邏輯
