@@ -19,7 +19,7 @@
         <template v-if="!isMobile">
           <DesktopHeader
             :navLinks="navLinks"
-            :loggedIn="loggedIn"
+            :loggedIn="isLoggedIn"
             :userAvatar="userAvatar"
             :userId="userId"
             :balance="balance"
@@ -32,7 +32,7 @@
         <!-- 以下為手機版 漢堡排展開的modal-start -->
         <MobileHeader
           :navPhoneLinks="navPhoneLinks"
-          :loggedIn="loggedIn"
+          :loggedIn="isLoggedIn"
           :userAvatar="userAvatar"
           :userId="userId"
           :balance="balance"
@@ -51,7 +51,9 @@ import UserAvat from "@/assets/images/icon/NFT/09.png";
 import { ref, computed } from "vue";
 import { logout } from "../services/auth"; // 引入登出函數
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
+const userStore = useUserStore();
 const router = useRouter();
 
 const isMobile = ref(window.innerWidth < 575.98);
@@ -65,6 +67,7 @@ const balance = ref(3, 969, 443);
 const userAvatar = ref(UserAvat);
 
 let loggedIn = ref(true);
+let isLoggedIn = computed(() => userStore.isLoggedIn);
 
 // const { user } = storeToRefs(useUserStore());
 const user = ref({ username: "authorized" });
@@ -182,16 +185,15 @@ const navItems = ref([
 const handleLogout = async () => {
   try {
     // 調用登出函數
-    await logout();
+    await userStore.logoutUser();
     // 跳轉到登入頁面
     router.push("/");
-    loggedIn.value = false;
   } catch (error) {
     console.error("Logout failed", error);
   }
 };
 
-// 根据用户名判断用户状态 暫時替代
+// 根据用户名判断用户状态
 const displayStatus = computed(() =>
   user.value.username === "authorized" ? "authorized" : "anonym"
 );
