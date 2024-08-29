@@ -5,7 +5,7 @@ import apiClient from "./api";
 export const login = async (credentials) => {
   try {
     const response = await apiClient.post("/Account/Login", credentials);
-    return response.data;
+    if (response.data.success) return response.data;
   } catch (error) {
     throw error;
   }
