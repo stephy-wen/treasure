@@ -1,18 +1,19 @@
 <template>
-  <Header v-if="showHeader" />
+  <Header v-if="isMobile || (!isMobile && !isShow)" />
   <router-view />
-  <Footer />
+  <Footer v-if="!isShow" />
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, watchEffect } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 
 // get current route
 const route = useRoute();
-const showHeader = ref(true);
+const isShow = ref(true);
+const isMobile = ref(false);
 
 watchEffect(() => {
   const pathsToHideHeader = [
@@ -21,7 +22,18 @@ watchEffect(() => {
     "/register",
     "/login",
   ];
-  showHeader.value = !pathsToHideHeader.includes(route.path); // false 的時候才顯示header
+
+  isShow.value = pathsToHideHeader.includes(route.path);
+});
+
+// 檢測螢幕大小並切換樣式
+const checkDevice = () => {
+  isMobile.value = window.innerWidth <= 768; // 設定768px為手機和桌面的臨界點
+};
+
+onMounted(() => {
+  checkDevice(); // 初次挂载时运行一次
+  window.addEventListener("resize", checkDevice); // 監聽視窗大小變化
 });
 </script>
 
