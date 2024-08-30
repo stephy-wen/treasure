@@ -12,6 +12,7 @@
       :class="['btn btn-primary me-1 me-xl-2', signupButtonClass]"
       type="button"
       @click="signup"
+      :data-bs-dismiss="dismissModal ? 'modal' : ''"
     >
       Sign Up
     </button>
