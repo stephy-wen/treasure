@@ -2,6 +2,7 @@
 import apiClient from "./api";
 
 // auth module
+// const response = await auth.getUserInfo(false, true); 如果我要在別的地方使用自定義參數，不用預設時
 const auth = {
   getUserInfo: (withGamePlayData = true, withRewardData = true) =>
     apiClient.get("/Account/AccountInfo", {

@@ -19,6 +19,9 @@ export const useUserStore = defineStore("user", () => {
       const response = await login(loginData);
       token.value = response.data; // 將 token 儲存到狀態
       localStorage.setItem("token", token.value); // 同時儲存到 localStorage
+
+      // 登入成功取得用戶資訊
+      await fetchUserInfo();
     } catch (error) {
       token.value = ""; // 登入失敗時清除 token
       localStorage.removeItem("token"); // 確保 localStorage 中的 token 被清除
@@ -34,8 +37,12 @@ export const useUserStore = defineStore("user", () => {
 
   // 定義 actions，用來從 API 獲取用戶信息
   const fetchUserInfo = async () => {
+    console.log(1);
     try {
       const response = await api.auth.getUserInfo();
+      console.log(2);
+      console.log(response);
+
       userInfo.value = response.data.data;
     } catch (error) {
       console.error("Failed to fetch user info:", error);
