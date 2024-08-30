@@ -155,7 +155,7 @@ import { handleApiError } from "@/utils/errorHandler.js";
 
 // const { sendVerificationCode } = modules.account;
 const {
-  account: { sendVerificationCode, CheckVerificationCode, register },
+  account: { sendVerificationCode, checkVerificationCode, register },
 } = modules;
 
 const router = useRouter();
@@ -236,7 +236,7 @@ const verifyCode = async () => {
   verificationError.value = null;
 
   try {
-    const response = await CheckVerificationCode(
+    const response = await checkVerificationCode(
       verificationType,
       email.value,
       verificationCode.value

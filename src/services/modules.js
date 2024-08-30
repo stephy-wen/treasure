@@ -23,7 +23,7 @@ const account = {
       email,
     }),
 
-  CheckVerificationCode: (verificationType, email, code) =>
+  checkVerificationCode: (verificationType, email, code) =>
     apiClient.post("/Account/CheckVerificationCode", {
       verificationType,
       email,
