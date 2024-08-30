@@ -191,18 +191,17 @@ const formTitle = computed(() => {
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
-  handleStepChange(currentStep.value + 1);
-  // if (!validateStep()) return; // 驗證失敗 終止後續操作
+  if (!validateStep()) return; // 驗證失敗 終止後續操作
 
-  // if (currentStep.value === 1) {
-  //   sendVerificationEmail(); // 點下一步之後可以發驗證信
-  // } else if (currentStep.value === 2) {
-  //   verifyCode(); //驗證 驗證碼
-  // } else if (currentStep.value === 3) {
-  //   registerAccount();
-  // } else {
-  //   returnToLogin();
-  // }
+  if (currentStep.value === 1) {
+    sendVerificationEmail(); // 點下一步之後可以發驗證信
+  } else if (currentStep.value === 2) {
+    verifyCode(); //驗證 驗證碼
+  } else if (currentStep.value === 3) {
+    registerAccount();
+  } else {
+    returnToLogin();
+  }
 };
 
 // 發驗證信
