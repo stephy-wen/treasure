@@ -22,7 +22,11 @@
     <!-- 錯誤訊息插槽 -->
     <slot name="error"></slot>
 
-    <button class="btn btn-primary w-100 mb-3 mt-3" @click="handleButtonClick">
+    <button
+      class="btn btn-primary w-100 mb-3 mt-3"
+      @click="handleButtonClick"
+      :disabled="isButtonDisabled"
+    >
       {{ buttonText }}
     </button>
 
@@ -47,6 +51,10 @@ const props = defineProps({
     default: 1,
   },
   handleButtonClick: Function,
+  isButtonDisabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:currentStep"]);
@@ -72,11 +80,10 @@ const nextStep = () => {
   background-color: #181a20;
   color: #f8f8f8;
   border: none;
-  --bs-btn-active-bg: #2B3139;
+  --bs-btn-active-bg: #2b3139;
 }
 
 .btn-primary:hover {
-  background-color: #2B3139;
+  background-color: #2b3139;
 }
-
 </style>
