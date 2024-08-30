@@ -1,7 +1,8 @@
 <template>
   <div class="winnie-bg-dark">
-    <div class="register-container d-flex mx-auto">
-      <FormSide>
+    <div class="login-container d-flex mx-auto">
+      <ImageSide />
+      <FormSide class="login-form position-relative">
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
           <button @click="goBack" class="arrow mb-3">
@@ -52,23 +53,26 @@
 
           <!-- 步驟 4: 設置密碼 -->
           <template v-slot:extra-password v-if="currentStep === 2">
+          <div class="form-floating mb-3">
             <input
               type="password"
+              class="form-control input-field"
+              id="floatingInputPasswordReset"
               placeholder="New Password"
-              class="input-field"
               v-model="password"
             />
+            <label for="floatingInputPasswordReset">Password</label>
+            </div>
           </template>
 
-           <!-- 插入錯誤訊息 -->
-           <template v-slot:error>
+          <!-- 插入錯誤訊息 -->
+          <template v-slot:error>
             <p v-if="errorMessage" class="error-message mt-5">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
         </AuthForm>
       </FormSide>
-      <ImageSide />
     </div>
   </div>
 </template>
@@ -158,57 +162,138 @@ const handleStepChange = (newStep) => {
 </script>
 
 <style scoped>
-.error-message {
-  color: red;
-}
-.winnie-bg-dark {
-  background-color: #181a20;
+/* login */
+
+.winnie-bg-dark{
+  background-color: #181A20;
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding: 20px;
 }
-@media (max-width: 991px) {
-  .winnie-bg-dark {
-    padding: 0px;
-    height: 100%;
-  }
-}
 
-.register-container {
-  background: linear-gradient(
-    to left,
-    transparent 0%,
-    transparent 25%,
-    #f8f8f8 50%,
-    #f8f8f8 75%,
-    #f8f8f8 100%
-  );
+.login-container{
+  background: linear-gradient(to right, transparent 0%, transparent 25%, #F8F8F8 50%, #F8F8F8 75%, #F8F8F8 100%);
   overflow: hidden;
   position: relative;
   max-width: 1200px;
   border-radius: 30px;
 }
 
+.login-img{
+    flex: 2;
+}
+
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-title p{
+    color: #181A20;
+}
+
+.winnie-bg-dark .form-control {
+  border: none;
+  border-bottom: 1px solid #BBBBBB; 
+  background-color: transparent !important;
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+.winnie-bg-dark .form-control:focus {
+  border-bottom: 1px solid #181A20;
+  outline: none;
+}
+
+.winnie-bg-dark .form-floating label {
+  background-color: transparent;
+  color: #BBB;
+}
+
+.winnie-bg-dark .login-container .login-form form .winnie-login-btn {
+  background-color: #181A20;
+  color: #F8F8F8;
+  border: none;
+}
+
+.form-floating > input + label:after {
+  background-color: transparent !important;
+}
+
+.winnie-bg-dark .login-container .winnie-sign-up-link{
+  color: #181A20;
+}
+
+.winnie-bg-dark .login-container .winnie-sign-up-link a{
+  color: #181A20;
+}
+
+.winnie-bg-dark .login-container .winnie-sign-up-link a:hover{
+  color: #FCD535;
+}
+
+.winnie-bg-dark .login-container .winnie-forget-pw-link {
+  color: #181A20;
+}
+
+.winnie-bg-dark .login-container .winnie-forget-pw-link:hover {
+  color: #FCD535;
+}
+
+.winnie-bg-dark .login-form .winnie-back-btn{
+  top: 2rem;
+}
+
+.winnie-bg-dark .winnie-sign-up-link {
+  color: #181A20;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+}
+
 @media (max-width: 991px) {
-  .register-container {
+  .login-img {
+    display: none;
+  }
+
+  .login-container {
+    background-color: #f8f8f8;
     flex-direction: row;
     height: 100%;
     justify-content: center;
     border-radius: 0px;
     width: 100%;
-    background-color: #f8f8f8;
+    border-color: #F8F8F8;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .winnie-bg-dark {
+    padding: 0px;
+    height: 100%;
   }
 }
 
-.winnie-back-btn {
-  top: 2rem;
+button.arrow {
+  border: none;
+  background-color: transparent;
+  color: #BBB;
 }
 
-.arrow {
-  border: none;
-  background: transparent;
-  font-size: x-large;
-  color: #bbb;
+button.arrow:hover {
+  color: #1E2329;
 }
+
 </style>
