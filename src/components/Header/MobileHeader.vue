@@ -84,6 +84,7 @@
               <LoginButtons
                 loginButtonClass="fs-5 fw-bold w-100"
                 signupButtonClass="fs-5 fw-bold w-100 mt-4"
+                :dismissModal="true"
               />
             </div>
           </template>
@@ -291,5 +292,4 @@ const handleLogout = () => {
   border-radius: 10px;
   background-color: #2b3139;
 }
-
 </style>

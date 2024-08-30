@@ -4,6 +4,7 @@
       :class="['btn btn-outline-primary me-1 me-xl-2', loginButtonClass]"
       type="button"
       @click="login"
+      :data-bs-dismiss="dismissModal ? 'modal' : ''"
     >
       Log In
     </button>
@@ -28,6 +29,9 @@ const props = defineProps({
   },
   signupButtonClass: {
     type: String,
+  },
+  dismissModal: {
+    type: Boolean,
   },
 });
 
