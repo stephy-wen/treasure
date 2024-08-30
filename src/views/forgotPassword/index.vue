@@ -88,7 +88,7 @@
           <!-- 步驟 4: 設置密碼 -->
           <template v-slot:extra-password v-if="currentStep === 4">
             <input
-              v-model="password"
+              v-model="newPassword"
               class="input-field"
               type="password"
               placeholder="New Password"
@@ -114,6 +114,14 @@
               </p>
             </div>
           </template>
+
+           <!-- 插入錯誤訊息 -->
+           <template v-slot:error>
+            <p v-if="errorMessage" class="error-message mt-5">
+              <pre>{{ errorMessage }}</pre>
+
+            </p>
+          </template>
         </AuthForm>
       </FormSide>
       <ImageSide />
@@ -132,7 +140,11 @@ import modules from "@/services/modules.js"; // import API module
 import { handleApiError } from "@/utils/errorHandler.js";
 
 const {
-  account: { sendVerificationCode, CheckVerificationCode, register },
+  account: {
+    sendVerificationCode,
+    checkVerificationCode,
+    forgotPasswordChange,
+  },
 } = modules;
 
 const router = useRouter();
@@ -141,9 +153,8 @@ const router = useRouter();
 const currentStep = ref(1);
 
 const email = ref("");
-const referralCode = ref("");
 const verificationCode = ref("");
-const password = ref("");
+const newPassword = ref("");
 const confirmPassword = ref("");
 
 // 計時器狀態
@@ -151,7 +162,7 @@ const timer = ref(60);
 const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
-const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
+const verificationType = "ForgotPassword"; // 驗證類型，例如 "emailVerification"
 const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
 
@@ -159,26 +170,31 @@ const isButtonDisabled = ref(false);
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
-  //if (!validateStep()) return; // 驗證失敗 終止後續操作
-  handleStepChange(currentStep.value + 1);
-  // isButtonDisabled.value = true; // 禁用按鈕
+  // handleStepChange(currentStep.value + 1);
 
-  // if (currentStep.value === 1) {
-  //   sendVerificationEmail(); // 點下一步之後可以發驗證信
-  // } else if (currentStep.value === 2) {
-  //   verifyCode(); //驗證 驗證碼
-  // } else if (currentStep.value === 3) {
-  //   registerAccount();
-  // } else {
-  //   returnToLogin();
-  // }
+  if (!validateStep()) return; // 驗證失敗 終止後續操作
+
+  isButtonDisabled.value = true; // 禁用按鈕
+
+  if (currentStep.value === 1) {
+    sendVerificationEmail(); // 點下一步之後可以發驗證信
+  } else if (currentStep.value === 2) {
+    verifyCode(); //驗證 驗證碼
+  } else if (currentStep.value === 3) {
+    // 因為目前還沒放圖形驗證所以先自動加一略過這步驟 另外按鈕的禁用也要打開
+    handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
+    isButtonDisabled.value = false;
+  } else if (currentStep.value === 4) {
+    resetPassword();
+  } else {
+    returnToLogin();
+  }
 };
 
 // 發驗證信
 const sendVerificationEmail = async () => {
   try {
     const response = await sendVerificationCode(verificationType, email.value); //這邊到時候測試完要改掉
-    console.log(response, "驗證信已發送");
     // 如果成功 就到下一步
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
@@ -197,14 +213,12 @@ const sendVerificationEmail = async () => {
 const verifyCode = async () => {
   verificationError.value = null;
   try {
-    const response = await CheckVerificationCode(
+    const response = await checkVerificationCode(
       verificationType,
       email.value,
       verificationCode.value
     );
-    console.log(response, "拿到的驗證資料");
     if (response.data.success) {
-      console.log("驗證成功");
       // 跳轉到下一步或其他處理
       handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
       errorMessage.value = "";
@@ -222,7 +236,6 @@ const verifyCode = async () => {
 const resendCode = async () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
-    console.log("Resend code clicked");
     await sendVerificationEmail();
     // 開始新的倒數計時
     startTimer();
@@ -251,24 +264,19 @@ const startTimer = () => {
   }, 1000);
 };
 
-// 註冊函數
-const registerAccount = async () => {
+// 重設密碼 api
+const resetPassword = async () => {
   try {
-    // 構建註冊請求的資料
-    const userData = {
-      email: email.value, // 使用者 Email
-      password: password.value, // 密碼
-      code: verificationCode.value, // 驗證碼
-      refererId: referralCode.value || null, // 推薦碼（可選）
-    };
-
     // 發送註冊請求
-    const response = await register(userData);
+    const response = await forgotPasswordChange(
+      email.value,
+      newPassword.value,
+      verificationCode.value
+    );
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
       errorMessage.value = "";
     }
-    console.log("註冊成功", response.data);
 
     // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
   } catch (error) {
@@ -287,6 +295,7 @@ const returnToLogin = () => {
 
 // 返回上一頁的函數
 const goBack = () => {
+  errorMessage.value = "";
   if (currentStep.value === 1) {
     router.go(-1);
   } else if (currentStep.value > 1) {
@@ -305,11 +314,9 @@ const handleStepChange = (newStep) => {
 const validateStep = () => {
   if (currentStep.value === 1 && !validateEmail(email.value)) {
     errorMessage.value = "Invalid email format.";
-    console.log("Email format is invalid");
     return false;
   }
-  if (currentStep.value === 3 && !validatePasswords(password.value)) {
-    console.log("密碼驗證");
+  if (currentStep.value === 4 && !validatePasswords(newPassword.value)) {
     return false;
   }
   errorMessage.value = ""; // 驗證通過時清空錯誤消息
@@ -320,7 +327,7 @@ const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const validatePasswords = () => {
   const errors = [];
-  if (password.value !== confirmPassword.value) {
+  if (newPassword.value !== confirmPassword.value) {
     errors.push(
       "Password and Confirm password are different. Please re-enter it."
     );
@@ -340,7 +347,7 @@ const validatePasswords = () => {
   ];
 
   for (const rule of rules) {
-    if (!rule.regex.test(password.value)) {
+    if (!rule.regex.test(newPassword.value)) {
       errors.push(`Password: ${rule.message}`);
     }
   }
@@ -386,8 +393,6 @@ const formTitle = computed(() => {
     return "Puzzle Verification";
   } else if (currentStep.value === 4) {
     return "Reset Password";
-  } else if (currentStep.value === 4) {
-    return "";
   }
 });
 </script>

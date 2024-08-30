@@ -29,6 +29,13 @@ const account = {
       email,
       code,
     }),
+
+  forgotPasswordChange: (email, newPassword, code) =>
+    apiClient.post("/Account/ForgotPasswordChange", {
+      email,
+      newPassword,
+      code,
+    }),
 };
 
 // user module
