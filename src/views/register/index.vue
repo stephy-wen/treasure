@@ -16,6 +16,7 @@
           :currentStep="currentStep"
           @goToLogin="returnToLogin"
           :handleButtonClick="handleButtonClick"
+          :isButtonDisabled="isButtonDisabled"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
           <template v-slot:email-input v-if="currentStep === 1">
@@ -177,6 +178,9 @@ const verificationType = "Register"; // 驗證類型，例如 "emailVerification
 const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
 
+const isButtonDisabled = ref(false);
+
+
 // 動態設置標題
 const formTitle = computed(() => {
   if (currentStep.value === 1) {
@@ -192,6 +196,8 @@ const formTitle = computed(() => {
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
   if (!validateStep()) return; // 驗證失敗 終止後續操作
+
+  isButtonDisabled.value = true; // 禁用按鈕
 
   if (currentStep.value === 1) {
     sendVerificationEmail(); // 點下一步之後可以發驗證信
@@ -218,6 +224,8 @@ const sendVerificationEmail = async () => {
     errorMessage.value = handleApiError(error);
 
     console.error("發送驗證信失敗", error);
+  } finally {
+    isButtonDisabled.value = false;
   }
 };
 
@@ -245,6 +253,7 @@ const verifyCode = async () => {
     errorMessage.value = handleApiError(error);
     console.error("驗證失敗", error);
   } finally {
+    isButtonDisabled.value = false;
     // isVerifying.value = false;
   }
 };
@@ -306,6 +315,8 @@ const registerAccount = async () => {
     console.error("註冊失敗", error.response ? error.response.data : error);
     // 處理錯誤（例如顯示錯誤訊息給使用者）
     errorMessage.value = handleApiError(error);
+  } finally {
+    isButtonDisabled.value = false;
   }
 };
 
