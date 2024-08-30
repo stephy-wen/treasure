@@ -110,6 +110,7 @@ const buttonText = computed(() => {
 
 // 返回上一頁的函數
 const goBack = () => {
+  errorMessage.value = "";
   if (currentStep.value === 1) {
     router.go(-1);
   } else if (currentStep.value > 1) {
