@@ -72,6 +72,16 @@ const routes = [
     name: "accountSetting",
     component: () => import("../views/accountSetting/index.vue"), // 動態導入
   },
+  {
+    path: "/terms-of-service",
+    name: "AccountSetting",
+    component: () => import("../views/terms/index.vue"), // 動態導入
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("../views/about/index.vue"), // 動態導入
+  },
 ];
 
 const router = createRouter({

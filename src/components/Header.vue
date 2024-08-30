@@ -25,7 +25,6 @@
             :balance="balance"
             @logout="handleLogout"
             @switchLanguage="switchLanguage"
-            @navigateTo="navigateTo"
           />
         </template>
 
@@ -91,7 +90,7 @@ const userGames = ref([
   },
   // 更多游戏数据
 ]);
-
+console.log(userStore.userInfo?.name, "NAME");
 // const drawnGames = userGames.value.filter((game) => game.status === "drawn");
 // const inProgressGames = userGames.value.filter(
 //   (game) => game.status === "in-progress"
@@ -253,7 +252,7 @@ const switchLanguage = (item) => {
 
 const navigateTo = (item) => {
   // 導向相應的頁面
-  window.location.href = item.href;
+  //window.location.href = item.href;
 };
 </script>
 

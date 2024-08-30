@@ -134,7 +134,7 @@
                       </router-link>
                     </li>
                     <li class="my-2 py-2 text-start">
-                      <router-link class="fs-5" to="terms-of-service">
+                      <router-link class="fs-5" to="/terms-of-service">
                         <img
                           style="width: 24px"
                           src="@/assets/images/icon/ze-label-o 1.svg"

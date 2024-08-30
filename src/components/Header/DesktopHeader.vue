@@ -69,12 +69,12 @@ const languageOptions = [
 const faqOptions = [
   {
     label: "About OneChance",
-    href: "about",
+    href: "/about",
     icon: mdInfo,
   },
   {
     label: "Terms of Service",
-    href: "terms-of-service",
+    href: "/terms-of-service",
     icon: zeLabelImage,
   },
 ];
@@ -87,7 +87,7 @@ const props = defineProps({
   userAvatar: String,
 });
 
-const emit = defineEmits(["logout", "switchLanguage", "navigateTo"]);
+const emit = defineEmits(["logout", "switchLanguage"]);
 
 const handleLogout = () => {
   emit("logout");
@@ -100,7 +100,6 @@ const switchLanguage = (item) => {
 };
 
 const navigateTo = (item) => {
-  emit("navigateTo");
   // 導向相應的頁面
   window.location.href = item.href;
 };

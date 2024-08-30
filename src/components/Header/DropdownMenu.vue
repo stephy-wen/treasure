@@ -63,6 +63,7 @@ const props = defineProps({
 const emit = defineEmits(["select"]);
 
 const handleClick = (item) => {
+  console.log(item);
   emit("select", item);
 };
 </script>

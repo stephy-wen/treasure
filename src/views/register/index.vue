@@ -47,7 +47,7 @@
             <div id="termsRemind" class="terms-remind mt-5 mb-3">
               <p class="fs-6">
                 By using this site, you agree to the <a
-                  href="../terms-of-service"
+                  href="/terms-of-service"
                   >Terms of Service</a
                 >.
               </p>
