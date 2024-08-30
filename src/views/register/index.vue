@@ -1,16 +1,14 @@
 <template>
   <div class="winnie-bg-dark">
     <div class="register-container d-flex mx-auto">
-      <!-- 返回按鈕 -->
-      <div class="position-absolute winnie-back-btn">
-        <a href="#" class="mb-3">
-          <font-awesome-icon
-            style="color: #bbb"
-            icon="fa-solid fa-arrow-left"
-          />
-        </a>
-      </div>
-      <FormSide>
+      <FormSide class="position-relative">
+        <!-- 返回按鈕 -->
+        <div class="position-absolute winnie-back-btn">
+          <button @click="goBack" class="arrow mb-3">
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
+          </button>
+        </div>
+        <!-- 返回按鈕 -->
         <AuthForm
           :title="formTitle"
           :buttonText="buttonText"
@@ -47,25 +45,25 @@
           <template v-slot:extra-content v-if="currentStep === 1">
             <div id="termsRemind" class="terms-remind mt-5 mb-3">
               <p class="fs-6">
-                By creating an account, I agree to Binance's <a
+                By using this site, you agree to the <a
                   href="../terms-of-service"
                   >Terms of Service</a
-                >
+                >.
               </p>
             </div>
           </template>
 
           <!-- 步驟 2: 驗證碼 -->
           <template v-slot:extra-input v-if="currentStep === 2">
-            <p>
+            <p class="verificationMessage">
               We've sent a verification code to your email. Please enter it
-              below:
+              below within 30 minutes.
             </p>
             <input
               type="text"
               placeholder="Verification Code"
               v-model="verificationCode"
-              class="input-field"
+              class="input-field verification-code-input my-3 w-100"
             />
           </template>
 
@@ -73,17 +71,17 @@
           <template v-slot:extra-action>
             <div
               id="logInLink"
-              class="text-center winnie-log-in-link position-absolute"
+              class="text-start winnie-log-in-link position-absolute"
             >
               <p class="mb-0" v-if="currentStep === 1 || currentStep === 3">
                 Already have an account?
                 <a @click="returnToLogin" class="fw-bold">Log In</a>
               </p>
-              <p id="resendMessage" v-if="currentStep === 2" class="resend">
+              <p id="resendMessage" v-if="currentStep === 2" class="resend mt-2">
                 Didn't receive anything? <br />
                 <button
                   id="resendCode"
-                  class="resend-link"
+                  class="resend-link px-0"
                   @click="resendCode"
                   :disabled="isTimerActive"
                 >
@@ -96,18 +94,24 @@
 
           <!-- 步驟 3: 設置密碼 -->
           <template v-slot:extra-password v-if="currentStep === 3">
+            <div class="form-floating mb-3">
             <input
               type="password"
               placeholder="New Password"
               v-model="password"
-              class="input-field"
+              class="form-control input-field"
             />
+            <label for="floatingInput">Password</label>
+            </div>
+            <div class="form-floating mb-3">
             <input
               type="password"
               placeholder="Confirm Password"
               v-model="confirmPassword"
-              class="input-field"
+              class="form-control input-field"
             />
+            <label for="floatingInput">Confirm</label>
+            </div>
           </template>
 
           <!-- 步驟 4: 成功頁面 -->
@@ -310,6 +314,15 @@ const returnToLogin = () => {
   router.push("/login");
 };
 
+// 返回上一頁的函數
+const goBack = () => {
+  if (currentStep.value === 1) {
+    router.go(-1);
+  } else if (currentStep.value > 1) {
+    currentStep.value -= 1;
+  }
+};
+
 // 步驟變更邏輯
 const handleStepChange = (newStep) => {
   if (currentStep.value <= 4) {
@@ -376,7 +389,7 @@ const buttonText = computed(() => {
     case 1:
       return "Next";
     case 2:
-      return "Verify Code";
+      return "Verify";
     case 3:
       return "Register";
     case 4:
@@ -442,6 +455,78 @@ const buttonText = computed(() => {
   }
 }
 
-.resend {
+.winnie-bg-dark .form-control {
+  border: none;
+  border-bottom: 1px solid #BBBBBB; 
+  background-color: transparent !important;
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
 }
+
+.winnie-bg-dark .form-control:focus {
+  border-bottom: 1px solid #181A20;
+  outline: none;
+}
+
+.winnie-bg-dark .form-floating label {
+  background-color: transparent;
+  color: #BBB;
+}
+
+.form-floating > input + label:after {
+  background-color: transparent !important;
+}
+
+.arrow {
+  color: #BBB;
+}
+
+.arrow:hover {
+  color: #1E2329;
+}
+
+.verificationMessage {
+  color: #75797E;
+}
+
+button.resend-link {
+  border: none;
+  background-color: transparent;
+}
+
+.verification-code-input {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #BBB;
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.winnie-bg-dark .terms-remind p a{
+    color: #181A20;
+    text-decoration: underline;
+}
+
+.winnie-log-in-link a {
+  color: #181A20;
+}
+
+.winnie-log-in-link a:hover {
+  color: #FCD535;
+  cursor: pointer;
+}
+
+button.arrow {
+  border: none;
+  background-color: transparent;
+  color: #BBB;
+}
+
+button.arrow:hover {
+  color: #1E2329;
+}
+
 </style>
