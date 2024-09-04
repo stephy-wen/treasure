@@ -43,17 +43,17 @@
                 style="width: 50px"
                 src="@/assets/images/icon/balance-icon.png"
                 alt=""
-              />{{ gameInfo.vote }}
+              />{{ totalAmount }}
             </p>
           </div>
           <div class="attend-times-btn d-flex justify-content-center mt-2">
-            <button>1</button>
-            <button class="mx-3 mx-md-4">5</button>
-            <button>10</button>
+            <button @click="setAttendTimes(1)">1</button>
+            <button @click="setAttendTimes(5)" class="mx-3 mx-md-4">5</button>
+            <button @click="setAttendTimes(10)">10</button>
           </div>
           <div class="attend-times-input mt-5">
             <span>x</span>
-            <input class="fs-6" value="1" type="text" />
+            <input class="fs-6" v-model="attendTimes"  min="1" type="text" />
             <!-- <span>Times</span> -->
           </div>
         </div>
@@ -64,6 +64,7 @@
             data-bs-dismiss="modal"
             data-bs-toggle="modal"
             data-bs-target="#winnerModal"
+            @click="confirmParticipation"
           >
             Confirm
           </button>
@@ -74,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import { ref, computed, onMounted, defineProps, defineEmits } from "vue";
 
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
 
@@ -92,11 +93,38 @@ const props = defineProps({
 
 console.log("isOpen prop in JoinGameModal:", props.gameInfo);
 
-const emit = defineEmits(["closeModal"]);
+const emit = defineEmits(["closeModal", "showInsufficientFundsModal"]);
+
+const attendTimes = ref(1);
+const currentBalance = ref(1); //目前暫定玩家遊戲幣餘額
+const totalAmount = ref(2)//暫定遊戲費用
+
+// 計算總費用
+// const totalAmount = computed(() => {
+//   return props.gameInfo.voted * attendTimes.value;
+// });
+
+// 參加次數
+const setAttendTimes = (times) => {
+  attendTimes.value = times;
+};
 
 const closeModal = () => {
   emit("closeModal");
 };
+
+// 點擊確認參加
+const confirmParticipation = () => {
+  console.log('confirmParticipation function called'); // 檢查函數是否被觸發
+  if (totalAmount.value > currentBalance.value) {
+    console.log('Insufficient funds'); // 檢查條件是否滿足
+    closeModal();
+    emit("showInsufficientFundsModal"); // 跳出餘額不足視窗
+  } else {
+    console.log("成功參與遊戲");
+  }
+}
+
 </script>
 
 <style scoped>

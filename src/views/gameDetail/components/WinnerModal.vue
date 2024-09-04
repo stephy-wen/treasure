@@ -15,7 +15,7 @@
     >
       <div
         class="modal-content modal-background"
-        style="background-image: url('/assets/images/common/attend_eth.png')"
+        :style="{ backgroundImage: `url(${gameInfo.backgroundImage})` }"
       >
         <div class="modal-header pb-0 d-flex justify-content-between">
           <h5 class="modal-title" id="winnerModalLabel"></h5>
@@ -25,7 +25,9 @@
             @click="closeModal"
             aria-label="Close"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <font-awesome-icon
+              icon="fa-solid fa-xmark"
+            />
           </button>
         </div>
         <div
@@ -40,7 +42,7 @@
           </div>
         </div>
         <div class="modal-footer mx-auto">
-          <p class="winnie-color-gray">Next Round 5 seconds</p>
+          <p class="winnie-color-gray">Next Round {{ countdown }} seconds</p>
         </div>
       </div>
     </div>
@@ -48,8 +50,21 @@
 </template>
 
 <script setup>
+
+import { ref, watch, onMounted, defineProps, defineEmits } from "vue";
+
+const countdown = ref(5); //初始化倒數計時5秒
+
+onMounted(() => {
+  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
+  //console.log(modalElement, "modalElement");
+  //const isHidden = window.getComputedStyle(modalElement).display === "none";
+  //console.log(isHidden); // 檢查模態框是否隱藏
+});
+
 const props = defineProps({
   isOpen: Boolean,
+  gameInfo: Object,
 });
 
 const emit = defineEmits(["closeModal"]);
@@ -57,6 +72,62 @@ const emit = defineEmits(["closeModal"]);
 const closeModal = () => {
   emit("closeModal");
 };
+
+watch(
+	() => props.isOpen, //監聽props.isOpen的變化
+	(newVal) => {
+		if (newVal) {
+			countdown.value = 5 //每次打開modal都會重置倒數
+			const timer = setInterval(() => {
+				if (countdown.value > 0) {
+					countdown.value -= 1;
+				} else {
+					clearInterval(timer);
+					closeModal();
+				}
+			}, 1000);
+		}
+	} 
+)
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.winnie-btn-close {
+    background-color: #1E2329;
+    color: #F8F8F8;
+    border-radius: 50px;
+    border: none;
+}
+
+.winnie-btn-close:hover {
+  background-color: #414D5A;
+  color: #F8F8F8;
+}
+
+#winnerModal .modal-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#winnerModal .modal-header {
+  border-bottom: none;
+}
+
+#winnerModal .modal-footer {
+  border-top: none;
+}
+
+#winnerModal .modal-dialog .modal-content {
+  min-height: 500px;
+}
+
+#winnerModal .modal-footer .winnie-color-gray {
+  color: #BBB;
+}
+
+.modal-content {
+  background-color: transparent;
+}
+</style>

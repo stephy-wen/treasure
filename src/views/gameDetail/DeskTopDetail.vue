@@ -83,6 +83,12 @@
               :isOpen="showJoinGameModal"
               :gameInfo="JoinGame"
               @closeModal="showJoinGameModal = false"
+              @showInsufficientFundsModal="showInsufficientFundsModal = true"
+              
+            />
+            <InsufficientFundsModal
+              :isOpen="showInsufficientFundsModal"
+              @closeModal="showInsufficientFundsModal = false"
             />
 
             <!-- maxParticipantsModal-->
@@ -96,6 +102,7 @@
 
             <WinnerModal
               :isOpen="showWinnerModal"
+              :gameInfo="JoinGame"
               @closeModal="showWinnerModal = false"
             />
             <button class="btn btn-outline-primary" @click="openWinnerModal">
@@ -119,11 +126,13 @@ import NFT02 from "@/assets/images/icon/NFT/02.png";
 import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import VotingFullModal from "./components/VotingFullModal.vue";
 import WinnerModal from "./components/WinnerModal.vue";
+import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
 
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
 const showWinnerModal = ref(false);
+const showInsufficientFundsModal = ref(false)
 
 // 打开模态框
 // 打開模態框的函數
@@ -151,6 +160,7 @@ const openVotingFullModal = () => {
 };
 
 const openWinnerModal = () => {
+  console.log("openWinnerModal function called in Desktop.vue");
   showWinnerModal.value = true;
 };
 

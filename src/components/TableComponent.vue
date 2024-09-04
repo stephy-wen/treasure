@@ -38,6 +38,7 @@ const props = defineProps({
   Title: String,
   headers: Array,
   data: Array,
+  customClass: String,
 });
 </script>
 
@@ -90,5 +91,9 @@ const props = defineProps({
     .custom-rounded {
         border-radius: 0px;
     }
+}
+
+.rewards-list-dropdown .dropdown-menu .leaderboard-container .table{
+  --bs-table-bg: transparent;
 }
 </style>

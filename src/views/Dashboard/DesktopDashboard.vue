@@ -70,58 +70,12 @@
           </button>
           <!-- rewards-list-start -->
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuRewardsList">
-            <table class="table table-borderless fw-bold custom-rounded">
-              <thead>
-                <tr>
-                  <th class="text-center py-3 ps-5 d-none d-lg-table-cell" scope="col">Round</th>
-                  <th class="py-3" scope="col"><span class="d-lg-none ps-3">Round/</span>Time</th>
-                  <th class="py-3 text-start ps-3" scope="col">Type</th>
-                  <th class="py-3 text-end" scope="col">Value</th>
-                  <th class="py-3 text-center pe-3 pe-lg-5" scope="col">Withdraw</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row" class="text-center ps-5 d-none d-lg-table-cell">1752</th>
-                  <td class="text-start pe-3 pe-sm-0 winnie-color-gray fw-normal"><p class="d-lg-none ps-3 fw-bold winnie-color-white">1752</p><p class="ps-3 ps-lg-0">2024/07/12 17:52</p></td>
-                  <td class="text-end">
-                    <div class="d-flex align-items-center">
-                      <img class="img-fluid ms-2" src="@/assets/images/icon/BTC-account.svg" alt="">
-                      <span>BTC</span>
-                      <span class="ms-2 winnie-color-gray fw-normal d-none d-lg-table-cell">Bitcoin</span>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="text-end">0.576</p>
-                  </td>
-                  <td class="text-center pe-3 pe-lg-5">
-                    <a href="#">
-                      <img src="@/assets/images/icon/md-file_upload Copy 2.svg" alt="">
-                    </a>
-                  </td>
-                </tr>
-
-                <tr>
-                  <th scope="row" class="text-center ps-5 d-none d-lg-table-cell">1752</th>
-                  <td class="text-start pe-3 pe-sm-0 winnie-color-gray fw-normal"><p class="d-lg-none ps-3 fw-bold winnie-color-white">1752</p><p class="ps-3 ps-lg-0">2024/07/12 17:52</p></td>
-                  <td class="text-end">
-                    <div class="d-flex align-items-center">
-                      <img class="img-fluid ms-2" src="@/assets/images/icon/BTC-account.svg" alt="">
-                      <span>BTC</span>
-                      <span class="ms-2 winnie-color-gray fw-normal d-none d-lg-table-cell">Bitcoin</span>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="text-end">0.576</p>
-                  </td>
-                  <td class="text-center pe-3 pe-lg-5">
-                    <a href="#">
-                      <img src="@/assets/images/icon/md-file_upload Copy 2.svg" alt="">
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <TableComponent
+              Title=""
+              :headers="rewardHeaders"
+              :data="rewardsData"
+              customClass="transparent-bg-table"
+            />
           </ul>
           <!-- rewards-list-end -->
         </div>
@@ -200,6 +154,15 @@
   { text: "Type" },
   { text: "Value", class: "text-end pe-4" },
   { text: "Verify", class: "text-center" },
+
+  ]
+
+  const rewardHeaders = [
+  { text: "Round", class: "ps-5" },
+  { text: "Time" },
+  { text: "Type", class: "text-end pe-4" },
+  { text: "Value", class: "text-end" },
+  { text: "Withdraw", class: "text-center" }
   ]
 
   const tableData = [
@@ -239,6 +202,24 @@
     "@/assets/images/icon/NFT/07.png",
     "@/assets/images/icon/NFT/09.png",
   ];
+
+  const rewardsData = [
+    [
+      { text: "1752", class: "ps-5" },
+      { text: "2024/06/12 20:16:03" },
+      { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
+      { text: "0.576", class: "text-end" },
+      { icon: VerifyIcon, class: "text-center"  }
+    ],
+    [
+      { text: "1752", class: "ps-5" },
+      { text: "2024/06/12 20:16:03" },
+      { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
+      { text: "0.576", class: "text-end" },
+      { icon: VerifyIcon, class: "text-center"  }
+    ],
+  ];
+
   </script>
   
 <style scoped>
@@ -435,4 +416,9 @@
 #nicknameRevisePhoneModal .modal-dialog .modal-content {
   background-color: #181A20;
 }
+
+.rewards-list-dropdown .dropdown-menu .leaderboard-container .table{
+  --bs-table-bg: transparent;
+}
+
 </style>
