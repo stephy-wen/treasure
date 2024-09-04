@@ -44,7 +44,7 @@
                     class="me-2"
                     src="@/assets/images/icon/balance-icon.png"
                     alt=""
-                  />{{ balance }}
+                  />{{ balance.toLocaleString("en-US") }}
                 </p>
               </div>
             </div>
@@ -53,7 +53,7 @@
               <div class="row justify-content-center">
                 <div class="col-5 text-center personal-function-deposit mx-2">
                   <router-link
-                    to="account/deposit"
+                    to="/account/deposit"
                     class="d-flex flex-column align-items-center justify-content-center text-decoration-none"
                     style="color: #f8f8f8; height: 100px"
                   >
