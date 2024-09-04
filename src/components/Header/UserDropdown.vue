@@ -39,7 +39,7 @@
               src="@/assets/images/icon/balance-icon.png"
               alt="Balance Icon"
             />
-            {{ balance }}
+            {{ balance.toLocaleString("en-US") }}
             <a href="#">
               <img
                 class="img-fluid ms-2 mb-1"
