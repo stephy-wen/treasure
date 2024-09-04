@@ -47,13 +47,13 @@ import DesktopHeader from "@/components/Header/DesktopHeader.vue";
 import MobileHeader from "@/components/Header/MobileHeader.vue";
 import UserAvat from "@/assets/images/icon/NFT/09.png";
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { logout } from "../services/auth"; // 引入登出函數
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
-const userStore = useUserStore();
 const router = useRouter();
+const userStore = useUserStore();
 
 const isMobile = ref(window.innerWidth < 575.98);
 
@@ -88,9 +88,27 @@ const userGames = ref([
     gameType: "TRON",
     status: "in-progress",
   },
-  // 更多游戏数据
 ]);
-console.log(userStore.userInfo?.name, "NAME");
+
+let gameData = ref(userStore.userInfo); // 使用 ref 來追蹤響應式資料
+
+const token = localStorage.getItem("token");
+console.log(token, "token");
+console.log(gameData.value, "Header");
+// 如果pinia被清空 在組件加載時再打一次api
+onMounted(async () => {
+  if (token && (!gameData.value || Object.keys(gameData.value).length === 0)) {
+    console.log(12345678);
+    const fetchData = await userStore.fetchUserInfo();
+    console.log(fetchData, "fetchData");
+    gameData.value = fetchData;
+  }
+  console.log(userStore.userInfo);
+  console.log(gameData.value, "has token");
+});
+
+// console.log(userStore.userInfo.data, "拿到的資料");
+// console.log(userStore.userInfo.data.playHistoryData, "拿到的資料");
 // const drawnGames = userGames.value.filter((game) => game.status === "drawn");
 // const inProgressGames = userGames.value.filter(
 //   (game) => game.status === "in-progress"

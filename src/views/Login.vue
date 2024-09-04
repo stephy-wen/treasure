@@ -38,12 +38,6 @@ const handleLogin = async () => {
 
   try {
     await userStore.loginUser(loginData);
-    await userStore.fetchUserInfo(); // 登入成功後從 API 獲取使用者資訊並存到 Pinia
-    // 如果登入壞掉就是這兩隻api 其中一支有問題 先註解其一
-
-    // const UserInfo = await api.auth.getUserInfo(); // 獲取用戶信息
-    // console.log(UserInfo.data.data, "userData");
-    // userInfoData.value = UserInfo.data.data;
     router.push("/"); // 登入成功後跳轉到 /
   } catch (error) {
     errorMessage.value = "Login failed. Please check your credentials.";

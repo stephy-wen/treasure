@@ -20,13 +20,15 @@ export const useUserStore = defineStore("user", () => {
       token.value = response.data; // 將 token 儲存到狀態
       localStorage.setItem("token", token.value); // 同時儲存到 localStorage
 
-      // 登入成功取得用戶資訊
-      await fetchUserInfo();
+      if (response.data) {
+        // 登入成功取得用戶資訊
+        await fetchUserInfo();
+      }
     } catch (error) {
       token.value = ""; // 登入失敗時清除 token
       localStorage.removeItem("token"); // 確保 localStorage 中的 token 被清除
       if (error.response && error.response.data.systemCode) {
-        if ((error.response.data.systemCode = 4001)) {
+        if (error.response.data.systemCode === 4001) {
           errorMessage.value = "Incorrect email or password";
         } else {
           errorMessage.value = error.response.data.message;
