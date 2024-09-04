@@ -45,7 +45,6 @@
 <script setup>
 import DesktopHeader from "@/components/Header/DesktopHeader.vue";
 import MobileHeader from "@/components/Header/MobileHeader.vue";
-import UserAvat from "@/assets/images/icon/NFT/09.png";
 
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -65,9 +64,10 @@ window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 575.98;
 });
 
-const userId = ref("winnie33527");
-const balance = ref(3, 969, 443);
-const userAvatar = ref(UserAvat);
+// 定義這些變量，並根據 API 的返回數據更新它們
+const userId = ref("");
+const balance = ref(0);
+const userAvatar = ref("");
 
 let isLoggedIn = computed(() => userStore.isLoggedIn);
 
@@ -85,7 +85,12 @@ onMounted(async () => {
   // 1. 獲取 userInfo 資料
   if (token && (!gameData.value || Object.keys(gameData.value).length === 0)) {
     const fetchedData = await userStore.fetchUserInfo();
-    gameData.value = fetchedData;
+    gameData.value = fetchedData; // 保存 API 返回的數據
+
+    // 從 API 返回的數據中提取需要的信息
+    userId.value = gameData.value.name; // 更新用戶ID
+    balance.value = gameData.value.balanceData.balance; // 更新餘額
+    userAvatar.value = gameData.value.avatarUrl; // 更新用戶頭像
   }
 });
 
@@ -118,6 +123,11 @@ const transformGameData = (games) => {
 // 1.拿到使用者參加的所有遊戲
 // 2.用狀態去分類 遊戲群
 // 3.拿到遊戲群組 去跑url (把下面的links取代掉)
+
+// 根據登入狀態判斷選單讀取權限
+const displayStatus = computed(() =>
+  isLoggedIn.value ? "authorized" : "anonym"
+);
 
 const navItems = ref([
   {
@@ -156,22 +166,6 @@ const navItems = ref([
     display: "all",
   },
 ]);
-
-const handleLogout = async () => {
-  try {
-    // 調用登出函數
-    await userStore.logoutUser();
-    // 跳轉到登入頁面
-    router.push("/");
-  } catch (error) {
-    console.error("Logout failed", error);
-  }
-};
-
-// 根據登入狀態判斷選單讀取權限
-const displayStatus = computed(() =>
-  isLoggedIn.value ? "authorized" : "anonym"
-);
 
 const navLinks = computed(() =>
   navItems.value.filter(
@@ -236,9 +230,15 @@ const switchLanguage = (item) => {
   console.log("切換語言:", item.code);
 };
 
-const navigateTo = (item) => {
-  // 導向相應的頁面
-  //window.location.href = item.href;
+const handleLogout = async () => {
+  try {
+    // 調用登出函數
+    await userStore.logoutUser();
+    // 跳轉到登入頁面
+    router.push("/");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
 };
 </script>
 

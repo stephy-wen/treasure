@@ -17,7 +17,7 @@
             <!-- 個人資料-照片 & id -->
             <div class="personal-info">
               <div class="personal-photo text-center">
-                <img src="@/assets/images/icon/NFT/09.png" alt="" />
+                <img :src="userAvatar" alt="" />
               </div>
               <p class="personal-id text-center fs-5 fw-bold">
                 <font-awesome-icon
