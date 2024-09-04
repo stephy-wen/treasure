@@ -57,22 +57,25 @@ const {
 const games = ref([]); // 用來存放從 API 獲取的遊戲數據
 const searchTerm = ref(""); // 搜索框中的搜索詞
 
+// 抽取數據映射邏輯
+const mapGameData = (game) => ({
+  gameId: game.id, // 從 API 返回的 gameRoomId
+  imageSrc: game.cardImgUrl || images.ethCard, // 預設圖片，可以根據具體遊戲類型選擇不同圖片
+  gid: game.gId,
+  gameName: game.name,
+  phoneIconSrc: images.dollarPhoneIcon, // 固定
+  feeIconSrc: getCurrencyIcon(game.rewardSymbol), // 根據 rewardSymbol 選擇相應的貨幣圖標
+  fee: game.rewardQuantity, // 費用
+  participants: game.betQuantityTotal, // 目前參與的人數
+  totalParticipants: game.maxQuantity, // 最大參與人數
+});
+
 // 從 API 獲取遊戲列表數據
 const fetchGames = async () => {
   try {
     const response = await getGameRoomList(); // 調用 API 獲取數據
     console.log(response);
-    games.value = response.data.data.map((game) => ({
-      gameId: game.id, // 從 API 返回的 gameRoomId
-      imageSrc: game.cardImgUrl || images.ethCard, // 預設圖片，可以根據具體遊戲類型選擇不同圖片
-      gid: game.gId,
-      gameName: game.name,
-      phoneIconSrc: images.dollarPhoneIcon, // 固定
-      feeIconSrc: getCurrencyIcon(game.rewardSymbol),
-      fee: game.rewardQuantity, // 費用
-      participants: game.betQuantityTotal,
-      totalParticipants: game.maxQuantity,
-    }));
+    games.value = response.data.data.map(mapGameData);
   } catch (error) {
     console.error("Error fetching game rooms:", error);
   }
@@ -91,17 +94,7 @@ const searchGames = async () => {
 
   try {
     const response = await searchRoom(searchTerm.value); // 調用 API 搜索
-    games.value = response.data.data.map((game) => ({
-      gameId: game.id, // 從 API 返回的 gameRoomId
-      imageSrc: game.cardImgUrl || images.ethCard, // 預設圖片，可以根據具體遊戲類型選擇不同圖片
-      gid: game.gId,
-      gameName: game.name,
-      phoneIconSrc: images.dollarPhoneIcon, // 固定
-      feeIconSrc: getCurrencyIcon(game.rewardSymbol),
-      fee: game.rewardQuantity, // 費用
-      participants: game.betQuantityTotal,
-      totalParticipants: game.maxQuantity,
-    }));
+    games.value = response.data.data.map(mapGameData); // 使用 mapGameData 函數映射數據
   } catch (error) {
     console.error("Error searching game rooms:", error);
   }
