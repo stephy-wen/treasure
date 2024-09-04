@@ -6,6 +6,7 @@
     <div class="search-bar mb-5" style="width: 18rem">
       <div class="input-group mb-3">
         <input
+          v-model="searchTerm"
           type="text"
           class="form-control"
           placeholder="Search"
@@ -16,6 +17,7 @@
           class="btn btn-outline-secondary search-game-btn"
           type="button"
           id="button-addon2"
+          @click="searchGames"
         >
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
@@ -49,7 +51,7 @@ import { images, getCurrencyIcon } from "@/assets/images.js";
 import modules from "@/services/modules"; // 引入你定義的 API 模塊
 
 const {
-  game: { getGameRoomList },
+  game: { getGameRoomList, searchRoom },
 } = modules; // 解構 modules 對象中的 game 模塊
 
 const games = ref([]); // 用來存放從 API 獲取的遊戲數據
@@ -78,6 +80,32 @@ const fetchGames = async () => {
 
 // 調用 API 獲取數據
 onMounted(fetchGames);
+
+// 搜索遊戲
+const searchGames = async () => {
+  if (!searchTerm.value) {
+    // 如果搜索框為空，則重新加載完整的遊戲列表
+    await fetchGames();
+    return;
+  }
+
+  try {
+    const response = await searchRoom(searchTerm.value); // 調用 API 搜索
+    games.value = response.data.data.map((game) => ({
+      gameId: game.id, // 從 API 返回的 gameRoomId
+      imageSrc: game.cardImgUrl || images.ethCard, // 預設圖片，可以根據具體遊戲類型選擇不同圖片
+      gid: game.gId,
+      gameName: game.name,
+      phoneIconSrc: images.dollarPhoneIcon, // 固定
+      feeIconSrc: getCurrencyIcon(game.rewardSymbol),
+      fee: game.rewardQuantity, // 費用
+      participants: game.betQuantityTotal,
+      totalParticipants: game.maxQuantity,
+    }));
+  } catch (error) {
+    console.error("Error searching game rooms:", error);
+  }
+};
 </script>
 
 <style scoped>

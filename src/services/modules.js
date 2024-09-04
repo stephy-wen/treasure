@@ -57,13 +57,18 @@ const userInfo = {
 const game = {
   getGameRoomList: () => apiClient.get("/Game/GameRoomList"),
   getGameRoom: (id) =>
-    apiClient.get("/api/Game/GameRoom", {
+    apiClient.get("/Game/GameRoom", {
       params: {
         gameRoomId: id,
       },
     }),
+  searchRoom: (name) =>
+    apiClient.get("/Game/GameRoomByName", {
+      params: {
+        name,
+      },
+    }),
 };
-export { game }; // 單獨導出 game
 
 // 統一導出模組
 export default {
