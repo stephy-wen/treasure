@@ -17,9 +17,7 @@
           type="button"
           id="button-addon2"
         >
-        <font-awesome-icon
-          icon="fa-solid fa-magnifying-glass"
-        />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
       </div>
     </div>
@@ -29,7 +27,6 @@
           v-for="(game, index) in games"
           :key="index"
           :imageSrc="game.imageSrc"
-          :gid="game.gid"
           :gameName="game.gameName"
           :gameType="game.gameType"
           :phoneIconSrc="game.phoneIconSrc"
@@ -46,116 +43,41 @@
 </template>
 
 <script setup>
+import { ref, onMounted, computed } from "vue";
 import GameCard from "./GameCard.vue"; // 引入 GameCard 组件
-import { images } from "@/assets/images.js";
+import { images, getCurrencyIcon } from "@/assets/images.js";
+import modules from "@/services/modules"; // 引入你定義的 API 模塊
 
-// 資料要改從第三張開始要置換成正確資料
-const games = [
-  {
-    gameId: "eth123", // 作为唯一标识
-    imageSrc: images.ethCard,
-    gid: "GID 1225",
-    gameName: "ETH",
-    gameType: "ETHEREUM",
-    phoneIconSrc: images.dollarPhoneIcon /*固定 */,
-    feeIconSrc: images.ethAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon /*固定 */,
-    participants: 312,
-    totalParticipants: 568,
-  },
-  {
-    gameId: "bnb456",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-  {
-    gameId: "eth123", // 作为唯一标识
-    imageSrc: images.ethCard,
-    gid: "GID 1225",
-    gameName: "ETH",
-    gameType: "ETHEREUM",
-    phoneIconSrc: images.dollarPhoneIcon /*固定 */,
-    feeIconSrc: images.ethAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon /*固定 */,
-    participants: 312,
-    totalParticipants: 568,
-  },
-  {
-    gameId: "bnb456",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-  {
-    gameId: "bnb456",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-  {
-    gameId: "bnb456",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-  {
-    gameId: "eth123", // 作为唯一标识
-    imageSrc: images.ethCard,
-    gid: "GID 1225",
-    gameName: "ETH",
-    gameType: "ETHEREUM",
-    phoneIconSrc: images.dollarPhoneIcon /*固定 */,
-    feeIconSrc: images.ethAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon /*固定 */,
-    participants: 312,
-    totalParticipants: 568,
-  },
-  {
-    gameId: "bnb456",
-    imageSrc: images.bnbCard,
-    gid: "GID 1300",
-    gameName: "BNB",
-    gameType: "BNB",
-    phoneIconSrc: images.dollarPhoneIcon,
-    feeIconSrc: images.bnbAccountIcon,
-    fee: 1,
-    peopleIconSrc: images.peopleIcon,
-    participants: 150,
-    totalParticipants: 300,
-  },
-];
+const {
+  game: { getGameRoomList },
+} = modules; // 解構 modules 對象中的 game 模塊
+
+const games = ref([]); // 用來存放從 API 獲取的遊戲數據
+const searchTerm = ref(""); // 搜索框中的搜索詞
+
+// 從 API 獲取遊戲列表數據
+const fetchGames = async () => {
+  try {
+    const response = await getGameRoomList(); // 調用 API 獲取數據
+    console.log(response);
+    games.value = response.data.data.map((game) => ({
+      gameId: game.id, // 從 API 返回的 gameRoomId
+      imageSrc: game.cardImgUrl || images.ethCard, // 預設圖片，可以根據具體遊戲類型選擇不同圖片
+      gid: game.gId,
+      gameName: game.name,
+      phoneIconSrc: images.dollarPhoneIcon, // 固定
+      feeIconSrc: getCurrencyIcon(game.rewardSymbol),
+      fee: game.rewardQuantity, // 費用
+      participants: game.betQuantityTotal,
+      totalParticipants: game.maxQuantity,
+    }));
+  } catch (error) {
+    console.error("Error fetching game rooms:", error);
+  }
+};
+
+// 調用 API 獲取數據
+onMounted(fetchGames);
 </script>
 
 <style scoped>
@@ -163,26 +85,26 @@ const games = [
   max-width: 1200px;
 }
 .container .search-bar .form-control {
-    background-color: transparent;
-    color: #F8F8F8;
-    border-color: #BBB;
-    border-radius: 0px;
-    box-shadow: none;
+  background-color: transparent;
+  color: #f8f8f8;
+  border-color: #bbb;
+  border-radius: 0px;
+  box-shadow: none;
 }
 
-.container .search-bar button{
-    border-color: #BBB;
+.container .search-bar button {
+  border-color: #bbb;
 }
 
-.container .search-bar button{
-    color: #BBB;
+.container .search-bar button {
+  color: #bbb;
 }
 
-.container .search-bar button:hover{
-    color: #F8F8F8;
+.container .search-bar button:hover {
+  color: #f8f8f8;
 }
 
 .container .search-bar .form-control::placeholder {
-    color: #BBB;
+  color: #bbb;
 }
 </style>

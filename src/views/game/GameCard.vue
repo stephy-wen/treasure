@@ -9,12 +9,6 @@
             style="max-width: 250px"
             alt="..."
           />
-          <div
-            class="position-absolute top-0 start-0 d-flex align-items-center pe-1 pb-1 ps-3 pt-2"
-            style="color: #f8f8f8"
-          >
-            <span style="font-size: 14px">{{ gid }}</span>
-          </div>
         </div>
         <div class="card-body pt-2 px-0">
           <div class="d-flex justify-content-between align-items-center">
@@ -69,7 +63,6 @@ defineProps({
   gameId: String, // 接收 gameId
   link: String,
   imageSrc: String,
-  gid: String,
   gameName: String,
   gameType: String, //先叫這個名字到時候再改gameDetailName
   phoneIconSrc: String,
@@ -82,59 +75,59 @@ defineProps({
 </script>
 
 <style scoped>
-.game-container .card{
-    background-color: #2B3139;
-    width: 100%;
-    font-size: 0.85rem;
+.game-container .card {
+  background-color: #2b3139;
+  width: 100%;
+  font-size: 0.85rem;
 }
 
 .container .game-container .card .game-list-name,
 .container .game-container .card .game-list-fee {
-    color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .container .game-container .card .game-list-round,
 .container .game-container .card .game-list-type,
 .container .game-container .card .game-list-people {
-    color: #BBB;
+  color: #bbb;
 }
 
 .container .game-container .card img {
-    border-radius: 0px;
+  border-radius: 0px;
 }
 
 .container .game-container .card-body {
-    padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 .card:hover .card-img-top {
-    transform: scale(1.1); 
-    transition: transform 0.3s ease; 
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
 
 .card-img-top {
-    transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .game-card-img {
-    overflow: hidden; 
+  overflow: hidden;
 }
 
 @media (max-width: 420px) {
-    .winnie-xs-style{
-        padding: .25rem;
-    }
-
-    .winnie-xs-style .game-list-name,
-    .winnie-xs-style .game-list-round,
-    .winnie-xs-style .game-list-fee,
-    .winnie-xs-style .game-list-people,
-    .winnie-xs-style .fa-user {
-        font-size: 13px;
-    }
-
-    .winnie-p-xs-2{
-        padding: .5rem !important;
-    }
+  .winnie-xs-style {
+    padding: 0.25rem;
   }
+
+  .winnie-xs-style .game-list-name,
+  .winnie-xs-style .game-list-round,
+  .winnie-xs-style .game-list-fee,
+  .winnie-xs-style .game-list-people,
+  .winnie-xs-style .fa-user {
+    font-size: 13px;
+  }
+
+  .winnie-p-xs-2 {
+    padding: 0.5rem !important;
+  }
+}
 </style>

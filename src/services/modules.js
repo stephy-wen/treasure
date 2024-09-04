@@ -55,7 +55,7 @@ const userInfo = {
 
 // game module
 const game = {
-  getGameRoomList: () => apiClient.get("/Game/GetGameRoomListResultData"),
+  getGameRoomList: () => apiClient.get("/Game/GameRoomList"),
   getGameRoom: (id) =>
     apiClient.get("/api/Game/GameRoom", {
       params: {
@@ -63,6 +63,7 @@ const game = {
       },
     }),
 };
+export { game }; // 單獨導出 game
 
 // 統一導出模組
 export default {

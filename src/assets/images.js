@@ -8,6 +8,28 @@ import ethAccountIcon from "@/assets/images/icon/ETH-account.svg";
 import bnbCard from "@/assets/images/common/card-bnb.png";
 import bnbAccountIcon from "@/assets/images/icon/BNB-account.svg";
 
+import XRPAccountIcon from "@/assets/images/icon/XRP-account.svg";
+import TRXAccountIcon from "@/assets/images/icon/TRX-account.svg";
+import BTCAccountIcon from "@/assets/images/icon/BTC-account.svg";
+import DOGEAccountIcon from "@/assets/images/icon/DOGE-account.svg";
+import SOLAccountIcon from "@/assets/images/icon/SOL-account.svg";
+
+// 用來根據 rewardSymbol 獲取對應圖標的函數
+export const getCurrencyIcon = (symbol) => {
+  const icons = {
+    ETH: images.ethAccountIcon,
+    BNB: images.bnbAccountIcon,
+    XRP: images.XRPAccountIcon,
+    TRX: images.TRXAccountIcon,
+    BTC: images.BTCAccountIcon,
+    DOGE: images.DOGEAccountIcon,
+    SOL: images.SOLAccountIcon,
+    // 添加其他貨幣的映射
+  };
+  return icons[symbol]; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
+  //return icons[symbol] || images.defaultIcon; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
+};
+
 //Detail Page
 import nft01 from "@/assets/images/icon/NFT/01.png";
 import nft02 from "@/assets/images/icon/NFT/02.png";
@@ -34,4 +56,9 @@ export const images = {
   nft06,
   nft07,
   HexagonImage,
+  XRPAccountIcon,
+  TRXAccountIcon,
+  BTCAccountIcon,
+  DOGEAccountIcon,
+  SOLAccountIcon,
 };
