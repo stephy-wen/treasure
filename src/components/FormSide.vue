@@ -1,6 +1,6 @@
 <template>
   <div class="side-form position-relative">
-    <form class="px-3 px-md-0 px-lg-5" id="loginForm" @submit.prevent>
+    <form class="px-3 px-md-0 px-lg-4" id="loginForm" @submit.prevent>
       <slot></slot>
     </form>
   </div>

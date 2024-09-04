@@ -1,27 +1,7 @@
 <template>
-  <div class="deposit-page">
+  <div class="deposit-page px-3 px-sm-0 mt-5">
     <!-- Slot for additional content at the top -->
     <slot name="extra-content"></slot>
-
-    <!-- <div
-    v-for="step in steps"
-    :key="step.number"
-    class="step-container"
-    >
-      <div>
-        <div class="step-title">
-          <div
-          :class="['circle-number', { active: step.number === currentStep }, 'me-4']">
-            {{ step.number }}
-          </div>
-          <h5>{{ step.title }}</h5>
-        </div>
-
-        
-      </div>
-    </div> -->
-    
-    
     <!-- Step 1 -->
     <div class="step-container">
       <div>
@@ -160,7 +140,11 @@
           <div class="mt-3 ms-3">
             <p class="my-2">Address</p>
             <div class="company-address mb-4" style="width: fit-content;">
-            <p class="my-2 py-1 px-3">0xEf817557258ba1EB5E79772e9dCFa9B101F04eE9<i class="fa-regular fa-copy d-inline ms-2"></i></p>
+            <p class="my-2 py-1 px-3">0xEf817557258ba1EB5E79772e9dCFa9B101F04eE9
+              <font-awesome-icon
+              icon="fa-solid fa-copy" class="d-inline ms-2"
+              />
+            </p>
             </div>
             <p class="my-2">Minimum deposit   10 USD</p>
             <p class="my-2 winnie-text-gray">1 USD = 1 OCT</p>

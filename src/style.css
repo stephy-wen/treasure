@@ -101,12 +101,6 @@ button {
   padding: 0rem;
 }
 
-@media (min-width: 575.98px) {
-  #app {
-    padding: 1rem;
-  }
-  }
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #181A20;

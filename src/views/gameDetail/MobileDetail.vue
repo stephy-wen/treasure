@@ -91,6 +91,12 @@
                   :isOpen="showJoinGameModal"
                   :gameInfo="JoinGame"
                   @closeModal="showJoinGameModal = false"
+                  @showInsufficientFundsModal="showInsufficientFundsModal = true"
+                />
+                <!-- InsufficientFunds Modal -->
+                <InsufficientFundsModal
+                  :isOpen="showInsufficientFundsModal"
+                  @closeModal="showInsufficientFundsModal = false"
                 />
                 <!-- maxParticipantsModal-->
                 <button
@@ -103,31 +109,14 @@
                   :isOpen="showVotingFullModal"
                   @closeModal="showVotingFullModal = false"
                 />                   
-                <!-- winner Modal -->
-                <div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="winnerModalLabel" aria-hidden="true">
-                  <div class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down">
-                    <div class="modal-content modal-background" style="background-image: url('../images/common/attend_eth.png');">
-                      <div class="modal-header pb-0 d-flex justify-content-between">
-                        <h5 class="modal-title" id="winnerModalLabel"></h5>
-                        <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
-                          <i class="fa-solid fa-xmark"></i>
-                        </button>
-                      </div>
-                      <div class="modal-body text-center d-flex flex-column justify-content-center">
-                        <div class="game-winner-title">
-                        <p class="fs-2 fw-bold">WINNER</p>
-                        </div> 
-                        <div class="winner-info mt-5">
-                          <img src="../images/icon/NFT/09.png" alt="">
-                          <p class="fs-5 fw-bold mt-2">hehe15235</p>
-                        </div>
-                      </div>
-                      <div class="modal-footer mx-auto">
-                        <p class="winnie-color-gray">Next Round 5 seconds</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <WinnerModal
+                :isOpen="showWinnerModal"
+                :gameInfo="JoinGame"
+                @closeModal="showWinnerModal = false"
+                />
+                <button class="btn btn-outline-primary" @click="openWinnerModal">
+                  WinnerModal
+                </button>
             </div>
         </div>
         </div>
@@ -143,27 +132,37 @@ import PlayerListModal from "./components/PlayerListModal.vue";
 import JoinGameModal from "./components/JoinGameModal.vue";
 import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import VotingFullModal from "./components/VotingFullModal.vue";
+import WinnerModal from "./components/WinnerModal.vue";
+import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
 
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
+const showWinnerModal = ref(false);
+const showInsufficientFundsModal = ref(false)
+
 // 打开模态框
 // 打開模態框的函數
 const openModal = () => {
-  console.log("openModal function called in Desktop.vue"); // 檢查是否觸發
+  console.log("openModal function called in Mobile.vue"); // 檢查是否觸發
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
   console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
 };
 const openJoinGameModal = () => {
-  console.log("openJoinGameModal function called in Desktop.vue"); 
+  console.log("openJoinGameModal function called in Mobile.vue"); 
   showJoinGameModal.value = true;  // 确保将showJoinGameModal设置为true
   console.log("showJoinGameModal value after openModal:", showJoinGameModal.value);
 }
 const openVotingFullModal = () => {
-  console.log("openVotingFullModal function called in Desktop.vue"); 
+  console.log("openVotingFullModal function called in Mobile.vue"); 
   showVotingFullModal.value = true;  // 确保将showVotingFullModal设置为true
   console.log("showVotingFullModal value after openModal:", showVotingFullModal.value);
 }
+
+const openWinnerModal = () => {
+  console.log("openWinnerModal function called in Mobile.vue");
+  showWinnerModal.value = true;
+};
 
 const props = defineProps({
   gameDetails: {
