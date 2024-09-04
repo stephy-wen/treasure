@@ -39,12 +39,14 @@
               src="@/assets/images/icon/balance-icon.png"
               alt="Balance Icon"
             />
-            {{ balance.toLocaleString("en-US") }}
-            <a href="#">
+            {{
+              isBalanceHidden ? maskBalance : balance.toLocaleString("en-US")
+            }}
+            <a href="#" @click.stop.prevent="toggleBalanceVisibility">
               <img
                 class="img-fluid ms-2 mb-1"
                 style="max-width: 16px; vertical-align: middle"
-                src="@/assets/images/icon/antOutline-eye.svg"
+                :src="isBalanceHidden ? eyeCloseIcon : eyeIcon"
                 alt="Eye Icon"
               />
             </a>
@@ -90,8 +92,22 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
+import eyeIcon from "@/assets/images/icon/antOutline-eye.svg"; // 顯示金額圖標
+import eyeCloseIcon from "@/assets/images/icon/antOutline-eye-close.svg"; // 隱藏金額圖標
 
 const router = useRouter();
+const isBalanceHidden = ref(false);
+
+// 計算屬性，用來生成與金額位數相同的星號
+const maskBalance = computed(() => {
+  return "*".repeat(props.balance.toString().length); // 生成與金額長度相同的星號
+});
+
+// 切換顯示/隱藏金額的狀態
+const toggleBalanceVisibility = () => {
+  isBalanceHidden.value = !isBalanceHidden.value; // 切換隱藏狀態
+};
 
 const props = defineProps({
   userId: {
