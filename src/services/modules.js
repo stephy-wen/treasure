@@ -18,7 +18,7 @@ const auth = {
 const account = {
   register: (userData) => apiClient.post("/Account/Register", userData),
 
-  changePassword: (passwordPayload) => 
+  changePassword: (passwordPayload) =>
     apiClient.put("/Account/ChangePassword", passwordPayload),
 
   sendVerificationCode: (verificationType, email) =>
@@ -27,12 +27,11 @@ const account = {
       email,
     }),
 
-  sendAuthCode: (verificationType) => 
+  sendAuthCode: (verificationType) =>
     apiClient.post("/Account/SendAuthCode", {
       verificationType,
     }),
 
-  CheckVerificationCode: (verificationType, email, code) =>
   checkVerificationCode: (verificationType, email, code) =>
     apiClient.post("/Account/CheckVerificationCode", {
       verificationType,
