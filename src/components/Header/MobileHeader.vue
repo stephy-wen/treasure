@@ -34,7 +34,14 @@
                 <p class="personal-balance-title fs-5 fw-bold mb-0">
                   Total Balance
                 </p>
-                <img src="@/assets/images/icon/antOutline-eye.svg" alt="" />
+                <a href="#" @click.stop.prevent="toggleBalanceVisibility">
+                  <img
+                    class="img-fluid ms-2 mb-1"
+                    style="max-width: 16px; vertical-align: middle"
+                    :src="isBalanceHidden ? eyeCloseIcon : eyeIcon"
+                    alt="Eye Icon"
+                  />
+                </a>
               </div>
               <div
                 class="d-flex justify-content-start align-items-center mt-3 mx-3"
@@ -44,7 +51,11 @@
                     class="me-2"
                     src="@/assets/images/icon/balance-icon.png"
                     alt=""
-                  />{{ balance.toLocaleString("en-US") }}
+                  />{{
+                    isBalanceHidden
+                      ? maskBalance
+                      : balance.toLocaleString("en-US")
+                  }}
                 </p>
               </div>
             </div>
@@ -206,8 +217,23 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
 import LoginButtons from "@/components/Header/LoginButtons.vue";
 import MobileNavMenu from "./MobileNavMenu.vue";
+import eyeIcon from "@/assets/images/icon/antOutline-eye.svg"; // 顯示金額圖標
+import eyeCloseIcon from "@/assets/images/icon/antOutline-eye-close.svg"; // 隱藏金額圖標
+
+const isBalanceHidden = ref(false);
+
+// 計算屬性，用來生成與金額位數相同的星號
+const maskBalance = computed(() => {
+  return "*".repeat(props.balance.toString().length); // 生成與金額長度相同的星號
+});
+
+// 切換顯示/隱藏金額的狀態
+const toggleBalanceVisibility = () => {
+  isBalanceHidden.value = !isBalanceHidden.value; // 切換隱藏狀態
+};
 
 const props = defineProps({
   loggedIn: Boolean,
