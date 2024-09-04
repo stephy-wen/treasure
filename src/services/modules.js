@@ -48,6 +48,12 @@ const userInfo = {
 // game module
 const game = {
   getGameRoomList: () => apiClient.get("/Game/GetGameRoomListResultData"),
+  getGameRoom: (id) =>
+    apiClient.get("/api/Game/GameRoom", {
+      params: {
+        gameRoomId: id,
+      },
+    }),
 };
 
 // 統一導出模組

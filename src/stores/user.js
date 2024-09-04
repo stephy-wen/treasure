@@ -39,13 +39,10 @@ export const useUserStore = defineStore("user", () => {
 
   // 定義 actions，用來從 API 獲取用戶信息
   const fetchUserInfo = async () => {
-    console.log(1);
     try {
       const response = await api.auth.getUserInfo();
-      console.log(2);
-      console.log(response);
-
       userInfo.value = response.data.data;
+      return userInfo.value; // **返回** userInfo.value，這樣可以讓 fetchedData 獲取到數據
     } catch (error) {
       console.error("Failed to fetch user info:", error);
     }

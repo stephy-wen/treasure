@@ -28,16 +28,16 @@
               <span class="dropdown-title">{{ section.title }}</span>
             </div>
             <li
-              v-for="link in section.links"
-              :key="link.roomNumber"
+              v-for="game in section.games"
+              :key="game.roomNumber"
               class="mx-0"
             >
               <router-link
                 class="dropdown-item winnie-dropdown-item my-2"
-                :to="link.url"
+                :to="game.url"
               >
-                <span class="me-5 room-number">{{ link.roomNumber }}</span>
-                <span class="game-type-name">{{ link.gameType }}</span>
+                <!-- <span class="me-5 room-number">{{ game.roomNumber }}</span> -->
+                <span class="game-type-name">{{ game.gameRoom }}</span>
               </router-link>
             </li>
           </div>

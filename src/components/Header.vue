@@ -48,9 +48,13 @@ import MobileHeader from "@/components/Header/MobileHeader.vue";
 import UserAvat from "@/assets/images/icon/NFT/09.png";
 
 import { ref, computed, onMounted } from "vue";
-import { logout } from "../services/auth"; // 引入登出函數
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
+import modules from "../services/modules"; // 引入 API 模組
+
+const {
+  game: { getGameRoom },
+} = modules;
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -73,46 +77,42 @@ display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in
 display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
 */
 
-// 參加的遊戲url處理
-// 模拟用户参与的游戏数据
-const userGames = ref([
-  {
-    url: "game/play-bnb.html",
-    roomNumber: "GID 1225",
-    gameType: "BINANCE",
-    status: "drawn",
-  },
-  {
-    url: "game/play-trx.html",
-    roomNumber: "GID 1136",
-    gameType: "TRON",
-    status: "in-progress",
-  },
-]);
-
 let gameData = ref(userStore.userInfo); // 使用 ref 來追蹤響應式資料
 
 const token = localStorage.getItem("token");
-console.log(token, "token");
-console.log(gameData.value, "Header");
 // 如果pinia被清空 在組件加載時再打一次api
 onMounted(async () => {
+  // 1. 獲取 userInfo 資料
   if (token && (!gameData.value || Object.keys(gameData.value).length === 0)) {
-    console.log(12345678);
-    const fetchData = await userStore.fetchUserInfo();
-    console.log(fetchData, "fetchData");
-    gameData.value = fetchData;
+    const fetchedData = await userStore.fetchUserInfo();
+    gameData.value = fetchedData;
   }
-  console.log(userStore.userInfo);
-  console.log(gameData.value, "has token");
 });
 
-// console.log(userStore.userInfo.data, "拿到的資料");
-// console.log(userStore.userInfo.data.playHistoryData, "拿到的資料");
-// const drawnGames = userGames.value.filter((game) => game.status === "drawn");
-// const inProgressGames = userGames.value.filter(
-//   (game) => game.status === "in-progress"
-// );
+// 為了避免 資料還沒取回 先顯示改由動態計算
+const playHistoryData = computed(() => gameData.value?.playHistoryData || []);
+
+// 使用 computed 來動態計算進行中的遊戲
+const inProgressGameLinks = computed(() => {
+  const inProgressGames = playHistoryData.value.filter(
+    (game) => !game.gameEnded
+  );
+  return transformGameData(inProgressGames);
+});
+
+// 使用 computed 來動態計算已結束的遊戲
+const drawnGameLinks = computed(() => {
+  const drawnGames = playHistoryData.value.filter((game) => game.gameEnded);
+  return transformGameData(drawnGames);
+});
+
+// 將遊戲歷史數據轉換成 `links` 所需的格式
+const transformGameData = (games) => {
+  return games.map((game) => ({
+    url: `/game/${game.gameRoomId}`, // 使用 gameRoomId 作為路由參數
+    gameRoom: game.gameRoomName,
+  }));
+};
 
 // 大致流程
 // 1.拿到使用者參加的所有遊戲
@@ -137,36 +137,12 @@ const navItems = ref([
       {
         circleClass: "red-circle",
         title: "Drawn",
-        links: [
-          {
-            url: "game/play-bnb.html",
-            roomNumber: "GID 1225",
-            gameType: "BINANCE",
-          },
-          {
-            url: "game/play-trx.html",
-            roomNumber: "GID 1136",
-            gameType: "TRON",
-          },
-        ],
-        // links: drawnGames.value, // 渲染已结束的游戏 等api
+        games: inProgressGameLinks,
       },
       {
         circleClass: "green-circle",
         title: "In Progress",
-        links: [
-          {
-            url: "game/play-bnb.html",
-            roomNumber: "GID 1225",
-            gameType: "BINANCE",
-          },
-          {
-            url: "game/play-trx.html",
-            roomNumber: "GID 1136",
-            gameType: "TRON",
-          },
-        ],
-        // links: inProgressGames.value, // 渲染进行中的游戏 等api
+        games: drawnGameLinks,
       },
     ],
     display: "authorized",
@@ -203,8 +179,6 @@ const navLinks = computed(() =>
   )
 );
 
-console.log(displayStatus.value);
-
 const navPhoneItems = ref([
   {
     id: 0,
@@ -231,18 +205,12 @@ const navPhoneItems = ref([
       {
         title: "Drawn",
         circleClass: "red-circle",
-        games: [
-          { gid: "GID 1225", type: "BINANCE", link: "/game/play-bnb" },
-          { gid: "GID 1136", type: "TRON", link: "/game/play-trx" },
-        ],
+        games: inProgressGameLinks,
       },
       {
         title: "In Progress",
         circleClass: "green-circle",
-        games: [
-          { gid: "GID 1234", type: "ETH", link: "/game/play-eth" },
-          { gid: "GID 5678", type: "BTC", link: "/game/play-btc" },
-        ],
+        games: drawnGameLinks,
       },
     ],
     display: "authorized",

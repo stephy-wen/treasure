@@ -40,17 +40,14 @@
               </span>
             </div>
             <li v-for="game in section.games" :key="game.gid" class="mx-0">
-              <a
+              <router-link
                 class="dropdown-item winnie-dropdown-item my-2 px-2 py-1"
-                :href="game.link"
+                :to="game.url"
               >
-                <span class="me-5 room-number fs-5 fw-regular">{{
-                  game.gid
-                }}</span>
                 <span class="game-type-name fs-5 fw-regular">{{
-                  game.type
+                  game.gameRoom
                 }}</span>
-              </a>
+              </router-link>
             </li>
           </div>
         </ul>
@@ -82,9 +79,9 @@ const collapseId = computed(() => `collapse${props.index}`);
 
 <style scoped>
 /* 可在這裡加入組件特有的樣式 */
-.dropdown-title{
+.dropdown-title {
   font-size: 1rem;
-  color: #F8F8F8;
+  color: #f8f8f8;
   font-weight: 600;
 }
 
@@ -124,21 +121,21 @@ const collapseId = computed(() => `collapse${props.index}`);
   color: #bbb;
 }
 
-.red-circle{
+.red-circle {
   width: 10px;
   height: 10px;
-  background-color: #F63E3D;
-  border: 1px solid #35485D;
+  background-color: #f63e3d;
+  border: 1px solid #35485d;
   border-radius: 50%;
-  display: inline-block
+  display: inline-block;
 }
 
-.green-circle{
+.green-circle {
   width: 10px;
   height: 10px;
-  background-color: #71F63D;
-  border: 1px solid #35485D;
+  background-color: #71f63d;
+  border: 1px solid #35485d;
   border-radius: 50%;
-  display: inline-block
+  display: inline-block;
 }
 </style>
