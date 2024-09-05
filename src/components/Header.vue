@@ -77,7 +77,7 @@ display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in
 display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
 */
 
-let gameData = ref(userStore.userInfo); // 使用 ref 來追蹤響應式資料
+let gameData = computed(() => userStore.userInfo); // 使用 computed 來響應式地追蹤 userInfo 的變化
 
 const token = localStorage.getItem("token");
 // 如果pinia被清空 在組件加載時再打一次api
