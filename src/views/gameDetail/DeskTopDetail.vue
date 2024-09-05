@@ -75,6 +75,10 @@
             <button
               class="game-attend-btn py-4 fs-1 fw-bold"
               @click="openJoinGameModal"
+              :disabled="gameData.votes === gameData.totalVotes"
+              :class="{
+                'disabled-button': gameData.votes === gameData.totalVotes,
+              }"
             >
               START
             </button>
@@ -686,5 +690,13 @@ const JoinGame = ref({
 
 #maxParticipantsModal {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 禁用狀態的按鈕樣式 */
+.disabled-button {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 </style>

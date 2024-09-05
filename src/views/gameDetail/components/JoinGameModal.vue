@@ -6,7 +6,6 @@
     id="joinModal"
     tabindex="-1"
     aria-labelledby="joinModalLabel"
-    aria-hidden="true"
     role="dialog"
     style="display: block"
   >
