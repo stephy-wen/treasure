@@ -6,8 +6,8 @@
         <div
           class="play-prize d-flex align-items-center justify-content-end ps-5"
         >
-          <img :src="gameDetails.prizeIcon" alt="prize icon" />
-          <p class="ms-2">{{ gameDetails.prizeAmount }}</p>
+          <img :src="gameData.prizeIcon" alt="prize icon" />
+          <p class="ms-2">{{ gameData.prizeAmount }}</p>
         </div>
       </div>
       <div>
@@ -16,11 +16,11 @@
             <img
               class="me-2"
               style="max-width: 24px"
-              :src="gameDetails.voteIcon"
+              :src="gameData.voteIcon"
               alt=""
             />Vote
           </p>
-          <span>{{ gameDetails.votes }} / {{ gameDetails.totalVotes }}</span>
+          <span>{{ gameData.votes }} / {{ gameData.totalVotes }}</span>
           <!-- 動態的參加数 -->
         </div>
       </div>
@@ -37,7 +37,7 @@
               <img
                 class="dollar-width"
                 style="cursor: pointer"
-                :src="gameDetails.dollarIcon"
+                :src="gameData.dollarIcon"
                 alt=""
                 @click="openJoinGameModal"
               />
@@ -84,7 +84,6 @@
               :gameInfo="JoinGame"
               @closeModal="showJoinGameModal = false"
               @showInsufficientFundsModal="showInsufficientFundsModal = true"
-              
             />
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
@@ -117,7 +116,7 @@
 
 <script setup>
 import { ref, defineProps } from "vue";
-import { images } from "@/assets/images.js";
+import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
 import JoinGameModal from "./components/JoinGameModal.vue";
@@ -127,12 +126,21 @@ import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import VotingFullModal from "./components/VotingFullModal.vue";
 import WinnerModal from "./components/WinnerModal.vue";
 import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
+import dollar from "@/assets/images/icon/dollar-phone2.png";
+import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
+
+const props = defineProps({
+  gameDetails: {
+    type: Object,
+    required: true,
+  },
+});
 
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
 const showWinnerModal = ref(false);
-const showInsufficientFundsModal = ref(false)
+const showInsufficientFundsModal = ref(false);
 
 // 打开模态框
 // 打開模態框的函數
@@ -141,6 +149,7 @@ const openModal = () => {
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
   console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
 };
+
 const openJoinGameModal = () => {
   console.log("openJoinGameModal function called in Desktop.vue");
   showJoinGameModal.value = true; // 确保将showJoinGameModal设置为true
@@ -164,12 +173,18 @@ const openWinnerModal = () => {
   showWinnerModal.value = true;
 };
 
-const props = defineProps({
-  gameDetails: {
-    type: Object,
-    required: true,
-  },
-});
+const gameData = ref({});
+
+gameData.value = {
+  title: props.gameDetails.name,
+  prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
+  prizeAmount: props.gameDetails.rewardQuantity,
+  voteIcon: mdiVote, // 固定投票圖標
+  votes: props.gameDetails.betQuantityTotal,
+  totalVotes: props.gameDetails.maxQuantity,
+  round: props.gameDetails.round || "-", // 預設回合數
+  dollarIcon: dollar, // 固定美元圖標
+};
 
 // 右側定義六角形頭像圖片
 const hexagonImages = [
