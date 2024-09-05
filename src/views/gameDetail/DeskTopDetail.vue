@@ -31,7 +31,7 @@
           <div
             class="game-intro-title d-flex justify-content-between align-items-start"
           >
-            <h1 class="fw-bold">HUNTING GAME</h1>
+            <h1 class="fw-bold">{{ gameDetails.name }}</h1>
             <div class="d-flex flex-column">
               <p class="d-block">ROUND {{ gameDetails.round }}</p>
               <img
