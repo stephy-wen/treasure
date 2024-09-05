@@ -56,10 +56,10 @@ const userInfo = {
 // game module
 const game = {
   getGameRoomList: () => apiClient.get("/Game/GameRoomList"),
-  getGameRoom: (id) =>
+  getGameRoom: (roomId) =>
     apiClient.get("/Game/GameRoom", {
       params: {
-        gameRoomId: id,
+        gameRoomId: roomId,
       },
     }),
   searchRoom: (name) =>
