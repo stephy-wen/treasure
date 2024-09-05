@@ -81,6 +81,7 @@
               :gameInfo="JoinGame"
               @closeModal="showJoinGameModal = false"
               @showInsufficientFundsModal="openInsufficientFundsModal"
+              @refreshGameDetails="refreshGameDetails"
             />
 
             <!-- InsufficientFunds Modal -->
@@ -112,7 +113,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, computed } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -143,8 +144,7 @@ const closeInsufficientFundsModal = () => {
   showInsufficientFundsModal.value = false;
 };
 
-const gameData = ref({});
-gameData.value = {
+const gameData = computed(() => ({
   title: props.gameDetails.name,
   prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
   prizeAmount: props.gameDetails.rewardQuantity,
@@ -153,7 +153,7 @@ gameData.value = {
   totalVotes: props.gameDetails.maxQuantity,
   round: props.gameDetails.round || "-", // 預設回合數
   dollarIcon: dollar, // 固定美元圖標
-};
+}));
 
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
@@ -224,6 +224,12 @@ const JoinGame = ref({
   title: props.gameDetails.name,
   betUnitAmount: props.gameDetails.betUnitAmount,
 });
+
+const emit = defineEmits(["refreshGameDetails"]);
+
+const refreshGameDetails = () => {
+  emit("refreshGameDetails");
+};
 </script>
 
 <style scoped>

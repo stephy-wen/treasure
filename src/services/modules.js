@@ -68,6 +68,8 @@ const game = {
         name,
       },
     }),
+  playGame: (gameRoomId, betQuantity) =>
+    apiClient.post("/Game/Vote", { gameRoomId, betQuantity }),
 };
 
 // 統一導出模組

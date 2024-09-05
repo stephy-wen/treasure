@@ -47,13 +47,13 @@
             </p>
           </div>
           <div class="attend-times-btn d-flex justify-content-center mt-2">
-            <button @click="setAttendTimes(1)">1</button>
-            <button @click="setAttendTimes(5)" class="mx-3 mx-md-4">5</button>
-            <button @click="setAttendTimes(10)">10</button>
+            <button @click="setAttendVote(1)">1</button>
+            <button @click="setAttendVote(5)" class="mx-3 mx-md-4">5</button>
+            <button @click="setAttendVote(10)">10</button>
           </div>
           <div class="attend-times-input mt-5">
             <span>x</span>
-            <input class="fs-6" min="1" type="text" v-model="attendTimes" />
+            <input class="fs-6" min="1" type="text" v-model="attendVote" />
             <!-- <span>Times</span> -->
           </div>
         </div>
@@ -76,8 +76,24 @@
 
 <script setup>
 import { ref, computed, onMounted, defineProps, defineEmits } from "vue";
+import { useUserStore } from "@/stores/user";
+import { useRoute } from "vue-router";
+import modules from "@/services/modules";
+
+const {
+  game: { playGame },
+} = modules;
 
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
+const userStore = useUserStore();
+const route = useRoute();
+
+// 使用 computed 來響應式地追蹤 userInfo 的變化
+const userData = computed(() => userStore.userInfo);
+
+// 使用 computed 來取得錢包金額
+const walletAmount = computed(() => userData.value?.balanceData?.balance);
+console.log(walletAmount.value);
 
 onMounted(() => {
   //const modalElement = modal.value; // 獲取模態框的 DOM 元素
@@ -91,33 +107,47 @@ const props = defineProps({
   gameInfo: Object,
 });
 
-console.log("isOpen prop in JoinGameModal:", props.gameInfo);
+// console.log("isOpen prop in JoinGameModal:", props.gameInfo);
 
-const emit = defineEmits(["closeModal", "showInsufficientFundsModal"]);
+const emit = defineEmits([
+  "closeModal",
+  "showInsufficientFundsModal",
+  "refreshGameDetails",
+]);
 
-const attendTimes = ref(1);
-const currentBalance = ref(1); //目前暫定玩家遊戲幣餘額
-const totalAmount = ref(2); //暫定遊戲費用
+const attendVote = ref(1);
 
 // 計算總扣款金額
 const totalAmountDeducted = computed(() => {
-  // 乘以 attendTimes 來計算總扣款金額
-  return attendTimes.value * props.gameInfo.betUnitAmount;
+  // 乘以 attendVote 來計算總扣款金額
+  return attendVote.value * props.gameInfo.betUnitAmount;
 });
 
 // 參加次數
-const setAttendTimes = (times) => {
-  attendTimes.value = times;
+const setAttendVote = (times) => {
+  attendVote.value = times;
 };
 
 // 點擊確認參加
-const confirmParticipation = () => {
+const confirmParticipation = async () => {
   // console.log('confirmParticipation function called'); // 檢查函數是否被觸發
-  if (totalAmount.value > currentBalance.value) {
-    console.log("Insufficient funds"); // 檢查條件是否滿足
+  if (totalAmountDeducted.value > walletAmount.value) {
     emit("showInsufficientFundsModal"); // 跳出餘額不足視窗
   } else {
     console.log("成功參與遊戲");
+    // 按下確認參加遊戲
+    const gameRoomId = route.params.gameId; // 獲取路由參數中的 gameId
+    try {
+      const res = await playGame(gameRoomId, attendVote.value);
+      console.log(res);
+      if (res.data.success) {
+        console.log("投注號碼為", res.data.data.betNumber);
+        // 投注成功後通知父組件刷新遊戲資料
+        emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
+      }
+    } catch (error) {
+      console.error("遊戲錯誤：", error);
+    }
   }
   emit("closeModal"); // 無論資金夠不夠，先關閉JoinGameModal
 };

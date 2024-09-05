@@ -84,6 +84,7 @@
               :gameInfo="JoinGame"
               @closeModal="showJoinGameModal = false"
               @showInsufficientFundsModal="openInsufficientFundsModal"
+              @refreshGameDetails="refreshGameDetails"
             />
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
@@ -115,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, computed } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -179,9 +180,13 @@ const openWinnerModal = () => {
   showWinnerModal.value = true;
 };
 
-const gameData = ref({});
+const emit = defineEmits(["refreshGameDetails"]);
 
-gameData.value = {
+const refreshGameDetails = () => {
+  emit("refreshGameDetails");
+};
+
+const gameData = computed(() => ({
   title: props.gameDetails.name,
   prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
   prizeAmount: props.gameDetails.rewardQuantity,
@@ -190,7 +195,7 @@ gameData.value = {
   totalVotes: props.gameDetails.maxQuantity,
   round: props.gameDetails.round || "-", // 預設回合數
   dollarIcon: dollar, // 固定美元圖標
-};
+}));
 
 // 右側定義六角形頭像圖片
 const hexagonImages = [

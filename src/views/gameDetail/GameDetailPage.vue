@@ -9,7 +9,11 @@
       <!-- 遊戲區塊 -->
       <template v-if="Object.keys(gameDetails).length > 0">
         <MobileDetail v-if="isMobile" :gameDetails="gameDetails" />
-        <DeskTopDetail v-else :gameDetails="gameDetails" />
+        <DeskTopDetail
+          v-else
+          :gameDetails="gameDetails"
+          @refreshGameDetails="loadGameDetails"
+        />
       </template>
       <hr class="my-5" />
 
@@ -211,48 +215,26 @@ const historyData = ref([
 const gameDetails = ref({}); // 初始化遊戲資料
 const route = useRoute(); // 獲取路由對象
 
-// 模拟游戏数据
-const games = {
-  eth123: {
-    imageSrc: playEth, // 动态图片
-    title: "THE POT", // 动态标题
-    prizeIcon: ethAccount, // 动态奖品图标
-    prizeAmount: "1.5", // 动态奖品金额
-    voteIcon: mdiVote, // 动态投票图标
-    votes: 8, // 动态投票数
-    totalVotes: 535, // 总票数
-    round: 1547,
-    dollarIcon: dollar,
-  },
-  bnb456: {
-    imageSrc: playBnb,
-    title: "BNB POT",
-    prizeIcon: bnbAccount,
-    prizeAmount: "2.0",
-    voteIcon: mdiVote,
-    votes: 12,
-    totalVotes: 600,
-    round: 1258,
-    dollarIcon: dollar,
-  },
-  // 添加更多游戏数据...
-};
-
-onMounted(async () => {
+// 定義重新獲取遊戲資料的函數
+const loadGameDetails = async () => {
   const gameId = route.params.gameId; // 獲取路由參數中的 gameId
   try {
     // 調用 API 獲取遊戲資料
     const response = await getGameRoom(gameId);
-    console.log(response, "s遊戲資料");
+    console.log(response, "遊戲資料");
     if (response && response.data.data) {
-      gameDetails.value = response.data.data; // 將 API 返回的資料賦值給 gameDetails
+      gameDetails.value = response.data.data; // 更新遊戲資料
     } else {
       console.error("未獲取到有效的遊戲資料");
     }
   } catch (error) {
     console.error("獲取遊戲資料時發生錯誤：", error);
   }
-  // gameDetails.value = games[gameId]; // 加载对应的游戏数据
+};
+
+// 初始化時調用一次，獲取遊戲資料
+onMounted(() => {
+  loadGameDetails();
 });
 </script>
 
