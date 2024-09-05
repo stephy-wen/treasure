@@ -74,7 +74,6 @@ const mapGameData = (game) => ({
 const fetchGames = async () => {
   try {
     const response = await getGameRoomList(); // 調用 API 獲取數據
-    console.log(response);
     games.value = response.data.data.map(mapGameData);
   } catch (error) {
     console.error("Error fetching game rooms:", error);
