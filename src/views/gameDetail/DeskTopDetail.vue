@@ -83,11 +83,11 @@
               :isOpen="showJoinGameModal"
               :gameInfo="JoinGame"
               @closeModal="showJoinGameModal = false"
-              @showInsufficientFundsModal="showInsufficientFundsModal = true"
+              @showInsufficientFundsModal="openInsufficientFundsModal"
             />
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
-              @closeModal="showInsufficientFundsModal = false"
+              @closeModal="closeInsufficientFundsModal"
             />
 
             <!-- maxParticipantsModal-->
@@ -140,7 +140,18 @@ const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
 const showWinnerModal = ref(false);
-const showInsufficientFundsModal = ref(false);
+const showInsufficientFundsModal = ref(false); // 控制InsufficientFundsModal的顯示與隱藏
+
+// 打開餘額不足的視窗
+const openInsufficientFundsModal = () => {
+  showJoinGameModal.value = false; // 先關閉JoinGameModal遊戲視窗
+  showInsufficientFundsModal.value = true;
+};
+
+// 關閉餘額不足的視窗
+const closeInsufficientFundsModal = () => {
+  showInsufficientFundsModal.value = false;
+};
 
 // 打开模态框
 // 打開模態框的函數
@@ -151,12 +162,7 @@ const openModal = () => {
 };
 
 const openJoinGameModal = () => {
-  console.log("openJoinGameModal function called in Desktop.vue");
   showJoinGameModal.value = true; // 确保将showJoinGameModal设置为true
-  console.log(
-    "showJoinGameModal value after openModal:",
-    showJoinGameModal.value
-  );
 };
 
 const openVotingFullModal = () => {

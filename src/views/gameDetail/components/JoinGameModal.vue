@@ -22,7 +22,7 @@
           <button
             type="button"
             class="btn winnie-btn-close"
-            @click="closeModal"
+            @click="$emit('closeModal')"
             aria-label="Close"
           >
             <font-awesome-icon icon="fa-solid fa-xmark" />
@@ -53,7 +53,7 @@
           </div>
           <div class="attend-times-input mt-5">
             <span>x</span>
-            <input class="fs-6" v-model="attendTimes"  min="1" type="text" />
+            <input class="fs-6" v-model="attendTimes" min="1" type="text" />
             <!-- <span>Times</span> -->
           </div>
         </div>
@@ -91,13 +91,13 @@ const props = defineProps({
   gameInfo: Object,
 });
 
-console.log("isOpen prop in JoinGameModal:", props.gameInfo);
+// console.log("isOpen prop in JoinGameModal:", props.gameInfo);
 
 const emit = defineEmits(["closeModal", "showInsufficientFundsModal"]);
 
 const attendTimes = ref(1);
 const currentBalance = ref(1); //目前暫定玩家遊戲幣餘額
-const totalAmount = ref(2)//暫定遊戲費用
+const totalAmount = ref(2); //暫定遊戲費用
 
 // 計算總費用
 // const totalAmount = computed(() => {
@@ -109,22 +109,17 @@ const setAttendTimes = (times) => {
   attendTimes.value = times;
 };
 
-const closeModal = () => {
-  emit("closeModal");
-};
-
 // 點擊確認參加
 const confirmParticipation = () => {
-  console.log('confirmParticipation function called'); // 檢查函數是否被觸發
+  // console.log('confirmParticipation function called'); // 檢查函數是否被觸發
   if (totalAmount.value > currentBalance.value) {
-    console.log('Insufficient funds'); // 檢查條件是否滿足
-    closeModal();
+    console.log("Insufficient funds"); // 檢查條件是否滿足
     emit("showInsufficientFundsModal"); // 跳出餘額不足視窗
   } else {
     console.log("成功參與遊戲");
   }
-}
-
+  emit("closeModal"); // 無論資金夠不夠，先關閉JoinGameModal
+};
 </script>
 
 <style scoped>

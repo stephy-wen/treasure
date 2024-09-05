@@ -11,11 +11,8 @@
     style="display: block"
   >
     <!-- Custom Modal Backdrop -->
-    <div
-    v-if="isOpen"
-    class="custom-backdrop"
-    ></div>
-    
+    <div v-if="isOpen" class="custom-backdrop"></div>
+
     <!-- Modal -->
     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
       <div class="modal-content">
@@ -27,9 +24,7 @@
             @click="closeModal"
             aria-label="Close"
           >
-            <font-awesome-icon
-              icon="fa-solid fa-xmark"
-            />
+            <font-awesome-icon icon="fa-solid fa-xmark" />
           </button>
         </div>
         <div class="modal-body">
@@ -94,7 +89,7 @@ const props = defineProps({
   players: Array,
 });
 
-console.log("isOpen prop in PlayerListModal:", props.isOpen);
+// console.log("isOpen prop in PlayerListModal:", props.isOpen);
 
 const emit = defineEmits(["closeModal"]);
 
@@ -113,46 +108,46 @@ const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
 <style scoped>
 #playerListModal .modal-header,
 #playerListSmModal .modal-header {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 #playerListModal .modal-footer,
 #playerListSmModal .modal-footer {
-    border-top: none;
+  border-top: none;
 }
 
 #playerListModal .modal-content {
-  background-color: #181A20;
+  background-color: #181a20;
 }
 
 #playerListModal .table,
 #playerListSmModal .table {
-    --bs-table-bg: transparent;
-    color: #F8F8F8;
-    --bs-table-color: none;
-    width: 100%;
-    margin: 0;
+  --bs-table-bg: transparent;
+  color: #f8f8f8;
+  --bs-table-color: none;
+  width: 100%;
+  margin: 0;
 }
 
 #playerListModal .table .player-list-name {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
-#playerListModal .table td, 
+#playerListModal .table td,
 #playerListModal .table th {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .winnie-btn-close {
-    background-color: #1E2329;
-    color: #F8F8F8;
-    border-radius: 50px;
-    border: none;
+  background-color: #1e2329;
+  color: #f8f8f8;
+  border-radius: 50px;
+  border: none;
 }
 
 .winnie-btn-close:hover {
-    background-color: #414D5A;
-    color: #F8F8F8;
+  background-color: #414d5a;
+  color: #f8f8f8;
 }
 
 .custom-backdrop {
@@ -164,5 +159,4 @@ const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 0;
 }
-
 </style>
