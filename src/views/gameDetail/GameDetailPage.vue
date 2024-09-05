@@ -3,7 +3,7 @@
     <div class="container play-container mt-2 mt-md-3 mt-lg-5">
       <!-- 遊戲banner -->
       <div class="play-cover">
-        <img class="w-100" :src="gameDetails.imageSrc" alt="" />
+        <img class="w-100" :src="gameDetails.playImgUrl" alt="" />
       </div>
 
       <!-- 遊戲區塊 -->
@@ -27,11 +27,11 @@
       </button>
     </div>
     <!-- 分頁組件 -->
-    <Pagination
+    <!-- <Pagination
       :totalItems="totalItems"
       :itemsPerPage="itemsPerPage"
       @page-changed="fetchPageData"
-    />
+    /> -->
   </div>
 </template>
 
@@ -41,7 +41,6 @@ import ethAccount from "@/assets/images/icon/ETH-account.svg";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 import playBnb from "@/assets/images/common/play_bnb.png";
 import bnbAccount from "@/assets/images/icon/BNB-account.svg";
-import HexagonImage from "@/assets/images/icon/NFT/08.png";
 import verify from "@/assets/images/icon/arcoDesign-launch 1.svg";
 import nft01 from "@/assets/images/icon/NFT/01.png";
 import nft02 from "@/assets/images/icon/NFT/02.png";
@@ -51,8 +50,6 @@ import nft05 from "@/assets/images/icon/NFT/05.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import { images } from "@/assets/images.js";
 
-import HexagonButton from "./components/HexagonButton.vue";
-import PlayerListModal from "./components/PlayerListModal.vue";
 import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
 import TableComponent from "@/components/TableComponent.vue";
@@ -60,6 +57,11 @@ import Pagination from "@/components/Pagination.vue";
 
 import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
+import modules from "@/services/modules.js";
+
+const {
+  game: { getGameRoom },
+} = modules;
 
 // 監聽螢幕變化起
 const isMobile = ref(window.innerWidth < 575.98);
@@ -206,44 +208,8 @@ const historyData = ref([
 ]);
 // 模擬歷史紀錄 功能結束
 
-const route = useRoute();
-const gameId = route.params.gameId; // 获取游戏 ID
-
-const showModal = ref(false); //player list modal
-
-// 模拟加载游戏详情数据
-const gameDetails = ref({});
-
-// 模擬參加人數數據
-const hexagonNumber = ref({});
-// playersList data
-const playersList = [
-  {
-    name: "hehe15235",
-    image: "@/assets/images/icon/NFT/01.png",
-    vote: 1,
-    rate: 12.5,
-  },
-  {
-    name: "1515djijiedd",
-    image: "@/assets/images/icon/NFT/02.png",
-    vote: 1,
-    rate: 12.5,
-  },
-  // 其他玩家数据...
-];
-
-// 定义 HexagonButton 的图片
-const hexagonImages = [
-  images.nft01,
-  images.nft02,
-  images.nft03,
-  images.nft04,
-  images.nft05,
-  images.nft06,
-  images.nft07,
-  images.HexagonImage,
-];
+const gameDetails = ref({}); // 初始化遊戲資料
+const route = useRoute(); // 獲取路由對象
 
 // 模拟游戏数据
 const games = {
@@ -272,9 +238,21 @@ const games = {
   // 添加更多游戏数据...
 };
 
-onMounted(() => {
-  const gameId = route.params.gameId; // 获取路由参数 gameId
-  gameDetails.value = games[gameId]; // 加载对应的游戏数据
+onMounted(async () => {
+  const gameId = route.params.gameId; // 獲取路由參數中的 gameId
+  try {
+    // 調用 API 獲取遊戲資料
+    const response = await getGameRoom(gameId);
+    console.log(response, "s遊戲資料");
+    if (response && response.data.data) {
+      gameDetails.value = response.data.data; // 將 API 返回的資料賦值給 gameDetails
+    } else {
+      console.error("未獲取到有效的遊戲資料");
+    }
+  } catch (error) {
+    console.error("獲取遊戲資料時發生錯誤：", error);
+  }
+  // gameDetails.value = games[gameId]; // 加载对应的游戏数据
 });
 </script>
 
