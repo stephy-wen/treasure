@@ -221,12 +221,17 @@ const playersList = [
   // 其他玩家数据...
 ];
 
+let iconImage;
+
+if (props.gameDetails.betSymbol === "POINT") {
+  iconImage = backgroundImage01;
+}
 // join game data
 const JoinGame = ref({
-  backgroundImage: backgroundImage01,
-  round: 1501,
-  title: "Game Title",
-  vote: 1,
+  backgroundImage: iconImage,
+  round: props.gameDetails.round,
+  title: props.gameDetails.name,
+  betUnitAmount: props.gameDetails.betUnitAmount,
 });
 </script>
 

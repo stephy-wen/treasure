@@ -131,7 +131,6 @@ const props = defineProps({
   },
 });
 
-const gameData = ref({});
 const showInsufficientFundsModal = ref(false); // 控制InsufficientFundsModal的顯示與隱藏
 
 const openInsufficientFundsModal = () => {
@@ -144,6 +143,7 @@ const closeInsufficientFundsModal = () => {
   showInsufficientFundsModal.value = false;
 };
 
+const gameData = ref({});
 gameData.value = {
   title: props.gameDetails.name,
   prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
@@ -212,12 +212,17 @@ const playersList = [
   // 其他玩家数据...
 ];
 
+let iconImage;
+
+if (props.gameDetails.betSymbol === "POINT") {
+  iconImage = backgroundImage01;
+}
 // join game data
 const JoinGame = ref({
-  backgroundImage: backgroundImage01,
-  round: 1501,
-  title: "Game Title",
-  vote: 1,
+  backgroundImage: iconImage,
+  round: props.gameDetails.round,
+  title: props.gameDetails.name,
+  betUnitAmount: props.gameDetails.betUnitAmount,
 });
 </script>
 

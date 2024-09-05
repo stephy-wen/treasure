@@ -43,7 +43,7 @@
                 style="width: 50px"
                 src="@/assets/images/icon/balance-icon.png"
                 alt=""
-              />{{ totalAmount }}
+              />{{ totalAmountDeducted }}
             </p>
           </div>
           <div class="attend-times-btn d-flex justify-content-center mt-2">
@@ -53,7 +53,7 @@
           </div>
           <div class="attend-times-input mt-5">
             <span>x</span>
-            <input class="fs-6" v-model="attendTimes" min="1" type="text" />
+            <input class="fs-6" min="1" type="text" v-model="attendTimes" />
             <!-- <span>Times</span> -->
           </div>
         </div>
@@ -91,7 +91,7 @@ const props = defineProps({
   gameInfo: Object,
 });
 
-// console.log("isOpen prop in JoinGameModal:", props.gameInfo);
+console.log("isOpen prop in JoinGameModal:", props.gameInfo);
 
 const emit = defineEmits(["closeModal", "showInsufficientFundsModal"]);
 
@@ -99,10 +99,11 @@ const attendTimes = ref(1);
 const currentBalance = ref(1); //目前暫定玩家遊戲幣餘額
 const totalAmount = ref(2); //暫定遊戲費用
 
-// 計算總費用
-// const totalAmount = computed(() => {
-//   return props.gameInfo.voted * attendTimes.value;
-// });
+// 計算總扣款金額
+const totalAmountDeducted = computed(() => {
+  // 乘以 attendTimes 來計算總扣款金額
+  return attendTimes.value * props.gameInfo.betUnitAmount;
+});
 
 // 參加次數
 const setAttendTimes = (times) => {
