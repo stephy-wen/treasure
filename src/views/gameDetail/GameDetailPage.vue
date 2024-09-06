@@ -59,7 +59,7 @@ import DeskTopDetail from "./DeskTopDetail.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
 
-import { onMounted, ref, onBeforeUnmount } from "vue";
+import { onMounted, ref, onBeforeUnmount, provide } from "vue";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules.js";
 
@@ -212,6 +212,9 @@ const historyData = ref([
 ]);
 // 模擬歷史紀錄 功能結束
 
+const votes = ref(null); // 使用 ref 來讓 votes 成為響應式變量
+const maxVotes = ref(null);
+
 const gameDetails = ref({}); // 初始化遊戲資料
 const route = useRoute(); // 獲取路由對象
 
@@ -221,8 +224,9 @@ const loadGameDetails = async () => {
   try {
     // 調用 API 獲取遊戲資料
     const response = await getGameRoom(gameId);
-    console.log(response, "遊戲資料");
     if (response && response.data.data) {
+      votes.value = response.data.data.betQuantityTotal;
+      maxVotes.value = response.data.data.maxQuantity;
       gameDetails.value = response.data.data; // 更新遊戲資料
     } else {
       console.error("未獲取到有效的遊戲資料");
@@ -233,9 +237,14 @@ const loadGameDetails = async () => {
 };
 
 // 初始化時調用一次，獲取遊戲資料
-onMounted(() => {
-  loadGameDetails();
+onMounted(async () => {
+  await loadGameDetails(); // 等待 API 請求完成後再做其他操作
 });
+
+// 正確地使用 provide 傳遞響應式對象本身，而不是它的值
+provide("gameDetails", gameDetails); // 傳遞 ref 對象，而不是 .value
+provide("votes", votes); // 傳遞 ref 對象
+provide("maxVotes", maxVotes); // 傳遞 ref 對象
 </script>
 
 <style scoped>

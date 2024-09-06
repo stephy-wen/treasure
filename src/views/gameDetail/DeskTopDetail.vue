@@ -89,6 +89,7 @@
               @closeModal="showJoinGameModal = false"
               @showInsufficientFundsModal="openInsufficientFundsModal"
               @refreshGameDetails="refreshGameDetails"
+              @showVotingFullModal="openVotingFullModal"
             />
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
@@ -241,6 +242,8 @@ const JoinGame = ref({
   round: props.gameDetails.round,
   title: props.gameDetails.name,
   betUnitAmount: props.gameDetails.betUnitAmount,
+  vote: props.gameDetails.betQuantityTotal,
+  maxVote: props.gameDetails.maxQuantity,
 });
 </script>
 

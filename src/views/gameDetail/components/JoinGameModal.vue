@@ -74,10 +74,26 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, defineProps, defineEmits } from "vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  defineProps,
+  defineEmits,
+  inject,
+} from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules";
+
+const props = defineProps({
+  isOpen: Boolean,
+  gameInfo: Object,
+});
+
+const votes = inject("votes");
+const maxVotes = inject("maxVotes");
+const gameDetails = inject("gameDetails");
 
 const {
   game: { playGame },
@@ -101,13 +117,6 @@ onMounted(() => {
   //console.log(isHidden); // 檢查模態框是否隱藏
 });
 
-const props = defineProps({
-  isOpen: Boolean,
-  gameInfo: Object,
-});
-
-// console.log("isOpen prop in JoinGameModal:", props.gameInfo);
-
 const emit = defineEmits([
   "closeModal",
   "showInsufficientFundsModal",
@@ -129,7 +138,6 @@ const setAttendVote = (times) => {
 
 // 點擊確認參加
 const confirmParticipation = async () => {
-  // console.log('confirmParticipation function called'); // 檢查函數是否被觸發
   if (totalAmountDeducted.value > walletAmount.value) {
     emit("showInsufficientFundsModal"); // 跳出餘額不足視窗
   } else {
@@ -143,6 +151,11 @@ const confirmParticipation = async () => {
         console.log("投注號碼為", res.data.data.betNumber);
         // 投注成功後通知父組件刷新遊戲資料
         emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
+        // 檢查遊戲，是否投票已滿
+        if (votes.value === maxVotes.value) {
+          emit("showVotingFullModal");
+          console.log("看有無發出emit showVoting");
+        }
       }
     } catch (error) {
       console.error("遊戲錯誤：", error);
