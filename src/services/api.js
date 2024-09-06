@@ -1,5 +1,8 @@
 // src/services/api.js
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // 建立 axios 實例
 const apiClient = axios.create({
@@ -31,8 +34,12 @@ apiClient.interceptors.response.use(
   (error) => {
     // 可在這裡做全局錯誤處理
     if (error.response.status === 401) {
-      // 比如跳轉到登入頁面
-      window.location = "/login";
+      console.log("Token 過期或無效，請重新登入。");
+      console.log(router);
+      // 清除本地存儲的 token
+      localStorage.removeItem("token");
+
+      router.push("/login");
     }
     return Promise.reject(error);
   }

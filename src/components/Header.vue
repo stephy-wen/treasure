@@ -86,6 +86,7 @@ onMounted(async () => {
   if (token) {
     // 檢查是否需要重新獲取用戶資料
     if (!gameData.value || Object.keys(gameData.value).length === 0) {
+      console.log("造成程式崩潰的地方");
       // 如果 pinia 中的 userInfo 沒有值，打 API
       const fetchedData = await userStore.fetchUserInfo(); // 調用 API
       gameData.value = fetchedData; // 更新 gameData
