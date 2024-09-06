@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed, onMounted } from "vue";
+import { ref, defineProps, computed, onMounted, watch } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -244,6 +244,30 @@ const emit = defineEmits(["refreshGameDetails"]);
 const refreshGameDetails = () => {
   emit("refreshGameDetails");
 };
+
+// 監聽 gameDetails 的變化
+watch(
+  () => props.gameDetails,
+  (newDetails) => {
+    // 當遊戲結束且有贏家時，打開 WinnerModal
+    if (newDetails.gameEnded && newDetails.winnerName) {
+      // 更新 WinnerData，以確保彈窗顯示最新的贏家資訊
+      WinnerData.value = {
+        winnerName: newDetails.winnerName,
+        winnerAvatarUrl: newDetails.winnerAvatarUrl,
+        backgroundImage: backgroundImage01,
+      };
+      openWinnerModal();
+    }
+  }
+);
+
+// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
+onMounted(() => {
+  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
+    openWinnerModal();
+  }
+});
 </script>
 
 <style scoped>
