@@ -151,14 +151,22 @@ const confirmParticipation = async () => {
         console.log("投注號碼為", res.data.data.betNumber);
         // 投注成功後通知父組件刷新遊戲資料
         emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
-        // 檢查遊戲，是否投票已滿
-        if (votes.value === maxVotes.value) {
-          emit("showVotingFullModal");
-          console.log("看有無發出emit showVoting");
-        }
       }
     } catch (error) {
-      console.error("遊戲錯誤：", error);
+      // 檢查遊戲，是否投票已滿
+      console.log(error.response.data.message);
+      console.log(error, "遊戲錯誤：error");
+
+      if (error.response.data.message === "Vote is over quantity") {
+        emit("showVotingFullModal");
+        console.log("看有無發出emit showVoting");
+      }
+      // 因為打失敗直接進來這邊 所以vote不會被更新到 所以這段永遠不會執行到。
+      if (votes.value === maxVotes.value) {
+        emit("showVotingFullModal");
+        console.log("votes.value === maxVotes.value");
+      }
+      //console.error("遊戲錯誤：", error);
     }
   }
   emit("closeModal"); // 無論資金夠不夠，先關閉JoinGameModal
