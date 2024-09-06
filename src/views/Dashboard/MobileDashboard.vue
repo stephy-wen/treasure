@@ -121,75 +121,11 @@
       </div>
     </div>
 
-      <div class="container px-3 px-sm-0 mt-5">
-        <div class="transaction-detail">
-          <div class="transaction-month mb-3">
-            <p>June, 2024</p>
-          </div>
-          <div class="d-flex justify-content-center">
-            <div class="accordion accordion-flush" id="accordionTransactionDetail">
-              <div class="accordion-item mb-2">
-                <h2  class="accordion-header" id="flush-headingOne">
-                  <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                      <span class="fs-5 winnie-color-gray">Deposit</span>
-                      <span class="fs-5 me-2 fw-bold">+4,000</span>
-                    </div>
-                  </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionTransactionDetail">
-                  <div class="accordion-body p-0">
-                    <a href="#">
-                    <div class="accordion-li pt-2 pb-4 px-4">
-                      <div class="d-flex justify-content-between time-stamp mt-3 winnie-color-gray">
-                          <p>Timestamp</p>
-                          <p class="text-end">2024/06/13 18:24:53</p>
-                      </div>
-                      <div class="d-flex justify-content-between round mt-2">
-                        <p class="winnie-color-gray">Verify</p>
-                        <img src="@/assets/images/icon/arcoDesign-launch 1.svg" alt="">
-                    </div>
-                    </div>
-                  </a>
-                  </div>
-                </div>
-              </div>
+    <TransactionDetail
+      month="June, 2024"
+      :transactions="transaction"
+    />
 
-              <div class="accordion-item mb-2">
-                <h2  class="accordion-header" id="flush-headingTwo">
-                  <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                      <span class="fs-5 winnie-color-gray">Deposit</span>
-                      <span class="fs-5 me-2 fw-bold">+4,000</span>
-                    </div>
-                  </button>
-                </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionTransactionDetail">
-                  <div class="accordion-body p-0">
-                    <a href="#">
-                    <div class="accordion-li pt-2 pb-4 px-4">
-                      <div class="d-flex justify-content-between time-stamp mt-3 winnie-color-gray">
-                          <p>Timestamp</p>
-                          <p class="text-end">2024/06/13 18:24:53</p>
-                      </div>
-                      <div class="d-flex justify-content-between round mt-2">
-                        <p class="winnie-color-gray">Verify</p>
-                        <img src="@/assets/images/icon/arcoDesign-launch 1.svg" alt="">
-                    </div>
-                    </div>
-                  </a>
-                  </div>
-                </div>
-              </div>
-              <div class="more-btn mt-5">
-                <button class="text-center py-3">
-                  <span>More</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     </div>
     </div>
@@ -199,6 +135,7 @@
 <script setup>
   import { ref } from "vue";
   import GetRewardsModal from "./component/GetRewardsModal.vue";
+  import TransactionDetail from "../../components/AccordionComponent.vue";
 
   const showGetRewardsModal = ref(false);
 
@@ -208,6 +145,10 @@
     console.log("showGetRewardsModal value after openModal:", showGetRewardsModal.value);
   }
 
+  const transaction = ref([
+    { type: 'Deposit', amount: '4,000', timestamp: '2024/06/13 18:24:53' },
+    { type: 'Withdraw', amount: '2,000', timestamp: '2024/06/13 18:24:53' }
+  ])
 </script>
 
 <style scoped>

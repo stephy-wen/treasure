@@ -82,40 +82,40 @@ watch(
 
 <style scoped>
 .winnie-btn-close {
-    background-color: #1E2329;
-    color: #F8F8F8;
-    border-radius: 50px;
-    border: none;
+	background-color: #1E2329;
+	color: #F8F8F8;
+	border-radius: 50px;
+	border: none;
 }
 
 .winnie-btn-close:hover {
-    background-color: #414D5A;
-    color: #F8F8F8;
+	background-color: #414D5A;
+	color: #F8F8F8;
 }
 
 #maxParticipantsModal .modal-background {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 #maxParticipantsModal .modal-header {
-    border-bottom: none;
+	border-bottom: none;
 }
 
 #maxParticipantsModal .modal-footer {
-    border-top: none;
+	border-top: none;
 }
 
 #maxParticipantsModal .winnie-color-gray{
-    color: #BBB;
+	color: #BBB;
 }
 
 #maxParticipantsModal .modal-dialog .modal-content {
-    min-height: 300px;
+	min-height: 300px;
 }
 
 #maxParticipantsModal {
-    background-color: rgba(0, 0, 0, 0.50);
+	background-color: rgba(0, 0, 0, 0.50);
 }
 </style>

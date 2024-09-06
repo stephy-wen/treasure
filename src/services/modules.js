@@ -51,6 +51,7 @@ const account = {
 const userInfo = {
   changeNickname: (name) => apiClient.post("/Account/ChangeNickname", { name }), // 變更暱稱
   getAvatarList: () => apiClient.get("/Account/AvatarList"), // 取得頭像列表
+  getAccountInfo: () => apiClient.get("/Account/AccountInfo"), // 取得用戶資訊
 };
 
 // game module
@@ -72,10 +73,18 @@ const game = {
     apiClient.post("/Game/Vote", { gameRoomId, betQuantity }),
 };
 
+// 取得出入金網路 幣種以及金額設定
+const asset = {
+  getCryptocurrencySetting: () => apiClient.get("/Asset/CryptocurrencySetting"),
+  withdrawApply: () => apiClient.post("/Asset/WithdrawApply", formData), // 出金申請
+};
+
+
 // 統一導出模組
 export default {
   auth,
   account,
   game,
   userInfo,
+  asset,
 };
