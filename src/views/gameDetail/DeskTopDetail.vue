@@ -253,7 +253,6 @@ const WinnerData = ref({
 watch(
   () => props.gameDetails,
   (newDetails) => {
-    console.log("gameDetails 更新:", newDetails);
     // 當遊戲結束且有贏家時，打開 WinnerModal
     if (newDetails.gameEnded && newDetails.winnerName) {
       // 更新 WinnerData，以確保彈窗顯示最新的贏家資訊
@@ -269,10 +268,8 @@ watch(
 
 // 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
 onMounted(() => {
-  console.log("DeskTopDetail 組件已掛載");
   // 檢查遊戲是否已經結束並且有贏家
   if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
-    console.log("名字為空");
     openWinnerModal();
   }
 });
