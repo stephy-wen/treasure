@@ -82,6 +82,7 @@
             >
               START
             </button>
+
             <!-- Join Modal -->
             <JoinGameModal
               :isOpen="showJoinGameModal"
@@ -91,6 +92,8 @@
               @refreshGameDetails="refreshGameDetails"
               @showVotingFullModal="openVotingFullModal"
             />
+
+            <!-- 餘額不足modal -->
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
               @closeModal="closeInsufficientFundsModal"
@@ -107,7 +110,7 @@
 
             <WinnerModal
               :isOpen="showWinnerModal"
-              :gameInfo="JoinGame"
+              :winnerInfo="WinnerData"
               @closeModal="showWinnerModal = false"
             />
             <button class="btn btn-outline-primary" @click="openWinnerModal">
@@ -121,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed } from "vue";
+import { ref, defineProps, computed, onMounted } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -168,20 +171,14 @@ const openModal = () => {
 };
 
 const openJoinGameModal = () => {
-  showJoinGameModal.value = true; // 确保将showJoinGameModal设置为true
+  showJoinGameModal.value = true;
 };
 
 const openVotingFullModal = () => {
-  console.log("openVotingFullModal function called in Desktop.vue");
-  showVotingFullModal.value = true; // 确保将showVotingFullModal设置为true
-  console.log(
-    "showVotingFullModal value after openModal:",
-    showVotingFullModal.value
-  );
+  showVotingFullModal.value = true;
 };
 
 const openWinnerModal = () => {
-  console.log("openWinnerModal function called in Desktop.vue");
   showWinnerModal.value = true;
 };
 
@@ -201,6 +198,13 @@ const gameData = computed(() => ({
   round: props.gameDetails.round || "-", // 預設回合數
   dollarIcon: dollar, // 固定美元圖標
 }));
+
+// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
+onMounted(() => {
+  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
+    openWinnerModal(); // 如果遊戲結束且有贏家則打開 WinnerModal
+  }
+});
 
 // 右側定義六角形頭像圖片
 const hexagonImages = [
@@ -244,6 +248,12 @@ const JoinGame = ref({
   betUnitAmount: props.gameDetails.betUnitAmount,
   vote: props.gameDetails.betQuantityTotal,
   maxVote: props.gameDetails.maxQuantity,
+});
+
+const WinnerData = ref({
+  winnerName: props.gameDetails.winnerName,
+  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
+  backgroundImage: iconImage,
 });
 </script>
 

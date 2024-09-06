@@ -101,11 +101,13 @@
               :isOpen="showVotingFullModal"
               @closeModal="showVotingFullModal = false"
             />
+
             <WinnerModal
               :isOpen="showWinnerModal"
-              :gameInfo="JoinGame"
+              :winnerInfo="WinnerData"
               @closeModal="showWinnerModal = false"
             />
+
             <button class="btn btn-outline-primary" @click="openWinnerModal">
               WinnerModal
             </button>
@@ -159,6 +161,13 @@ const gameData = computed(() => ({
   dollarIcon: dollar, // 固定美元圖標
 }));
 
+// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
+onMounted(() => {
+  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
+    openWinnerModal(); // 如果遊戲結束且有贏家則打開 WinnerModal
+  }
+});
+
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
@@ -172,19 +181,14 @@ const openModal = () => {
   console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
 };
 const openJoinGameModal = () => {
-  showJoinGameModal.value = true; // 确保将showJoinGameModal设置为true
+  showJoinGameModal.value = true;
 };
+
 const openVotingFullModal = () => {
-  console.log("openVotingFullModal function called in Mobile.vue");
-  showVotingFullModal.value = true; // 确保将showVotingFullModal设置为true
-  console.log(
-    "showVotingFullModal value after openModal:",
-    showVotingFullModal.value
-  );
+  showVotingFullModal.value = true;
 };
 
 const openWinnerModal = () => {
-  console.log("openWinnerModal function called in Mobile.vue");
   showWinnerModal.value = true;
 };
 
@@ -227,6 +231,12 @@ const JoinGame = ref({
   round: props.gameDetails.round,
   title: props.gameDetails.name,
   betUnitAmount: props.gameDetails.betUnitAmount,
+});
+
+const WinnerData = ref({
+  winnerName: props.gameDetails.winnerName,
+  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
+  backgroundImage: iconImage,
 });
 
 const emit = defineEmits(["refreshGameDetails"]);
