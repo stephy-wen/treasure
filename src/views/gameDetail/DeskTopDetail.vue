@@ -246,7 +246,7 @@ const JoinGame = ref({
 const WinnerData = ref({
   winnerName: props.gameDetails.winnerName,
   winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
-  backgroundImage: iconImage,
+  backgroundImage: props.gameDetails.attendImgUrl,
 });
 
 // 監聽 gameDetails 的變化
@@ -259,7 +259,7 @@ watch(
       WinnerData.value = {
         winnerName: newDetails.winnerName,
         winnerAvatarUrl: newDetails.winnerAvatarUrl,
-        backgroundImage: backgroundImage01,
+        backgroundImage: newDetails.attendImgUrl,
       };
       openWinnerModal();
     }
