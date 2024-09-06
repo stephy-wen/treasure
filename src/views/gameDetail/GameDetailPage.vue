@@ -55,7 +55,7 @@ import DeskTopDetail from "./DeskTopDetail.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
 
-import { onMounted, ref, onBeforeUnmount, provide } from "vue";
+import { onMounted, ref, onBeforeUnmount, provide, watch } from "vue";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules.js";
 
@@ -236,6 +236,14 @@ const loadGameDetails = async () => {
 onMounted(async () => {
   await loadGameDetails(); // 等待 API 請求完成後再做其他操作
 });
+
+// 監聽路由參數變化，當 gameId 改變時重新加載數據
+watch(
+  () => route.params.gameId, // 假設路由參數是 gameId
+  (newGameId) => {
+    loadGameDetails(newGameId); // 當參數變化時重新加載數據
+  }
+);
 
 // 正確地使用 provide 傳遞響應式對象本身，而不是它的值
 provide("gameDetails", gameDetails); // 傳遞 ref 對象，而不是 .value

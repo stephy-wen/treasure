@@ -124,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed, onMounted } from "vue";
+import { ref, defineProps, computed, onMounted, watch } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -199,13 +199,6 @@ const gameData = computed(() => ({
   dollarIcon: dollar, // 固定美元圖標
 }));
 
-// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
-onMounted(() => {
-  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
-    openWinnerModal(); // 如果遊戲結束且有贏家則打開 WinnerModal
-  }
-});
-
 // 右側定義六角形頭像圖片
 const hexagonImages = [
   images.nft01,
@@ -254,6 +247,34 @@ const WinnerData = ref({
   winnerName: props.gameDetails.winnerName,
   winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
   backgroundImage: iconImage,
+});
+
+// 監聽 gameDetails 的變化
+watch(
+  () => props.gameDetails,
+  (newDetails) => {
+    console.log("gameDetails 更新:", newDetails);
+    // 當遊戲結束且有贏家時，打開 WinnerModal
+    if (newDetails.gameEnded && newDetails.winnerName) {
+      // 更新 WinnerData，以確保彈窗顯示最新的贏家資訊
+      WinnerData.value = {
+        winnerName: newDetails.winnerName,
+        winnerAvatarUrl: newDetails.winnerAvatarUrl,
+        backgroundImage: backgroundImage01,
+      };
+      openWinnerModal();
+    }
+  }
+);
+
+// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
+onMounted(() => {
+  console.log("DeskTopDetail 組件已掛載");
+  // 檢查遊戲是否已經結束並且有贏家
+  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
+    console.log("名字為空");
+    openWinnerModal();
+  }
 });
 </script>
 
