@@ -26,7 +26,6 @@ const emit = defineEmits(["openModal"]);
 
 const handleClick = () => {
   if (props.isClickable) {
-    console.log("openModal event triggered");
     emit("openModal");
   }
 };
