@@ -139,6 +139,7 @@ import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
 import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
+import defaultAvatar from "@/assets/images/icon/player-list.svg";
 
 // api import
 const {
@@ -244,7 +245,14 @@ const getPlayerData = async (gameId) => {
     playData.value = res.data.data; // 這邊就是所有玩家資料的array
 
     // 使用 map 將玩家的 playerIconUrl 提取出來
-    hexagonImages.value = playData.value.map((player) => player.playerIconUrl);
+    hexagonImages.value = playData.value
+      .map((player) => player.playerIconUrl)
+      .slice(0, 8);
+
+    // 如果玩家不足 8 個，用預設圖片補齊
+    while (hexagonImages.value.length < 8) {
+      hexagonImages.value.push(defaultAvatar);
+    }
 
     playListData.value = playData.value.map((player) => ({
       name: player.player,
