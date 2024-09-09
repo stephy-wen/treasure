@@ -70,6 +70,12 @@ const game = {
     }),
   playGame: (gameRoomId, betQuantity) =>
     apiClient.post("/Game/Vote", { gameRoomId, betQuantity }),
+  getGamePlayer: (gameRoomId) =>
+    apiClient.get("/Game/GamePlayHistory", {
+      params: {
+        gameRoomId,
+      },
+    }),
 };
 
 // 統一導出模組

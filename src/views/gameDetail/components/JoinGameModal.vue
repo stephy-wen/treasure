@@ -108,7 +108,6 @@ const userData = computed(() => userStore.userInfo);
 
 // 使用 computed 來取得錢包金額
 const walletAmount = computed(() => userData.value?.balanceData?.balance);
-console.log(walletAmount.value);
 
 onMounted(() => {
   //const modalElement = modal.value; // 獲取模態框的 DOM 元素

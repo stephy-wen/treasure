@@ -67,7 +67,7 @@
             <!-- PlayListModal -->
             <PlayerListModal
               :isOpen="showModal"
-              :players="playersList"
+              :players="playListData"
               @closeModal="showModal = false"
             />
           </div>
@@ -138,6 +138,13 @@ import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 
+import { useRoute } from "vue-router";
+import modules from "@/services/modules.js";
+
+const {
+  game: { getGamePlayer },
+} = modules;
+
 const props = defineProps({
   gameDetails: {
     type: Object,
@@ -162,12 +169,9 @@ const closeInsufficientFundsModal = () => {
   showInsufficientFundsModal.value = false;
 };
 
-// 打开模态框
-// 打開模態框的函數
+// 打開模態框
 const openModal = () => {
-  console.log("openModal function called in Desktop.vue"); // 檢查是否觸發
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
-  console.log("showModal value after openModal:", showModal.value); // 確認 showModal 的值是否正確設置為 true
 };
 
 const openJoinGameModal = () => {
@@ -200,33 +204,46 @@ const gameData = computed(() => ({
 }));
 
 // 右側定義六角形頭像圖片
-const hexagonImages = [
-  images.nft01,
-  images.nft02,
-  images.nft03,
-  images.nft04,
-  images.nft05,
-  images.nft06,
-  images.nft07,
-  images.HexagonImage,
-];
+// const hexagonImages = [
+//   images.nft01,
+//   images.nft02,
+//   images.nft03,
+//   images.nft04,
+//   images.nft05,
+//   images.nft06,
+//   images.nft07,
+//   images.HexagonImage,
+// ];
 
-// playersList data
-const playersList = [
-  {
-    name: "hehe15235",
-    image: NFT01,
-    vote: 1,
-    rate: 12.5,
-  },
-  {
-    name: "1515djijiedd",
-    image: NFT02,
-    vote: 1,
-    rate: 12.5,
-  },
-  // 其他玩家数据...
-];
+const route = useRoute(); // 獲取路由對象
+
+const playData = ref({});
+const hexagonImages = ref([]);
+const playListData = ref([]);
+
+const getPlayerData = async (gameId) => {
+  try {
+    const res = await getGamePlayer(gameId);
+    playData.value = res.data.data; // 這邊就是所有玩家資料的array
+
+    // 使用 map 將玩家的 playerIconUrl 提取出來
+    hexagonImages.value = playData.value.map((player) => player.playerIconUrl);
+
+    playListData.value = playData.value.map((player) => ({
+      name: player.player,
+      votes: player.voteAmount,
+      rate: player.voteRate,
+    }));
+  } catch (error) {}
+};
+
+// 監聽路由參數 gameId 的變化，當路由變化時重新獲取玩家資料
+watch(
+  () => route.params.gameId,
+  (newGameId) => {
+    getPlayerData(newGameId); // 當 gameId 變化時，重新載入資料
+  }
+);
 
 let iconImage;
 
@@ -268,6 +285,8 @@ watch(
 
 // 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
 onMounted(() => {
+  // 拿玩家資料
+  getPlayerData(route.params.gameId);
   // 檢查遊戲是否已經結束並且有贏家
   if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
     openWinnerModal();
