@@ -125,5 +125,6 @@ const props = defineProps({
 
 .rewards-list-dropdown .dropdown-menu .leaderboard-container .table {
   --bs-table-bg: transparent;
+  border-radius: 0px;
 }
 </style>

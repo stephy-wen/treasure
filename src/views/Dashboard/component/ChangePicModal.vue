@@ -33,10 +33,10 @@
 							<div class="d-flex">
 								<div class="row gy-3">
 									<div
-                  class="col-3 text-center"
-                  v-for="(avatars, index) in avatars"
-                  :key="index"
-                  >
+									class="col-3 text-center"
+									v-for="(avatars, index) in avatars"
+									:key="index"
+									>
 									<img 
 									src="@/assets/images/icon/NFT/09.png" 
 									alt="Avatar" class="avatar-img" 
