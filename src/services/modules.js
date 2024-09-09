@@ -62,19 +62,27 @@ const game = {
         gameRoomId: roomId,
       },
     }),
+
   searchRoom: (name) =>
     apiClient.get("/Game/GameRoomByName", {
       params: {
         name,
       },
     }),
+
   playGame: (gameRoomId, betQuantity) =>
     apiClient.post("/Game/Vote", { gameRoomId, betQuantity }),
+
   getGamePlayer: (gameRoomId) =>
     apiClient.get("/Game/GamePlayHistory", {
       params: {
         gameRoomId,
       },
+    }),
+
+  getGameWinnerHistory: (gid, pageSize, pageIndex) =>
+    apiClient.get("/Game/GameWinnerHistory", {
+      params: { gid, pageSize, pageIndex },
     }),
 };
 
