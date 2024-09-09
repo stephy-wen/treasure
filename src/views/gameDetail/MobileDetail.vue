@@ -134,6 +134,7 @@ import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
 import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
+import defaultAvatar from "@/assets/images/icon/player-list.svg";
 
 const {
   game: { getGamePlayer },
@@ -227,6 +228,7 @@ const getPlayerData = async (gameId) => {
     while (hexagonImages.value.length < 8) {
       hexagonImages.value.push(defaultAvatar);
     }
+    console.log(nonExistentVariable); // 這會觸發 ReferenceError: nonExistentVariable is not defined
 
     playListData.value = playData.value.map((player) => ({
       name: player.player,
