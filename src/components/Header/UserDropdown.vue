@@ -65,9 +65,9 @@
       </div>
 
       <li class="mt-4">
-        <a
+        <router-link
           class="dropdown-item winnie-member-info fs-6 fw-bold"
-          href="dashboard"
+          to="/dashboard"
         >
           <img
             class="me-3 mb-1"
@@ -76,7 +76,7 @@
             alt="Dashboard Icon"
           />
           Dashboard
-        </a>
+        </router-link>
       </li>
       <li class="mt-2">
         <a

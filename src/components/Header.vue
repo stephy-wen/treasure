@@ -83,14 +83,20 @@ const token = localStorage.getItem("token");
 // 如果pinia被清空 在組件加載時再打一次api
 onMounted(async () => {
   // 1. 獲取 userInfo 資料
-  if (token && (!gameData.value || Object.keys(gameData.value).length === 0)) {
-    const fetchedData = await userStore.fetchUserInfo();
-    gameData.value = fetchedData; // 保存 API 返回的數據
+  if (token) {
+    // 檢查是否需要重新獲取用戶資料
+    if (!gameData.value || Object.keys(gameData.value).length === 0) {
+      // 如果 pinia 中的 userInfo 沒有值，打 API
+      const fetchedData = await userStore.fetchUserInfo(); // 調用 API
+      gameData.value = fetchedData; // 更新 gameData
 
-    // 從 API 返回的數據中提取需要的信息
-    userId.value = gameData.value.name; // 更新用戶ID
-    balance.value = gameData.value.balanceData.balance; // 更新餘額
-    userAvatar.value = gameData.value.avatarUrl; // 更新用戶頭像
+      // 更新用戶信息
+      if (fetchedData) {
+        userId.value = fetchedData.name; // 更新用戶ID
+        balance.value = fetchedData.balanceData.balance; // 更新餘額
+        userAvatar.value = fetchedData.avatarUrl; // 更新用戶頭像
+      }
+    }
   }
 });
 
@@ -147,12 +153,12 @@ const navItems = ref([
       {
         circleClass: "red-circle",
         title: "Drawn",
-        games: inProgressGameLinks,
+        games: drawnGameLinks,
       },
       {
         circleClass: "green-circle",
         title: "In Progress",
-        games: drawnGameLinks,
+        games: inProgressGameLinks,
       },
     ],
     display: "authorized",
@@ -199,12 +205,12 @@ const navPhoneItems = ref([
       {
         title: "Drawn",
         circleClass: "red-circle",
-        games: inProgressGameLinks,
+        games: drawnGameLinks,
       },
       {
         title: "In Progress",
         circleClass: "green-circle",
-        games: drawnGameLinks,
+        games: inProgressGameLinks,
       },
     ],
     display: "authorized",

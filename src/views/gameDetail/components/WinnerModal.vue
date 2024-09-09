@@ -15,7 +15,7 @@
     >
       <div
         class="modal-content modal-background"
-        :style="{ backgroundImage: `url(${gameInfo.backgroundImage})` }"
+        :style="{ backgroundImage: `url(${winnerInfo.backgroundImage})` }"
       >
         <div class="modal-header pb-0 d-flex justify-content-between">
           <h5 class="modal-title" id="winnerModalLabel"></h5>
@@ -25,9 +25,7 @@
             @click="closeModal"
             aria-label="Close"
           >
-            <font-awesome-icon
-              icon="fa-solid fa-xmark"
-            />
+            <font-awesome-icon icon="fa-solid fa-xmark" />
           </button>
         </div>
         <div
@@ -37,8 +35,8 @@
             <p class="fs-2 fw-bold">WINNER</p>
           </div>
           <div class="winner-info mt-5">
-            <img src="@/assets/images/icon/NFT/09.png" alt="" />
-            <p class="fs-5 fw-bold mt-2">hehe15235</p>
+            <img :src="winnerInfo.winnerAvatarUrl" alt="avatar" />
+            <p class="fs-5 fw-bold mt-2">{{ winnerInfo.winnerName }}</p>
           </div>
         </div>
         <div class="modal-footer mx-auto">
@@ -50,7 +48,6 @@
 </template>
 
 <script setup>
-
 import { ref, watch, onMounted, defineProps, defineEmits } from "vue";
 
 const countdown = ref(5); //初始化倒數計時5秒
@@ -64,7 +61,7 @@ onMounted(() => {
 
 const props = defineProps({
   isOpen: Boolean,
-  gameInfo: Object,
+  winnerInfo: Object,
 });
 
 const emit = defineEmits(["closeModal"]);
@@ -74,35 +71,34 @@ const closeModal = () => {
 };
 
 watch(
-	() => props.isOpen, //監聽props.isOpen的變化
-	(newVal) => {
-		if (newVal) {
-			countdown.value = 5 //每次打開modal都會重置倒數
-			const timer = setInterval(() => {
-				if (countdown.value > 0) {
-					countdown.value -= 1;
-				} else {
-					clearInterval(timer);
-					closeModal();
-				}
-			}, 1000);
-		}
-	} 
-)
+  () => props.isOpen, //監聽props.isOpen的變化
+  (newVal) => {
+    if (newVal) {
+      countdown.value = 5; //每次打開modal都會重置倒數
+      const timer = setInterval(() => {
+        if (countdown.value > 0) {
+          countdown.value -= 1;
+        } else {
+          clearInterval(timer);
+          closeModal();
+        }
+      }, 1000);
+    }
+  }
+);
 </script>
 
 <style scoped>
-
 .winnie-btn-close {
-    background-color: #1E2329;
-    color: #F8F8F8;
-    border-radius: 50px;
-    border: none;
+  background-color: #1e2329;
+  color: #f8f8f8;
+  border-radius: 50px;
+  border: none;
 }
 
 .winnie-btn-close:hover {
-  background-color: #414D5A;
-  color: #F8F8F8;
+  background-color: #414d5a;
+  color: #f8f8f8;
 }
 
 #winnerModal .modal-background {
@@ -124,7 +120,7 @@ watch(
 }
 
 #winnerModal .modal-footer .winnie-color-gray {
-  color: #BBB;
+  color: #bbb;
 }
 
 .modal-content {

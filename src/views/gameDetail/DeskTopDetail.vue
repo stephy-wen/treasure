@@ -82,6 +82,7 @@
             >
               START
             </button>
+
             <!-- Join Modal -->
             <JoinGameModal
               :isOpen="showJoinGameModal"
@@ -89,7 +90,10 @@
               @closeModal="showJoinGameModal = false"
               @showInsufficientFundsModal="openInsufficientFundsModal"
               @refreshGameDetails="refreshGameDetails"
+              @showVotingFullModal="openVotingFullModal"
             />
+
+            <!-- 餘額不足modal -->
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
               @closeModal="closeInsufficientFundsModal"
@@ -106,7 +110,7 @@
 
             <WinnerModal
               :isOpen="showWinnerModal"
-              :gameInfo="JoinGame"
+              :winnerInfo="WinnerData"
               @closeModal="showWinnerModal = false"
             />
             <button class="btn btn-outline-primary" @click="openWinnerModal">
@@ -120,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed } from "vue";
+import { ref, defineProps, computed, onMounted, watch } from "vue";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -167,20 +171,14 @@ const openModal = () => {
 };
 
 const openJoinGameModal = () => {
-  showJoinGameModal.value = true; // 确保将showJoinGameModal设置为true
+  showJoinGameModal.value = true;
 };
 
 const openVotingFullModal = () => {
-  console.log("openVotingFullModal function called in Desktop.vue");
-  showVotingFullModal.value = true; // 确保将showVotingFullModal设置为true
-  console.log(
-    "showVotingFullModal value after openModal:",
-    showVotingFullModal.value
-  );
+  showVotingFullModal.value = true;
 };
 
 const openWinnerModal = () => {
-  console.log("openWinnerModal function called in Desktop.vue");
   showWinnerModal.value = true;
 };
 
@@ -241,6 +239,39 @@ const JoinGame = ref({
   round: props.gameDetails.round,
   title: props.gameDetails.name,
   betUnitAmount: props.gameDetails.betUnitAmount,
+  vote: props.gameDetails.betQuantityTotal,
+  maxVote: props.gameDetails.maxQuantity,
+});
+
+const WinnerData = ref({
+  winnerName: props.gameDetails.winnerName,
+  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
+  backgroundImage: props.gameDetails.attendImgUrl,
+});
+
+// 監聽 gameDetails 的變化
+watch(
+  () => props.gameDetails,
+  (newDetails) => {
+    // 當遊戲結束且有贏家時，打開 WinnerModal
+    if (newDetails.gameEnded && newDetails.winnerName) {
+      // 更新 WinnerData，以確保彈窗顯示最新的贏家資訊
+      WinnerData.value = {
+        winnerName: newDetails.winnerName,
+        winnerAvatarUrl: newDetails.winnerAvatarUrl,
+        backgroundImage: newDetails.attendImgUrl,
+      };
+      openWinnerModal();
+    }
+  }
+);
+
+// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
+onMounted(() => {
+  // 檢查遊戲是否已經結束並且有贏家
+  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
+    openWinnerModal();
+  }
 });
 </script>
 
