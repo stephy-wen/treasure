@@ -121,18 +121,19 @@
 <script setup>
 import { ref, defineProps, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { images, getCurrencyIcon } from "@/assets/images.js";
+import { getCurrencyIcon } from "@/assets/images.js";
+import modules from "@/services/modules.js";
+
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
 import JoinGameModal from "./components/JoinGameModal.vue";
-import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import VotingFullModal from "./components/VotingFullModal.vue";
 import WinnerModal from "./components/WinnerModal.vue";
 import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
+
+import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
-
-import modules from "@/services/modules.js";
 
 const {
   game: { getGamePlayer },
@@ -145,17 +146,19 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["refreshGameDetails"]);
+
+const showModal = ref(false); //player list modal 控制模態框是否顯示
+const showJoinGameModal = ref(false);
+const showVotingFullModal = ref(false);
+const showWinnerModal = ref(false);
 const showInsufficientFundsModal = ref(false); // 控制InsufficientFundsModal的顯示與隱藏
 
-const openInsufficientFundsModal = () => {
-  showJoinGameModal.value = false; // 先關閉JoinGameModal遊戲視窗
-  showInsufficientFundsModal.value = true; // 打開InsufficientFundsModal餘額不足視窗
-};
-
-// 關閉餘額不足的視窗
-const closeInsufficientFundsModal = () => {
-  showInsufficientFundsModal.value = false;
-};
+const playData = ref({});
+const hexagonImages = ref([]);
+const playListData = ref([]);
+const route = useRoute(); // 獲取路由對象
+let iconImage;
 
 const gameData = computed(() => ({
   title: props.gameDetails.name,
@@ -168,20 +171,33 @@ const gameData = computed(() => ({
   dollarIcon: dollar, // 固定美元圖標
 }));
 
-// 檢查 `winnerName` 並決定是否顯示 `WinnerModal`
-onMounted(() => {
-  if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
-    openWinnerModal(); // 如果遊戲結束且有贏家則打開 WinnerModal
-  }
+if (props.gameDetails.betSymbol === "POINT") {
+  iconImage = backgroundImage01;
+}
+
+// join game data
+const JoinGame = ref({
+  backgroundImage: iconImage,
+  round: props.gameDetails.round,
+  title: props.gameDetails.name,
+  betUnitAmount: props.gameDetails.betUnitAmount,
 });
 
-const showModal = ref(false); //player list modal 控制模態框是否顯示
-const showJoinGameModal = ref(false);
-const showVotingFullModal = ref(false);
-const showWinnerModal = ref(false);
+const WinnerData = ref({
+  winnerName: props.gameDetails.winnerName,
+  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
+  backgroundImage: iconImage,
+});
 
-// 打开模态框
-// 打開模態框的函數
+const openInsufficientFundsModal = () => {
+  showJoinGameModal.value = false; // 先關閉JoinGameModal遊戲視窗
+  showInsufficientFundsModal.value = true; // 打開InsufficientFundsModal視窗
+};
+
+const closeInsufficientFundsModal = () => {
+  showInsufficientFundsModal.value = false;
+};
+
 const openModal = () => {
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
 };
@@ -197,19 +213,20 @@ const openWinnerModal = () => {
   showWinnerModal.value = true;
 };
 
-const route = useRoute(); // 獲取路由對象
-
-const playData = ref({});
-const hexagonImages = ref([]);
-const playListData = ref([]);
-
 const getPlayerData = async (gameId) => {
   try {
     const res = await getGamePlayer(gameId);
     playData.value = res.data.data; // 這邊就是所有玩家資料的array
 
     // 使用 map 將玩家的 playerIconUrl 提取出來
-    hexagonImages.value = playData.value.map((player) => player.playerIconUrl);
+    hexagonImages.value = playData.value
+      .map((player) => player.playerIconUrl)
+      .slice(0, 8);
+
+    // 如果玩家不足 8 個，用預設圖片補齊
+    while (hexagonImages.value.length < 8) {
+      hexagonImages.value.push(defaultAvatar);
+    }
 
     playListData.value = playData.value.map((player) => ({
       name: player.player,
@@ -219,6 +236,10 @@ const getPlayerData = async (gameId) => {
   } catch (error) {}
 };
 
+const refreshGameDetails = () => {
+  emit("refreshGameDetails");
+};
+
 // 監聽路由參數 gameId 的變化，當路由變化時重新獲取玩家資料
 watch(
   () => route.params.gameId,
@@ -226,31 +247,6 @@ watch(
     getPlayerData(newGameId); // 當 gameId 變化時，重新載入資料
   }
 );
-
-let iconImage;
-
-if (props.gameDetails.betSymbol === "POINT") {
-  iconImage = backgroundImage01;
-}
-// join game data
-const JoinGame = ref({
-  backgroundImage: iconImage,
-  round: props.gameDetails.round,
-  title: props.gameDetails.name,
-  betUnitAmount: props.gameDetails.betUnitAmount,
-});
-
-const WinnerData = ref({
-  winnerName: props.gameDetails.winnerName,
-  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
-  backgroundImage: iconImage,
-});
-
-const emit = defineEmits(["refreshGameDetails"]);
-
-const refreshGameDetails = () => {
-  emit("refreshGameDetails");
-};
 
 // 監聽 gameDetails 的變化
 watch(

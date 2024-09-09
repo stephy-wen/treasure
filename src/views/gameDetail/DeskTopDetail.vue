@@ -227,18 +227,6 @@ const openWinnerModal = () => {
   showWinnerModal.value = true;
 };
 
-// 右側定義六角形頭像圖片
-// const hexagonImages = [
-//   images.nft01,
-//   images.nft02,
-//   images.nft03,
-//   images.nft04,
-//   images.nft05,
-//   images.nft06,
-//   images.nft07,
-//   images.HexagonImage,
-// ];
-
 const getPlayerData = async (gameId) => {
   try {
     const res = await getGamePlayer(gameId);
