@@ -203,7 +203,9 @@ const openModal = () => {
   showModal.value = true; // 當接收到 openModal 事件時顯示模態框
 };
 const openJoinGameModal = () => {
-  showJoinGameModal.value = true;
+  if (gameData.value.votes !== gameData.value.totalVotes) {
+    showJoinGameModal.value = true;
+  }
 };
 
 const openVotingFullModal = () => {

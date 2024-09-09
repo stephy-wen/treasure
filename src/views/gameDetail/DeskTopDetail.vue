@@ -36,10 +36,15 @@
               <p class="d-block">ROUND {{ gameDetails.round }}</p>
               <img
                 class="dollar-width"
-                style="cursor: pointer"
                 :src="gameData.dollarIcon"
                 alt=""
                 @click="openJoinGameModal"
+                :style="{
+                  cursor:
+                    gameData.votes === gameData.totalVotes
+                      ? 'not-allowed'
+                      : 'pointer',
+                }"
               />
             </div>
           </div>
@@ -216,7 +221,9 @@ const openModal = () => {
 };
 
 const openJoinGameModal = () => {
-  showJoinGameModal.value = true;
+  if (gameData.value.votes !== gameData.value.totalVotes) {
+    showJoinGameModal.value = true;
+  }
 };
 
 const openVotingFullModal = () => {
