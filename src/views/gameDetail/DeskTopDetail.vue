@@ -254,7 +254,9 @@ const getPlayerData = async (gameId) => {
       votes: player.voteAmount,
       rate: player.voteRate,
     }));
-  } catch (error) {}
+  } catch (error) {
+    console.error("取得玩家資料時發生錯誤：", error);
+  }
 };
 
 const refreshGameDetails = () => {
@@ -290,7 +292,7 @@ watch(
 onMounted(() => {
   // 拿玩家資料
   getPlayerData(route.params.gameId);
-  // 檢查遊戲是否已經結束並且有贏家
+  // 檢查遊戲是否已經結束
   if (props.gameDetails.gameEnded && props.gameDetails.winnerName) {
     openWinnerModal();
   }
