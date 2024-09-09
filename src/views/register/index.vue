@@ -27,6 +27,7 @@
                 class="form-control"
                 id="floatingInputEmailRegister"
                 placeholder="Email"
+                @keydown.enter.prevent="handleButtonClick"
               />
               <label for="floatingInput">Email</label>
             </div>
@@ -37,6 +38,7 @@
                 id="floatingInputReferralCode"
                 placeholder="Referral code (optional)"
                 v-model="referralCode"
+                @keydown.enter.prevent="handleButtonClick"
               />
               <label for="floatingInput">Referral code (optional)</label>
             </div>
@@ -62,9 +64,10 @@
             </p>
             <input
               type="text"
+              class="input-field verification-code-input my-3 w-100"
               placeholder="Verification Code"
               v-model="verificationCode"
-              class="input-field verification-code-input my-3 w-100"
+              @keydown.enter.prevent="handleButtonClick"
             />
           </template>
 
@@ -98,9 +101,10 @@
             <div class="form-floating mb-3">
             <input
               type="password"
+              class="form-control input-field"
               placeholder="New Password"
               v-model="password"
-              class="form-control input-field"
+              @keydown.enter.prevent="handleButtonClick"
             />
             <label for="floatingInput">Password</label>
             </div>
@@ -108,8 +112,9 @@
             <input
               type="password"
               placeholder="Confirm Password"
-              v-model="confirmPassword"
               class="form-control input-field"
+              v-model="confirmPassword"
+              @keydown.enter.prevent="handleButtonClick"
             />
             <label for="floatingInput">Confirm</label>
             </div>

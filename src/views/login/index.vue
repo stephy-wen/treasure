@@ -26,6 +26,7 @@
                 id="floatingInputEmailReset"
                 placeholder="Email"
                 v-model="email"
+                @keydown.enter.prevent="handleButtonClick"
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -60,6 +61,7 @@
               id="floatingInputPasswordReset"
               placeholder="New Password"
               v-model="password"
+              @keydown.enter.prevent="handleButtonClick"
             />
             <label for="floatingInputPasswordReset">Password</label>
             </div>

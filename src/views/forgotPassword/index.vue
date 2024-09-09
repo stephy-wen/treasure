@@ -22,11 +22,12 @@
           <template v-slot:email-input v-if="currentStep === 1">
             <div class="form-floating mb-3">
               <input
-                v-model="email"
                 id="floatingInputEmailReset"
                 class="form-control"
                 type="email"
                 placeholder="Email"
+                v-model="email"
+                @keydown.enter.prevent="handleButtonClick"
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -78,26 +79,29 @@
               within 30 minutes.
             </p>
             <input
-              v-model="verificationCode"
-              class="input-field"
               type="text"
+              class="input-field"
               placeholder="Verification Code"
+              v-model="verificationCode"
+              @keydown.enter.prevent="handleButtonClick"
             />
           </template>
 
           <!-- 步驟 4: 設置密碼 -->
           <template v-slot:extra-password v-if="currentStep === 4">
             <input
-              v-model="newPassword"
-              class="input-field"
               type="password"
+              class="input-field"
               placeholder="New Password"
+              v-model="newPassword"
+              @keydown.enter.prevent="handleButtonClick"
             />
             <input
               type="password"
+              class="input-field"
               placeholder="Confirm Password"
               v-model="confirmPassword"
-              class="input-field"
+              @keydown.enter.prevent="handleButtonClick"
             />
           </template>
 
@@ -171,7 +175,8 @@ const isButtonDisabled = ref(false);
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
   // handleStepChange(currentStep.value + 1);
-
+  console.log(newPassword.value)
+  console.log(confirmPassword.value)
   if (!validateStep()) return; // 驗證失敗 終止後續操作
 
   isButtonDisabled.value = true; // 禁用按鈕

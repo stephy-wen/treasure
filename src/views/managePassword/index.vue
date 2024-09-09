@@ -17,7 +17,6 @@
           :handleButtonClick="handleButtonClick"
           @goToLogin="returnToLogin"
         >
-
           <!-- 步驟 1: 輸入原密碼、新密碼、Email驗證 -->
           <template v-slot:extra-password v-if="currentStep === 1">
             <div class="mb-3" v-if="currentStep === 1">
@@ -31,6 +30,7 @@
                   placeholder="Enter your current Password"
                   id="managePasswordCurrentPassword"
                   v-model="currentPassword"
+                  @keydown.enter.prevent
                 />
               </div>
             </div>
@@ -44,6 +44,7 @@
                 placeholder="Enter your New Password"
                 id="managePasswordNewPassword"
                 v-model="newPassword"
+                @keydown.enter.prevent
               />
             </div>
             <div class="mb-3">
@@ -52,10 +53,11 @@
               >
               <input
                 type="password"
+                id="managePasswordConfirmPassword"
                 class="form-control"
                 placeholder="Enter your new password again"
-                id="managePasswordConfirmPassword"
                 v-model="confirmPassword"
+                @keydown.enter.prevent
               />
             </div>
             <div class="mb-3">
@@ -65,10 +67,11 @@
               <div class="d-flex align-items-center gap-1">
                 <input
                   type="password"
-                  class="form-control"
                   id="inputEmailAuthentication"
+                  class="form-control"
                   v-model="verificationCode"
                   placeholder="Enter code"
+                  @keydown.enter.prevent="handleButtonClick"
                 />
                 <button
                   type="button"
@@ -80,15 +83,15 @@
                 </button>
                 <!-- 測試 -->
                 <p v-if="!isTimerActive" class="mt-2">
-                <button
-                  type="button"
-                  class="btn btn-resend-code"
-                  @click="resendCode"
-                  :disabled="isTimerActive"
-                >
-                  Resend Code
-                </button>
-                <span v-if="isTimerActive"> ({{ timer }}s)</span>
+                  <button
+                    type="button"
+                    class="btn btn-resend-code"
+                    @click="resendCode"
+                    :disabled="isTimerActive"
+                  >
+                    Resend Code
+                  </button>
+                  <span v-if="isTimerActive"> ({{ timer }}s)</span>
                 </p>
                 <!-- 測試 -->
               </div>
@@ -96,7 +99,7 @@
             <p
               v-if="currentStep === 1"
               class="mb-1 text-start"
-              style="color: #75797e; font-size: 12px;"
+              style="color: #75797e; font-size: 12px"
             >
               To protect your account, you won't be able to withdraw funds or
               use P2P trading to sell crypto for 24 hours after you reset or
@@ -176,7 +179,6 @@ const validateEmailCode = (code) => {
   return code === emailCode; // 比对验证码
 };
 
-
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
   if (!validateStep()) return; // 驗證失敗 終止後續操作
@@ -216,7 +218,7 @@ const handleStepChange = (newStep) => {
 };
 
 // 變更密碼函數
-const ChangePassword = async() => {
+const ChangePassword = async () => {
   try {
     // 建構請求資料
     const passwordPayload = {
@@ -229,19 +231,21 @@ const ChangePassword = async() => {
     const response = await changePassword(passwordPayload);
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
-      errorMessage.value ="";
+      errorMessage.value = "";
     }
     console.log("變更成功", response.data);
-
   } catch (error) {
     console.error("變更失敗", error.response ? error.response.data : error);
     // 處理錯誤
     errorMessage.value = handleApiError(error);
   }
-}
+};
 
 const validateStep = () => {
-  if (currentStep.value === 1 && !validateCurrentPassword(currentPassword.value)) {
+  if (
+    currentStep.value === 1 &&
+    !validateCurrentPassword(currentPassword.value)
+  ) {
     errorMessage.value = "Incorrect current password.";
     console.log("Current password is incorrect.");
     return false;
@@ -275,8 +279,14 @@ const validatePasswords = () => {
   const rules = [
     { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
     { regex: /[0-9]/, message: "Password must contain at least one number." },
-    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
-    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+    {
+      regex: /[a-z]/,
+      message: "Password must contain at least one lowercase letter.",
+    },
+    {
+      regex: /[A-Z]/,
+      message: "Password must contain at least one uppercase letter.",
+    },
   ];
 
   for (const rule of rules) {
@@ -286,7 +296,7 @@ const validatePasswords = () => {
   }
 
   if (errors.length > 0) {
-    errorMessage.value = errors.join('\n');
+    errorMessage.value = errors.join("\n");
     return false;
   }
 
@@ -320,7 +330,6 @@ const resendCode = async () => {
     startTimer();
   }
 };
-
 
 // 驗證驗證碼
 const verifyCode = async () => {
@@ -407,7 +416,7 @@ const verifyCode = async () => {
 }
 
 .winnie-bg-dark input.form-control {
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;
@@ -420,24 +429,24 @@ const verifyCode = async () => {
 }
 
 .winnie-bg-dark input.form-control::placeholder {
-  color: #BBB;
+  color: #bbb;
 }
 
 .manage-pw-container .manage-pw-form label {
-  color: #181A20;
+  color: #181a20;
 }
 
 .manage-pw-container .manage-pw-form input::placeholder {
-  color: #BBB;
+  color: #bbb;
 }
 
 .winnie-bg-dark .manage-pw-container .form-control {
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   border-radius: 4px;
 }
 
 .winnie-bg-dark .manage-pw-container .form-control:focus {
-  border: 1px solid #181A20;
+  border: 1px solid #181a20;
   outline: none;
 }
 
@@ -446,12 +455,12 @@ const verifyCode = async () => {
 }
 
 @media (min-width: 991.98px) and (max-width: 1199.98px) {
-    .winnie-bg-dark .manage-pw-container .fs-1 {
-      font-size: calc(0.75rem + 1.5vw) !important;
-    }
-    .manage-pw-form {
-      padding: 10px;
-    }
+  .winnie-bg-dark .manage-pw-container .fs-1 {
+    font-size: calc(0.75rem + 1.5vw) !important;
+  }
+  .manage-pw-form {
+    padding: 10px;
+  }
 }
 
 @media (min-width: 991.98px) {
@@ -462,13 +471,12 @@ const verifyCode = async () => {
 }
 
 .winnie-bg-dark .btn-send-code {
-  background-color: #181A20;
-  color: #F8F8F8;
+  background-color: #181a20;
+  color: #f8f8f8;
   border: none;
 }
 
 .winnie-bg-dark .btn-send-code:hover {
-  background-color: #2B3139;
+  background-color: #2b3139;
 }
-
 </style>
