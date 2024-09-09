@@ -22,16 +22,17 @@
         <TableComponent
           Title="History"
           :headers="headers"
-          :data="historyData"
+          :data="currentItems"
+          :imageFirst="true"
         />
       </div>
     </div>
     <!-- 分頁組件 -->
-    <!-- <Pagination
+    <Pagination
       :totalItems="totalItems"
       :itemsPerPage="itemsPerPage"
       @page-changed="fetchPageData"
-    /> -->
+    />
   </div>
 </template>
 
@@ -49,6 +50,12 @@ import nft04 from "@/assets/images/icon/NFT/04.png";
 import nft05 from "@/assets/images/icon/NFT/05.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import { images } from "@/assets/images.js";
+import dayjs from "dayjs";
+
+// 格式化日期函數
+const formatDate = (isoDateString) => {
+  return dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
+};
 
 import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
@@ -60,7 +67,7 @@ import { useRoute } from "vue-router";
 import modules from "@/services/modules.js";
 
 const {
-  game: { getGameRoom },
+  game: { getGameRoom, getGameWinnerHistory },
 } = modules;
 
 // 監聽螢幕變化起
@@ -83,29 +90,74 @@ onBeforeUnmount(() => {
 
 // 模擬歷史紀錄 功能開始
 // 項目總數和每頁項目數
-const totalItems = ref(100); // 從後端獲取的總項目數
-const itemsPerPage = ref(10);
+const currentItems = ref([]); // 當前頁面的數據
+const totalItems = ref(0); // 從後端獲取的總項目數
+const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const gid = ref(null); // 用來保存遊戲資料中的 gid
 
-// 當前頁面的數據
-const currentItems = ref([]);
+const pageCache = ref({}); // 用來存儲每一頁的數據
 
 // 模擬從後端獲取數據的函數
-// const fetchPageData = (page) => {
-//   const startIndex = (page - 1) * itemsPerPage.value;
-//   currentItems.value = getItemsFromBackend(startIndex, itemsPerPage.value);
-// };
+const fetchPageData = async (pageIndex) => {
+  try {
+    if (!gid.value) {
+      console.error("gid 尚未獲取到，無法加載贏家歷史");
+      return;
+    }
+    // 檢查是否有緩存
+    if (pageCache.value[pageIndex]) {
+      currentItems.value = pageCache.value[pageIndex];
+      return;
+    }
+    // 調用 API 獲取贏家歷史資料
+    const response = await getGameWinnerHistory(
+      gid.value,
+      itemsPerPage.value,
+      pageIndex
+    );
 
-// 模擬 API 返回的數據
-// const getItemsFromBackend = (startIndex, itemsPerPage) => {
-//   const items = [];
-//   for (let i = startIndex; i < startIndex + itemsPerPage; i++) {
-//     items.push(`Item ${i + 1}`);
-//   }
-//   return items;
-// };
+    if (response && response.data.data) {
+      currentItems.value = formatHistoryData(response.data.data.items); // 更新當前頁的贏家歷史數據
+      totalItems.value = response.data.data.total; // 更新總贏家數，用來計算總頁數
+      console.log("response.data", response.data);
+      console.log("總共幾筆", totalItems.value);
+      console.log(response.data.data, "response.data.data");
+    } else {
+      console.error("未獲取到有效的贏家歷史資料");
+    }
+  } catch (error) {
+    console.error("獲取贏家歷史時發生錯誤：", error);
+  }
+};
 
-// 初始化加載第一頁數據
-// fetchPageData(1);
+// 定義資料格式化函數
+const formatHistoryData = (data) => {
+  return data.map((winner) => [
+    {
+      text: winner.round, // 回合
+      class: "text-center",
+      image: null,
+    },
+    {
+      text: winner.winner, // 贏家名字
+      class: "leaderboard-name",
+      image: winner.winnerIconUrl, // 贏家頭像 URL
+    },
+    {
+      text: formatDate(winner.transactionDateTime), // 比賽時間
+      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+      image: null,
+    },
+    {
+      text: null, // 驗證圖片
+      class: "text-end pe-3 pe-sm-5",
+      image: verify, // 使用 API 返回的驗證圖片 URL 或默認圖片
+      link: winner.transactionUrl, // API 返回的交易鏈接
+      target: "_blank", // 新窗口打開
+    },
+  ]);
+};
+
 const headers = [
   { text: "Round", class: "text-center" },
   { text: "Winner" },
@@ -113,99 +165,98 @@ const headers = [
   { text: "Verify", class: "text-end pe-3 pe-sm-5" },
 ];
 
-const historyData = ref([
-  [
-    { text: "1546", class: "text-center", image: null },
-    {
-      text: "hehe15235",
-      class: "leaderboard-name",
-      image: nft01,
-    },
-    {
-      text: "2024/06/13 18:24:53",
-      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
-      image: null,
-    },
-    {
-      text: null,
-      class: "text-end pe-3 pe-sm-5",
-      image: verify,
-    },
-  ],
-  [
-    { text: "1545", class: "text-center", image: null },
-    {
-      text: "1515djijiedd",
-      class: "leaderboard-name",
-      image: nft02,
-    },
-    {
-      text: "2024/06/12 20:16:03",
-      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
-      image: null,
-    },
-    {
-      text: null,
-      class: "text-end pe-3 pe-sm-5",
-      image: verify,
-    },
-  ],
-  [
-    { text: "1544", class: "text-center", image: null },
-    {
-      text: "ohjiemdl88556",
-      class: "leaderboard-name",
-      image: nft03,
-    },
-    {
-      text: "2024/06/11 14:08:23",
-      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
-      image: null,
-    },
-    {
-      text: null,
-      class: "text-end pe-3 pe-sm-5",
-      image: verify,
-    },
-  ],
-  [
-    { text: "1543", class: "text-center", image: null },
-    {
-      text: "12345678",
-      class: "leaderboard-name",
-      image: nft04,
-    },
-    {
-      text: "2024/06/10 09:30:15",
-      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
-      image: null,
-    },
-    {
-      text: null,
-      class: "text-end pe-3 pe-sm-5",
-      image: verify,
-    },
-  ],
-  [
-    { text: "1542", class: "text-center", image: null },
-    {
-      text: "abcdefg",
-      class: "leaderboard-name",
-      image: nft05,
-    },
-    {
-      text: "2024/06/09 16:45:50",
-      class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
-      image: null,
-    },
-    {
-      text: null,
-      class: "text-end pe-3 pe-sm-5",
-      image: verify,
-    },
-  ],
-  // 你的歷史數據
-]);
+// const historyData = ref([
+//   [
+//     { text: "1546", class: "text-center", image: null },
+//     {
+//       text: "hehe15235",
+//       class: "leaderboard-name",
+//       image: nft01,
+//     },
+//     {
+//       text: "2024/06/13 18:24:53",
+//       class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+//       image: null,
+//     },
+//     {
+//       text: null,
+//       class: "text-end pe-3 pe-sm-5",
+//       image: verify,
+//     },
+//   ],
+//   [
+//     { text: "1545", class: "text-center", image: null },
+//     {
+//       text: "1515djijiedd",
+//       class: "leaderboard-name",
+//       image: nft02,
+//     },
+//     {
+//       text: "2024/06/12 20:16:03",
+//       class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+//       image: null,
+//     },
+//     {
+//       text: null,
+//       class: "text-end pe-3 pe-sm-5",
+//       image: verify,
+//     },
+//   ],
+//   [
+//     { text: "1544", class: "text-center", image: null },
+//     {
+//       text: "ohjiemdl88556",
+//       class: "leaderboard-name",
+//       image: nft03,
+//     },
+//     {
+//       text: "2024/06/11 14:08:23",
+//       class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+//       image: null,
+//     },
+//     {
+//       text: null,
+//       class: "text-end pe-3 pe-sm-5",
+//       image: verify,
+//     },
+//   ],
+//   [
+//     { text: "1543", class: "text-center", image: null },
+//     {
+//       text: "12345678",
+//       class: "leaderboard-name",
+//       image: nft04,
+//     },
+//     {
+//       text: "2024/06/10 09:30:15",
+//       class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+//       image: null,
+//     },
+//     {
+//       text: null,
+//       class: "text-end pe-3 pe-sm-5",
+//       image: verify,
+//     },
+//   ],
+//   [
+//     { text: "1542", class: "text-center", image: null },
+//     {
+//       text: "abcdefg",
+//       class: "leaderboard-name",
+//       image: nft05,
+//     },
+//     {
+//       text: "2024/06/09 16:45:50",
+//       class: "d-none d-sm-table-cell text-end pe-3 pe-sm-0",
+//       image: null,
+//     },
+//     {
+//       text: null,
+//       class: "text-end pe-3 pe-sm-5",
+//       image: verify,
+//     },
+//   ],
+// ]);
 // 模擬歷史紀錄 功能結束
 
 const votes = ref(null); // 使用 ref 來讓 votes 成為響應式變量
@@ -223,7 +274,9 @@ const loadGameDetails = async () => {
     if (response && response.data.data) {
       votes.value = response.data.data.betQuantityTotal;
       maxVotes.value = response.data.data.maxQuantity;
+      gid.value = response.data.data.gId;
       gameDetails.value = response.data.data; // 更新遊戲資料
+      console.log("loadGameDetails 中的 gid:", gid.value); // 確認 gid 已正確賦值
     } else {
       console.error("未獲取到有效的遊戲資料");
     }
@@ -235,6 +288,8 @@ const loadGameDetails = async () => {
 // 初始化時調用一次，獲取遊戲資料
 onMounted(async () => {
   await loadGameDetails(); // 等待 API 請求完成後再做其他操作
+  // 初始化加載第一頁數據
+  await fetchPageData(1);
 });
 
 // 監聽路由參數變化，當 gameId 改變時重新加載數據

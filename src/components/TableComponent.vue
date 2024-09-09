@@ -20,10 +20,38 @@
             :key="colIndex"
             :class="cell.class"
           >
-            <img v-if="cell.image" class="img-fluid" :src="cell.image" alt="" />
-            {{ cell.text }}
-            <img v-if="cell.USDIcon" class="img-fluid ms-1" style="max-width: 22px;" :src="cell.USDIcon" alt="" />
-            <img v-if="cell.icon" class="img-fluid ms-1" :src="cell.icon" alt="" />
+            <!-- 如果 imageFirst 為 true，先顯示圖片，然後顯示文字 -->
+            <template v-if="imageFirst">
+              <!-- 檢查是否有 link，如果有則包裹在 <a> 中 -->
+              <a v-if="cell.link" :href="cell.link" target="_blank">
+                <img
+                  v-if="cell.image"
+                  class="img-fluid"
+                  :src="cell.image"
+                  alt=""
+                />
+              </a>
+              <!-- 如果沒有 link，則直接顯示圖片 -->
+              <img
+                v-else-if="cell.image"
+                class="img-fluid"
+                :src="cell.image"
+                alt=""
+              />
+              {{ cell.text }}
+            </template>
+
+            <!-- 如果 imageFirst 為 false，先顯示文字，然後顯示圖片 -->
+            <template v-else>
+              {{ cell.text }}
+              <img
+                v-if="cell.image"
+                class="img-fluid"
+                :style="cell.imageStyle ? cell.imageStyle : ''"
+                :src="cell.image"
+                alt=""
+              />
+            </template>
           </td>
         </tr>
       </tbody>
@@ -39,61 +67,63 @@ const props = defineProps({
   headers: Array,
   data: Array,
   customClass: String,
+  imageFirst: { type: Boolean, default: false }, // 控制圖片和文字的顯示順序
 });
 </script>
 
 <style scoped>
 .leaderboard-container .table {
-    --bs-table-bg: #1E2329;
-    color: #F8F8F8;
-    --bs-table-color: none;
-    width: 100%;
-    margin: 0;
+  --bs-table-bg: #1e2329;
+  color: #f8f8f8;
+  --bs-table-color: none;
+  width: 100%;
+  margin: 0;
 }
 
-.leaderboard-container .table th, .leaderboard-container .table td {
-    vertical-align: middle;
+.leaderboard-container .table th,
+.leaderboard-container .table td {
+  vertical-align: middle;
 }
 
 .leaderboard-container thead {
-    color: #BBB;
+  color: #bbb;
 }
 
 .leaderboard-container .table tbody tr th {
-    color: #BBB;
-    text-align: center;
+  color: #bbb;
+  text-align: center;
 }
 
 .leaderboard-container .table tbody tr:hover {
-    background-color: #414D5A;
+  background-color: #414d5a;
 }
 
 .leaderboard-container .table img {
-    max-width: 35px;
-    margin-right: 10px;
+  max-width: 35px;
+  margin-right: 10px;
 }
 
 .custom-rounded {
-    border-radius: 15px;
-    overflow: hidden;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 @media (max-width: 767.98px) {
-    .leaderboard-container .table {
-        --bs-table-bg: none;
-    }
-    .leaderboard-name {
-        font-size: 0.75rem;
-    }   
-    .leaderboard-container .table img {
-        margin-right: 5px;
-    }
-    .custom-rounded {
-        border-radius: 0px;
-    }
+  .leaderboard-container .table {
+    --bs-table-bg: none;
+  }
+  .leaderboard-name {
+    font-size: 0.75rem;
+  }
+  .leaderboard-container .table img {
+    margin-right: 5px;
+  }
+  .custom-rounded {
+    border-radius: 0px;
+  }
 }
 
-.rewards-list-dropdown .dropdown-menu .leaderboard-container .table{
+.rewards-list-dropdown .dropdown-menu .leaderboard-container .table {
   --bs-table-bg: transparent;
 }
 </style>

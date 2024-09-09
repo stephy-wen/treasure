@@ -1,17 +1,14 @@
 <template>
   <div>
-
-    <MobileDashboard v-if="isMobile"/>
-    <DesktopDashboard/>
+    <MobileDashboard v-if="isMobile" />
+    <DesktopDashboard />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import MobileDashboard from "./MobileDashboard.vue"
-import DesktopDashboard from "./DesktopDashboard.vue"
-
-
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import MobileDashboard from "./MobileDashboard.vue";
+import DesktopDashboard from "./DesktopDashboard.vue";
 
 // 監聽螢幕變化起
 const isMobile = ref(window.innerWidth < 575.98);
@@ -30,8 +27,6 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", handleResize);
 });
 // 監聽螢幕變化 始
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
