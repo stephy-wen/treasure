@@ -97,11 +97,13 @@ const fetchPageData = async (pageIndex) => {
       console.error("gid 尚未獲取到，無法加載歷史資料");
       return;
     }
+
     // 檢查是否有緩存
     if (pageCache.value[pageIndex]) {
       currentItems.value = pageCache.value[pageIndex];
       return;
     }
+
     // 調用 API 獲取歷史資料
     const response = await getGameWinnerHistory(
       gid.value,
@@ -111,6 +113,7 @@ const fetchPageData = async (pageIndex) => {
 
     if (response && response.data.data) {
       currentItems.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
+      console.log(currentItems.value, "");
       totalItems.value = response.data.data.total; // 總筆數
     } else {
       console.error("未獲取到有效的歷史資料");
@@ -155,15 +158,11 @@ const headers = [
   { text: "Verify", class: "text-end pe-3 pe-sm-5" },
 ];
 
-// 日期格式化函數
 const formatDate = (isoDateString) =>
   dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
 
-// 初始化時調用一次，獲取遊戲資料
 onMounted(async () => {
-  // 綁定螢幕大小監聽事件
-  window.addEventListener("resize", handleResize);
-  // 初始化時調用遊戲資料
+  window.addEventListener("resize", handleResize); // 綁定螢幕大小監聽事件
   await loadGameDetails(); // 先加載遊戲詳情
   await fetchPageData(1); // 再加載歷史紀錄第一頁
 });
@@ -173,6 +172,7 @@ watch(
   () => route.params.gameId, // 假設路由參數是 gameId
   (newGameId) => {
     loadGameDetails(newGameId); // 當參數變化時重新加載數據
+    fetchPageData(1);
   }
 );
 

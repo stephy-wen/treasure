@@ -132,6 +132,7 @@
 import { ref, defineProps, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCurrencyIcon } from "@/assets/images.js";
+import { showErrorNotification } from "@/utils/errorHandler.js";
 import modules from "@/services/modules.js";
 
 import HexagonButton from "./components/HexagonButton.vue";
@@ -256,6 +257,7 @@ const getPlayerData = async (gameId) => {
     }));
   } catch (error) {
     console.error("取得玩家資料時發生錯誤：", error);
+    showErrorNotification();
   }
 };
 
