@@ -74,14 +74,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  computed,
-  onMounted,
-  defineProps,
-  defineEmits,
-  inject,
-} from "vue";
+import { ref, computed, defineProps, defineEmits, inject } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules";
@@ -91,42 +84,29 @@ const props = defineProps({
   gameInfo: Object,
 });
 
-const votes = inject("votes");
-const maxVotes = inject("maxVotes");
-const gameDetails = inject("gameDetails");
-
-const {
-  game: { playGame },
-} = modules;
-
-const modal = ref(null); // 用於存儲模態框的 DOM 元素
-const userStore = useUserStore();
-const route = useRoute();
-
-// 使用 computed 來響應式地追蹤 userInfo 的變化
-const userData = computed(() => userStore.userInfo);
-
-// 使用 computed 來取得錢包金額
-const walletAmount = computed(() => userData.value?.balanceData?.balance);
-
-onMounted(() => {
-  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
-  //console.log(modalElement, "modalElement");
-  //const isHidden = window.getComputedStyle(modalElement).display === "none";
-  //console.log(isHidden); // 檢查模態框是否隱藏
-});
-
 const emit = defineEmits([
   "closeModal",
   "showInsufficientFundsModal",
   "refreshGameDetails",
 ]);
 
-const attendVote = ref(1);
+const {
+  game: { playGame },
+} = modules;
+const route = useRoute();
 
-// 計算總扣款金額
+const modal = ref(null); // 用於存儲模態框的 DOM 元素
+const attendVote = ref(1);
+const votes = inject("votes");
+const maxVotes = inject("maxVotes");
+const gameDetails = inject("gameDetails");
+
+const userStore = useUserStore();
+const userData = computed(() => userStore.userInfo); // 使用 computed 來響應式地追蹤 userInfo 的變化
+const walletAmount = computed(() => userData.value?.balanceData?.balance); // 使用 computed 來取得錢包點數
+
 const totalAmountDeducted = computed(() => {
-  // 乘以 attendVote 來計算總扣款金額
+  // betUnitAmount 乘以 attendVote 來計算總數
   return attendVote.value * props.gameInfo.betUnitAmount;
 });
 
@@ -138,7 +118,7 @@ const setAttendVote = (times) => {
 // 點擊確認參加
 const confirmParticipation = async () => {
   if (totalAmountDeducted.value > walletAmount.value) {
-    emit("showInsufficientFundsModal"); // 跳出餘額不足視窗
+    emit("showInsufficientFundsModal"); // 跳出點數不足視窗
   } else {
     console.log("開始遊戲");
     // 按下確認參加遊戲
@@ -147,8 +127,8 @@ const confirmParticipation = async () => {
       const res = await playGame(gameRoomId, attendVote.value);
       console.log(res);
       if (res.data.success) {
-        console.log("投注成功 投注號碼為", res.data.data.betNumber);
-        // 投注成功後通知父組件刷新遊戲資料
+        console.log("投票成功 投票號碼為", res.data.data.betNumber);
+        // 投票成功後通知父組件刷新遊戲資料
         emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
       }
     } catch (error) {
@@ -160,11 +140,11 @@ const confirmParticipation = async () => {
       if (error.response.data.message === "Vote is over quantity") {
         emit("showVotingFullModal");
         console.log(votes.value, "查看是否更新vote值");
-        console.log("遊戲滿房 投注失敗");
+        console.log("遊戲滿房 投票失敗");
       } else if (
         error.response.data.message === "Account vote is over quantity"
       ) {
-        console.log("投注失敗 超過單人最大投注金額");
+        console.log("投票失敗 超過單人最大投票數");
       }
       // 因為打失敗直接進來這邊 所以vote不會被更新到 所以這段永遠不會執行到。
       // if (votes.value === maxVotes.value) {
@@ -174,7 +154,7 @@ const confirmParticipation = async () => {
       //console.error("遊戲錯誤：", error);
     }
   }
-  emit("closeModal"); // 無論資金夠不夠，先關閉JoinGameModal
+  emit("closeModal"); // 無論點數夠不夠，先關閉JoinGameModal
 };
 </script>
 

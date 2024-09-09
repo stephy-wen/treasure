@@ -125,22 +125,22 @@
 
 <script setup>
 import { ref, defineProps, computed, onMounted, watch } from "vue";
-import { images, getCurrencyIcon } from "@/assets/images.js";
+import { useRoute } from "vue-router";
+import { getCurrencyIcon } from "@/assets/images.js";
+import modules from "@/services/modules.js";
+
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
 import JoinGameModal from "./components/JoinGameModal.vue";
-import NFT01 from "@/assets/images/icon/NFT/01.png";
-import NFT02 from "@/assets/images/icon/NFT/02.png";
-import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import VotingFullModal from "./components/VotingFullModal.vue";
 import WinnerModal from "./components/WinnerModal.vue";
 import InsufficientFundsModal from "./components/InsufficientFundsModal.vue";
+
+import backgroundImage01 from "@/assets/images/common/attend_eth.png";
 import dollar from "@/assets/images/icon/dollar-phone2.png";
 import mdiVote from "@/assets/images/icon/mdi_vote-outline.svg";
 
-import { useRoute } from "vue-router";
-import modules from "@/services/modules.js";
-
+// api import
 const {
   game: { getGamePlayer },
 } = modules;
@@ -152,11 +152,51 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["refreshGameDetails"]);
+
 const showModal = ref(false); //player list modal 控制模態框是否顯示
 const showJoinGameModal = ref(false);
 const showVotingFullModal = ref(false);
 const showWinnerModal = ref(false);
 const showInsufficientFundsModal = ref(false); // 控制InsufficientFundsModal的顯示與隱藏
+
+const playData = ref({});
+const hexagonImages = ref([]);
+const playListData = ref([]);
+const route = useRoute(); // 獲取路由對象
+let iconImage;
+
+const gameData = computed(() => ({
+  title: props.gameDetails.name,
+  prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
+  prizeAmount: props.gameDetails.rewardQuantity,
+  voteIcon: mdiVote, // 固定投票圖標
+  votes: props.gameDetails.betQuantityTotal,
+  totalVotes: props.gameDetails.maxQuantity,
+  round: props.gameDetails.round || "-", // 預設回合數
+  dollarIcon: dollar, // 固定美元圖標
+}));
+
+if (props.gameDetails.betSymbol === "POINT") {
+  iconImage = backgroundImage01;
+}
+
+// join game data
+const JoinGame = ref({
+  backgroundImage: iconImage,
+  round: props.gameDetails.round,
+  title: props.gameDetails.name,
+  betUnitAmount: props.gameDetails.betUnitAmount,
+  vote: props.gameDetails.betQuantityTotal,
+  maxVote: props.gameDetails.maxQuantity,
+});
+
+// winner data
+const WinnerData = ref({
+  winnerName: props.gameDetails.winnerName,
+  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
+  backgroundImage: props.gameDetails.attendImgUrl,
+});
 
 // 打開餘額不足的視窗
 const openInsufficientFundsModal = () => {
@@ -186,23 +226,6 @@ const openWinnerModal = () => {
   showWinnerModal.value = true;
 };
 
-const emit = defineEmits(["refreshGameDetails"]);
-
-const refreshGameDetails = () => {
-  emit("refreshGameDetails");
-};
-
-const gameData = computed(() => ({
-  title: props.gameDetails.name,
-  prizeIcon: getCurrencyIcon(props.gameDetails.rewardSymbol),
-  prizeAmount: props.gameDetails.rewardQuantity,
-  voteIcon: mdiVote, // 固定投票圖標
-  votes: props.gameDetails.betQuantityTotal,
-  totalVotes: props.gameDetails.maxQuantity,
-  round: props.gameDetails.round || "-", // 預設回合數
-  dollarIcon: dollar, // 固定美元圖標
-}));
-
 // 右側定義六角形頭像圖片
 // const hexagonImages = [
 //   images.nft01,
@@ -214,12 +237,6 @@ const gameData = computed(() => ({
 //   images.nft07,
 //   images.HexagonImage,
 // ];
-
-const route = useRoute(); // 獲取路由對象
-
-const playData = ref({});
-const hexagonImages = ref([]);
-const playListData = ref([]);
 
 const getPlayerData = async (gameId) => {
   try {
@@ -237,6 +254,10 @@ const getPlayerData = async (gameId) => {
   } catch (error) {}
 };
 
+const refreshGameDetails = () => {
+  emit("refreshGameDetails");
+};
+
 // 監聽路由參數 gameId 的變化，當路由變化時重新獲取玩家資料
 watch(
   () => route.params.gameId,
@@ -244,27 +265,6 @@ watch(
     getPlayerData(newGameId); // 當 gameId 變化時，重新載入資料
   }
 );
-
-let iconImage;
-
-if (props.gameDetails.betSymbol === "POINT") {
-  iconImage = backgroundImage01;
-}
-// join game data
-const JoinGame = ref({
-  backgroundImage: iconImage,
-  round: props.gameDetails.round,
-  title: props.gameDetails.name,
-  betUnitAmount: props.gameDetails.betUnitAmount,
-  vote: props.gameDetails.betQuantityTotal,
-  maxVote: props.gameDetails.maxQuantity,
-});
-
-const WinnerData = ref({
-  winnerName: props.gameDetails.winnerName,
-  winnerAvatarUrl: props.gameDetails.winnerAvatarUrl,
-  backgroundImage: props.gameDetails.attendImgUrl,
-});
 
 // 監聽 gameDetails 的變化
 watch(
