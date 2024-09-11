@@ -1,6 +1,7 @@
 // src/services/api.js
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
 
@@ -34,12 +35,16 @@ apiClient.interceptors.response.use(
   (error) => {
     // 可在這裡做全局錯誤處理
     if (error.response.status === 401) {
+      ElMessage.error({
+        message: "請重新登入！",
+        duration: 3000,
+      });
       console.log("Token 過期或無效，請重新登入。");
-      console.log(router);
+
       // 清除本地存儲的 token
       localStorage.removeItem("token");
-
-      router.push("/login");
+      window.location.href("/login");
+      // router.push("/login");
     }
     return Promise.reject(error);
   }
