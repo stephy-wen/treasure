@@ -22,7 +22,7 @@
 
           <div class="col-4 d-flex flex-column">
             <div class="d-flex mb-1">
-              <p>winnie123456789</p>
+              <p>{{ userInfo.name }}</p>
               <a
                 href="#"
                 data-bs-toggle="modal"
@@ -43,10 +43,10 @@
             </div>
             <div class="personal-email">
               <p class="winnie-color-gray" style="font-size: 14px">Email</p>
-              <p>win***a46@gmail.com</p>
+              <p>{{ userInfo.email }}</p>
             </div>
           </div>
-          <div class="col-4 ps-3 ps-md-2 col-md-6 d-flex flex-column">
+          <div class="col-4 ps-3 ps-md-2 col-md-6 d-flex flex-column ms-5">
             <div class="mb-1">
               <button
                 class="d-flex align-items-center btn-get-rewards"
@@ -75,7 +75,7 @@
                 User ID
                 <img src="@/assets/images/icon/md-content_copy 1.svg" alt="" />
               </p>
-              <p>3211232215</p>
+              <p>{{ userInfo.userId }}</p>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@
         >
           <div class="personal-balance d-flex align-items-center mb-2 mb-lg-0">
             <img src="@/assets/images/icon/balance-icon.png" alt="" />
-            <span class="fs-2 fw-bold ms-2">3,969,443</span>
+            <span class="fs-2 fw-bold ms-2">{{ balance }}</span>
           </div>
           <div class="d-flex">
             <div class="col">
@@ -164,7 +164,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import ChangePicModal from "./component/ChangePicModal.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import USDTIcon from "@/assets/images/icon/USDT.svg";
@@ -175,10 +175,15 @@ import BalanceIcon from "@/assets/images/icon/balance-icon.png";
 import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
 import GetRewardsModal from "./component/GetRewardsModal.vue";
 import NicknameReviseModal from "./component/NicknameReviseModal.vue";
+import { useUserStore } from "@/stores/user";
+import modules from "@/services/modules";
 
+const userStore = useUserStore();
 const showChangePicModal = ref(false);
 const showGetRewardsModal = ref(false);
 const showNicknameReviseModal = ref(false);
+let userInfo = ref([]);
+let balance;
 
 const openChangePicModal = () => {
   showChangePicModal.value = true;
@@ -261,6 +266,19 @@ const rewardsData = [
     { icon: VerifyIcon, class: "text-center" },
   ],
 ];
+
+onMounted(() => {
+  loadUserInfo(); // 載入用戶信息
+});
+
+// 加載用戶信息的函數
+const loadUserInfo = async () => {
+  userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  balance = userInfo.value.balanceData.balance.toLocaleString("en-US");
+  console.log(balance, "bal");
+  console.log(userStore.userInfo, "內部"); // 直接使用 store 中的 userInfo
+  console.log(userInfo.value, "userInfo.value"); // 這是響應式的，會在資料變更時自動更新
+};
 </script>
 
 <style scoped>

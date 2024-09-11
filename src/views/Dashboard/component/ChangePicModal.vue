@@ -70,14 +70,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onMounted,
-  defineProps,
-  defineEmits,
-  inject,
-  computed,
-} from "vue";
+import { ref, onMounted, defineProps, defineEmits, inject } from "vue";
 import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
 
@@ -89,11 +82,11 @@ onMounted(() => {
 });
 
 let selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
+let userInfo = ref([]);
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
-  await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
   selectedAvatarUrl.value = userStore.userInfo?.avatarUrl;
-  console.log(userStore.userInfo, "內部"); // 直接使用 store 中的 userInfo
 };
 
 // 如果你需要在模板中直接使用 userInfo，可以直接用 userStore.userInfo
