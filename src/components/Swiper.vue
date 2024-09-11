@@ -3,7 +3,7 @@
     <Swiper
       :class="swiperClass"
       :autoplay="{ delay: autoplayDelay }"
-      loop
+      :loop="shouldLoop"
       :pagination="pagination ? { clickable: true } : false"
       :scrollbar="scrollbar ? { draggable: true } : false"
       :modules="modules"
@@ -18,7 +18,7 @@
       >
         <!-- 圖片有手機板 區分時 -->
         <!-- 如果有區分手機和桌面圖片 -->
-        <a :href="item.link" v-if="item.mobileImage && item.image">
+        <router-link :to="item.link" v-if="item.mobileImage && item.image">
           <img
             class="img-fluid d-md-none rounded-0"
             :src="item.mobileImage"
@@ -29,12 +29,12 @@
             :src="item.image"
             :alt="item.alt"
           />
-        </a>
+        </router-link>
 
         <!-- 如果沒有區分，只有一個通用圖片 -->
-        <a :href="item.link" v-else>
+        <router-link :to="item.link" v-else>
           <img class="img-fluid" :src="item.image" :alt="item.alt" />
-        </a>
+        </router-link>
       </SwiperSlide>
     </Swiper>
   </div>
@@ -45,6 +45,7 @@ import { Swiper, SwiperSlide } from "swiper/vue"; // Import Swiper Vue.js compon
 import "swiper/css"; // Import Swiper styles
 import "swiper/css/pagination"; // Import Swiper pagination styles
 import "swiper/css/scrollbar"; // Import Swiper scrollbar styles
+import { computed } from "vue";
 import {
   Autoplay,
   Navigation,
@@ -96,6 +97,8 @@ const props = defineProps({
     default: "",
   },
 });
+
+const shouldLoop = computed(() => props.swiperData.length >= 3); // 根據 slides 數量決定是否啟用 loop
 </script>
 
 <style scoped>
