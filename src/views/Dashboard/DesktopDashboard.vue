@@ -23,14 +23,9 @@
           <div class="col-4 d-flex flex-column">
             <div class="d-flex mb-1">
               <p>{{ userInfo.name }}</p>
-              <a
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#nicknameReviseModal"
-              >
+              <a href="#" @click="openNicknameReviseModal">
                 <img
                   class="ms-2"
-                  @click="openNicknameReviseModal"
                   src="@/assets/images/icon/iconPark-edit-two 1.svg"
                   alt=""
               /></a>
