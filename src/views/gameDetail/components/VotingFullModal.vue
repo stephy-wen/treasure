@@ -124,6 +124,6 @@ watch(
 }
 
 #maxParticipantsModal {
-    background-color: rgba(0, 0, 0, 0.50);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

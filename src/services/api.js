@@ -31,6 +31,7 @@ apiClient.interceptors.response.use(
   (error) => {
     // 可在這裡做全局錯誤處理
     if (error.response.status === 401) {
+      localStorage.removeItem("token"); // 清理本地存儲中的 token
       // 比如跳轉到登入頁面
       window.location = "/login";
     }

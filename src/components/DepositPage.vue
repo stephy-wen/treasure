@@ -11,44 +11,38 @@
         </div>
         <div class="d-flex justify-content-center">
           <div class="vertical-line active d-none d-sm-block me-5"></div>
-          <div class="dropdown dropdown-coin d-flex align-items-center my-4 my-sm-0">
-            <button class="btn btn-secondary dropdown-toggle text-start d-flex justify-content-between" type="button" id="dropdownMenuForCoin" data-bs-toggle="dropdown" aria-expanded="false">
-              <div><font-awesome-icon
-              icon="fa-solid fa-magnifying-glass" class="me-2"/><span>Select Coin</span></div>
-              <div><font-awesome-icon
-              icon="fa-solid fa-angle-down"
-              /></div>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuForCoin">
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
-                <div class="info">
-                  <img class="me-1" src="@/assets/images/icon/BUSD.svg" alt="BUSD">
-                  <span class="abbr me-1">BUSD</span>
-                  <span class="full-name">Binance USD</span>
+          <!-- Element Plus 下拉选择框 -->
+          <el-select
+            v-model="params.supportCoin"
+            size="large"
+            placeholder="Select Coin"
+            v-if="selectShow"
+            class="d-flex align-items-center my-4 my-sm-0"
+          >
+            <template #prefix>
+              <el-image 
+              v-if="params.supportCoinImagePath"
+              :src="params.supportCoinImagePath"
+              style="width: 20px; height: 20px; margin-right: 5px;"
+              ></el-image>
+            </template>
+            <el-option
+              v-for="item in options.supportCoins"
+              :key="item.value"
+              :value="item.value"
+              :label="item.label"
+            >
+              <template #default>
+                <div class="option-content">
+                  <el-image
+                    :src="item.ImagePath"
+                    style="width: 20px; height: 20px; margin-right: 10px;"
+                  ></el-image>
+                  {{ item.label }}
                 </div>
-                </a>
-              </li>
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
-                <div class="info">
-                  <img class="me-1" src="@/assets/images/icon/USDC.svg" alt="BUSD">
-                  <span class="abbr me-1">USDC</span>
-                  <span class="full-name">USD Coin</span>
-                </div>
-                </a>
-              </li>
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
-                <div class="info">
-                  <img class="me-1" src="@/assets/images/icon/USDT.svg" alt="BUSD">
-                  <span class="abbr me-1">USDT</span>
-                  <span class="full-name">TetherUS</span>
-                </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+              </template>
+            </el-option>
+          </el-select>
         </div>
       </div>
     </div>
@@ -62,65 +56,35 @@
         </div>
         <div class="d-flex align-items-center justify-content-center">
           <div class="vertical-line me-5 d-none d-sm-block"></div>
-          <div class="dropdown dropdown-coin d-flex align-items-center my-4 my-sm-0">
-            <button class="btn btn-secondary dropdown-toggle text-start d-flex justify-content-between" type="button" id="dropdownMenuForNetwork" data-bs-toggle="dropdown" aria-expanded="false">
-              <div><font-awesome-icon
-                icon="fa-solid fa-magnifying-glass" class="me-2"/><span>Select Network</span></div>
-              <div><font-awesome-icon
-              icon="fa-solid fa-angle-down"
-              /></div>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuForNetwork">
-              <div class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between">
-              <p><i class="fa-solid fa-circle-exclamation me-2 winnie-text-white"></i></p>
-              <p class="text-start deposit-notice-color" style="font-size: 12px;">
-                Please note that only supported networks on Binance platform are shown, if you deposit via another network your assets may be lost.
-              </p>
-              </div>
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
+          <div class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0">
+            <el-select
+              v-model="params.selectNetwork"
+              size="large"
+              placeholder="Select Network"
+              v-if="selectShow"
+            >
+              <el-option
+              v-for="network in options.supportNetworks"
+              :key="network.value"
+              :value="network.value"
+              :label="`${network.label} (${network.protocol})`"
+              style="height: 60px;"
+              >
+                <template #default>
                 <div class="info">
                   <div class="d-flex justify-content-between">
-                    <span class="winnie-text-white">BSC</span>
-                    <span class="winnie-text-white">&#8776; 3 分鐘</span>
+                    <span class="winnie-text-white" style="color: black;">{{ network.label }}</span>
+                    <span class="winnie-text-white" style="color: black;">&#8776; {{ network.confirmMins }} 分鐘</span>
                   </div>
                   <div class="d-flex justify-content-between">
-                    <span class="winnie-text-gray winnie-fs-small">BNB Smart Chain (BEP20)</span>
-                    <span class="winnie-text-gray winnie-fs-small">15 確認/s</span>
+                    <span class="winnie-text-gray winnie-fs-small">{{ network.fullName }} ({{ network.protocol }})</span>
+                    <span class="winnie-text-gray winnie-fs-small">{{ network.confirmMins }} 確認/s</span>
                   </div>
                 </div>
-                </a>
-              </li>
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
-                <div class="info">
-                  <div class="d-flex justify-content-between">
-                    <span class="winnie-text-white">ETH</span>
-                    <span class="winnie-text-white">&#8776; 3 分鐘</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span class="winnie-text-gray winnie-fs-small">Ethereum (ERC20)</span>
-                    <span class="winnie-text-gray winnie-fs-small">6 確認/s</span>
-                  </div>
-                </div>
-                </a>
-              </li>
-              <li class="d-flex align-items-center">
-                <a class="dropdown-item py-2" href="#">
-                <div class="info">
-                  <div class="d-flex justify-content-between">
-                    <span class="winnie-text-white">TRX</span>
-                    <span class="winnie-text-white">&#8776; 2 分鐘</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span class="winnie-text-gray winnie-fs-small">Tron (TRC20)</span>
-                    <span class="winnie-text-gray winnie-fs-small">1 確認/s</span>
-                  </div>
-                </div>
-                </a>
-              </li>
-            </ul>
-            </div>
+              </template>
+            </el-option>
+            </el-select>
+          </div>
         </div>
       </div>
     </div>
@@ -135,12 +99,19 @@
         <div class="d-flex align-items-center flex-column flex-md-row">
           <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
           <div class="mt-3">
-            <img class="qrcode-pic" src="@/assets/images/common/qrcode-test.png" alt="">
+            <!-- <img v-if="!apiIsLoading" class="qrcode-pic" src="@/assets/images/common/qrcode-test.png" alt=""> -->
+            <vue-qr
+              v-if="!apiIsLoading"
+              class="qrcode-pic"
+              :text="params.address"
+              :size="200"
+            ></vue-qr>
+            <div v-else>123</div>
           </div>
           <div class="mt-3 ms-3">
             <p class="my-2">Address</p>
             <div class="company-address mb-4" style="width: fit-content;">
-            <p class="my-2 py-1 px-3">0xEf817557258ba1EB5E79772e9dCFa9B101F04eE9
+            <p class="my-2 py-1 px-3">{{ params.address }}
               <font-awesome-icon
               icon="fa-solid fa-copy" class="d-inline ms-2"
               />
@@ -168,7 +139,121 @@
 </template>
 
 <script setup>
-// 你的組件邏輯可以在這裡處理
+import api from "@/services/modules"; // 引入 API 模組
+import { ref, onMounted, reactive, watch } from 'vue';
+import USDCicon from '@/assets/images/icon/USDC-account.svg';
+import USDTicon from '@/assets/images/icon/USDT-account.svg';
+import VueQr from 'vue-qr/src/packages/vue-qr.vue';
+
+// 輸入內容
+const params = reactive({
+  supportCoin: '',
+  supportCoinImagePath: '',
+  selectNetwork: '',
+  address: '',
+})
+
+const apiIsLoading = ref(false);
+
+watch([() => params.supportCoin, () => params.selectNetwork], async ([newSupportCoin, newSelectNetwork]) => {
+  if (newSupportCoin && newSelectNetwork) {
+    apiIsLoading.value = true;
+
+    const formData = {
+      network: newSelectNetwork,
+      symbol: newSupportCoin,
+    };
+    const response = await getAddress(formData);
+    if (response?.data?.address) {
+      params.address = response.data.address;
+    }
+
+    apiIsLoading.value = false;
+  }
+});
+
+// api - 取得地址
+const getAddress = async () => {
+  try {
+    const response = await api.asset.getAddress();
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
+// 監聽異動&圖片更換及網路更新
+watch(() => params.supportCoin, async (newValue) => {
+  if (newValue) {
+    // 更新加密貨幣圖片
+    const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newValue);
+    if (findSupportCoin) {
+      params.supportCoinImagePath = findSupportCoin.ImagePath;
+    }
+
+    try {
+      const networkSetting = await getCryptocurrencySetting(newValue);
+      console.log("NetworkSetting data:", networkSetting);
+
+      // 检查 networkSetting.data 是否存在，并从 withdraw 部分获取数据
+      if (networkSetting) {
+        // 更新網路選擇框的選項
+          options.supportNetworks = networkSetting.data.deposit.supportNetworks.map((network) => ({
+          label: network.networkFullName,
+          value: network.network,
+          protocol: network.protocol,
+          confirmMins: network.confirmMins,
+          fullName: network.networkFullName,
+        }));
+      } else {
+        console.error("NetworkSetting data is not in expected format:", networkSetting.data);
+      }
+    } catch (error) {
+      console.error("Failed to get NetworkSetting:", error);
+    }
+  }
+});
+
+// api - 取得出入金網路，幣種以及金額設定
+const getCryptocurrencySetting = async () => {
+  try {
+    const response = await api.asset.getCryptocurrencySetting();
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
+const options = reactive({
+  supportCoins: [],
+  supportNetworks: [],
+})
+
+const iconMap = {
+	'USDT' : USDTicon,
+	'USDC' : USDCicon,
+};
+
+onMounted(async() => {
+	const cryptocurrencySetting = await getCryptocurrencySetting();
+	
+	if(cryptocurrencySetting) {
+		cryptocurrencySetting.data.deposit.supportCoins.forEach((supportCoin) => {
+			options.supportCoins.push({
+				ImagePath: iconMap[supportCoin.symbol] || '',
+				label: supportCoin.fullName,
+				value: supportCoin.fullName,
+				symbol: supportCoin.symbol,
+			})
+		})
+	}
+})
+
+const selectShow = ref(true);
 </script>
 
 <style scoped>
@@ -519,4 +604,64 @@ width: 160px;
   display: none;
 }
 
+</style>
+
+<style>
+.step-container .el-select__wrapper{
+    width: 280px;
+    background-color: transparent;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+    .step-container .el-select__wrapper {
+            width: 380px;
+        }
+}
+@media (min-width: 575.98px) {
+.step-container .el-select__wrapper {
+    width: 400px;
+}
+}
+@media (min-width: 767.98px) {
+.step-container .el-select__wrapper{
+    width: 534px;
+}
+}
+@media (min-width: 991.98px) {
+.step-container .el-select__wrapper{
+    width: 600px;
+}
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+}
+
+.step-container .el-select__wrapper {
+  background-color: transparent;
+  border: 1px solid #6c757d;
+  box-shadow: none;
+}
+
+.step-container .el-select__placeholder {
+  color: #F8F8F8;
+}
+
+.step-container .form-control {
+  border: 1px solid #6c757d;
+}
+
+.step-container .el-select__selection {
+  background-color: transparent;
+}
+
+.step-container .el-input__wrapper {
+  display: flex;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.step-container .el-input.form-control {
+  padding: 0px;
+}
 </style>
