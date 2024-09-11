@@ -167,32 +167,13 @@ const {
 
 const userStore = useUserStore();
 console.log(userStore.userInfo?.name, "NAME");
-const hoverIndex = ref(null);
-// 輪播圖片數據
-const bannerData = [
-  {
-    image: banner01,
-    mobileImage: bannerSM01,
-    link: "#",
-    alt: "Banner 1",
-  },
-  {
-    image: banner02,
-    mobileImage: bannerSM02,
-    link: "#",
-    alt: "Banner 2",
-  },
-];
 
-const cardData = [
-  { image: XRP, link: "game/play-bnb.html", alt: "Card XRP" },
-  { image: ETH, link: "game/play-eth.html", alt: "Card ETH" },
-  { image: BNB, link: "game/play-bnb.html", alt: "Card BNB" },
-  { image: TRX, link: "game/play-trx.html", alt: "Card TRX" },
-  { image: SOL, link: "game/play-sol.html", alt: "Card SOL" },
-  { image: DOGE, link: "game/play-doge.html", alt: "Card DOGE" },
-  { image: BTC, link: "game/play-btc.html", alt: "Card BTC" },
-];
+const hoverIndex = ref(null);
+const homePageData = ref([]);
+const banner = ref([]);
+const gameRoomList = ref([]);
+const statsData = ref([]);
+// 輪播圖片數據
 
 // 配置 coverflow 效果
 const coverflowEffect = {
@@ -209,13 +190,6 @@ const breakpoints = {
   991: { slidesPerView: 5, spaceBetween: 20 },
   1199: { slidesPerView: 5, spaceBetween: 30 },
 };
-
-// 定義統計數據數組
-// const statsData = [
-//   { title: "Total Players", number: "99,167" },
-//   { title: "Total Game Volume", number: "$367,872" },
-//   { title: "Total Game Rounds", number: "223,164" },
-// ];
 
 const logos = [
   {
@@ -240,34 +214,21 @@ const logos = [
   },
 ];
 
-const homePageData = ref([]);
-const banner = ref([]);
-const gameRoomList = ref([]);
-const statsData = ref([]);
-
-const handleStatics = (obj) => {
-  return [
-    { title: "Total Players", number: obj.totalPlayers },
-    { title: "Total Game Volume", number: formatCurrency(obj.totalGameVolume) },
-    { title: "Total Game Rounds", number: obj.totalGameRounds },
-  ];
-};
-
-const formatCurrency = (number) => {
-  return `$${number.toLocaleString("en-US")}`;
-};
-
 const getHomeData = async () => {
-  const res = await home();
-  homePageData.value = res.data.data;
-  banner.value = handleBannerData(homePageData.value.banner);
-  gameRoomList.value = handleRoomData(homePageData.value.gameRoomList);
-  statsData.value = handleStatics(homePageData.value.statics);
-  const typeO = typeof homePageData.value.statics.totalPlayers;
-  console.log(homePageData.value.statics.totalPlayers, "banner");
-  console.log(typeO, "typeO");
-  console.log(banner.value, "banner");
-  console.log(gameRoomList.value, "gameRoomList");
+  try {
+    // 進行 API 請求，並取得回傳資料
+    const { data } = await home();
+    // 解構賦值來取得需要的資料
+    const { banner: bannerData, gameRoomList: roomData, statics } = data.data;
+    // 更新響應式變數
+    homePageData.value = data.data;
+    banner.value = handleBannerData(bannerData); // 處理 banner 資料
+    gameRoomList.value = handleRoomData(roomData); // 處理遊戲房資料
+    statsData.value = handleStatics(statics); // 處理統計數據
+  } catch (error) {
+    // 錯誤處理：可以顯示錯誤訊息給使用者，或記錄錯誤以便追蹤
+    console.error("Failed to fetch home data:", error);
+  }
 };
 
 const handleRoomData = (obj) => {
@@ -288,6 +249,18 @@ const handleBannerData = (obj) => {
     link: "/game/game-list",
   }));
   return bannerData;
+};
+
+const handleStatics = (obj) => {
+  return [
+    { title: "Total Players", number: obj.totalPlayers },
+    { title: "Total Game Volume", number: formatCurrency(obj.totalGameVolume) },
+    { title: "Total Game Rounds", number: obj.totalGameRounds },
+  ];
+};
+
+const formatCurrency = (number) => {
+  return `$${number.toLocaleString("en-US")}`;
 };
 
 onMounted(async () => {
