@@ -56,6 +56,13 @@ const userInfo = {
   changeNickname: (name) => apiClient.post("/Account/ChangeNickname", { name }), // 變更暱稱
   getAvatarList: () => apiClient.get("/Account/AvatarList"), // 取得頭像列表
   getAccountInfo: () => apiClient.get("/Account/AccountInfo"), // 取得用戶資訊
+  getGameRewardHistory: () => apiClient.get("/Game/GameRewardHistory"), // 得獎紀錄
+  getGameRewardInfo: (rewardId) =>
+    apiClient.get("/Game/GameRewardHistory", {
+      params: {
+        rewardId,
+      },
+    }), // 個人得獎
 };
 
 // game module
@@ -88,6 +95,15 @@ const game = {
   getGameWinnerHistory: (gid, pageSize, pageIndex) =>
     apiClient.get("/Game/GameWinnerHistory", {
       params: { gid, pageSize, pageIndex },
+    }),
+  getGameLeaderBoard: (symbol, timePeriod, pageSize, pageIndex) =>
+    apiClient.get("/Game/GameLeaderBoard", {
+      params: {
+        symbol,
+        timePeriod,
+        pageSize,
+        pageIndex,
+      },
     }),
 };
 
