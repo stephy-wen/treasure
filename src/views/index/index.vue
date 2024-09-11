@@ -5,9 +5,9 @@
   <div>
     <!-- banner 輪播 -->
     <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
-      <SwiperBanner
+      <Swiper
         :swiperClass="'mySwiper'"
-        :swiperData="bannerData"
+        :swiperData="banner"
         :pagination="false"
         :scrollbar="false"
       />
@@ -30,16 +30,16 @@
             sagittis semper aliquet pellentesque ac. Leo ullaest.
           </p>
         </div>
-        <SwiperBanner
+        <Swiper
           :swiperClass="'myCardSwiper mt-5'"
-          :swiperData="cardData"
+          :swiperData="gameRoomList"
           :pagination="false"
           :scrollbar="false"
           effect="coverflow"
           :coverflow-effect="coverflowEffect"
           :breakpoints="breakpoints"
         >
-        </SwiperBanner>
+        </Swiper>
         <div class="text-center mt-5">
           <button
             class="more-btn px-5 py-2 fs-5"
@@ -129,8 +129,8 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
 
-import { ref } from "vue";
-import SwiperBanner from "@/components/SwiperBanner.vue"; // 引入輪播組件
+import { onMounted, ref } from "vue";
+import Swiper from "@/components/Swiper.vue"; // 引入輪播組件
 import StatsCard from "./StatsCard.vue"; // 引入 StatsCard 組件
 
 import banner01 from "@/assets/images/common/banner01.png";
@@ -159,6 +159,11 @@ import chainLinkColor from "@/assets/images/common/chainlink-logo-color.png";
 import monoColor from "@/assets/images/common/mono-color.png";
 
 import equalizer from "@/assets/images/icon/md-equalizer 1.svg";
+import modules from "@/services/modules";
+
+const {
+  home: { home },
+} = modules;
 
 const userStore = useUserStore();
 console.log(userStore.userInfo?.name, "NAME");
@@ -206,11 +211,11 @@ const breakpoints = {
 };
 
 // 定義統計數據數組
-const statsData = [
-  { title: "Total Players", number: "99,167" },
-  { title: "Total Game Volume", number: "$367,872" },
-  { title: "Total Game Rounds", number: "223,164" },
-];
+// const statsData = [
+//   { title: "Total Players", number: "99,167" },
+//   { title: "Total Game Volume", number: "$367,872" },
+//   { title: "Total Game Rounds", number: "223,164" },
+// ];
 
 const logos = [
   {
@@ -234,6 +239,60 @@ const logos = [
     alt: "monoWhite",
   },
 ];
+
+const homePageData = ref([]);
+const banner = ref([]);
+const gameRoomList = ref([]);
+const statsData = ref([]);
+
+const handleStatics = (obj) => {
+  return [
+    { title: "Total Players", number: obj.totalPlayers },
+    { title: "Total Game Volume", number: formatCurrency(obj.totalGameVolume) },
+    { title: "Total Game Rounds", number: obj.totalGameRounds },
+  ];
+};
+
+const formatCurrency = (number) => {
+  return `$${number.toLocaleString("en-US")}`;
+};
+
+const getHomeData = async () => {
+  const res = await home();
+  homePageData.value = res.data.data;
+  banner.value = handleBannerData(homePageData.value.banner);
+  gameRoomList.value = handleRoomData(homePageData.value.gameRoomList);
+  statsData.value = handleStatics(homePageData.value.statics);
+  const typeO = typeof homePageData.value.statics.totalPlayers;
+  console.log(homePageData.value.statics.totalPlayers, "banner");
+  console.log(typeO, "typeO");
+  console.log(banner.value, "banner");
+  console.log(gameRoomList.value, "gameRoomList");
+};
+
+const handleRoomData = (obj) => {
+  const roomData = obj.map((item) => ({
+    mobileImage: item.cardImgUrl,
+    image: item.cardImgUrl,
+    alt: "Card" + item.rewardSymbol,
+    link: `/game/${item.id}`, // 生成每個遊戲房的路由連結
+  }));
+  return roomData;
+};
+
+const handleBannerData = (obj) => {
+  const bannerData = obj.map((item) => ({
+    mobileImage: item.smallUrl,
+    image: item.url,
+    alt: "Banner",
+    link: "/game/game-list",
+  }));
+  return bannerData;
+};
+
+onMounted(async () => {
+  await getHomeData();
+});
 </script>
 
 <style scoped>
@@ -268,12 +327,6 @@ const logos = [
   width: 100%;
   max-width: 1280px;
 }
-
-/* @media (min-width: 575.98px) {
-  .stats {
-    width: 70%;
-  }
-} */
 
 /* state hr */
 .vertical-divider {

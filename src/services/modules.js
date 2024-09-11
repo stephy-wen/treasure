@@ -13,6 +13,10 @@ const auth = {
     }),
 };
 
+const home = {
+  home: () => apiClient.get("/Common/Home"),
+};
+
 // account module
 // 發送註冊驗證信
 const account = {
@@ -93,7 +97,6 @@ const asset = {
   withdrawApply: () => apiClient.post("/Asset/WithdrawApply", formData), // 出金申請
 };
 
-
 // 統一導出模組
 export default {
   auth,
@@ -101,4 +104,5 @@ export default {
   game,
   userInfo,
   asset,
+  home,
 };
