@@ -73,7 +73,11 @@
             <div class="personal-id">
               <p class="winnie-color-gray" style="font-size: 14px">
                 User ID
-                <img src="@/assets/images/icon/md-content_copy 1.svg" alt="" />
+                <img
+                  src="@/assets/images/icon/md-content_copy 1.svg"
+                  alt="userId"
+                  @click="copyUserId"
+                />
               </p>
               <p>{{ userInfo.userId }}</p>
             </div>
@@ -165,6 +169,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 import ChangePicModal from "./component/ChangePicModal.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import USDTIcon from "@/assets/images/icon/USDT.svg";
@@ -266,6 +271,22 @@ const rewardsData = [
     { icon: VerifyIcon, class: "text-center" },
   ],
 ];
+
+// 定義一個方法來複製 userId 到剪貼板
+const copyUserId = async () => {
+  try {
+    await navigator.clipboard.writeText(userInfo.value.userId);
+    ElMessage({
+      message: "User ID 已成功複製到剪貼板！",
+      type: "success",
+    });
+  } catch (error) {
+    ElMessage.error({
+      message: "複製失敗，請重試！",
+      duration: 3000,
+    });
+  }
+};
 
 onMounted(() => {
   loadUserInfo(); // 載入用戶信息
