@@ -35,7 +35,6 @@
         </div>
 
         <div class="container px-3 px-sm-0 mt-5">
-          <!-- Step 1 -->
           <div class="step-container step-one">
             <div>
               <div class="step-title">
@@ -43,52 +42,42 @@
                 <h5>Select Coin</h5>
               </div>
               <div class="d-flex justify-content-center">
-                <div class="vertical-line active d-none d-md-block me-5" style="height: 180px;"></div>
-                <div class="winnie-withdraw-bk container p-3 my-4">
-                  <div class="row">
-                  <div class="col-8 col-sm-5">
-                    <div class="dropdown dropdown-coin d-flex align-items-center my-4 my-sm-0">
-                      <button class="btn btn-secondary dropdown-toggle text-start d-flex justify-content-between" type="button"
-                        id="dropdownMenuForCoin" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div><i class="fa-solid fa-magnifying-glass me-2"></i><span>Select Coin</span></div>
-                        <div><i class="fa-solid fa-angle-down"></i></div>
-                      </button>
-                      <ul class="dropdown-menu" style="background-color: #414D5A ;" aria-labelledby="dropdownMenuForCoin">
-                        <li class="d-flex align-items-center">
-                          <a class="dropdown-item py-2" href="#">
-                            <div class="info">
-                              <img class="me-1" src="@/assets/images/icon/balance-icon.png" alt="balance-icon">
-                              <span class="abbr me-1">OCT / USDT</span>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                          <a class="dropdown-item py-2" href="#">
-                            <div class="info">
-                              <img class="me-1" src="@/assets/images/icon/balance-icon.png" alt="balance-icon">
-                              <span class="abbr me-1">OCT / USDC</span>
-                            </div>
-                          </a>
-                        </li>
-                      </ul>
+                <div class="vertical-line active d-none d-md-block me-5"></div>
+                  <!-- Element Plus 下拉选择框 -->
+                  <el-select
+                    v-model="params.supportCoin"
+                    size="large"
+                    placeholder="Select Coin"
+                    v-if="selectShow"
+                    class="d-flex align-items-center my-4 my-sm-0"
+                  >
+                    <template #prefix>
+                      <el-image 
+                      v-if="params.supportCoinImagePath"
+                      :src="params.supportCoinImagePath"
+                      style="width: 20px; height: 20px; margin-right: 5px;"
+                      ></el-image>
+                    </template>
+                    <el-option
+                      v-for="item in options.supportCoins"
+                      :key="item.value"
+                      :value="item.value"
+                      :label="item.label"
+                    >
+                      <template #default>
+                        <div class="option-content">
+                          <el-image
+                            :src="item.ImagePath"
+                            style="width: 20px; height: 20px; margin-right: 10px;"
+                          ></el-image>
+                          {{ item.label }}
+                        </div>
+                      </template>
+                    </el-option>
+                  </el-select>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-7">
-                    <input type="number" placeholder="Minium 20 USD" class="form-control amount-input" id="inputWithdrawAmount" aria-describedby="amount">
-                  </div>
-                  <div class="col-7 col-sm-5 mt-3 ps-4" style="font-size: 14px;">
-                      <p>1 USD = 1 OCT</p>
-                      <span>Balance : </span><span class="d-inline">354,321</span>
-                  </div>
-                  <div class="col-5 col-sm-7 text-end my-auto">
-                      <button class="max-btn">MAX</button>
-                  </div>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Step 2 -->
           <div class="step-container step-two">
             <div>
@@ -99,14 +88,24 @@
               <div class="d-flex align-items-center justify-content-center mb-3 mb-md-0">
                 <div class="vertical-line me-5 d-none d-md-block"></div>
                 <div class="mt-3 mt-md-0 winnie-width-xs-100">
-                <input type="email" class="form-control mb-2" id="exampleFormControlInput1" placeholder="Enter your address">
-                <div class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0">
-                  <button class="btn btn-secondary dropdown-toggle text-start d-flex justify-content-between winnie-width-xs-100"
-                    type="button" id="dropdownMenuForNetwork" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div><i class="fa-solid fa-magnifying-glass me-2"></i><span>Select Network</span></div>
-                    <div><i class="fa-solid fa-angle-down"></i></div>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuForNetwork">
+                  <!-- 提款地址輸入 -->
+                  <el-input
+                  v-model="params.withdrawAddress"
+                  class="form-control mb-2"
+                  id="exampleFormControlInput1" 
+                  placeholder="Enter your address"
+                  size="large"
+                  clearable
+                  />
+                  <!-- 選擇網路 -->
+                  <div class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0">
+                    <el-select
+                      v-model="params.selectNetwork"
+                      size="large"
+                      placeholder="Select Network"
+                      v-if="selectShow"
+                    >
+                                        <!-- 提醒 -->
                     <div class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between">
                       <p><i class="fa-solid fa-circle-exclamation me-2 winnie-text-white"></i></p>
                       <p class="text-start deposit-notice-color" style="font-size: 12px;">
@@ -114,51 +113,29 @@
                         network your assets may be lost.
                       </p>
                     </div>
-                    <li class="d-flex align-items-center">
-                      <a class="dropdown-item py-2" href="#">
+                      <el-option
+                      v-for="network in options.supportNetworks"
+                      :key="network.value"
+                      :value="network.value"
+                      :label="`${network.label} (${network.protocol})`"
+                      style="height: 60px;"
+                      >
+                        <template #default>
                         <div class="info">
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-white">BSC</span>
-                            <span class="winnie-text-white">&#8776; 3 分鐘</span>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <span class="winnie-text-white" style="color: black;">{{ network.label }}</span>
+                            <span class="winnie-text-white" style="color: black;">&#8776; {{ network.confirmMins }} 分鐘</span>
                           </div>
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-gray winnie-fs-small">BNB Smart Chain (BEP20)</span>
-                            <span class="winnie-text-gray winnie-fs-small">15 確認/s</span>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <span class="winnie-text-gray winnie-fs-small">{{ network.fullName }} ({{ network.protocol }})</span>
+                            <span class="winnie-text-gray winnie-fs-small">{{ network.confirmMins }} 確認/s</span>
                           </div>
                         </div>
-                      </a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                      <a class="dropdown-item py-2" href="#">
-                        <div class="info">
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-white">ETH</span>
-                            <span class="winnie-text-white">&#8776; 3 分鐘</span>
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-gray winnie-fs-small">Ethereum (ERC20)</span>
-                            <span class="winnie-text-gray winnie-fs-small">6 確認/s</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                      <a class="dropdown-item py-2" href="#">
-                        <div class="info">
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-white">TRX</span>
-                            <span class="winnie-text-white">&#8776; 2 分鐘</span>
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <span class="winnie-text-gray winnie-fs-small">Tron (TRC20)</span>
-                            <span class="winnie-text-gray winnie-fs-small">1 確認/s</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
+                      </template>
+                    </el-option>
+                    </el-select>
+                  </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -172,27 +149,41 @@
               </div>
               <div class="d-flex align-items-center flex-column flex-md-row">
                 <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent; height: 100px;"></div>
-                <div class="input-group my-3">
-                  <input type="text" class="form-control" placeholder="" value="31,678" aria-label="withdraw amount" aria-describedby="basic-addon2">
-                  <span class="input-group-text" id="withdrawUnit">USDT</span>
+                <div class="input-group my-3 col-12 col-sm-7">
+                  <el-input 
+                  type="number" 
+                  id="inputWithdrawAmount"
+                  class="form-control amount-input" 
+                  placeholder="Minimum 20 USD" 
+                  v-model="params.withdrawAmount" 
+                  aria-label="withdraw amount" 
+                  aria-describedby="amount"
+                  @blur="validateWithdrawAmountOnBlur"
+                  />
+                  <button class="max-btn" @click="setMaxWithdrawAmount">MAX</button>
+                  <span class="input-group-text" id="withdrawUnit">{{params.serviceFeeSymbol}}</span>
                 </div>
+
+                <!-- <div class="col-7 col-sm-5 mt-3 ps-4" style="font-size: 14px;">
+                  <p>1 USD = 1 OCT</p>
+                  <span>Balance : </span><span class="d-inline">{{params.maxWithdrawAmount}}</span>
+                </div> -->
               </div>
               <div class="d-flex">
                   <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
                   <div class="info-section">
                       <div class="info-row mb-1 mb-md-2">
                           <span>Available Withdrawal Balance</span>
-                          <span class="d-none d-md-inline">354,221 USDT</span>
+                          <span class="d-none d-md-inline">{{params.maxWithdrawAmount}} {{params.serviceFeeSymbol}}</span>
                       </div>
-                      <span class="mb-3 d-inline-block d-md-none">354,221 USDT</span>
                       <div class="info-row mb-1 mb-md-2">
                           <span>Service fee</span>
-                          <span class="d-none d-md-inline">0.001 USDT</span>
+                          <span class="d-none d-md-inline">{{ params.serviceFee }} {{params.serviceFeeSymbol}}</span>
                       </div>
-                      <span class="d-inline d-md-none">0.001 USDT</span>
+                      <span class="d-inline d-md-none">{{ params.serviceFee }} {{params.serviceFeeSymbol}}</span>
                       <!-- withdrawModal -->
                       <div class="info-row justify-content-center justify-content-sm-end mt-4 winnie-width-xs-100">
-                          <button class="withdraw-btn" data-bs-toggle="modal" data-bs-target="#withdrawModal">Withdraw</button>
+                          <button class="withdraw-btn" data-bs-toggle="modal" data-bs-target="#withdrawModal" @click="checkFormDataAndSendEmail">Withdraw</button>
                       </div>
                       <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -200,7 +191,9 @@
                             <div class="modal-header d-flex justify-content-between">
                               <h5 class="modal-title" id="withdrawModalLabel"></h5>
                               <button type="button" class="btn winnie-btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa-solid fa-xmark"></i>
+                                <font-awesome-icon
+                                icon="fa-solid fa-xmark"
+                                />
                               </button>
                             </div>
                             <div class="modal-body px-5">
@@ -208,17 +201,22 @@
                               <br>
                               <p class="winnie-text-gray">We've sent a code to your email. Please enter it within 30 minutes.</p>
                               <br>
-                              <div class="d-flex">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
-                              <input type="text" class="form-control text-center mx-1" maxlength="1">
+                              <div class="d-flex justify-content-center">
+                                <input v-for="(code, index) in codes" 
+                                  :key="index" 
+                                  ref="inputRefs"
+                                  type="text" 
+                                  class="form-control text-center mx-1 code-input"
+                                  maxlength="1" 
+                                  v-model="codes[index]" 
+                                  @input="handleInput(index)"
+                                  @keydown.backspace="handleBackspace(index)" 
+                                  autofocus 
+                                />
                               </div>
                             </div>
                             <div class="modal-footer px-5">
-                              <button id="withdrawConfirmButton" type="button" class="btn btn-primary w-100 mb-3 mt-3">Confirm</button>
+                              <button id="withdrawConfirmButton" type="button" class="btn btn-primary w-100 mb-3 mt-3" @click="withdrawApply">Confirm</button>
                             </div>
                           </div>
                         </div>
@@ -230,34 +228,210 @@
         </div>
       </div>
     </div>
-
-<!-- email驗證 test -->
-    <!-- <div class="verification-container">
-    <div class="form-group">
-      <div class="d-flex justify-content-between">
-        <input v-for="(code, index) in codes" 
-          :key="index" 
-          ref="inputRefs"
-          type="text" 
-          class="form-control text-center mx-1 code-input"
-          maxlength="1" 
-          v-model="codes[index]" 
-          @input="handleInput(index)"
-          @keydown.backspace="handleBackspace(index)" 
-          autofocus />
-      </div>
-    </div>
-    <button class="btn btn-primary mt-3" @click="verifyCode">Verify</button>
-  </div> -->
-
-  </div>
+  </div>  
 </template>
+
 
 <script setup>
 
-// Email驗證切分格子測試
-import { ref } from 'vue';
+import api from "@/services/modules"; // 引入 API 模組
+import { ref, onMounted, reactive, watch } from 'vue';
+// 下拉式測試 start
+import USDCicon from '@/assets/images/icon/USDC-account.svg';
+import USDTicon from '@/assets/images/icon/USDT-account.svg';
 
+// 輸入內容
+const params = reactive({
+  supportCoin: '',
+  supportCoinImagePath: '',
+  withdrawAddress: '',
+  selectNetwork: '',
+  withdrawAmount: '',
+  maxWithdrawAmount: '',
+  code: '',
+  serviceFee: '',
+  serviceFeeSymbol: '',
+})
+
+const userInfo = reactive({});
+// 監聽異動&圖片更換及網路更新
+watch(() => params.supportCoin, async (newValue) => {
+  if (newValue) {
+    // 更新加密貨幣圖片
+    const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newValue);
+    if (findSupportCoin) {
+      params.supportCoinImagePath = findSupportCoin.ImagePath;
+    }
+
+    try {
+      const networkSetting = await getCryptocurrencySetting(newValue);
+      console.log("NetworkSetting data:", networkSetting);
+
+      // 检查 networkSetting.data 是否存在，并从 withdraw 部分获取数据
+      if (networkSetting) {
+        // 更新網路選擇框的選項
+          options.supportNetworks = networkSetting.data.withdraw.supportNetworks.map((network) => ({
+          label: network.networkFullName,
+          value: network.network,
+          protocol: network.protocol,
+          confirmMins: network.confirmMins,
+          fullName: network.networkFullName,
+          supportSymbols: network.supportSymbols, // 确保这里有 supportSymbols
+        }));
+      } else {
+        console.error("NetworkSetting data is not in expected format:", networkSetting.data);
+      }
+    } catch (error) {
+      console.error("Failed to get NetworkSetting:", error);
+    }
+  }
+});
+
+watch([() => params.selectNetwork, () => params.supportCoin], ([newSelectNetwork, newSupportCoin]) => {
+  if (params.selectNetwork && params.supportCoin) {
+    const selectNetwork = options.supportNetworks.find((network) => network.value === newSelectNetwork);
+    console.log("Selected Network:", selectNetwork);
+    if (selectNetwork) {
+      params.serviceFee = selectNetwork?.supportSymbols[0]?.withdrawalFee;
+      params.serviceFeeSymbol = selectNetwork?.supportSymbols[0]?.symbol;
+      
+      console.log('params.serviceFee', params.serviceFee);
+    } else {
+      params.serviceFee = 'N/A';
+      console.error("Selected network not found:", newValue);
+    }
+  }
+});
+
+
+
+// 校验输入金额是否在最小值和最大值范围内
+const validateWithdrawAmountOnBlur = () => {
+  if (params.withdrawAmount && params.withdrawAmount < 20) {
+    params.withdrawAmount = 20;
+  } else if (params.withdrawAmount > params.maxWithdrawAmount) {
+    params.withdrawAmount = params.maxWithdrawAmount;
+  }
+};
+
+// api - 取得使用者資訊
+const getAccountInfo = async () => {
+  try {
+    const response = await api.userInfo.getAccountInfo();
+    console.log("AccountInfo get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
+const setMaxWithdrawAmount = () => {
+  params.withdrawAmount = params.maxWithdrawAmount;
+};
+
+// api - 取得出入金網路，幣種以及金額設定
+const getCryptocurrencySetting = async () => {
+  try {
+    const response = await api.asset.getCryptocurrencySetting();
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
+// api - 發送驗證碼
+const postSendAuthCode = async (type) => {
+  try {
+    const response = await api.account.sendAuthCode(type);
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
+const options = reactive({
+  supportCoins: [],
+  supportNetworks: [],
+})
+
+const iconMap = {
+  'USDT' : USDTicon,
+  'USDC' : USDCicon,
+};
+
+
+// 出金申請
+const withdrawApply = async () => {
+  const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === params.supportCoin);
+  const codeString = codes.value.join(""); // 将数组元素连接成字符串
+
+  const formData = {
+    network: params.selectNetwork,
+    symbol: findSupportCoin.symbol,
+    toAddress: params.withdrawAddress,
+    amount: params.withdrawAmount, //記得之後要加手續費
+    code: codeString,
+  };
+
+  try {
+    const response = await api.asset.withdrawApply(formData);
+    console.log("successfully:", response);
+  } catch (error) {
+    console.error("Failed:", error);
+  }
+};
+
+const checkFormDataAndSendEmail = async () => {
+  const type = "WithdrawApply";
+  await postSendAuthCode(type);
+};
+onMounted(async() => {
+  const cryptocurrencySetting = await getCryptocurrencySetting();
+  const responseUserInfo = await getAccountInfo();
+  Object.assign(userInfo, responseUserInfo.data);
+  console.log('userInfo', userInfo);
+  params.maxWithdrawAmount = userInfo.balanceData.balance;
+
+  if(cryptocurrencySetting) {
+    cryptocurrencySetting.data.withdraw.supportCoins.forEach((supportCoin) => {
+      options.supportCoins.push({
+        ImagePath: iconMap[supportCoin.symbol] || '',
+        label: supportCoin.fullName,
+        value: supportCoin.fullName,
+        symbol: supportCoin.symbol,
+      })
+    })
+  }
+})
+
+// // 根据选择的币种更新网络选项
+// const updateNetworks = (coin) => {
+//   // 假设网络数据在 cryptocurrencySetting 数据中
+//   const cryptocurrencySetting = getCryptocurrencySetting();
+
+//   if (cryptocurrencySetting) {
+//     const selectedCoin = cryptocurrencySetting.data.withdraw.supportCoins.find((supportCoin) => supportCoin.fullName === coin);
+//     if (selectedCoin) {
+//       options.supportNetworks = selectedCoin.networks.map((supportNetwork) => ({
+//         label: `${supportNetwork.network} (${supportNetwork.protocol})`,
+//         value: supportNetwork.network,
+//         fullName: supportNetwork.networkFullName,
+//         confirmMins: supportNetwork.confirmMins,
+//         transactionConfirm: supportNetwork.transactionConfirm,
+//       }));
+//     }
+//   }
+// };
+
+const selectShow = ref(true);
+
+// 下拉式測試 end
+// Email驗證切分格子測試
 const codes = ref(['', '', '', '', '', '']);
 const inputRefs = ref([]); // 這將儲存所有 input 的引用
 
@@ -292,8 +466,9 @@ function verifyCodeWithAPI(code) {
 </script>
 
 <style scoped>
+
 /* email test */
-/* .verification-container {
+.verification-container {
   max-width: 300px;
   margin: 0 auto;
 }
@@ -303,7 +478,7 @@ function verifyCodeWithAPI(code) {
   height: 40px;
   font-size: 24px;
   text-align: center;
-} */
+}
 
 .container { 
   width: 100%;
@@ -423,7 +598,7 @@ function verifyCodeWithAPI(code) {
 
 
 .step-three .input-group {
-    width: 100%;
+    width: 90%;
 }
 
 .step-three .info-section {
@@ -782,6 +957,69 @@ width: 160px;
 
 .winnie-btn-close:hover {
     background-color: #414D5A;
+}
+</style>
+<style>
+.step-container .el-select__wrapper{
+    width: 280px;
+    background-color: transparent;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+    .step-container .el-select__wrapper {
+            width: 380px;
+        }
+}
+@media (min-width: 575.98px) {
+.step-container .el-select__wrapper {
+    width: 400px;
+}
+}
+@media (min-width: 767.98px) {
+.step-container .el-select__wrapper{
+    width: 534px;
+}
+}
+@media (min-width: 991.98px) {
+.step-container .el-select__wrapper{
+    width: 600px;
+}
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+}
+
+.step-container .el-select__wrapper {
+  background-color: transparent;
+  border: 1px solid #6c757d;
+  box-shadow: none;
+}
+
+.step-container .el-select__placeholder {
+  color: #F8F8F8;
+}
+
+.step-container .form-control {
+  border: 1px solid #6c757d;
+}
+
+.step-container .el-select__selection {
+  background-color: transparent;
+}
+
+.step-container .el-input__wrapper {
+  display: flex;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.step-container .el-input.form-control {
+  padding: 0px;
+}
+
+.el-select-dropdown__item {
+  line-height:30px;
 }
 
 </style>
