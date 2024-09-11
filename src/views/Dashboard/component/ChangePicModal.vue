@@ -74,28 +74,25 @@ import { ref, onMounted, defineProps, defineEmits, inject } from "vue";
 import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
 
+const { changeAvatar } = modules.userInfo; // api
+
+const props = defineProps({
+  isOpen: Boolean,
+  // avatars: Array,
+});
+const emit = defineEmits(["closeModal"]);
+
 const avatars = inject("AvatarImageList");
 const userStore = useUserStore();
+const selectedAvatarId = ref(null); // 定義選中的頭像 ID 和 URL
+const selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
+const modal = ref(null); // 用於存儲模態框的 DOM 元素
 
-onMounted(() => {
-  loadUserInfo(); // 載入用戶信息
-});
-
-let selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
-let userInfo = ref([]);
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
-  userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
   selectedAvatarUrl.value = userStore.userInfo?.avatarUrl;
 };
-
-// 如果你需要在模板中直接使用 userInfo，可以直接用 userStore.userInfo
-console.log(userStore.userInfo, "外部"); // 這是響應式的，會在資料變更時自動更新
-
-const { changeAvatar } = modules.userInfo;
-
-// 定義選中的頭像 ID 和 URL
-const selectedAvatarId = ref(null);
 
 // 當用戶選擇頭像時更新
 const selectAvatar = (avatar) => {
@@ -105,9 +102,8 @@ const selectAvatar = (avatar) => {
 
 // 當點擊 Save 按鈕時保存變更
 const saveAvatar = async () => {
-  if (selectedAvatarId.value !== null) {
+  if (selectedAvatarId.value) {
     try {
-      console.log(selectedAvatarId.value, "SAVE");
       await changeAvatar(selectedAvatarId.value);
       alert("Avatar changed successfully!");
     } catch (error) {
@@ -119,14 +115,9 @@ const saveAvatar = async () => {
   }
 };
 
-const modal = ref(null); // 用於存儲模態框的 DOM 元素
-
-const props = defineProps({
-  isOpen: Boolean,
-  // avatars: Array,
+onMounted(() => {
+  loadUserInfo(); // 載入用戶信息
 });
-
-const emit = defineEmits(["closeModal"]);
 
 const closeModal = () => {
   emit("closeModal");
