@@ -29,12 +29,12 @@
                   src="@/assets/images/icon/iconPark-edit-two 1.svg"
                   alt=""
               /></a>
-              <a href="account/manage-password.html"
+              <router-link to="/manage-password"
                 ><img
                   class="ms-2"
                   src="@/assets/images/icon/antFill-lock 1.svg"
                   alt=""
-              /></a>
+              /></router-link>
             </div>
             <div class="personal-email">
               <p class="winnie-color-gray" style="font-size: 14px">Email</p>
