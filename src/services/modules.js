@@ -55,6 +55,12 @@ const account = {
 const userInfo = {
   changeNickname: (name) => apiClient.post("/Account/ChangeNickname", { name }), // 變更暱稱
   getAvatarList: () => apiClient.get("/Account/AvatarList"), // 取得頭像列表
+  changeAvatar: (avatarId) =>
+    apiClient.put("/Account/ChangeAvatar", null, {
+      params: {
+        avatarId,
+      },
+    }),
   getAccountInfo: () => apiClient.get("/Account/AccountInfo"), // 取得用戶資訊
   getGameRewardHistory: () => apiClient.get("/Game/GameRewardHistory"), // 得獎紀錄
   getGameRewardInfo: (rewardId) =>

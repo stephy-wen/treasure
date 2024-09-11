@@ -7,7 +7,6 @@
       id="avatarModal"
       tabindex="-1"
       aria-labelledby="avatarModalLabel"
-      aria-hidden="true"
       role="dialog"
       style="display: block"
     >
@@ -31,8 +30,8 @@
             <div class="text-center mt-1 mb-5">
               <img
                 style="width: 65px !important"
-                src="@/assets/images/icon/NFT/09.png"
-                alt=""
+                :src="selectedAvatarUrl"
+                alt="Selected Avatar"
               />
             </div>
             <div class="select-avatar">
@@ -41,13 +40,14 @@
                 <div class="row gy-3">
                   <div
                     class="col-3 text-center"
-                    v-for="(avatars, index) in avatars"
-                    :key="index"
+                    v-for="avatar in avatars"
+                    :key="avatar.id"
                   >
                     <img
-                      src="@/assets/images/icon/NFT/09.png"
+                      :src="avatar.url"
                       alt="Avatar"
-                      class="avatar-img"
+                      @click="selectAvatar(avatar)"
+                      :class="{ 'avatar-img': selectedAvatarId === avatar.id }"
                     />
                   </div>
                 </div>
@@ -70,20 +70,67 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import {
+  ref,
+  onMounted,
+  defineProps,
+  defineEmits,
+  inject,
+  computed,
+} from "vue";
+import { useUserStore } from "@/stores/user";
+import modules from "@/services/modules";
+
+const avatars = inject("AvatarImageList");
+const userStore = useUserStore();
+
+onMounted(() => {
+  loadUserInfo(); // 載入用戶信息
+});
+
+let selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
+// 加載用戶信息的函數
+const loadUserInfo = async () => {
+  await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  selectedAvatarUrl.value = userStore.userInfo?.avatarUrl;
+  console.log(userStore.userInfo, "內部"); // 直接使用 store 中的 userInfo
+};
+
+// 如果你需要在模板中直接使用 userInfo，可以直接用 userStore.userInfo
+console.log(userStore.userInfo, "外部"); // 這是響應式的，會在資料變更時自動更新
+
+const { changeAvatar } = modules.userInfo;
+
+// 定義選中的頭像 ID 和 URL
+const selectedAvatarId = ref(null);
+
+// 當用戶選擇頭像時更新
+const selectAvatar = (avatar) => {
+  selectedAvatarId.value = avatar.id;
+  selectedAvatarUrl.value = avatar.url;
+};
+
+// 當點擊 Save 按鈕時保存變更
+const saveAvatar = async () => {
+  if (selectedAvatarId.value !== null) {
+    try {
+      console.log(selectedAvatarId.value, "SAVE");
+      await changeAvatar(selectedAvatarId.value);
+      alert("Avatar changed successfully!");
+    } catch (error) {
+      console.error("Failed to change avatar:", error);
+      alert("Failed to change avatar.");
+    }
+  } else {
+    alert("Please select an avatar.");
+  }
+};
 
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
 
-onMounted(() => {
-  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
-  //console.log(modalElement, "modalElement");
-  //const isHidden = window.getComputedStyle(modalElement).display === "none";
-  //console.log(isHidden); // 檢查模態框是否隱藏
-});
-
 const props = defineProps({
   isOpen: Boolean,
-  avatars: Array,
+  // avatars: Array,
 });
 
 const emit = defineEmits(["closeModal"]);

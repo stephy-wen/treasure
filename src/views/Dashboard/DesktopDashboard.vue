@@ -10,14 +10,13 @@
             <img
               class="avatar-photo"
               src="@/assets/images/icon/NFT/09.png"
-              alt=""
+              alt="avatar"
               @click="openChangePicModal"
             />
           </div>
 
           <ChangePicModal
             :isOpen="showChangePicModal"
-            :avatars="avatars"
             @closeModal="showChangePicModal = false"
           />
 
@@ -182,30 +181,15 @@ const showGetRewardsModal = ref(false);
 const showNicknameReviseModal = ref(false);
 
 const openChangePicModal = () => {
-  console.log("OpenChangePicModal function called in Desktop.vue");
   showChangePicModal.value = true;
-  console.log(
-    "showChangePicModal value after openModal:",
-    showChangePicModal.value
-  );
 };
 
 const openGetRewardsModal = () => {
-  console.log("OpenGetRewardsModal function called in Desktop.vue");
   showGetRewardsModal.value = true;
-  console.log(
-    "showGetRewardsModal value after openModal:",
-    showGetRewardsModal.value
-  );
 };
 
 const openNicknameReviseModal = () => {
-  console.log("OpenNicknameReviseModal function called in Desktop.vue");
   showNicknameReviseModal.value = true;
-  console.log(
-    "showNicknameReviseModal value after openModal:",
-    showNicknameReviseModal.value
-  );
 };
 
 const headers = [
