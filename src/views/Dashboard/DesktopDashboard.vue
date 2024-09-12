@@ -306,14 +306,6 @@ const formatRewardsData = (data) => {
   });
 };
 
-const getRewardInfos = async () => {
-  try {
-    await getGameRewardInfo;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // 被子組件通知更換新名稱
 const onNicknameChanged = (newNickname) => {
   userStore.updateNickname(newNickname);
