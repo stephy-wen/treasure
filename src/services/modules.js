@@ -11,6 +11,10 @@ const auth = {
         withRewardData,
       },
     }),
+  getTransactionLog: (transactionType, pageSize, pageIndex) =>
+    apiClient.get(
+      `/Asset/TransactionLog/${transactionType}/${pageSize}/${pageIndex}`
+    ),
 };
 
 const home = {

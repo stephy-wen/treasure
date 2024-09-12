@@ -124,7 +124,7 @@
                     :headers="rewardHeaders"
                     :data="rewardsData"
                     customClass="transparent-bg-table"
-                    :imageFirst="false"
+                    :imageFirst="true"
                   />
                 </ul>
                 <!-- rewards-list-end -->
@@ -168,6 +168,7 @@
 </template>
 
 <script setup>
+import dayjs from "dayjs";
 import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import ChangePicModal from "./component/ChangePicModal.vue";
@@ -178,11 +179,17 @@ import BNBIcon from "@/assets/images/icon/BNB-account.svg";
 import BTCIcon from "@/assets/images/icon/BTC-account.svg";
 import BalanceIcon from "@/assets/images/icon/balance-icon.png";
 import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
 import GetRewardsModal from "./component/GetRewardsModal.vue";
 import NicknameReviseModal from "./component/NicknameReviseModal.vue";
 import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
+import { images, getCurrencyIcon } from "@/assets/images.js";
 
+const {
+  userInfo: { getGameRewardInfo, getGameRewardHistory },
+  auth: { getTransactionLog },
+} = modules;
 const userStore = useUserStore();
 const showChangePicModal = ref(false);
 const showGetRewardsModal = ref(false);
@@ -245,33 +252,67 @@ const tableData = [
   ],
 ];
 
-const avatars = [
-  "@/assets/images/icon/NFT/02.png",
-  "@/assets/images/icon/NFT/01.png",
-  "@/assets/images/icon/NFT/03.png",
-  "@/assets/images/icon/NFT/04.png",
-  "@/assets/images/icon/NFT/05.png",
-  "@/assets/images/icon/NFT/06.png",
-  "@/assets/images/icon/NFT/07.png",
-  "@/assets/images/icon/NFT/09.png",
-];
+// const rewardsData = [
+//   [
+//     { text: "1752", class: "ps-5" },
+//     { text: "2024/06/12 20:16:03" },
+//     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
+//     { text: "0.576", class: "text-end" },
+//     { image: VerifyIcon, class: "text-center" },
+//   ],
+//   [
+//     { text: "1752", class: "ps-5" },
+//     { text: "2024/06/12 20:16:03" },
+//     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
+//     { text: "0.576", class: "text-end" },
+//     { image: VerifyIcon, class: "text-center" },
+//   ],
+// ];
+const rewardsData = ref([]);
+const getRewards = async () => {
+  try {
+    const res = await getGameRewardHistory();
+    console.log(res.data.data, "res.data.data");
+    if (res && res.data.data) {
+      rewardsData.value = formatRewardsData(res.data.data); // 該頁資料的整理
+      console.log(rewardsData.value, "rewardsData");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const rewardsData = [
-  [
-    { text: "1752", class: "ps-5" },
-    { text: "2024/06/12 20:16:03" },
-    { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
-    { text: "0.576", class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-  [
-    { text: "1752", class: "ps-5" },
-    { text: "2024/06/12 20:16:03" },
-    { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
-    { text: "0.576", class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-];
+const formatDate = (isoDateString) =>
+  dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
+
+const formatRewardsData = (data) => {
+  return data.map((reward) => {
+    return [
+      { text: reward.round, class: "ps-5" }, // rewardId
+      { text: formatDate(reward.time) }, // 格式化的日期
+      {
+        text: reward.rewardSymbol,
+        image: getCurrencyIcon(reward.rewardSymbol),
+        class: "text-end pe-4",
+      }, // 幣種符號及圖標
+      { text: reward.rewardAmount, class: "text-end" }, // 獎勵數量
+      {
+        image: UploadIcon,
+        class: "text-center",
+        link: `/account/reward/${reward.rewardId}`,
+        target: "_self",
+      }, // Verify 圖標
+    ];
+  });
+};
+
+const getRewardInfos = async () => {
+  try {
+    await getGameRewardInfo;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // 被子組件通知更換新名稱
 const onNicknameChanged = (newNickname) => {
@@ -301,6 +342,7 @@ const copyUserId = async () => {
 
 onMounted(() => {
   loadUserInfo(); // 載入用戶信息
+  getRewards();
 });
 
 // 加載用戶信息的函數
