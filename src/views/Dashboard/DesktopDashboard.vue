@@ -138,7 +138,7 @@
           Title=""
           :headers="headers"
           :data="tableData"
-          :imageFirst="false"
+          :imageFirst="true"
         />
       </div>
 
@@ -187,7 +187,7 @@ import modules from "@/services/modules";
 import { images, getCurrencyIcon } from "@/assets/images.js";
 
 const {
-  userInfo: { getGameRewardInfo, getGameRewardHistory },
+  userInfo: { getGameRewardHistory },
   auth: { getTransactionLog },
 } = modules;
 const userStore = useUserStore();
@@ -225,57 +225,92 @@ const rewardHeaders = [
   { text: "Withdraw", class: "text-center" },
 ];
 
-const tableData = [
-  [
-    { text: "2024-08-27 10:00:01", class: "ps-5" },
-    { text: "Rewards" },
-    { text: "100", image: BNBIcon, class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-  [
-    { text: "2024/06/12 20:16:03", class: "ps-5" },
-    { text: "Deposit", image: USDTIcon, imageStyle: "max-width: 22px" },
-    { text: "50", image: BalanceIcon, class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-  [
-    { text: "2024-08-27 10:00:01", class: "ps-5" },
-    { text: "Rewards" },
-    { text: "100", image: BTCIcon, class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-  [
-    { text: "2024/06/12 20:16:03", class: "ps-5" },
-    { text: "Deposit", image: USDCIcon, imageStyle: "max-width: 22px" },
-    { text: "50", image: BalanceIcon, class: "text-end" },
-    { image: VerifyIcon, class: "text-center" },
-  ],
-];
-
-// const rewardsData = [
+// const tableData = [
 //   [
-//     { text: "1752", class: "ps-5" },
-//     { text: "2024/06/12 20:16:03" },
-//     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
-//     { text: "0.576", class: "text-end" },
+//     { text: "2024-08-27 10:00:01", class: "ps-5" },
+//     { text: "Rewards" },
+//     { text: "100", image: BNBIcon, class: "text-end" },
 //     { image: VerifyIcon, class: "text-center" },
 //   ],
 //   [
-//     { text: "1752", class: "ps-5" },
-//     { text: "2024/06/12 20:16:03" },
-//     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
-//     { text: "0.576", class: "text-end" },
+//     { text: "2024/06/12 20:16:03", class: "ps-5" },
+//     { text: "Deposit", image: USDTIcon, imageStyle: "max-width: 22px" },
+//     { text: "50", image: BalanceIcon, class: "text-end" },
+//     { image: VerifyIcon, class: "text-center" },
+//   ],
+//   [
+//     { text: "2024-08-27 10:00:01", class: "ps-5" },
+//     { text: "Rewards" },
+//     { text: "100", image: BTCIcon, class: "text-end" },
+//     { image: VerifyIcon, class: "text-center" },
+//   ],
+//   [
+//     { text: "2024/06/12 20:16:03", class: "ps-5" },
+//     { text: "Deposit", image: USDCIcon, imageStyle: "max-width: 22px" },
+//     { text: "50", image: BalanceIcon, class: "text-end" },
 //     { image: VerifyIcon, class: "text-center" },
 //   ],
 // ];
+
+const tableData = ref([]);
+const totalItems = ref(0); // 總項目數
+const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const transactionType = "All";
+
+const getTableHistory = async (pageIndex) => {
+  try {
+    // 調用 API 獲取歷史資料
+    const response = await getTransactionLog(
+      transactionType,
+      itemsPerPage.value,
+      pageIndex
+    );
+    console.log(response.data.data);
+    if (response && response.data.data) {
+      tableData.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
+      console.log(tableData.value, "");
+      totalItems.value = response.data.data.total; // 總筆數
+    } else {
+      console.error("未獲取到有效的歷史資料");
+    }
+  } catch (error) {
+    console.error("獲取歷史時發生錯誤：", error);
+  }
+};
+
+const formatHistoryData = (data) => {
+  return data.map((history) => [
+    {
+      text: formatDate(history.transactionDateTime),
+      class: "ps-5",
+      image: null,
+    },
+    {
+      text: history.type,
+      image: history.type === "Deposit" ? getCurrencyIcon(history.symbol) : "",
+      imageStyle: history.type === "Deposit" ? "max-width: 22px" : "",
+      class: "",
+    },
+    {
+      text: history.amount,
+      image: getCurrencyIcon(history.symbol),
+      class: "text-end",
+    },
+    {
+      image: VerifyIcon,
+      class: "text-center",
+      link: history.transactionUrl,
+      target: "_blank",
+    },
+  ]);
+};
+
 const rewardsData = ref([]);
 const getRewards = async () => {
   try {
     const res = await getGameRewardHistory();
-    console.log(res.data.data, "res.data.data");
     if (res && res.data.data) {
       rewardsData.value = formatRewardsData(res.data.data); // 該頁資料的整理
-      console.log(rewardsData.value, "rewardsData");
     }
   } catch (error) {
     console.log(error);
@@ -335,6 +370,7 @@ const copyUserId = async () => {
 onMounted(() => {
   loadUserInfo(); // 載入用戶信息
   getRewards();
+  getTableHistory(1);
 });
 
 // 加載用戶信息的函數
