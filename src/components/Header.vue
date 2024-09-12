@@ -64,10 +64,10 @@ window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 575.98;
 });
 
-// 定義這些變量，並根據 API 的返回數據更新它們
-const userId = ref("");
-const balance = ref(0);
-const userAvatar = ref("");
+// 監聽 userInfo 的變化
+const userId = computed(() => userStore.userInfo?.name || "");
+const balance = computed(() => userStore.userInfo?.balanceData?.balance || 0);
+const userAvatar = computed(() => userStore.userInfo?.avatarUrl || "");
 
 let isLoggedIn = computed(() => userStore.isLoggedIn);
 
@@ -79,25 +79,12 @@ display: 'authorized' 表示只有在用户登录后显示该链接（如 New Po
 
 let gameData = ref(userStore.userInfo);
 
-const token = localStorage.getItem("token");
 // 如果pinia被清空 在組件加載時再打一次api
 onMounted(async () => {
-  // 1. 獲取 userInfo 資料
-  if (token) {
-    // 檢查是否需要重新獲取用戶資料
-    if (!gameData.value || Object.keys(gameData.value).length === 0) {
-      console.log("造成程式崩潰的地方");
-      // 如果 pinia 中的 userInfo 沒有值，打 API
-      const fetchedData = await userStore.fetchUserInfo(); // 調用 API
-      gameData.value = fetchedData; // 更新 gameData
-
-      // 更新用戶信息
-      if (fetchedData) {
-        userId.value = fetchedData.name; // 更新用戶ID
-        balance.value = fetchedData.balanceData.balance; // 更新餘額
-        userAvatar.value = fetchedData.avatarUrl; // 更新用戶頭像
-      }
-    }
+  const token = localStorage.getItem("token");
+  if (token && !userStore.userInfo) {
+    // 如果 token 存在並且 userInfo 為空，調用 API 獲取資料
+    await userStore.fetchUserInfo();
   }
 });
 
