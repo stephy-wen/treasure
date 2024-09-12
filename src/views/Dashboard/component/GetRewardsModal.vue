@@ -119,14 +119,16 @@ const props = defineProps({
 
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
 const userId = ref(props.userId);
-const referralUrl = ref(`http://localhost:5173/register?join=${userId.value}`);
+
+const baseUrl = import.meta.env.VITE_APP_URL; // 使用環境變量來獲取基礎 URL
+const referralUrl = ref(`${baseUrl}/register?join=${userId.value}`);
 
 // 監聽 props.userId 的變化，並更新本地的 userId
 watch(
   () => props.userId,
   (newUserId) => {
     userId.value = newUserId;
-    referralUrl.value = `http://localhost:5173/register?join=${newUserId}`;
+    referralUrl.value = `${baseUrl}/register?join=${newUserId}`;
   }
 );
 
