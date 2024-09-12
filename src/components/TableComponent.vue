@@ -23,7 +23,7 @@
             <!-- 如果 imageFirst 為 true，先顯示圖片，然後顯示文字 -->
             <template v-if="imageFirst">
               <!-- 檢查是否有 link，如果有則包裹在 <a> 中 -->
-              <a v-if="cell.link" :href="cell.link" target="_blank">
+              <a v-if="cell.link" :href="cell.link" :target="cell.target">
                 <img
                   v-if="cell.image"
                   class="img-fluid"
