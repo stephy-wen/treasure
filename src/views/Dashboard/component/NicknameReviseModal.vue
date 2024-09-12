@@ -99,11 +99,11 @@ const modal = ref(null); // 用於存儲模態框的 DOM 元素
 const nickname = ref(props.userName);
 console.log(nickname.value);
 
-// 監聽 props.userIdEdit 的變化，並更新本地的 userId
+// 監聽 props.userName 的變化，並更新本地的 userName
 watch(
   () => props.userName,
-  (newUserIdEdit) => {
-    nickname.value = newUserIdEdit;
+  (newUserName) => {
+    nickname.value = newUserName;
   }
 );
 
