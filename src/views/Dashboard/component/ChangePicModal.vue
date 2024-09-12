@@ -106,6 +106,7 @@ const saveAvatar = async () => {
     try {
       await changeAvatar(selectedAvatarId.value);
       console.log("Avatar changed successfully!");
+      closeModal();
       emit("avatarChanged", selectedAvatarUrl.value);
     } catch (error) {
       console.error("Failed to change avatar:", error);
