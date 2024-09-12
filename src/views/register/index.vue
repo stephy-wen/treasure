@@ -150,7 +150,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 import AuthForm from "@/components/AuthForm/AuthForm.vue";
 import FormSide from "@/components/FormSide.vue";
@@ -164,6 +164,8 @@ const {
 } = modules;
 
 const router = useRouter();
+const route = useRoute();
+
 
 // 定義步驟狀態
 const currentStep = ref(1);
@@ -372,12 +374,12 @@ const validatePasswords = () => {
     );
   }
 
-const rules = [
-  { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
-  { regex: /[0-9]/, message: "Password must contain at least one number." },
-  { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
-  { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
-];
+  const rules = [
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+    { regex: /[0-9]/, message: "Password must contain at least one number." },
+    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
+    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+  ];
 
   for (const rule of rules) {
     if (!rule.regex.test(password.value)) {
@@ -414,6 +416,17 @@ const buttonText = computed(() => {
     default:
       return "Next";
   }
+});
+
+const props = defineProps({
+  referralCode: String
+});
+
+// 在註冊頁加載時自動檢查 URL 是否有推薦碼
+onMounted(() => {
+  referralCode.value = props.referralCode
+  // referralCode.value = route.query.join || ""; // 查詢參數中獲取推薦碼
+  // console.log( referralCode.value)
 });
 </script>
 

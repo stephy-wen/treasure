@@ -59,6 +59,7 @@
             <GetRewardsModal
               :isOpen="showGetRewardsModal"
               @closeModal="showGetRewardsModal = false"
+              :userId="userInfo.userId"
             />
 
             <NicknameReviseModal

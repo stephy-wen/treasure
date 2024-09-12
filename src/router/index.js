@@ -20,6 +20,7 @@ const routes = [
     path: "/register",
     name: "Register",
     component: () => import("../views/register/index.vue"),
+    props: (route) => ({ referralCode: route.query.join }),
   },
   {
     path: "/forgot-password",

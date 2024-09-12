@@ -50,15 +50,17 @@
                   type="text"
                   class="form-control"
                   style="font-size: 12px"
-                  value="http://www.onechance.com/join/3211232215"
+                  :value="referralUrl"
                   aria-label="Recipient's username"
                   aria-describedby="button-addon2"
                   readonly
                 />
+                <!-- value="http://www.onechance.com/join/3211232215" -->
                 <button
                   class="btn btn-outline-secondary"
                   type="button"
                   id="button-addon2"
+                  @click="copyUserLink"
                 >
                   <img
                     src="@/assets/images/icon/md-content_copy 1.svg"
@@ -81,7 +83,7 @@
                   type="text"
                   class="form-control"
                   style="font-size: 12px"
-                  value="3211232215"
+                  :value="userId"
                   aria-label="Recipient's username"
                   aria-describedby="button-addon2"
                   readonly
@@ -90,6 +92,7 @@
                   class="btn btn-outline-secondary"
                   type="button"
                   id="button-addon2"
+                  @click="copyUserId"
                 >
                   <img
                     src="@/assets/images/icon/md-content_copy 1.svg"
@@ -106,25 +109,70 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import { ref, onMounted, defineProps, defineEmits, watch } from "vue";
+import { ElMessage } from "element-plus";
+
+const props = defineProps({
+  isOpen: Boolean,
+  userId: String,
+});
 
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
+const userId = ref(props.userId);
+const referralUrl = ref(`http://localhost:5173/register?join=${userId.value}`);
+
+// 監聽 props.userId 的變化，並更新本地的 userId
+watch(
+  () => props.userId,
+  (newUserId) => {
+    userId.value = newUserId;
+    referralUrl.value = `http://localhost:5173/register?join=${newUserId}`;
+  }
+);
 
 onMounted(() => {
+  console.log(props.userId);
   //const modalElement = modal.value; // 獲取模態框的 DOM 元素
   //console.log(modalElement, "modalElement");
   //const isHidden = window.getComputedStyle(modalElement).display === "none";
   //console.log(isHidden); // 檢查模態框是否隱藏
 });
 
-const props = defineProps({
-  isOpen: Boolean,
-});
-
 const emit = defineEmits(["closeModal"]);
 
 const closeModal = () => {
   emit("closeModal");
+};
+
+// 定義一個方法來複製 userId 到剪貼板
+const copyUserId = async () => {
+  try {
+    await navigator.clipboard.writeText(userId.value);
+    ElMessage({
+      message: "User ID 已成功複製！",
+      type: "success",
+    });
+  } catch (error) {
+    ElMessage.error({
+      message: "複製失敗，請重試！",
+      duration: 3000,
+    });
+  }
+};
+
+const copyUserLink = async () => {
+  try {
+    await navigator.clipboard.writeText(referralUrl.value);
+    ElMessage({
+      message: "url 已成功複製！",
+      type: "success",
+    });
+  } catch (error) {
+    ElMessage.error({
+      message: "複製失敗，請重試！",
+      duration: 3000,
+    });
+  }
 };
 </script>
 
