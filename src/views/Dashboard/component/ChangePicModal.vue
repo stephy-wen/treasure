@@ -80,7 +80,7 @@ const props = defineProps({
   isOpen: Boolean,
   // avatars: Array,
 });
-const emit = defineEmits(["closeModal"]);
+const emit = defineEmits(["closeModal", "avatarChanged"]);
 
 const avatars = inject("AvatarImageList");
 const userStore = useUserStore();
@@ -105,13 +105,13 @@ const saveAvatar = async () => {
   if (selectedAvatarId.value) {
     try {
       await changeAvatar(selectedAvatarId.value);
-      alert("Avatar changed successfully!");
+      console.log("Avatar changed successfully!");
+      emit("avatarChanged", selectedAvatarUrl.value);
     } catch (error) {
       console.error("Failed to change avatar:", error);
-      alert("Failed to change avatar.");
     }
   } else {
-    alert("Please select an avatar.");
+    console.log("Please select an avatar.");
   }
 };
 

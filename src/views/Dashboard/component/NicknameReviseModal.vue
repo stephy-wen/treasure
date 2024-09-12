@@ -38,9 +38,9 @@
               type="text"
               id="inputNickname"
               class="form-control"
-              value="winnie123456789"
               placeholder="Enter your new nickname"
               aria-describedby="nicknameHelpBlock"
+              v-model="nickname"
             />
             <div id="nicknameHelpBlock" class="form-text">15/20</div>
           </div>
@@ -68,7 +68,11 @@
           </div>
         </div>
         <div class="modal-footer mx-auto mb-3">
-          <button type="button" class="btn btn-primary save-btn">
+          <button
+            type="button"
+            class="btn btn-primary save-btn"
+            @click="saveNickname"
+          >
             confirm
           </button>
         </div>
@@ -78,25 +82,54 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import { ref, onMounted, defineProps, defineEmits, watch } from "vue";
+import modules from "@/services/modules";
 
-const modal = ref(null); // 用於存儲模態框的 DOM 元素
-
-onMounted(() => {
-  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
-  //console.log(modalElement, "modalElement");
-  //const isHidden = window.getComputedStyle(modalElement).display === "none";
-  //console.log(isHidden); // 檢查模態框是否隱藏
-});
+const {
+  userInfo: { changeNickname },
+} = modules;
 
 const props = defineProps({
   isOpen: Boolean,
+  userName: String,
 });
 
-const emit = defineEmits(["closeModal"]);
+const emit = defineEmits(["closeModal", "upDataNickname"]);
+const modal = ref(null); // 用於存儲模態框的 DOM 元素
+const nickname = ref(props.userName);
+console.log(nickname.value);
+
+// 監聽 props.userIdEdit 的變化，並更新本地的 userId
+watch(
+  () => props.userName,
+  (newUserIdEdit) => {
+    nickname.value = newUserIdEdit;
+  }
+);
+
+onMounted(() => {});
 
 const closeModal = () => {
   emit("closeModal");
+};
+
+// 保存並發送 API 請求
+const saveNickname = async () => {
+  if (!nickname.value) {
+    console.log("Please enter a valid nickname.");
+    return;
+  }
+
+  try {
+    // 調用 API 發送修改請求
+    await changeNickname(nickname.value);
+    console.log("Nickname updated successfully!");
+    emit("upDataNickname", nickname.value);
+    // 更新完成後，關閉模態框
+    closeModal();
+  } catch (error) {
+    console.error("Failed to update nickname. Please try again later.", error);
+  }
 };
 </script>
 

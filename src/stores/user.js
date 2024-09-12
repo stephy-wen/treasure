@@ -39,16 +39,25 @@ export const useUserStore = defineStore("user", () => {
 
   // 定義 actions，用來從 API 獲取用戶信息
   const fetchUserInfo = async () => {
-    if (!userInfo.value) {
-      // 檢查 userInfo 是否已有數據
-      try {
-        const response = await api.auth.getUserInfo();
-        userInfo.value = response.data.data;
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
+    // 檢查 userInfo 是否已有數據
+    try {
+      const response = await api.auth.getUserInfo();
+      userInfo.value = response.data.data;
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
     }
+
     return userInfo.value; // 如果已經有數據，直接返回，不打 API
+  };
+
+  // 當子組件通知父組件頭像已變更時，更新 store
+  const updateNickname = (newNickname) => {
+    userInfo.value.name = newNickname;
+  };
+
+  // 當子組件通知父組件頭像已變更時，更新 store
+  const updateAvatar = (newAvatarUrl) => {
+    userInfo.value.avatarUrl = newAvatarUrl;
   };
 
   // 定義actions，登出
@@ -67,5 +76,7 @@ export const useUserStore = defineStore("user", () => {
     fetchUserInfo,
     logoutUser,
     errorMessage,
+    updateNickname,
+    updateAvatar,
   };
 });

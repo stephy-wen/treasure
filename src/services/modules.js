@@ -53,7 +53,7 @@ const account = {
 
 // user module
 const userInfo = {
-  changeNickname: (name) => apiClient.post("/Account/ChangeNickname", { name }), // 變更暱稱
+  changeNickname: (name) => apiClient.put("/Account/ChangeNickname", { name }), // 變更暱稱
   getAvatarList: () => apiClient.get("/Account/AvatarList"), // 取得頭像列表
   changeAvatar: (avatarId) =>
     apiClient.put("/Account/ChangeAvatar", null, {

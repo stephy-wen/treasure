@@ -9,7 +9,7 @@
           >
             <img
               class="avatar-photo"
-              src="@/assets/images/icon/NFT/09.png"
+              :src="userInfo.avatarUrl"
               alt="avatar"
               @click="openChangePicModal"
             />
@@ -18,6 +18,7 @@
           <ChangePicModal
             :isOpen="showChangePicModal"
             @closeModal="showChangePicModal = false"
+            @avatarChanged="onAvatarChanged"
           />
 
           <div class="col-4 d-flex flex-column">
@@ -63,6 +64,8 @@
             <NicknameReviseModal
               :isOpen="showNicknameReviseModal"
               @closeModal="showNicknameReviseModal = false"
+              :userName="userInfo.name"
+              @upDataNickname="onNicknameChanged"
             />
 
             <div class="personal-id">
@@ -182,6 +185,7 @@ const userStore = useUserStore();
 const showChangePicModal = ref(false);
 const showGetRewardsModal = ref(false);
 const showNicknameReviseModal = ref(false);
+const userName = ref("");
 let userInfo = ref([]);
 let balance;
 
@@ -267,6 +271,16 @@ const rewardsData = [
   ],
 ];
 
+// 被子組件通知更換新名稱
+const onNicknameChanged = (newNickname) => {
+  userStore.updateNickname(newNickname);
+};
+
+// 被子組件通知更換新頭像
+const onAvatarChanged = (newAvatarUrl) => {
+  userStore.updateAvatar(newAvatarUrl);
+};
+
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
   try {
@@ -289,11 +303,10 @@ onMounted(() => {
 
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
+  console.log("變更暱稱成功");
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
   balance = userInfo.value.balanceData.balance.toLocaleString("en-US");
-  console.log(balance, "bal");
-  console.log(userStore.userInfo, "內部"); // 直接使用 store 中的 userInfo
-  console.log(userInfo.value, "userInfo.value"); // 這是響應式的，會在資料變更時自動更新
+  userName.value = userInfo.value.name;
 };
 </script>
 
