@@ -56,7 +56,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: () => import("../views/Dashboard/index.vue"), // 動態導入
+    component: () => import("../views/dashboard/index.vue"), // 動態導入
   },
   {
     path: "/account/deposit",
@@ -67,6 +67,11 @@ const routes = [
     path: "/account/withdrawal",
     name: "Withdrawal",
     component: () => import("../views/withdrawal/index.vue"), // 動態導入
+  },
+  {
+    path: "/account/reward",
+    name: "Reward",
+    component: () => import("../views/reward/index.vue"), // 動態導入
   },
   {
     path: "/account/setting",
