@@ -124,6 +124,7 @@
                     :headers="rewardHeaders"
                     :data="rewardsData"
                     customClass="transparent-bg-table"
+                    :imageFirst="false"
                   />
                 </ul>
                 <!-- rewards-list-end -->
@@ -261,14 +262,14 @@ const rewardsData = [
     { text: "2024/06/12 20:16:03" },
     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
     { text: "0.576", class: "text-end" },
-    { icon: VerifyIcon, class: "text-center" },
+    { image: VerifyIcon, class: "text-center" },
   ],
   [
     { text: "1752", class: "ps-5" },
     { text: "2024/06/12 20:16:03" },
     { text: "BNB", image: BNBIcon, class: "text-end pe-4" },
     { text: "0.576", class: "text-end" },
-    { icon: VerifyIcon, class: "text-center" },
+    { image: VerifyIcon, class: "text-center" },
   ],
 ];
 
