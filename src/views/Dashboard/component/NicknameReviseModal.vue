@@ -84,6 +84,7 @@
 <script setup>
 import { ref, onMounted, defineProps, defineEmits, watch } from "vue";
 import modules from "@/services/modules";
+import { ElMessage } from "element-plus";
 
 const {
   userInfo: { changeNickname },
@@ -97,7 +98,6 @@ const props = defineProps({
 const emit = defineEmits(["closeModal", "upDataNickname"]);
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
 const nickname = ref(props.userName);
-console.log(nickname.value);
 
 // 監聽 props.userName 的變化，並更新本地的 userName
 watch(
@@ -116,7 +116,11 @@ const closeModal = () => {
 // 保存並發送 API 請求
 const saveNickname = async () => {
   if (!nickname.value) {
-    console.log("Please enter a valid nickname.");
+    ElMessage({
+      message: "nickname 不得為空！",
+      type: "error",
+      duration: 3000,
+    });
     return;
   }
 

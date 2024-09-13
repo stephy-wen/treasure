@@ -191,10 +191,8 @@ import GetRewardsModal from "./component/GetRewardsModal.vue";
 import TransactionDetail from "../../components/AccordionComponent.vue";
 
 import { useUserStore } from "@/stores/user";
-import modules from "@/services/modules";
 import { getCurrencyIcon } from "@/assets/images.js";
-
-import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import modules from "@/services/modules";
 import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
 
 const {
@@ -231,7 +229,6 @@ const fetchPageData = async (pageIndex) => {
       itemsPerPage.value,
       pageIndex
     );
-    console.log(response);
     if (response && response.data.data) {
       const newTransactions = formatHistoryData(response.data.data.items);
       currentData.value = [...currentData.value, ...newTransactions]; // 合併數據
@@ -262,7 +259,7 @@ const getRewards = async () => {
       rewardsData.value = res.data.data;
     }
   } catch (error) {
-    console.log(error);
+    console.log("獲取getRewards發生錯誤：", error);
   }
 };
 
@@ -298,15 +295,6 @@ const copyUserId = async () => {
 
 const openGetRewardsModal = () => {
   showGetRewardsModal.value = true;
-};
-
-const transaction = ref([
-  { type: "Deposit", amount: "4,000", timestamp: "2024/06/13 18:24:53" },
-  { type: "Withdraw", amount: "2,000", timestamp: "2024/06/13 18:24:53" },
-]);
-
-const goToSetting = () => {
-  router.push("/account/setting");
 };
 
 onMounted(async () => {

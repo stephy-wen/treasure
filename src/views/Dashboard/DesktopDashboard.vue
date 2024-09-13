@@ -165,6 +165,7 @@ import Pagination from "@/components/Pagination.vue";
 
 import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
 import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
+import Point from "@/assets/images/icon/balance-icon.png";
 
 import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
@@ -206,14 +207,13 @@ const rewardHeaders = [
 
 // 調用 API 獲取歷史資料
 const fetchPageData = async (pageIndex) => {
-  console.log(pageIndex);
   try {
     const response = await getTransactionLog(
       transactionType,
       itemsPerPage.value,
       pageIndex
     );
-    console.log(response);
+
     if (response && response.data.data) {
       tableData.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
       totalItems.value = response.data.data.total; // 總筆數
@@ -241,7 +241,7 @@ const formatHistoryData = (data) => {
     },
     {
       text: history.amount,
-      image: getCurrencyIcon(history.symbol),
+      image: getCurrencyIcon(history.symbol) || Point,
       class: "text-end",
     },
     {
@@ -260,7 +260,7 @@ const getRewards = async () => {
       rewardsData.value = formatRewardsData(res.data.data); // 該頁資料的整理
     }
   } catch (error) {
-    console.log(error);
+    console.log("getRewards錯誤", error);
   }
 };
 

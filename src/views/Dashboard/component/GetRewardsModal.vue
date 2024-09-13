@@ -131,14 +131,6 @@ watch(
   }
 );
 
-onMounted(() => {
-  console.log(props.userId);
-  //const modalElement = modal.value; // 獲取模態框的 DOM 元素
-  //console.log(modalElement, "modalElement");
-  //const isHidden = window.getComputedStyle(modalElement).display === "none";
-  //console.log(isHidden); // 檢查模態框是否隱藏
-});
-
 const emit = defineEmits(["closeModal"]);
 
 const closeModal = () => {

@@ -89,7 +89,6 @@ const emit = defineEmits(["load-more"]);
 const onLoadMore = () => {
   emit("load-more"); // 觸發父層的加載更多數據
 };
-console.log(props.transactions);
 </script>
 
 <style scoped>
