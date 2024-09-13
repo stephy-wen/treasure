@@ -15,24 +15,6 @@ import SOLAccountIcon from "@/assets/images/icon/SOL-account.svg";
 import USDTIcon from "@/assets/images/icon/USDT.svg";
 import USDCIcon from "@/assets/images/icon/USDC.svg";
 
-// 用來根據 rewardSymbol 獲取對應圖標的函數
-export const getCurrencyIcon = (symbol) => {
-  const icons = {
-    ETH: images.ethAccountIcon,
-    BNB: images.bnbAccountIcon,
-    XRP: images.XRPAccountIcon,
-    TRX: images.TRXAccountIcon,
-    BTC: images.BTCAccountIcon,
-    DOGE: images.DOGEAccountIcon,
-    SOL: images.SOLAccountIcon,
-    USDT: images.USDTIcon,
-    USDC: images.USDCIcon,
-    // 添加其他貨幣的映射
-  };
-  return icons[symbol]; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
-  //return icons[symbol] || images.defaultIcon; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
-};
-
 //Detail Page
 import nft01 from "@/assets/images/icon/NFT/01.png";
 import nft02 from "@/assets/images/icon/NFT/02.png";
@@ -43,7 +25,7 @@ import nft06 from "@/assets/images/icon/NFT/06.png";
 import nft07 from "@/assets/images/icon/NFT/07.png";
 import HexagonImage from "@/assets/images/icon/NFT/08.png";
 
-// 导出图片路径
+// 輸出圖片路徑
 export const images = {
   dollarPhoneIcon,
   peopleIcon,
@@ -66,4 +48,22 @@ export const images = {
   SOLAccountIcon,
   USDTIcon,
   USDCIcon,
+};
+
+// 用來根據 rewardSymbol 獲取對應圖標的函數
+export const getCurrencyIcon = (symbol) => {
+  const icons = {
+    ETH: images.ethAccountIcon,
+    BNB: images.bnbAccountIcon,
+    XRP: images.XRPAccountIcon,
+    TRX: images.TRXAccountIcon,
+    BTC: images.BTCAccountIcon,
+    DOGE: images.DOGEAccountIcon,
+    SOL: images.SOLAccountIcon,
+    USDT: images.USDTIcon,
+    USDC: images.USDCIcon,
+    // 添加其他貨幣的映射
+  };
+  return icons[symbol]; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
+  //return icons[symbol] || images.defaultIcon; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
 };
