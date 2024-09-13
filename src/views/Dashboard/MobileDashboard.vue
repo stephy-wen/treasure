@@ -63,7 +63,7 @@
                 <a href="#">
                   <button
                     class="d-md-none mb-2"
-                    onclick="window.location.href='setting';"
+                    @click="router.push('/account/setting')"
                   >
                     <img
                       class="p-1"
@@ -117,75 +117,48 @@
                     data-bs-parent="#accordionRewardsItem"
                   >
                     <div class="accordion-body p-0">
-                      <a href="#">
+                      <!-- 使用 v-for 迴圈遍歷 rewardsData -->
+                      <a
+                        v-for="(reward, index) in rewardsData"
+                        :key="index"
+                        :href="`/account/reward/${reward.rewardId}`"
+                      >
                         <div class="accordion-li p-4 mt-2">
                           <div class="d-flex justify-content-between">
                             <div class="crypto-type d-flex">
+                              <!-- 動態顯示幣種圖標和名稱 -->
                               <img
                                 class="me-2"
-                                style="width: 36px"
-                                src="@/assets/images/icon/BNB.svg"
+                                :style="{ width: '36px' }"
+                                :src="getCurrencyIcon(reward.rewardSymbol)"
                                 alt=""
                               />
                               <div
                                 class="crypto-name d-flex flex-column justify-content-center"
                               >
-                                <p class="">BNB</p>
-                                <p class="winnie-color-gray">Binance</p>
+                                <p>{{ reward.rewardSymbol }}</p>
+                                <p class="winnie-color-gray">
+                                  {{ reward.rewardFullName }}
+                                </p>
                               </div>
                             </div>
-                            <p class="rewards-amount fw-bold">0.576</p>
+                            <p class="rewards-amount fw-bold">
+                              {{ reward.rewardAmount }}
+                            </p>
                           </div>
                           <div
                             class="d-flex justify-content-between time-stamp mt-3 winnie-color-gray"
                           >
                             <p>Timestamp</p>
-                            <p>2024/06/13 18:24:53</p>
+                            <p>{{ formatDate(reward.time) }}</p>
                           </div>
                           <div
                             class="d-flex justify-content-between round mt-2"
                           >
-                            <p class="winnie-color-gray">Round 1768</p>
-                            <img
-                              src="@/assets/images/icon/md-file_upload Copy 2.svg"
-                              alt=""
-                            />
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#">
-                        <div class="accordion-li p-4 mt-2">
-                          <div class="d-flex justify-content-between">
-                            <div class="crypto-type d-flex">
-                              <img
-                                class="me-2"
-                                style="width: 36px"
-                                src="@/assets/images/icon/BNB.svg"
-                                alt=""
-                              />
-                              <div
-                                class="crypto-name d-flex flex-column justify-content-center"
-                              >
-                                <p>BNB</p>
-                                <p class="winnie-color-gray">Binance</p>
-                              </div>
-                            </div>
-                            <p class="rewards-amount fw-bold">0.576</p>
-                          </div>
-                          <div
-                            class="d-flex justify-content-between time-stamp mt-3 winnie-color-gray"
-                          >
-                            <p>Timestamp</p>
-                            <p>2024/06/13 18:24:53</p>
-                          </div>
-                          <div
-                            class="d-flex justify-content-between round mt-2"
-                          >
-                            <p class="winnie-color-gray">Round 1768</p>
-                            <img
-                              src="@/assets/images/icon/md-file_upload Copy 2.svg"
-                              alt=""
-                            />
+                            <p class="winnie-color-gray">
+                              Round {{ reward.round }}
+                            </p>
+                            <img :src="UploadIcon" alt="Upload Icon" />
                           </div>
                         </div>
                       </a>
@@ -196,7 +169,12 @@
             </div>
           </div>
 
-          <TransactionDetail month="June, 2024" :transactions="transaction" />
+          <TransactionDetail
+            month="June, 2024"
+            :transactions="currentData"
+            :hasMoreData="hasMoreData"
+            @load-more="loadMore"
+          />
         </div>
       </div>
     </div>
@@ -230,8 +208,14 @@ const userStore = useUserStore();
 const showGetRewardsModal = ref(false);
 const userInfo = ref({});
 const balance = ref(null); // 改為響應式變量
-const tableData = ref([]);
+const currentData = ref([]);
 const rewardsData = ref([]);
+
+const currentPage = ref(1); // 當前頁數
+const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const totalItems = ref(0); // 總項目數
+const hasMoreData = ref(true); // 是否還有更多數據可加載
+const transactionType = "All";
 
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
@@ -249,8 +233,14 @@ const fetchPageData = async (pageIndex) => {
     );
     console.log(response);
     if (response && response.data.data) {
-      tableData.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
+      const newTransactions = formatHistoryData(response.data.data.items);
+      currentData.value = [...currentData.value, ...newTransactions]; // 合併數據
       totalItems.value = response.data.data.total; // 總筆數
+
+      // 如果當前加載的數據條數 >= 總數據條數，則表示沒有更多數據
+      if (currentData.value.length >= totalItems.value) {
+        hasMoreData.value = false;
+      }
     } else {
       console.error("未獲取到有效的歷史資料");
     }
@@ -259,11 +249,17 @@ const fetchPageData = async (pageIndex) => {
   }
 };
 
+// 加載更多數據
+const loadMore = async () => {
+  currentPage.value += 1; // 增加當前頁數
+  await fetchPageData(currentPage.value); // 請求下一頁數據
+};
+
 const getRewards = async () => {
   try {
     const res = await getGameRewardHistory();
     if (res && res.data.data) {
-      rewardsData.value = formatRewardsData(res.data.data); // 該頁資料的整理
+      rewardsData.value = res.data.data;
     }
   } catch (error) {
     console.log(error);
@@ -271,56 +267,18 @@ const getRewards = async () => {
 };
 
 const formatHistoryData = (data) => {
-  return data.map((history) => [
-    {
-      text: formatDate(history.transactionDateTime),
-      class: "ps-5",
-      image: null,
-    },
-    {
-      text: history.type,
-      image:
-        history.type === "Deposit" ? getCurrencyIcon(history.sourceSymbol) : "",
-      imageStyle: history.type === "Deposit" ? "max-width: 22px" : "",
-      class: "",
-    },
-    {
-      text: history.amount,
-      image: getCurrencyIcon(history.symbol),
-      class: "text-end",
-    },
-    {
-      image: VerifyIcon,
-      class: "text-center",
-      link: history.transactionUrl,
-      target: "_blank",
-    },
-  ]);
+  return data.map((history) => {
+    return {
+      type: history.type,
+      amount: history.amount,
+      timestamp: formatDate(history.transactionDateTime),
+      url: history.transactionUrl,
+    };
+  });
 };
 
 const formatDate = (isoDateString) =>
   dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
-
-const formatRewardsData = (data) => {
-  return data.map((reward) => {
-    return [
-      { text: reward.round, class: "ps-5" }, // rewardId
-      { text: formatDate(reward.time) }, // 格式化的日期
-      {
-        text: reward.rewardSymbol,
-        image: getCurrencyIcon(reward.rewardSymbol),
-        class: "text-end pe-4",
-      }, // 幣種符號及圖標
-      { text: reward.rewardAmount, class: "text-end" }, // 獎勵數量
-      {
-        image: UploadIcon,
-        class: "text-center",
-        link: `/account/reward/${reward.rewardId}`,
-        target: "_self",
-      },
-    ];
-  });
-};
 
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
@@ -347,8 +305,16 @@ const transaction = ref([
   { type: "Withdraw", amount: "2,000", timestamp: "2024/06/13 18:24:53" },
 ]);
 
+const goToSetting = () => {
+  router.push("/account/setting");
+};
+
 onMounted(async () => {
-  await Promise.all([loadUserInfo(), getRewards()]);
+  await Promise.all([
+    loadUserInfo(),
+    getRewards(),
+    fetchPageData(currentPage.value),
+  ]);
 });
 </script>
 

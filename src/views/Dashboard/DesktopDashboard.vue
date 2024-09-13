@@ -206,6 +206,7 @@ const rewardHeaders = [
 
 // 調用 API 獲取歷史資料
 const fetchPageData = async (pageIndex) => {
+  console.log(pageIndex);
   try {
     const response = await getTransactionLog(
       transactionType,
