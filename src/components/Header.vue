@@ -65,6 +65,7 @@ window.addEventListener("resize", () => {
 });
 
 // 監聽 userInfo 的變化
+const gameData = computed(() => userStore.userInfo);
 const userId = computed(() => userStore.userInfo?.name || "");
 const balance = computed(() => userStore.userInfo?.balanceData?.balance || 0);
 const userAvatar = computed(() => userStore.userInfo?.avatarUrl || "");
@@ -76,8 +77,6 @@ display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
 display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in 和 Sign up）。
 display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
 */
-
-let gameData = ref(userStore.userInfo);
 
 // 如果pinia被清空 在組件加載時再打一次api
 onMounted(async () => {
