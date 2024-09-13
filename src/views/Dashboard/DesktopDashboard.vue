@@ -93,7 +93,7 @@
             <div class="col">
               <button
                 class="btn-dashboard bck-yellow fw-bold f-color-dark py-0"
-                onclick="window.location.href='account/deposit';"
+                @click="goToDepositPage"
               >
                 Buy Now
               </button>
@@ -138,77 +138,56 @@
           Title=""
           :headers="headers"
           :data="tableData"
-          :imageFirst="true"
+          :imageFirst="false"
         />
       </div>
 
-      <div class="dashboard-page-nav mt-5 d-flex justify-content-center">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item" active>
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <Pagination
+        :totalItems="totalItems"
+        :itemsPerPage="itemsPerPage"
+        @page-changed="fetchPageData"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import dayjs from "dayjs";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import dayjs from "dayjs";
+
 import ChangePicModal from "./component/ChangePicModal.vue";
-import TableComponent from "@/components/TableComponent.vue";
-import USDTIcon from "@/assets/images/icon/USDT.svg";
-import USDCIcon from "@/assets/images/icon/USDC.svg";
-import BNBIcon from "@/assets/images/icon/BNB-account.svg";
-import BTCIcon from "@/assets/images/icon/BTC-account.svg";
-import BalanceIcon from "@/assets/images/icon/balance-icon.png";
-import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
-import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
 import GetRewardsModal from "./component/GetRewardsModal.vue";
 import NicknameReviseModal from "./component/NicknameReviseModal.vue";
+import TableComponent from "@/components/TableComponent.vue";
+import Pagination from "@/components/Pagination.vue";
+
+import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
+
 import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
-import { images, getCurrencyIcon } from "@/assets/images.js";
+import { getCurrencyIcon } from "@/assets/images.js";
 
 const {
   userInfo: { getGameRewardHistory },
   auth: { getTransactionLog },
 } = modules;
+
+const router = useRouter();
+
 const userStore = useUserStore();
 const showChangePicModal = ref(false);
 const showGetRewardsModal = ref(false);
 const showNicknameReviseModal = ref(false);
-const userName = ref("");
-let userInfo = ref([]);
-let balance;
-
-const openChangePicModal = () => {
-  showChangePicModal.value = true;
-};
-
-const openGetRewardsModal = () => {
-  showGetRewardsModal.value = true;
-};
-
-const openNicknameReviseModal = () => {
-  showNicknameReviseModal.value = true;
-};
+const userInfo = ref({});
+const balance = ref(null); // 改為響應式變量
+const tableData = ref([]);
+const rewardsData = ref([]);
+const totalItems = ref(0); // 總項目數
+const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const transactionType = "All";
 
 const headers = [
   { text: "Timestamp", class: "ps-5" },
@@ -225,50 +204,17 @@ const rewardHeaders = [
   { text: "Withdraw", class: "text-center" },
 ];
 
-// const tableData = [
-//   [
-//     { text: "2024-08-27 10:00:01", class: "ps-5" },
-//     { text: "Rewards" },
-//     { text: "100", image: BNBIcon, class: "text-end" },
-//     { image: VerifyIcon, class: "text-center" },
-//   ],
-//   [
-//     { text: "2024/06/12 20:16:03", class: "ps-5" },
-//     { text: "Deposit", image: USDTIcon, imageStyle: "max-width: 22px" },
-//     { text: "50", image: BalanceIcon, class: "text-end" },
-//     { image: VerifyIcon, class: "text-center" },
-//   ],
-//   [
-//     { text: "2024-08-27 10:00:01", class: "ps-5" },
-//     { text: "Rewards" },
-//     { text: "100", image: BTCIcon, class: "text-end" },
-//     { image: VerifyIcon, class: "text-center" },
-//   ],
-//   [
-//     { text: "2024/06/12 20:16:03", class: "ps-5" },
-//     { text: "Deposit", image: USDCIcon, imageStyle: "max-width: 22px" },
-//     { text: "50", image: BalanceIcon, class: "text-end" },
-//     { image: VerifyIcon, class: "text-center" },
-//   ],
-// ];
-
-const tableData = ref([]);
-const totalItems = ref(0); // 總項目數
-const itemsPerPage = ref(5); // 每頁顯示 5 筆
-const transactionType = "All";
-
-const getTableHistory = async (pageIndex) => {
+// 調用 API 獲取歷史資料
+const fetchPageData = async (pageIndex) => {
   try {
-    // 調用 API 獲取歷史資料
     const response = await getTransactionLog(
       transactionType,
       itemsPerPage.value,
       pageIndex
     );
-    console.log(response.data.data);
+    console.log(response);
     if (response && response.data.data) {
       tableData.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
-      console.log(tableData.value, "");
       totalItems.value = response.data.data.total; // 總筆數
     } else {
       console.error("未獲取到有效的歷史資料");
@@ -287,7 +233,8 @@ const formatHistoryData = (data) => {
     },
     {
       text: history.type,
-      image: history.type === "Deposit" ? getCurrencyIcon(history.symbol) : "",
+      image:
+        history.type === "Deposit" ? getCurrencyIcon(history.sourceSymbol) : "",
       imageStyle: history.type === "Deposit" ? "max-width: 22px" : "",
       class: "",
     },
@@ -305,7 +252,6 @@ const formatHistoryData = (data) => {
   ]);
 };
 
-const rewardsData = ref([]);
 const getRewards = async () => {
   try {
     const res = await getGameRewardHistory();
@@ -336,19 +282,25 @@ const formatRewardsData = (data) => {
         class: "text-center",
         link: `/account/reward/${reward.rewardId}`,
         target: "_self",
-      }, // Verify 圖標
+      },
     ];
   });
 };
 
-// 被子組件通知更換新名稱
-const onNicknameChanged = (newNickname) => {
-  userStore.updateNickname(newNickname);
+const openChangePicModal = () => {
+  showChangePicModal.value = true;
 };
 
-// 被子組件通知更換新頭像
-const onAvatarChanged = (newAvatarUrl) => {
-  userStore.updateAvatar(newAvatarUrl);
+const openGetRewardsModal = () => {
+  showGetRewardsModal.value = true;
+};
+
+const openNicknameReviseModal = () => {
+  showNicknameReviseModal.value = true;
+};
+
+const goToDepositPage = () => {
+  router.push("/account/deposit");
 };
 
 // 定義一個方法來複製 userId 到剪貼板
@@ -367,19 +319,25 @@ const copyUserId = async () => {
   }
 };
 
-onMounted(() => {
-  loadUserInfo(); // 載入用戶信息
-  getRewards();
-  getTableHistory(1);
-});
+// 被子組件通知更換新名稱
+const onNicknameChanged = (newNickname) => {
+  userStore.updateNickname(newNickname);
+};
+
+// 被子組件通知更換新頭像
+const onAvatarChanged = (newAvatarUrl) => {
+  userStore.updateAvatar(newAvatarUrl);
+};
 
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
-  console.log("變更暱稱成功");
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
-  balance = userInfo.value.balanceData.balance.toLocaleString("en-US");
-  userName.value = userInfo.value.name;
+  balance.value = userInfo.value.balanceData.balance.toLocaleString("en-US");
 };
+
+onMounted(async () => {
+  await Promise.all([loadUserInfo(), getRewards(), fetchPageData(1)]);
+});
 </script>
 
 <style scoped>

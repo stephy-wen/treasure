@@ -3,16 +3,17 @@ import dollarPhoneIcon from "@/assets/images/icon/dollar-phone2.png"; /*共用 d
 import peopleIcon from "@/assets/images/icon/mdi_vote-outline_gray.svg"; /*共用 peopleIcon img */
 
 import ethCard from "@/assets/images/common/card-eth.png";
-import ethAccountIcon from "@/assets/images/icon/ETH-account.svg";
-
 import bnbCard from "@/assets/images/common/card-bnb.png";
-import bnbAccountIcon from "@/assets/images/icon/BNB-account.svg";
 
+import ethAccountIcon from "@/assets/images/icon/ETH-account.svg";
+import bnbAccountIcon from "@/assets/images/icon/BNB-account.svg";
 import XRPAccountIcon from "@/assets/images/icon/XRP-account.svg";
 import TRXAccountIcon from "@/assets/images/icon/TRX-account.svg";
 import BTCAccountIcon from "@/assets/images/icon/BTC-account.svg";
 import DOGEAccountIcon from "@/assets/images/icon/DOGE-account.svg";
 import SOLAccountIcon from "@/assets/images/icon/SOL-account.svg";
+import USDTIcon from "@/assets/images/icon/USDT.svg";
+import USDCIcon from "@/assets/images/icon/USDC.svg";
 
 // 用來根據 rewardSymbol 獲取對應圖標的函數
 export const getCurrencyIcon = (symbol) => {
@@ -24,6 +25,8 @@ export const getCurrencyIcon = (symbol) => {
     BTC: images.BTCAccountIcon,
     DOGE: images.DOGEAccountIcon,
     SOL: images.SOLAccountIcon,
+    USDT: images.USDTIcon,
+    USDC: images.USDCIcon,
     // 添加其他貨幣的映射
   };
   return icons[symbol]; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
@@ -61,4 +64,6 @@ export const images = {
   BTCAccountIcon,
   DOGEAccountIcon,
   SOLAccountIcon,
+  USDTIcon,
+  USDCIcon,
 };

@@ -44,8 +44,17 @@
             <!-- 如果 imageFirst 為 false，先顯示文字，然後顯示圖片 -->
             <template v-else>
               {{ cell.text }}
+              <a v-if="cell.link" :href="cell.link" :target="cell.target">
+                <img
+                  v-if="cell.image"
+                  class="img-fluid"
+                  :style="cell.imageStyle ? cell.imageStyle : ''"
+                  :src="cell.image"
+                  alt=""
+                />
+              </a>
               <img
-                v-if="cell.image"
+                v-else-if="cell.image"
                 class="img-fluid"
                 :style="cell.imageStyle ? cell.imageStyle : ''"
                 :src="cell.image"

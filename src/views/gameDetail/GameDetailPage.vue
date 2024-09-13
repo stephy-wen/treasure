@@ -169,10 +169,10 @@ onMounted(async () => {
 
 // 監聽路由參數變化，當 gameId 改變時重新加載數據
 watch(
-  () => route.params.gameId, // 假設路由參數是 gameId
+  () => route.params.gameId,
   (newGameId) => {
     loadGameDetails(newGameId); // 當參數變化時重新加載數據
-    fetchPageData(1);
+    fetchPageData(1); // 當前id改變撈取新資料
   }
 );
 
