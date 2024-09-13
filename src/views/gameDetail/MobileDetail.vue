@@ -230,7 +230,7 @@ const getPlayerData = async (gameId) => {
     while (hexagonImages.value.length < 8) {
       hexagonImages.value.push(defaultAvatar);
     }
-    console.log(nonExistentVariable); // 這會觸發 ReferenceError: nonExistentVariable is not defined
+    //console.log(nonExistentVariable); // 這會觸發 ReferenceError: nonExistentVariable is not defined
 
     playListData.value = playData.value.map((player) => ({
       name: player.player,
