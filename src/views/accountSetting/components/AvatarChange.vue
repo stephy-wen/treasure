@@ -132,10 +132,11 @@ onMounted(() => {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-header,
-.modal-body,
-.modal-footer {
-  background-color: black;
+.modal-content {
+  background-color: #2b3139;
+  color: #f8f8f8;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 .winnie-dialog-bottom {
@@ -156,6 +157,7 @@ onMounted(() => {
 }
 
 .save-btn {
+  margin: 0 auto;
   background-color: #414d5a;
   color: #f8f8f8;
   width: 230px;
