@@ -272,7 +272,7 @@ const formatRewardsData = (data) => {
       { text: reward.round, class: "ps-5" }, // rewardId
       { text: formatDate(reward.time) }, // 格式化的日期
       {
-        text: reward.rewardSymbol + " " + reward.rewardSymbol + " 123456789",
+        text: reward.rewardSymbol + " " + reward.rewardFullName,
         image: getCurrencyIcon(reward.rewardSymbol),
         class: "text-end pe-4",
       }, // 幣種符號及圖標
