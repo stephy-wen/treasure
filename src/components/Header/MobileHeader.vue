@@ -135,7 +135,7 @@
                 <div class="accordion-body pt-0">
                   <ul class="ps-0">
                     <li class="my-2 py-2 text-start">
-                      <router-link class="fs-5" to="about">
+                      <router-link class="fs-5" to="/about">
                         <img
                           style="width: 24px"
                           src="@/assets/images/icon/md-info.svg"
