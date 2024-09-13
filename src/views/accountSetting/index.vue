@@ -41,89 +41,8 @@
           <p>Email</p>
           <p>win***456@gmail.com</p>
         </div>
-        <div
-          class="d-flex justify-content-between align-items-center avactar-change mb-4"
-        >
-          <p>Avatar</p>
-          <a
-            href="#"
-            data-bs-toggle="modal"
-            data-bs-target="#changeAvatarModal"
-          >
-            <div>
-              <img
-                style="width: 36px"
-                src="@/assets/images/icon/NFT/09.png"
-                alt=""
-              />
-              <img src="@/assets/images/icon/ze-arrow 1 Copy 2.svg" alt="" />
-            </div>
-          </a>
-        </div>
-        <!--Change Avatar Modal start-->
-        <div
-          class="modal fade"
-          id="changeAvatarModal"
-          tabindex="-1"
-          aria-labelledby="changeAvatarModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog winnie-dialog-bottom">
-            <div class="modal-content">
-              <div class="modal-header justify-content-center pt-4">
-                <h5 class="modal-title" id="changeAvatarModalLabel">
-                  Change profile picture
-                </h5>
-              </div>
-              <div class="modal-body container px-4">
-                <div class="text-center mt-1 mb-5">
-                  <img
-                    style="width: 65px !important"
-                    src="@/assets/images/icon/NFT/09.png"
-                    alt=""
-                  />
-                </div>
-                <div class="select-avatoar">
-                  <p class="mb-3 fw-bold">Select avatar</p>
-                  <div class="d-flex">
-                    <div class="row gy-3">
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/02.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/01.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/03.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/04.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/05.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/06.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/07.png" alt="" />
-                      </div>
-                      <div class="col-3 text-center">
-                        <img src="@/assets/images/icon/NFT/09.png" alt="" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer mx-auto py-4">
-                <button type="button" class="btn btn-primary save-btn">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--Change Avatar Modal end-->
+        <!-- 引入 AvatarChange 組件 -->
+        <AvatarChange />
 
         <div class="d-flex justify-content-between login-pw-change mb-4">
           <p>Login Password</p>
@@ -222,6 +141,8 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import AvatarChange from "./components/AvatarChange.vue";
+</script>
 
 <style scoped></style>

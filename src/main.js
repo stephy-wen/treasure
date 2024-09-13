@@ -6,12 +6,13 @@ import i18n from "./i18n/i18n";
 import App from "./App.vue";
 
 // 引入Element
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
 
 // 引入 Bootstrap 的 CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import * as bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
+window.bootstrap = bootstrap;
 import "./style.css";
 
 /* import the fontawesome core */
@@ -45,7 +46,7 @@ library.add(
   faArrowLeft,
   faAngleDown,
   faCog,
-  faCopy,
+  faCopy
 );
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
