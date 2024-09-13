@@ -6,7 +6,6 @@
     id="getRewardsModal"
     tabindex="-1"
     aria-labelledby="getRewardsModalLabel"
-    aria-hidden="true"
     role="dialog"
     style="display: block"
   >
