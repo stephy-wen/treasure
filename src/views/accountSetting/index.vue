@@ -5,12 +5,12 @@
       style="max-width: 575.98px; border-bottom: 1px solid #2b3139"
     >
       <div class="d-flex align-items-center justify-content-center py-3">
-        <a href="dashboard"
-          ><img
+        <router-link to="/dashboard">
+          <img
             src="@/assets/images/icon/ze-arrow-left 1.svg"
             alt=""
             class="position-absolute start-0 ms-3"
-        /></a>
+        /></router-link>
         <p class="mb-0 fs-5 fw-bold">Setting</p>
       </div>
     </header>
@@ -31,6 +31,7 @@
               class="ms-2"
               src="@/assets/images/icon/md-content_copy 1.svg"
               alt=""
+              @click="copyUserId"
             />
           </p>
         </div>
@@ -86,6 +87,22 @@ const onAvatarChanged = (newAvatarUrl) => {
 // 被子組件通知更換新名稱
 const onNicknameChanged = (newNickname) => {
   userStore.updateNickname(newNickname);
+};
+
+// 定義一個方法來複製 userId 到剪貼板
+const copyUserId = async () => {
+  try {
+    await navigator.clipboard.writeText(userInfo.value.userId);
+    ElMessage({
+      message: "User ID 已成功複製到剪貼板！",
+      type: "success",
+    });
+  } catch (error) {
+    ElMessage.error({
+      message: "複製失敗，請重試！",
+      duration: 3000,
+    });
+  }
 };
 
 onMounted(async () => {
