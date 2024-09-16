@@ -148,11 +148,12 @@ const saveNickname = async () => {
 
     // 更新 originalNickname 為新的暱稱
     originalNickname.value = nickname.value;
-
+    ElMessage.success("Nickname updated successfully!");
     // 更新完成後，關閉模態框
     closeModal();
   } catch (error) {
     console.error("Failed to update nickname. Please try again later.", error);
+    ElMessage.error("Failed to update nickname. Please try again later.");
   }
 };
 
