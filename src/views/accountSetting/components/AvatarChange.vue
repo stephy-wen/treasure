@@ -76,9 +76,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { defineProps, defineEmits } from "vue";
-import { useUserStore } from "@/stores/user";
 import modules from "@/services/modules";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { ElMessage } from "element-plus";
@@ -89,13 +88,11 @@ const {
   userInfo: { getAvatarList },
 } = modules;
 
-// const props = defineProps({
-//   userImage: String,
-// });
+const props = defineProps({
+  userImage: String,
+});
 
 const emit = defineEmits(["avatarChanged", "upDataNickname"]);
-
-const userStore = useUserStore();
 
 const selectedAvatarId = ref(null); // 定義選中的頭像 ID 和 URL
 const selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
@@ -105,6 +102,15 @@ const avatarImageList = ref([]);
 
 const modalRef = ref(null);
 let bootstrapModal = null;
+
+// 監聽 props.userName 的變化，並更新本地的 userName
+watch(
+  () => props.userImage,
+  (newUserImage) => {
+    selectedAvatarUrl.value = newUserImage;
+    tempSelectedAvatarUrl.value = newUserImage;
+  }
+);
 
 const openModal = () => {
   if (bootstrapModal) {
@@ -158,13 +164,7 @@ const getAvatarImageList = async () => {
   }
 };
 
-const loadUserInfo = async () => {
-  await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
-  selectedAvatarUrl.value = userStore.userInfo?.avatarUrl;
-};
-
 onMounted(() => {
-  loadUserInfo();
   getAvatarImageList();
   // 初始化 Bootstrap 的 Modal
   const modalElement = modalRef.value;

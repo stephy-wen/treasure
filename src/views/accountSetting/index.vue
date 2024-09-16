@@ -42,7 +42,10 @@
           <p>{{ userInfo?.email }}</p>
         </div>
         <!-- 引入 AvatarChange 組件 -->
-        <AvatarChange @avatarChanged="onAvatarChanged" />
+        <AvatarChange
+          :userImage="userInfo.avatarUrl"
+          @avatarChanged="onAvatarChanged"
+        />
 
         <div class="d-flex justify-content-between login-pw-change mb-4">
           <p>Login Password</p>
