@@ -95,8 +95,8 @@ const props = defineProps({
 const emit = defineEmits(["avatarChanged", "upDataNickname"]);
 
 const selectedAvatarId = ref(null); // 定義選中的頭像 ID 和 URL
-const selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
-const tempSelectedAvatarUrl = ref(""); // 用來存儲臨時選中的頭像
+const selectedAvatarUrl = ref(props.userImage); // 默認顯示第一個頭像
+const tempSelectedAvatarUrl = ref(props.userImage); // 用來存儲臨時選中的頭像
 
 const avatarImageList = ref([]);
 
@@ -115,7 +115,7 @@ watch(
 const openModal = () => {
   if (bootstrapModal) {
     bootstrapModal.show();
-    tempSelectedAvatarUrl.value = selectedAvatarUrl.value;
+    tempSelectedAvatarUrl.value = selectedAvatarUrl.value; // 把當前的值給temp
   }
 };
 
