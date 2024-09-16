@@ -3,7 +3,7 @@
     <p>Nickname</p>
     <a href="#" @click.prevent="openModal">
       <div>
-        <span class="winnie-color-gray">winnie123456789</span>
+        <span class="winnie-color-gray">{{ originalNickname }}</span>
         <img src="@/assets/images/icon/ze-arrow 1 Copy 2.svg" alt="" />
       </div>
     </a>
@@ -30,7 +30,7 @@
               data-bs-dismiss="modal"
               @click.prevent="closeModal"
               aria-label="Close"
-              ><img src="@/assets/images/icon/ze-arrow-left 1.svg" alt=""
+              ><img src="@/assets/images/icon/ze-arrow-left 1.svg" alt="arrow"
             /></a>
           </div>
 
@@ -46,11 +46,17 @@
                 type="text"
                 id="inputNickname"
                 class="form-control"
-                value="winnie123456789"
                 placeholder="Enter your new nickname"
                 aria-describedby="nicknameHelpBlock"
+                v-model="nickname"
               />
-              <div id="nicknameHelpBlock" class="form-text">15/20</div>
+              <div
+                v-if="nickname"
+                id="nicknameHelpBlock"
+                class="form-text white"
+              >
+                {{ nickname.length }}/20
+              </div>
             </div>
             <div class="mt-4">
               <p class="mb-2 winnie-color-gray" style="font-size: 14px">
@@ -62,7 +68,11 @@
                 other trading platforms
               </p>
               <div class="text-center mt-5">
-                <button class="mt-5 save-btn btn btn-primary" type="button">
+                <button
+                  class="mt-5 save-btn btn btn-primary"
+                  type="button"
+                  @click="saveNickname"
+                >
                   Submit
                 </button>
               </div>
@@ -77,9 +87,74 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
+import modules from "@/services/modules";
+import { ElMessage } from "element-plus";
+
 const modalRef = ref(null);
 let bootstrapModal = null;
+
+const {
+  userInfo: { changeNickname },
+} = modules;
+
+const props = defineProps({
+  isOpen: Boolean,
+  userName: String,
+});
+
+const emit = defineEmits(["closeModal", "upDataNickname"]);
+const modal = ref(null); // 用於存儲模態框的 DOM 元素
+
+const nickname = ref(props.userName); // 用戶當前暱稱（即輸入框中顯示的暱稱）
+const originalNickname = ref(""); // 存儲用戶上次保存的暱稱
+
+// 監聽 props.userName 的變化，並更新本地的 userName
+watch(
+  () => props.userName,
+  (newUserName) => {
+    nickname.value = newUserName;
+    originalNickname.value = newUserName;
+  }
+);
+
+// 保存並發送 API 請求
+const saveNickname = async () => {
+  // 判斷新暱稱是否與上次暱稱一樣
+  if (nickname.value === originalNickname.value) {
+    ElMessage({
+      message: "暱稱與上次相同，無需修改！",
+      type: "warning",
+      duration: 3000,
+    });
+    return;
+  }
+
+  // 有一個判斷沒寫  如果這次的暱稱與上次暱稱一樣 則不發送api
+  if (!nickname.value) {
+    ElMessage({
+      message: "nickname 不得為空！",
+      type: "error",
+      duration: 3000,
+    });
+    return;
+  }
+
+  try {
+    // 調用 API 發送修改請求
+    await changeNickname(nickname.value);
+    console.log("Nickname updated successfully!");
+    emit("upDataNickname", nickname.value);
+
+    // 更新 originalNickname 為新的暱稱
+    originalNickname.value = nickname.value;
+
+    // 更新完成後，關閉模態框
+    closeModal();
+  } catch (error) {
+    console.error("Failed to update nickname. Please try again later.", error);
+  }
+};
 
 const openModal = () => {
   if (bootstrapModal) {
@@ -114,5 +189,9 @@ onMounted(() => {
 
 .modal.show .winnie-dialog-right {
   transform: translateX(0);
+}
+
+.white {
+  color: white;
 }
 </style>

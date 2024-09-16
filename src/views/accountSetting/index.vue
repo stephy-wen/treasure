@@ -50,7 +50,10 @@
             <img src="@/assets/images/icon/ze-arrow 1 Copy 2.svg" alt="" />
           </router-link>
         </div>
-        <NickNameChange />
+        <NickNameChange
+          :userName="userInfo.name"
+          @upDataNickname="onNicknameChanged"
+        />
         <div class="d-flex justify-content-start log-out-link mb-4">
           <a href="account/login">Log out</a>
         </div>
@@ -78,6 +81,12 @@ const loadUserInfo = async () => {
 const onAvatarChanged = (newAvatarUrl) => {
   console.log("父層收到通知 更新頭像");
   userStore.updateAvatar(newAvatarUrl);
+};
+
+// 被子組件通知更換新名稱
+const onNicknameChanged = (newNickname) => {
+  console.log("父層收到通知 更新暱稱");
+  userStore.updateNickname(newNickname);
 };
 
 onMounted(async () => {
