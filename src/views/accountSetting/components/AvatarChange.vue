@@ -6,7 +6,7 @@
     <p>Avatar</p>
     <a href="#" @click.prevent="openModal">
       <div>
-        <img style="width: 36px" :src="selectedAvatar" alt="Avatar" />
+        <img style="width: 36px" :src="selectedAvatarUrl" alt="Avatar" />
         <img
           src="@/assets/images/icon/ze-arrow 1 Copy 2.svg"
           alt="Arrow Icon"
@@ -34,7 +34,7 @@
             <div class="text-center mt-1 mb-5">
               <img
                 style="width: 65px !important"
-                :src="selectedAvatar"
+                :src="tempSelectedAvatarUrl"
                 alt="Selected Avatar"
               />
             </div>
@@ -43,14 +43,15 @@
               <div class="d-flex">
                 <div class="row gy-3">
                   <div
-                    v-for="(avatar, index) in avatars"
+                    v-for="(avatar, index) in avatarImageList"
                     :key="index"
                     class="col-3 text-center"
                   >
                     <img
-                      :src="avatar"
+                      :src="avatar.url"
                       alt="Avatar"
                       @click="selectAvatar(avatar)"
+                      :class="{ 'avatar-img': selectedAvatarId === avatar.id }"
                       style="cursor: pointer"
                     />
                   </div>
@@ -76,28 +77,39 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { defineProps, defineEmits } from "vue";
+import { useUserStore } from "@/stores/user";
+import modules from "@/services/modules";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { ElMessage } from "element-plus";
 
-// 模擬 avatar 圖片的清單
-const avatars = [
-  "@/assets/images/icon/NFT/02.png",
-  "@/assets/images/icon/NFT/01.png",
-  "@/assets/images/icon/NFT/03.png",
-  "@/assets/images/icon/NFT/04.png",
-  "@/assets/images/icon/NFT/05.png",
-  "@/assets/images/icon/NFT/06.png",
-  "@/assets/images/icon/NFT/07.png",
-  "@/assets/images/icon/NFT/09.png",
-];
+const { changeAvatar } = modules.userInfo; // api
 
-// 管理選擇的 avatar 和 modal 狀態
-const selectedAvatar = ref(avatars[7]); // 預設選擇最後一個
+const {
+  userInfo: { getAvatarList },
+} = modules;
+
+// const props = defineProps({
+//   userImage: String,
+// });
+
+const emit = defineEmits(["avatarChanged", "upDataNickname"]);
+
+const userStore = useUserStore();
+
+const selectedAvatarId = ref(null); // 定義選中的頭像 ID 和 URL
+const selectedAvatarUrl = ref(""); // 默認顯示第一個頭像
+const tempSelectedAvatarUrl = ref(""); // 用來存儲臨時選中的頭像
+
+const avatarImageList = ref([]);
+
 const modalRef = ref(null);
 let bootstrapModal = null;
 
 const openModal = () => {
   if (bootstrapModal) {
     bootstrapModal.show();
+    tempSelectedAvatarUrl.value = selectedAvatarUrl.value;
   }
 };
 
@@ -108,15 +120,52 @@ const closeModal = () => {
 };
 
 const selectAvatar = (avatar) => {
-  selectedAvatar.value = avatar;
+  selectedAvatarId.value = avatar.id;
+  // selectedAvatarUrl.value = avatar.url;
+  tempSelectedAvatarUrl.value = avatar.url; // 只更新臨時變量
 };
 
-const saveAvatar = () => {
-  // 實際儲存邏輯可以在這裡處理
-  closeModal();
+// 當點擊 Save 按鈕時保存變更
+const saveAvatar = async () => {
+  if (selectedAvatarId.value) {
+    try {
+      await changeAvatar(selectedAvatarId.value);
+      console.log("Avatar changed successfully!");
+      ElMessage.success("Avatar changed successfully!");
+
+      // 確認選中的頭像並更新
+      selectedAvatarUrl.value = tempSelectedAvatarUrl.value; // 只有在點擊 Save 時，才更新 selectedAvatarUrl
+
+      emit("avatarChanged", selectedAvatarUrl.value);
+      closeModal();
+    } catch (error) {
+      ElMessage.error("Failed to change avatar");
+      console.error("Failed to change avatar:", error);
+    }
+  } else {
+    ElMessage.warning("Please select an avatar.");
+    console.log("Please select an avatar.");
+  }
+};
+
+const getAvatarImageList = async () => {
+  try {
+    const res = await getAvatarList();
+    avatarImageList.value = res.data.data;
+    console.log(avatarImageList.value);
+  } catch (error) {
+    console.log("getAvatarImage錯誤", error);
+  }
+};
+
+const loadUserInfo = async () => {
+  await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  selectedAvatarUrl.value = userStore.userInfo?.avatarUrl;
 };
 
 onMounted(() => {
+  loadUserInfo();
+  getAvatarImageList();
   // 初始化 Bootstrap 的 Modal
   const modalElement = modalRef.value;
   if (modalElement) {
@@ -162,6 +211,12 @@ onMounted(() => {
   color: #f8f8f8;
   width: 230px;
   border: none;
+  border-radius: 50px;
+}
+
+.select-avatar img {
+  height: 58px;
+  width: 58px;
   border-radius: 50px;
 }
 </style>

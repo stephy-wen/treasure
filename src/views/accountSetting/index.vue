@@ -42,7 +42,7 @@
           <p>win***456@gmail.com</p>
         </div>
         <!-- 引入 AvatarChange 組件 -->
-        <AvatarChange />
+        <AvatarChange @avatarChanged="onAvatarChanged" />
 
         <div class="d-flex justify-content-between login-pw-change mb-4">
           <p>Login Password</p>
@@ -60,8 +60,29 @@
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
+import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
+
 import AvatarChange from "./components/AvatarChange.vue";
 import NickNameChange from "./components/NickNameChange.vue";
+
+const userStore = useUserStore();
+const userInfo = ref({});
+
+const loadUserInfo = async () => {
+  userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
+  console.log(userInfo.value);
+};
+
+const onAvatarChanged = (newAvatarUrl) => {
+  console.log("父層收到通知 更新頭像");
+  userStore.updateAvatar(newAvatarUrl);
+};
+
+onMounted(async () => {
+  await loadUserInfo();
+});
 </script>
 
 <style scoped></style>
