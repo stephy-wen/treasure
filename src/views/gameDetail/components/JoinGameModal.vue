@@ -78,6 +78,7 @@ import { ref, computed, defineProps, defineEmits, inject } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules";
+import { ElMessage } from "element-plus";
 
 const props = defineProps({
   isOpen: Boolean,
@@ -144,6 +145,7 @@ const confirmParticipation = async () => {
       } else if (
         error.response.data.message === "Account vote is over quantity"
       ) {
+        ElMessage.error("Failed! The number of votes exceeds");
         console.log("投票失敗 超過單人最大投票數");
       }
       // 因為打失敗直接進來這邊 所以vote不會被更新到 所以這段永遠不會執行到。
