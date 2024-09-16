@@ -158,7 +158,6 @@ const getAvatarImageList = async () => {
   try {
     const res = await getAvatarList();
     avatarImageList.value = res.data.data;
-    console.log(avatarImageList.value);
   } catch (error) {
     console.log("getAvatarImage錯誤", error);
   }

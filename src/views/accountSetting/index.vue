@@ -68,7 +68,6 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
 import { ref, onMounted } from "vue";
-import { ElMessage } from "element-plus";
 
 import AvatarChange from "./components/AvatarChange.vue";
 import NickNameChange from "./components/NickNameChange.vue";
@@ -78,17 +77,14 @@ const userInfo = ref({});
 
 const loadUserInfo = async () => {
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
-  console.log(userInfo.value);
 };
 
 const onAvatarChanged = (newAvatarUrl) => {
-  console.log("父層收到通知 更新頭像");
   userStore.updateAvatar(newAvatarUrl);
 };
 
 // 被子組件通知更換新名稱
 const onNicknameChanged = (newNickname) => {
-  console.log("父層收到通知 更新暱稱");
   userStore.updateNickname(newNickname);
 };
 
