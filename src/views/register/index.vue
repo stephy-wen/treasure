@@ -181,7 +181,7 @@ const timer = ref(60);
 const isTimerActive = ref(false);
 let countdownInterval = null;
 const errorMessage = ref("");
-const verificationType = "Register"; // 驗證類型，例如 "emailVerification"
+const verificationType = "Register";
 const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
 
