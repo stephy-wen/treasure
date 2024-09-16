@@ -21,12 +21,12 @@
           <img
             class="my-3"
             style="width: 60px"
-            src="@/assets/images/icon/NFT/09.png"
+            :src="userInfo?.avatarUrl"
             alt=""
           />
-          <p class="fs-4 fw-bold">winnie32145985</p>
+          <p class="fs-4 fw-bold">{{ userInfo?.name }}</p>
           <p class="fs-6 fw-bold winnie-color-gray">
-            UID 32123
+            UID {{ userInfo?.userId }}
             <img
               class="ms-2"
               src="@/assets/images/icon/md-content_copy 1.svg"
@@ -39,7 +39,7 @@
         <p class="winnie-color-gray mb-4">Profile</p>
         <div class="d-flex justify-content-between email-account mb-4">
           <p>Email</p>
-          <p>win***456@gmail.com</p>
+          <p>{{ userInfo?.email }}</p>
         </div>
         <!-- 引入 AvatarChange 組件 -->
         <AvatarChange @avatarChanged="onAvatarChanged" />
