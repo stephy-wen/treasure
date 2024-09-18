@@ -74,9 +74,9 @@
                   @keydown.enter.prevent="handleButtonClick"
                 />
                 <!-- 測試 -->
-                <p v-if="!isTimerActive">
+                <p class="d-flex align-items-center gap-1">
                   <button
-                    style="height: 38px"
+                    style="height: 38px;"
                     type="button"
                     class="btn btn-resend-code"
                     @click="resendCode"
@@ -84,7 +84,7 @@
                   >
                     Resend
                   </button>
-                  <span v-if="isTimerActive"> ({{ timer }}s)</span>
+                  <span :style="{ visibility: isTimerActive ? 'visible' : 'hidden' }"> ({{ timer }}s)</span>
                 </p>
                 <!-- 測試 -->
               </div>
@@ -105,7 +105,6 @@
           <template v-slot:error>
             <p v-if="errorMessage" class="error-message mt-5">
               <pre>{{ errorMessage }}</pre>
-
             </p>
           </template>
 
