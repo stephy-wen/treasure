@@ -181,14 +181,13 @@ const buttonText = computed(() => {
 const handleButtonClick = async () => {
   if (currentStep.value === 1) {
     try {
-      // 初始化錯誤訊息陣列
-      const errors = [];
-
       // 首先進行前端表單的輸入驗證
       const isStepValid = validateStep();
 
       if (!isStepValid) return; // 如果前端驗證失敗，阻止後續操作
-
+      // 初始化錯誤訊息陣列
+      const errors = [];
+      
       // 如果前端驗證通過，則進行後端驗證，首先驗證碼
       await verifyCode();
       // 接著驗證當前密碼，並更新狀態
@@ -376,8 +375,6 @@ const resendCode = async () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
     await sendVerificationEmail();
-    // 開始新的倒數計時
-    startTimer();
   }
 };
 
