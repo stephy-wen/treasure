@@ -89,10 +89,8 @@ const itemsPerPage = ref(5); // 每頁顯示 5 筆
 const cryptos = ref([]);
 const selectedCurrency = ref("ETH"); // 預設顯示 ETH 排行榜 等api來 改成第一筆
 const selectedTimePeriod = ref("total"); // 預設顯示 total 排名
-const isLoading = ref(false); // 加載狀態
 
 const getData = async (pageIndex) => {
-  isLoading.value = true;
   try {
     const response = await getGameLeaderBoard(
       selectedCurrency.value,
@@ -110,8 +108,6 @@ const getData = async (pageIndex) => {
       message: "無法取得排行榜，請稍後再試！",
       duration: 3000,
     });
-  } finally {
-    isLoading.value = false; // 完成後關閉加載狀態
   }
 };
 
@@ -128,7 +124,6 @@ const handleTimePeriodChange = (timePeriod) => {
 };
 
 const getCurrencyData = async () => {
-  isLoading.value = true; // 設置為加載狀態
   try {
     const res = await getCryptocurrencySetting();
 
@@ -145,8 +140,6 @@ const getCurrencyData = async () => {
       message: "get Cryptocurrency Setting error.Please try again later!",
       duration: 3000,
     });
-  } finally {
-    isLoading.value = false; // 完成後關閉加載狀態
   }
 };
 
