@@ -84,10 +84,10 @@ const {
 
 const leaderBoardData = ref([]);
 const totalItems = ref(0); // 總項目數
-const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const itemsPerPage = ref(2); // 每頁顯示 5 筆
 
 const cryptos = ref([]);
-const selectedCurrency = ref("ETH"); // 預設顯示 ETH 排行榜 等api來 改成第一筆
+const selectedCurrency = ref(""); // 預設顯示 ETH 排行榜 等api來 改成第一筆
 const selectedTimePeriod = ref("total"); // 預設顯示 total 排名
 
 const getData = async (pageIndex) => {
@@ -103,6 +103,7 @@ const getData = async (pageIndex) => {
       leaderBoardData.value = response.data.data.items;
       totalItems.value = response.data.data.total;
     }
+    console.log(response.data.data.items);
   } catch (error) {
     ElMessage.error({
       message: "無法取得排行榜，請稍後再試！",
@@ -143,9 +144,9 @@ const getCurrencyData = async () => {
   }
 };
 
-onMounted(() => {
-  getData(1);
-  getCurrencyData();
+onMounted(async () => {
+  await getCurrencyData();
+  await getData(1);
 });
 </script>
 
