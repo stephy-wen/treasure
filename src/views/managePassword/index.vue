@@ -187,7 +187,7 @@ const handleButtonClick = async () => {
       if (!isStepValid) return; // 如果前端驗證失敗，阻止後續操作
       // 初始化錯誤訊息陣列
       const errors = [];
-      
+
       // 如果前端驗證通過，則進行後端驗證，首先驗證碼
       await verifyCode();
       // 接著驗證當前密碼，並更新狀態
@@ -318,18 +318,18 @@ const validateStep = () => {
   }
 
   // 驗證密碼的強度
-  // const rules = [
-  //   { regex: /.{8,}/, message: "密碼長度至少為 8 位" },
-  //   { regex: /[0-9]/, message: "密碼必須包含至少一個數字" },
-  //   { regex: /[a-z]/, message: "密碼必須包含至少一個小寫字母" },
-  //   { regex: /[A-Z]/, message: "密碼必須包含至少一個大寫字母" },
-  // ];
+  const rules = [
+    { regex: /.{8,}/, message: "密碼長度至少為 8 位" },
+    { regex: /[0-9]/, message: "密碼必須包含至少一個數字" },
+    { regex: /[a-z]/, message: "密碼必須包含至少一個小寫字母" },
+    { regex: /[A-Z]/, message: "密碼必須包含至少一個大寫字母" },
+  ];
 
-  // for (const rule of rules) {
-  //   if (!rule.regex.test(newPassword.value)) {
-  //     errors.push(`新密碼: ${rule.message}`);
-  //   }
-  // }
+  for (const rule of rules) {
+    if (!rule.regex.test(newPassword.value)) {
+      errors.push(`新密碼: ${rule.message}`);
+    }
+  }
 
   if (errors.length > 0) {
     errorMessage.value = errors.join("\n");
