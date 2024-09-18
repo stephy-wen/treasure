@@ -19,7 +19,7 @@
         >
           <!-- 步驟 1: 輸入原密碼、新密碼、Email驗證 -->
           <template v-slot:extra-password v-if="currentStep === 1">
-            <div class="mb-3" v-if="currentStep === 1">
+            <div class="mb-3">
               <div id="passwordInputContainer" class="mb-3">
                 <label for="inputPassword" class="form-label"
                   >Current password</label
