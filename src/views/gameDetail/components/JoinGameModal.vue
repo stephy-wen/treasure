@@ -47,12 +47,19 @@
           </div>
           <div class="attend-times-btn d-flex justify-content-center mt-5 fs-5">
             <button @click="setAttendVote(1)" class="fw-bold">1</button>
-            <button @click="setAttendVote(5)" class="mx-3 mx-md-4 fw-bold">5</button>
+            <button @click="setAttendVote(5)" class="mx-3 mx-md-4 fw-bold">
+              5
+            </button>
             <button @click="setAttendVote(10)" class="fw-bold">10</button>
           </div>
           <div class="attend-times-input mt-4">
             <span class="fw-5 fw-bold">x</span>
-            <input class="fs-5 fw-bold" min="1" type="text" v-model="attendVote" />
+            <input
+              class="fs-5 fw-bold"
+              min="1"
+              type="text"
+              v-model="attendVote"
+            />
             <!-- <span>Times</span> -->
           </div>
         </div>
@@ -116,6 +123,10 @@ const setAttendVote = (times) => {
   attendVote.value = times;
 };
 
+const voteResult = computed(() => {
+  return maxVotes.value - votes.value;
+});
+
 // 點擊確認參加
 const confirmParticipation = async () => {
   if (totalAmountDeducted.value > walletAmount.value) {
@@ -137,8 +148,9 @@ const confirmParticipation = async () => {
       console.log(error.response.data.message);
       console.log(error, "遊戲錯誤：error");
       emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
-
-      if (error.response.data.message === "Vote is over quantity") {
+      if (attendVote.value > voteResult.value) {
+        ElMessage.error("超過總votes");
+      } else if (error.response.data.message === "Vote is over quantity") {
         emit("showVotingFullModal");
         console.log(votes.value, "查看是否更新vote值");
         console.log("遊戲滿房 投票失敗");
@@ -148,7 +160,7 @@ const confirmParticipation = async () => {
         ElMessage.error("Failed! The number of votes exceeds");
         console.log("投票失敗 超過單人最大投票數");
       }
-      // 因為打失敗直接進來這邊 所以vote不會被更新到 所以這段永遠不會執行到。
+      // 因為api打失敗直接進來catch這邊 所以vote不會被更新到 所以這段永遠不會執行到。
       // if (votes.value === maxVotes.value) {
       //   emit("showVotingFullModal");
       //   console.log("votes.value === maxVotes.value");
