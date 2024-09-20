@@ -47,11 +47,19 @@ import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
+import { useUserStore } from "@/stores/user";
+
+const userStore = useUserStore();
 
 // 引入 API 模組
 const {
   game: { getGameRoom, getGameWinnerHistory },
+  userInfo: { getAccountInfo },
 } = modules;
+
+const withGamePlayData = true;
+const withRewardData = false;
+const withRewardBalanceData = true;
 
 const isMobile = ref(window.innerWidth < 575.98);
 const gameDetails = ref({}); // 初始化遊戲資料
@@ -85,8 +93,28 @@ const loadGameDetails = async () => {
     } else {
       console.error("未獲取到有效的遊戲資料");
     }
+    const headerData = await getTreasureSpot(); // 拿header新資料
+    console.log(headerData, "headerData");
+    userStore.updateTreasureSpot(headerData);
   } catch (error) {
     console.error("獲取遊戲資料時發生錯誤：", error);
+  }
+};
+
+const getTreasureSpot = async () => {
+  try {
+    const res = await getAccountInfo(
+      withGamePlayData,
+      withRewardData,
+      withRewardBalanceData
+    );
+    // 確保 playHistoryData 是一個數組，防止空數據
+    return Array.isArray(res.data.data.playHistoryData)
+      ? res.data.data.playHistoryData
+      : [];
+  } catch (error) {
+    console.error("獲取 Treasure Spot 資料失敗", error);
+    return []; // 如果出錯，返回一個空數組
   }
 };
 

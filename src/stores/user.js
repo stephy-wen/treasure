@@ -62,6 +62,14 @@ export const useUserStore = defineStore("user", () => {
     userInfo.value.avatarUrl = newAvatarUrl;
   };
 
+  const updateTreasureSpot = (newPlayHistoryData) => {
+    // value can update value, obj must replace all
+    userInfo.value = {
+      ...userInfo.value,
+      playHistoryData: newPlayHistoryData, // 更新 playHistoryData
+    };
+  };
+
   // 定義actions，登出
   const logoutUser = () => {
     token.value = "";
@@ -80,5 +88,6 @@ export const useUserStore = defineStore("user", () => {
     errorMessage,
     updateNickname,
     updateAvatar,
+    updateTreasureSpot,
   };
 });
