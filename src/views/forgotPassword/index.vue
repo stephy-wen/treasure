@@ -204,13 +204,14 @@ const handleButtonClick = () => {
 };
 
 // 發驗證信
-const sendVerificationEmail = async () => {
+const sendVerificationEmail = async (shouldChangeStep = true) => {
   try {
     const response = await sendVerificationCode(verificationType, email.value); //這邊到時候測試完要改掉
     // 如果成功 就到下一步
     if (response.data.success) {
-      handleStepChange(currentStep.value + 1);
-      errorMessage.value = "";
+      if (shouldChangeStep) {  // 檢查是否應該改變步驟
+        handleStepChange(currentStep.value + 1);
+      }
     }
   } catch (error) {
     errorMessage.value = handleApiError(error);
@@ -248,7 +249,7 @@ const verifyCode = async () => {
 const resendCode = async () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
-    await sendVerificationEmail();
+    await sendVerificationEmail(false);
     // 開始新的倒數計時
     startTimer();
   }
