@@ -203,6 +203,8 @@ const formTitle = computed(() => {
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = async () => {
+  errorMessage.value = ""; // 驗證通過時清空錯誤消息
+
   if (!validateStep()) return; // 驗證失敗 終止後續操作
 
   isButtonDisabled.value = true; // 禁用按鈕
@@ -229,7 +231,6 @@ const sendVerificationEmail = async (shouldChangeStep = true) => {
       if (shouldChangeStep) {  // 檢查是否應該改變步驟
         handleStepChange(currentStep.value + 1);
       }
-      errorMessage.value = "";
     }
   } catch (error) {
     errorMessage.value = handleApiError(error);
@@ -363,10 +364,20 @@ const validateStep = () => {
     errorMessage.value = "Invalid email format.";
     return false;
   }
-  if (currentStep.value === 3 && !validatePasswords(password.value)) {
-    return false;
+// 針對第三步的驗證
+  if (currentStep.value === 3) {
+    // 如果密碼為空
+    if (!password.value) {
+      errorMessage.value = "密碼不得為空";
+      return false;
+    }
+
+    // 密碼格式不符合規範
+    if (!validatePasswords()) {
+      return false;
+    }
   }
-  errorMessage.value = ""; // 驗證通過時清空錯誤消息
+
   return true;
 };
 
@@ -404,7 +415,6 @@ const validatePasswords = () => {
     return false;
   }
 
-  errorMessage.value = "";
   return true;
 };
 
