@@ -325,6 +325,10 @@ const registerAccount = async () => {
       errorMessage.value = "";
     }
   } catch (error) {
+    if (error.response && error.response.data.message === "Account is not Exist") {
+      errorMessage.value = "推薦碼錯誤";
+      return
+    }
     errorMessage.value = handleApiError(error);
   } finally {
     isButtonDisabled.value = false;
