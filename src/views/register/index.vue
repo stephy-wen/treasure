@@ -157,6 +157,9 @@ import FormSide from "@/components/FormSide.vue";
 import ImageSide from "@/components/ImageSide.vue";
 import modules from "@/services/modules.js"; // import API module
 import { handleApiError } from "@/utils/errorHandler.js";
+import { ElMessage } from "element-plus";
+
+let verificationAttempts = 0;
 
 // const { sendVerificationCode } = modules.account;
 const {
@@ -257,6 +260,9 @@ const verifyCode = async () => {
     );
   
     if (response.data.success) {
+      // 驗證成功，重置錯誤次數
+      verificationAttempts = 0;
+
       // 跳轉到下一步或其他處理
       handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
       errorMessage.value = "";
@@ -265,7 +271,19 @@ const verifyCode = async () => {
   } catch (error) {
     // 檢查錯誤響應中是否有 systemCode
     if (error.response && error.response.data.systemCode === 2005) {
+      // 增加錯誤次數
+      verificationAttempts += 1;
       errorMessage.value = "驗證碼不正確";
+
+      // 檢查是否達到 5 次錯誤
+      if (verificationAttempts >= 5) {
+        ElMessage.error({
+          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 60 minutes to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
+          duration: 3000,
+        });
+      }
+    } else if (error.response && error.response.data.systemCode === 2006) {
+      errorMessage.value = "驗證碼已過期";
     } else {
       errorMessage.value = "伺服器發生錯誤，請稍後再試。";
     }
@@ -401,12 +419,6 @@ const validatePasswords = () => {
   for (const rule of rules) {
     if (!rule.regex.test(password.value)) {
       errors.push(`Password: ${rule.message}`);
-    }
-  }
-
-  for (const rule of rules) {
-    if (!rule.regex.test(confirmPassword.value)) {
-      errors.push(`Confirm Password: ${rule.message}`);
     }
   }
 
