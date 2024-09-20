@@ -59,7 +59,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { defineProps } from "vue";
+
+const props = defineProps({
   gameId: String, // 接收 gameId
   link: String,
   imageSrc: String,
