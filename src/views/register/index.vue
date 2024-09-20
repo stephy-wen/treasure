@@ -180,10 +180,12 @@ const confirmPassword = ref("");
 const timer = ref(60);
 const isTimerActive = ref(false);
 let countdownInterval = null;
+
+
 const errorMessage = ref("");
 const verificationType = "Register";
 const testEmail = "nalsonlionmedia+16@gmail.com";
-const verificationError = ref(null);
+
 
 const isButtonDisabled = ref(false);
 
@@ -201,7 +203,7 @@ const formTitle = computed(() => {
 
 
 // 針對不同步驟的處理邏輯
-const handleButtonClick = () => {
+const handleButtonClick = async () => {
   if (!validateStep()) return; // 驗證失敗 終止後續操作
 
   isButtonDisabled.value = true; // 禁用按鈕
@@ -209,7 +211,8 @@ const handleButtonClick = () => {
   if (currentStep.value === 1) {
     sendVerificationEmail(); // 點下一步之後可以發驗證信
   } else if (currentStep.value === 2) {
-    verifyCode(); //驗證 驗證碼
+    const hasVerifyCode = await verifyCode(); // 驗證驗證碼
+    if (!hasVerifyCode) return; // 如果驗證碼驗證失敗，則停止
   } else if (currentStep.value === 3) {
     registerAccount();
   } else {
@@ -218,13 +221,15 @@ const handleButtonClick = () => {
 };
 
 // 發驗證信
-const sendVerificationEmail = async () => {
+const sendVerificationEmail = async (shouldChangeStep = true) => {
   try {
-    const response = await sendVerificationCode(verificationType, email.value); //這邊到時候測試完要改掉
+    const response = await sendVerificationCode(verificationType, email.value);
     console.log(response, "驗證信已發送");
     // 如果成功 就到下一步
     if (response.data.success) {
-      handleStepChange(currentStep.value + 1);
+      if (shouldChangeStep) {  // 檢查是否應該改變步驟
+        handleStepChange(currentStep.value + 1);
+      }
       errorMessage.value = "";
     }
   } catch (error) {
@@ -238,9 +243,11 @@ const sendVerificationEmail = async () => {
 
 // 驗證驗證碼
 const verifyCode = async () => {
-  // isTimerActive.value = false; // 發驗證信的按鈕
-  // isVerifying.value = true; // 驗證碼按鈕
-  verificationError.value = null;
+  if (!verificationCode.value) {
+    errorMessage.value = "請輸入驗證碼";
+    isButtonDisabled.value = false;
+    return false; // 驗證碼為空，返回 false
+  }
 
   try {
     const response = await checkVerificationCode(
@@ -248,20 +255,23 @@ const verifyCode = async () => {
       email.value,
       verificationCode.value
     );
-    console.log(response, "拿到的驗證資料");
+  
     if (response.data.success) {
-      console.log("驗證成功");
       // 跳轉到下一步或其他處理
       handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
       errorMessage.value = "";
+      return true;
     }
   } catch (error) {
     // 檢查錯誤響應中是否有 systemCode
-    errorMessage.value = handleApiError(error);
-    console.error("驗證失敗", error);
+    if (error.response && error.response.data.systemCode === 2005) {
+      errorMessage.value = "驗證碼不正確";
+    } else {
+      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+    }
+    return false; // 驗證失敗
   } finally {
     isButtonDisabled.value = false;
-    // isVerifying.value = false;
   }
 };
 
@@ -270,7 +280,7 @@ const resendCode = async () => {
   if (!isTimerActive.value) {
     // 在這裡觸發重發驗證碼的邏輯
     console.log("Resend code clicked");
-    await sendVerificationEmail();
+    await sendVerificationEmail(false); // 傳遞 `false` 避免步驟跳轉
     // 開始新的倒數計時
     startTimer();
   }
@@ -286,7 +296,7 @@ watch(currentStep, (newStep) => {
 // 開始倒數計時
 const startTimer = () => {
   isTimerActive.value = true;
-  timer.value = 60;
+  timer.value = 5;
 
   countdownInterval = setInterval(() => {
     if (timer.value > 0) {
@@ -315,12 +325,7 @@ const registerAccount = async () => {
       handleStepChange(currentStep.value + 1);
       errorMessage.value = "";
     }
-    console.log("註冊成功", response.data);
-
-    // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
   } catch (error) {
-    console.error("註冊失敗", error.response ? error.response.data : error);
-    // 處理錯誤（例如顯示錯誤訊息給使用者）
     errorMessage.value = handleApiError(error);
   } finally {
     isButtonDisabled.value = false;
@@ -353,11 +358,9 @@ const handleStepChange = (newStep) => {
 const validateStep = () => {
   if (currentStep.value === 1 && !validateEmail(email.value)) {
     errorMessage.value = "Invalid email format.";
-    console.log("Email format is invalid");
     return false;
   }
   if (currentStep.value === 3 && !validatePasswords(password.value)) {
-    console.log("密碼驗證");
     return false;
   }
   errorMessage.value = ""; // 驗證通過時清空錯誤消息
@@ -425,8 +428,6 @@ const props = defineProps({
 // 在註冊頁加載時自動檢查 URL 是否有推薦碼
 onMounted(() => {
   referralCode.value = props.referralCode
-  // referralCode.value = route.query.join || ""; // 查詢參數中獲取推薦碼
-  // console.log( referralCode.value)
 });
 </script>
 
