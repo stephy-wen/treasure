@@ -296,7 +296,7 @@ watch(currentStep, (newStep) => {
 // 開始倒數計時
 const startTimer = () => {
   isTimerActive.value = true;
-  timer.value = 5;
+  timer.value = 60;
 
   countdownInterval = setInterval(() => {
     if (timer.value > 0) {
