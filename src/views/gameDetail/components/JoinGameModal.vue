@@ -132,40 +132,26 @@ const confirmParticipation = async () => {
   if (totalAmountDeducted.value > walletAmount.value) {
     emit("showInsufficientFundsModal"); // 跳出點數不足視窗
   } else {
-    console.log("開始遊戲");
     // 按下確認參加遊戲
     const gameRoomId = route.params.gameId; // 獲取路由參數中的 gameId
     try {
       const res = await playGame(gameRoomId, attendVote.value);
-      console.log(res);
       if (res.data.success) {
-        console.log("投票成功 投票號碼為", res.data.data.betNumber);
         // 投票成功後通知父組件刷新遊戲資料
         emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
       }
     } catch (error) {
       // 檢查遊戲，是否投票已滿
-      console.log(error.response.data.message);
-      console.log(error, "遊戲錯誤：error");
       emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
       if (attendVote.value > voteResult.value) {
         ElMessage.error("超過總votes");
       } else if (error.response.data.message === "Vote is over quantity") {
         emit("showVotingFullModal");
-        console.log(votes.value, "查看是否更新vote值");
-        console.log("遊戲滿房 投票失敗");
       } else if (
         error.response.data.message === "Account vote is over quantity"
       ) {
         ElMessage.error("Failed! The number of votes exceeds");
-        console.log("投票失敗 超過單人最大投票數");
       }
-      // 因為api打失敗直接進來catch這邊 所以vote不會被更新到 所以這段永遠不會執行到。
-      // if (votes.value === maxVotes.value) {
-      //   emit("showVotingFullModal");
-      //   console.log("votes.value === maxVotes.value");
-      // }
-      //console.error("遊戲錯誤：", error);
     }
   }
   emit("closeModal"); // 無論點數夠不夠，先關閉JoinGameModal
