@@ -125,7 +125,7 @@ const displayStatus = computed(() =>
 const navItems = ref([
   {
     id: "0",
-    label: "Hunting Game",
+    label: "Games",
     dropdown: false,
     routeName: "Game", // 使用路由名称
     url: "game/game-list", // 内部导航 URL
@@ -135,7 +135,6 @@ const navItems = ref([
     id: "1",
     label: "Treasure Spot",
     dropdown: true,
-    dropdownTitle: "Treasure Spot",
     dropdownSections: [
       {
         circleClass: "red-circle",
@@ -177,7 +176,7 @@ const navPhoneItems = ref([
   },
   {
     id: 1,
-    label: "Hunt",
+    label: "Games",
     icon: "fa-solid fa-rocket",
     url: "/game/game-list",
     dropdown: false,
@@ -236,8 +235,6 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
-/* 添加你的 CSS 樣式 */
-
 /* header */
 header {
   background-color: #181a20;
@@ -325,13 +322,6 @@ header nav ul li a:hover {
 .dropdown-toggle::after {
   display: none;
 }
-@media (min-width: 991.98px) {
-  .dropdown-menu-lg-start[data-bs-popper] {
-    right: 0;
-    left: auto;
-    top: 2.5em;
-  }
-}
 
 .dropdown-language ul li .winnie-language {
   color: #f8f8f8;
@@ -355,8 +345,8 @@ header nav ul li a:hover {
   background-color: #181a20;
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .modal-md-half {
+@media (min-width: 575.98px) and (max-width: 991.98px) {
+  .modal-sm-half {
     max-width: 50%;
     margin-left: auto;
     margin-right: 0;

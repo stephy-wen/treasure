@@ -58,11 +58,11 @@
               >Return to login
             </router-link>
 
-            <p id="resendMessage" v-if="currentStep === 2" class="resend mt-2">
+            <p id="resendMessage" v-if="currentStep === 2" class="resend mt-2 text-start">
               Didn't receive anything? <br />
               <button
                 id="resendCode"
-                class="resend-link px-0"
+                class="resend-link p-0"
                 @click="resendCode"
                 :disabled="isTimerActive"
               >
@@ -74,13 +74,13 @@
 
           <!-- 步驟 2: 驗證碼 -->
           <template v-slot:extra-input v-if="currentStep === 2">
-            <p class="mb-5" style="color: #75797e">
-              We've sent a code to <span id="userEmail"></span>. Please enter it
+            <p class="mb-4 text-start" style="color: #75797e">
+              We've sent a code to <span id="userEmail"></span>.<br>Please enter it
               within 30 minutes.
             </p>
             <input
               type="text"
-              class="input-field"
+              class="input-field verification-code-input w-100 mb-3"
               placeholder="Verification Code"
               v-model="verificationCode"
               @keydown.enter.prevent="handleButtonClick"
@@ -89,20 +89,27 @@
 
           <!-- 步驟 4: 設置密碼 -->
           <template v-slot:extra-password v-if="currentStep === 4">
-            <input
-              type="password"
-              class="input-field"
-              placeholder="New Password"
-              v-model="newPassword"
-              @keydown.enter.prevent="handleButtonClick"
-            />
-            <input
-              type="password"
-              class="input-field"
-              placeholder="Confirm Password"
-              v-model="confirmPassword"
-              @keydown.enter.prevent="handleButtonClick"
-            />
+            <div class="form-floating mb-3">
+              <input
+                type="password"
+                class="input-field form-control"
+                placeholder="New Password"
+                v-model="newPassword"
+                @keydown.enter.prevent="handleButtonClick"
+              />
+              <label for="floatingInput">New Password</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="password"
+                class="input-field form-control"
+                placeholder="Confirm Password"
+                v-model="confirmPassword"
+                @keydown.enter.prevent="handleButtonClick"
+              />
+              <label for="floatingInput">Confirm Password</label>
+            </div>
+            
           </template>
 
           <!-- 步驟 5: 成功頁面 -->
@@ -119,11 +126,11 @@
             </div>
           </template>
 
-           <!-- 插入錯誤訊息 -->
-           <template v-slot:error>
-            <p v-if="errorMessage" class="error-message mt-5">
+          <!-- 插入錯誤訊息 -->
+          <template v-slot:error>
+            <p v-if="errorMessage" class="error-message d-flex">
+              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
               <pre>{{ errorMessage }}</pre>
-
             </p>
           </template>
         </AuthForm>
@@ -318,7 +325,7 @@ const handleStepChange = (newStep) => {
 // 表單驗證函數
 const validateStep = () => {
   if (currentStep.value === 1 && !validateEmail(email.value)) {
-    errorMessage.value = "Invalid email format.";
+    errorMessage.value = "Invalid email format";
     return false;
   }
   if (currentStep.value === 4 && !validatePasswords(newPassword.value)) {
@@ -339,15 +346,15 @@ const validatePasswords = () => {
   }
 
   const rules = [
-    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
-    { regex: /[0-9]/, message: "Password must contain at least one number." },
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long" },
+    { regex: /[0-9]/, message: "Password must contain at least one number" },
     {
       regex: /[a-z]/,
-      message: "Password must contain at least one lowercase letter.",
+      message: "Password must contain at least one lowercase letter",
     },
     {
       regex: /[A-Z]/,
-      message: "Password must contain at least one uppercase letter.",
+      message: "Password must contain at least one uppercase letter",
     },
   ];
 
@@ -465,7 +472,7 @@ const formTitle = computed(() => {
 
 .winnie-bg-dark .form-control {
   border: none;
-  border-bottom: 1px solid #bbbbbb;
+  border-bottom: 1px solid #BBBBBB; 
   background-color: transparent !important;
   border-radius: 0;
   box-shadow: none;
@@ -473,13 +480,13 @@ const formTitle = computed(() => {
 }
 
 .winnie-bg-dark .form-control:focus {
-  border-bottom: 1px solid #181a20;
+  border-bottom: 1px solid #181A20;
   outline: none;
 }
 
 .winnie-bg-dark .form-floating label {
   background-color: transparent;
-  color: #bbb;
+  color: #BBB;
 }
 
 .form-floating > input + label:after {
@@ -567,5 +574,58 @@ button.arrow {
 
 button.arrow:hover {
   color: #1e2329;
+}
+
+.error-message {
+  color: #F63E3D;
+}
+
+pre {
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+.verification-code-input {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #BBB;
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.verification-code-input::placeholder {
+  color: #BBB;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px #f8f8f8 inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #F8F8F8 inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+button.resend-link {
+  border: none;
+  background-color: transparent;
+  font-weight: 600;
+}
+
+button.resend-link:disabled {
+  cursor: not-allowed;
+  font-weight: 500;
+}
+
+button.resend-link:disabled:hover {
+  color: #1010104D;
+}
+
+button.resend-link:hover {
+  color: #FCD535;
+  cursor: pointer;
 }
 </style>

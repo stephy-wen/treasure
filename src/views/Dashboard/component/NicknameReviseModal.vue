@@ -158,6 +158,10 @@ const saveNickname = async () => {
   border-radius: 50px;
 }
 
+#nicknameReviseModal button.save-btn:hover {
+  background-color: #1e2329;
+}
+
 @media (min-width: 575.98px) {
   #nicknameReviseModal .modal-dialog {
     max-width: 500px;
@@ -169,6 +173,10 @@ const saveNickname = async () => {
   color: #f8f8f8;
   border-radius: 50px;
   border: none;
+}
+
+#nicknameReviseModal .winnie-btn-close:hover {
+    background-color: #414D5A;
 }
 
 .nickname-notice-bk-color {
@@ -185,6 +193,15 @@ const saveNickname = async () => {
   background-color: transparent;
   border: 1px solid #414d5a;
   color: #f8f8f8;
+}
+
+#nicknameReviseModal input::placeholder {
+  color: #BBB;
+}
+
+#nicknameReviseModal input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 #nicknameReviseModal .winnie-container-nickname {

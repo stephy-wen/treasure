@@ -21,24 +21,25 @@
       <div class="text-center mt-1">
         <img
           class="img-fluid"
-          style="max-width: 36px"
+ 
           :src="userAvatar"
           alt="User Avatar"
         />
-        <p class="fs-6 fw-bold">
-          <i class="fa-solid fa-circle-user me-2"></i>{{ userId }}
+        <p class="fs-6 fw-bold mt-2">
+          {{ userId }}
         </p>
       </div>
 
       <div class="personal-balance-info mt-4">
-        <div class="d-flex justify-content-center align-items-center mt-3 mx-3">
-          <p class="personal-balance fw-bold mb-0">
-            <img
-              class="me-2 img-fluid"
+        <div class="d-flex justify-content-center align-items-center mt-3 mx-2">
+          <img
+              class="me-2 img-fluid balance-icon"
               style="max-width: 30px; vertical-align: middle"
               src="@/assets/images/icon/balance-icon.png"
               alt="Balance Icon"
             />
+          <p class="personal-balance fw-bold mb-0 w-100">
+
             {{
               isBalanceHidden ? maskBalance : balance.toLocaleString("en-US")
             }}
@@ -52,7 +53,7 @@
             </a>
           </p>
         </div>
-        <div class="text-center mt-1">
+        <div class="text-center mt-3">
           <button
             class="btn btn-primary fs-6 mt-1 px-4"
             style="border-radius: 50px"
@@ -125,10 +126,14 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* 加入你的樣式或保持樣式由母組件控制 */
 .dropdown-menu {
   background-color: #1e2329;
 }
+
+.dropdown-item:hover{
+    color: #F8F8F8;
+    background-color: #35485D;
+  }
 
 .collapse .dropdown-member-info p {
   color: #f8f8f8;
@@ -143,6 +148,10 @@ const props = defineProps({
   color: #f8f8f8;
 }
 
+.collapse .dropdown-member-info .winnie-member-info:hover{
+    background-color: #35485D;
+  }
+
 .navbar .btn-primary {
   background-color: #fcd535;
   border-color: #fcd535;
@@ -150,4 +159,34 @@ const props = defineProps({
   font-weight: 600;
   border-radius: 10px;
 }
+
+.navbar .btn-primary:hover {
+  background-color: #e5bf30;
+  border-color: #e5bf30;
+  color: #181a20;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+@media (min-width: 991.98px) {
+  .dropdown-menu-lg-start[data-bs-popper] {
+    right: 0;
+    left: auto;
+    top: 2.5em;
+  }
+}
+
+.balance-icon {
+  margin-right: auto;
+}
+
+.personal-balance {
+  flex: 1;
+  text-align: end;
+}
+
 </style>

@@ -6,8 +6,8 @@
       </div>
       <div class="col-4">
         <div class="play-prize d-flex align-items-center justify-content-end">
-          <img class="" :src="gameData.prizeIcon" alt="prizeIcon" />
-          <p class="ms-2">{{ gameData.prizeAmount }}</p>
+          <img :src="gameData.prizeIcon" alt="prizeIcon" />
+          <p class="ms-2 fw-bold">{{ gameData.prizeAmount }}</p>
         </div>
       </div>
     </div>
@@ -59,10 +59,7 @@
             </div>
           </div>
           <div class="game-intro-content fs-5">
-            The Game is an interactive onchain survival game where contestants
-            buy in, join tribes, compete in daily challenges, and vote each
-            other out over the course of ten days, until one person wins the
-            entire pot.
+            The Game is an interactive on-chain survival game, players join challenges, and the results are revealed once the player limit is reached, with only one winner.<br><span class="fw-bold">One Dollar, One Life — Tyche</span>
           </div>
         </div>
         <div
@@ -236,6 +233,7 @@ const getPlayerData = async (gameId) => {
       name: player.player,
       votes: player.voteAmount,
       rate: player.voteRate,
+      image: player.playerIconUrl,
     }));
   } catch (error) {}
 };

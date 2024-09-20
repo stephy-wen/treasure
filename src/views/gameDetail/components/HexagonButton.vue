@@ -60,6 +60,7 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .dots {
@@ -73,5 +74,12 @@ const handleClick = () => {
   height: 6px;
   background-color: #f8f8f8;
   border-radius: 50%;
+}
+
+@media (min-width: 575.98px) and (max-width: 767.98px) {
+  .dot {
+  width: 4px;
+  height: 4px;
+}
 }
 </style>

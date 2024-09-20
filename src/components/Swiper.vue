@@ -102,6 +102,18 @@ const shouldLoop = computed(() => props.swiperData.length >= 3); // 根據 slide
 </script>
 
 <style scoped>
+  .mySwiper {
+    width: 100%;
+    max-height: 767.98px;
+    overflow: hidden;
+  }
+
+.mySwiper img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .index-banner img {
   display: block;
   width: 100%;
@@ -113,9 +125,28 @@ const shouldLoop = computed(() => props.swiperData.length >= 3); // 根據 slide
   border-radius: 10px;
 }
 
+@media (max-width: 767.98px) {
+  .mySwiper img{
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (min-width: 767.98px) {
+  .mySwiper {
+    max-height: 480px;
+    overflow: hidden;
+    aspect-ratio: 1280 / 480;
+  }
+}
+
 @media (min-width: 991.98px) {
   .index-banner img {
     border-radius: 30px;
   }
+
+  .mySwiper {
+    border-radius: 30px;
 }
+}
+
 </style>

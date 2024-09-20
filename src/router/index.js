@@ -69,7 +69,7 @@ const routes = [
     component: () => import("../views/withdrawal/index.vue"), // 動態導入
   },
   {
-    path: "/account/reward/:rewardId",
+    path: "/account/reward/:rewardId?",
     name: "Reward",
     component: () => import("../views/reward/index.vue"), // 動態導入
     props: true, // 傳遞路由參數作為組件的 props

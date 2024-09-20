@@ -30,12 +30,12 @@
         <div
           class="modal-body text-center d-flex flex-column justify-content-center"
         >
-          <div class="game-round-name">
-            <p>Round {{ gameInfo.round }}</p>
-            <p class="fs-2 fw-bold">{{ gameInfo.title }}</p>
+          <div class="game-round-name fw-bold">
+            <p class="fs-5 mb-2">Round {{ gameInfo.round }}</p>
+            <p class="fs-2">{{ gameInfo.title }}</p>
           </div>
-          <div class="attend-fee mt-5">
-            <p>Total Amount Deducted</p>
+          <div class="attend-fee mt-5 fs-5 fw-bold">
+            <p class="mb-2">Total Amount Deducted</p>
             <p class="fs-3 fw-bold">
               <img
                 class="me-2"
@@ -45,21 +45,21 @@
               />{{ totalAmountDeducted }}
             </p>
           </div>
-          <div class="attend-times-btn d-flex justify-content-center mt-2">
-            <button @click="setAttendVote(1)">1</button>
-            <button @click="setAttendVote(5)" class="mx-3 mx-md-4">5</button>
-            <button @click="setAttendVote(10)">10</button>
+          <div class="attend-times-btn d-flex justify-content-center mt-5 fs-5">
+            <button @click="setAttendVote(1)" class="fw-bold">1</button>
+            <button @click="setAttendVote(5)" class="mx-3 mx-md-4 fw-bold">5</button>
+            <button @click="setAttendVote(10)" class="fw-bold">10</button>
           </div>
-          <div class="attend-times-input mt-5">
-            <span>x</span>
-            <input class="fs-6" min="1" type="text" v-model="attendVote" />
+          <div class="attend-times-input mt-4">
+            <span class="fw-5 fw-bold">x</span>
+            <input class="fs-5 fw-bold" min="1" type="text" v-model="attendVote" />
             <!-- <span>Times</span> -->
           </div>
         </div>
         <div class="modal-footer mx-auto">
           <button
             type="button"
-            class="btn attend-confirm-btn mb-5"
+            class="btn attend-confirm-btn mb-5 fs-5"
             data-bs-dismiss="modal"
             data-bs-toggle="modal"
             data-bs-target="#winnerModal"
@@ -237,6 +237,7 @@ const confirmParticipation = async () => {
   border: none;
   color: #181a20;
   padding: 8px 90px;
+  font-weight: 600;
 }
 
 .game-attend #joinModal .modal-footer button.attend-confirm-btn:hover {

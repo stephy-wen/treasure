@@ -130,4 +130,22 @@ defineProps({
     padding: 0.5rem !important;
   }
 }
+
+@media (max-width: 767.98px) {
+  .winnie-xs-style {
+    padding: 0.25rem;
+  }
+
+  .winnie-xs-style .game-list-name,
+  .winnie-xs-style .game-list-round,
+  .winnie-xs-style .game-list-fee,
+  .winnie-xs-style .game-list-people,
+  .winnie-xs-style .fa-user {
+    font-size: 13px;
+  }
+
+  .winnie-p-xs-2 {
+    padding: 0.5rem !important;
+  }
+}
 </style>
