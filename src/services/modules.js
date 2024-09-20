@@ -65,7 +65,18 @@ const userInfo = {
         avatarId,
       },
     }),
-  getAccountInfo: () => apiClient.get("/Account/AccountInfo"), // 取得用戶資訊
+  getAccountInfo: (
+    withGamePlayData = true,
+    withReawrdData = true,
+    withReawrdBalanceData = true
+  ) =>
+    apiClient.get("/Account/AccountInfo", {
+      params: {
+        withGamePlayData,
+        withReawrdData,
+        withReawrdBalanceData,
+      },
+    }), // 取得用戶資訊
   getGameRewardHistory: () => apiClient.get("/Game/GameRewardHistory"), // 得獎紀錄
   getGameRewardInfo: (rewardId) =>
     apiClient.get("/Game/GameRewardHistory", {

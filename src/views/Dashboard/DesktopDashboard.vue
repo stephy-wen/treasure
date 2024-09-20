@@ -5,14 +5,10 @@
       <div class="personal-info d-flex flex-wrap">
         <div class="col-12 col-lg-8 col-xl-7 d-flex ps-5">
           <div
-            @click="openChangePicModal"  
+            @click="openChangePicModal"
             class="col-4 col-md-2 avatar-container text-end text-lg-start me-3"
           >
-            <img
-              class="avatar-photo"
-              :src="userInfo.avatarUrl"
-              alt="avatar"
-            />
+            <img class="avatar-photo" :src="userInfo.avatarUrl" alt="avatar" />
             <img
               class="hover-icon"
               src="@/assets/images/icon/iconPark-edit-two 1.svg"
@@ -93,20 +89,22 @@
         >
           <div class="personal-balance d-flex align-items-center mb-2 mb-lg-0">
             <button
-            class="btn-dashboard bck-yellow fw-bold f-color-dark py-0 me-2"
-            @click="goToDepositPage"
-          >
-            Buy Now
-          </button>
+              class="btn-dashboard bck-yellow fw-bold f-color-dark py-0 me-2"
+              @click="goToDepositPage"
+            >
+              Buy Now
+            </button>
             <img src="@/assets/images/icon/balance-icon.png" alt="" />
             <span class="fs-2 fw-bold ms-2">{{ balance }}</span>
           </div>
-          <div class="d-flex">
+          <div class="d-flex" v-if="rewardButtonData.length > 0">
             <div class="d-flex col">
               <el-tooltip
                 class="box-item customized-tooltip"
                 content="20,000"
                 placement="bottom"
+                v-for="item in rewardButtonData"
+                :key="item.round"
               >
                 <button
                   class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
@@ -114,59 +112,14 @@
                   id="dropdownMenuRewardsList"
                   aria-expanded="false"
                 >
-                  <img src="@/assets/images/icon/SOL-account.svg" alt="">
-                  <span class="f-color-white fw-bold pe-1">20,00...</span>
-                </button>
-              </el-tooltip>
-              <el-tooltip
-                class="box-item"
-                effect="dark"
-                content="2"
-                placement="bottom"
-              >
-                <button
-                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
-                  type="button"
-                  id="dropdownMenuRewardsList"
-                  aria-expanded="false"
-                >
-                  <img src="@/assets/images/icon/BNB-account.svg" alt="">
-                  <span class="f-color-white fw-bold pe-1">2</span>
-                </button>
-              </el-tooltip>
-              <el-tooltip
-                class="box-item"
-                effect="dark"
-                content="9,000"
-                placement="bottom"
-              >
-                <button
-                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
-                  type="button"
-                  id="dropdownMenuRewardsList"
-                  aria-expanded="false"
-                >
-                  <img src="@/assets/images/icon/DOGE-account.svg" alt="">
-                  <span class="f-color-white fw-bold pe-1">9,000</span>
-                </button>
-                </el-tooltip>
-                <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  content="1"
-                  placement="bottom"
-                >
-                <button
-                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
-                  type="button"
-                  id="dropdownMenuRewardsList"
-                  aria-expanded="false"
-                >
-                  <img src="@/assets/images/icon/BTC-account.svg" alt="">
-                  <span class="f-color-white fw-bold pe-1">1</span>
+                  <img :src="getCurrencyIcon(item.symbol)" alt="" />
+                  <span class="f-color-white fw-bold pe-1">{{
+                    item.balance
+                  }}</span>
                 </button>
               </el-tooltip>
             </div>
+
             <div class="col ms-2">
               <div class="dropdown rewards-list-dropdown">
                 <button
@@ -176,7 +129,9 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <span class="f-color-white fw-bold" style="font-size: 12px;">more...</span>
+                  <span class="f-color-white fw-bold" style="font-size: 12px"
+                    >more...</span
+                  >
                 </button>
                 <!-- rewards-list-start -->
                 <ul
@@ -195,6 +150,7 @@
               </div>
             </div>
           </div>
+          <div v-else>尚無資料</div>
         </div>
       </div>
       <div class="account-form mt-5">
@@ -236,7 +192,7 @@ import modules from "@/services/modules";
 import { getCurrencyIcon } from "@/assets/images.js";
 
 const {
-  userInfo: { getGameRewardHistory },
+  userInfo: { getGameRewardHistory, getAccountInfo },
   auth: { getTransactionLog },
 } = modules;
 
@@ -253,6 +209,11 @@ const rewardsData = ref([]);
 const totalItems = ref(0); // 總項目數
 const itemsPerPage = ref(5); // 每頁顯示 5 筆
 const transactionType = "All";
+const rewardButtonData = ref([]);
+
+const withGamePlayData = false;
+const withRewardData = false;
+const withRewardBalanceData = true;
 
 const headers = [
   { text: "Timestamp", class: "ps-5" },
@@ -268,6 +229,20 @@ const rewardHeaders = [
   { text: "Value", class: "text-end" },
   { text: "Withdraw", class: "text-center" },
 ];
+
+const fetchRewardButtonData = async () => {
+  try {
+    const res = await getAccountInfo(
+      withGamePlayData,
+      withRewardData,
+      withRewardBalanceData
+    );
+
+    rewardButtonData.value = res.data.data.getRewardBalanceData;
+  } catch (error) {
+    console.error("獲取歷史時發生錯誤：", error);
+  }
+};
 
 // 調用 API 獲取歷史資料
 const fetchPageData = async (pageIndex) => {
@@ -401,7 +376,10 @@ const loadUserInfo = async () => {
 };
 
 onMounted(async () => {
-  await Promise.all([loadUserInfo(), getRewards(), fetchPageData(1)]);
+  await Promise.all(
+    [loadUserInfo(), getRewards(), fetchPageData(1)],
+    fetchRewardButtonData()
+  );
 });
 </script>
 
@@ -623,7 +601,6 @@ button.bck-yellow:hover {
   --bs-table-bg: transparent;
 }
 
-
 .avatar-container {
   position: relative;
   display: inline-block;
@@ -634,7 +611,7 @@ button.bck-yellow:hover {
 }
 
 .avatar-container::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
