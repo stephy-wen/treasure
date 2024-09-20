@@ -150,6 +150,8 @@ import ImageSide from "@/components/ImageSide.vue";
 import modules from "@/services/modules.js"; // import API module
 import { handleApiError } from "@/utils/errorHandler.js";
 
+let verificationAttempts = 0;
+
 const {
   account: {
     sendVerificationCode,
@@ -181,9 +183,8 @@ const isButtonDisabled = ref(false);
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
-  // handleStepChange(currentStep.value + 1);
-  console.log(newPassword.value)
-  console.log(confirmPassword.value)
+  errorMessage.value = ""
+
   if (!validateStep()) return; // 驗證失敗 終止後續操作
 
   isButtonDisabled.value = true; // 禁用按鈕
@@ -224,22 +225,47 @@ const sendVerificationEmail = async (shouldChangeStep = true) => {
 
 // 驗證驗證碼
 const verifyCode = async () => {
-  verificationError.value = null;
+  if (!verificationCode.value) {
+    errorMessage.value = "請輸入驗證碼";
+    isButtonDisabled.value = false;
+    return false; // 驗證碼為空，返回 false
+  }
+
   try {
     const response = await checkVerificationCode(
       verificationType,
       email.value,
       verificationCode.value
     );
+  
     if (response.data.success) {
+      // 驗證成功，重置錯誤次數
+      verificationAttempts = 0;
+
       // 跳轉到下一步或其他處理
       handleStepChange(currentStep.value + 1); //成功的話跳轉下一步
-      errorMessage.value = "";
+      return true;
     }
   } catch (error) {
     // 檢查錯誤響應中是否有 systemCode
-    errorMessage.value = handleApiError(error);
-    console.error("驗證失敗", error);
+    if (error.response && error.response.data.systemCode === 2005) {
+      // 增加錯誤次數
+      verificationAttempts += 1;
+      errorMessage.value = "驗證碼不正確";
+
+      // 檢查是否達到 5 次錯誤
+      if (verificationAttempts >= 5) {
+        ElMessage.error({
+          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 60 minutes to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
+          duration: 3000,
+        });
+      }
+    } else if (error.response && error.response.data.systemCode === 2006) {
+      errorMessage.value = "驗證碼已過期";
+    } else {
+      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+    }
+    return false; // 驗證失敗
   } finally {
     isButtonDisabled.value = false;
   }
@@ -288,7 +314,6 @@ const resetPassword = async () => {
     );
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
-      errorMessage.value = "";
     }
 
     // 根據需求進行下一步處理（例如跳轉頁面或顯示成功訊息）
@@ -329,8 +354,18 @@ const validateStep = () => {
     errorMessage.value = "Invalid email format";
     return false;
   }
-  if (currentStep.value === 4 && !validatePasswords(newPassword.value)) {
-    return false;
+
+  if (currentStep.value === 4) {
+    // 如果密碼為空
+    if (!newPassword.value) {
+      errorMessage.value = "密碼不得為空";
+      return false;
+    }
+
+    // 密碼格式不符合規範
+    if (!validatePasswords()) {
+      return false;
+    }
   }
   errorMessage.value = ""; // 驗證通過時清空錯誤消息
   return true;
@@ -365,18 +400,11 @@ const validatePasswords = () => {
     }
   }
 
-  for (const rule of rules) {
-    if (!rule.regex.test(confirmPassword.value)) {
-      errors.push(`Confirm Password: ${rule.message}`);
-    }
-  }
-
   if (errors.length > 0) {
     errorMessage.value = errors.join("\n");
     return false;
   }
 
-  errorMessage.value = "";
   return true;
 };
 
