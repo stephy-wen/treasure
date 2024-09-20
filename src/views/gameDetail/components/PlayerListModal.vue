@@ -28,10 +28,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <h4 class="modal-title ms-2 mb-5 fw-bold" id="playerListModalLabel">
+          <h4 class="modal-title ms-2 mb-3 fw-bold" id="playerListModalLabel">
             Player List
           </h4>
-          <table class="table table-borderless fw-bold">
+          <table class="table table-borderless">
             <thead>
               <tr>
                 <th scope="col">Player</th>
@@ -40,9 +40,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="player in players" :key="player.id">
+              <tr class="fw-bold" v-for="player in players" :key="player.id">
                 <td class="player-list-name">
                   <img
+                    class="me-1"
                     :class="getImageClass"
                     :src="player.image"
                     :style="{ 'max-width': getMaxWidth }"
@@ -102,7 +103,7 @@ const closeModal = () => {
   emit("closeModal");
 };
 // 計算不同裝置下的圖片大小
-const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
+const getMaxWidth = computed(() => (window.innerWidth < 768 ? "30px" : "32px"));
 </script>
 
 <style scoped>
@@ -118,6 +119,15 @@ const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
 
 #playerListModal .modal-content {
   background-color: #181a20;
+  border: 1px solid #414d5a
+}
+
+@media (min-width: 575.98px) {
+#playerListModal .modal-content {
+  min-height: 600px;
+  max-height: 600px;
+  overflow-y: auto;
+  }
 }
 
 #playerListModal .table,
@@ -131,6 +141,10 @@ const getMaxWidth = computed(() => (window.innerWidth < 768 ? "24px" : "32px"));
 
 #playerListModal .table .player-list-name {
   font-size: 1rem;
+}
+
+#playerListModal .table thead {
+  color: #BBB;
 }
 
 #playerListModal .table td,

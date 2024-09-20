@@ -121,9 +121,6 @@ const props = defineProps({
   .leaderboard-container .table {
     --bs-table-bg: none;
   }
-  .leaderboard-name {
-    font-size: 0.75rem;
-  }
   .leaderboard-container .table img {
     margin-right: 5px;
   }
@@ -135,5 +132,9 @@ const props = defineProps({
 .rewards-list-dropdown .dropdown-menu .leaderboard-container .table {
   --bs-table-bg: transparent;
   border-radius: 0px;
+}
+
+.icon-cursor img{
+  cursor: pointer;
 }
 </style>

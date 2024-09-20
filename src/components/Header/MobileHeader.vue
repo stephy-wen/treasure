@@ -1,7 +1,7 @@
 <template>
   <!-- 以下為手機版 漢堡排展開的modal-start -->
   <div class="modal winnie-modal" tabindex="-1" id="navbarModal">
-    <div class="modal-dialog modal-md-half modal-fullscreen-lg-down">
+    <div class="modal-dialog modal-sm-half modal-fullscreen-lg-down">
       <div class="modal-content">
         <div class="modal-header">
           <button
@@ -17,17 +17,14 @@
             <!-- 個人資料-照片 & id -->
             <div class="personal-info">
               <div class="personal-photo text-center">
-                <img :src="userAvatar" alt="" />
+                <img :src="userAvatar" alt=""/>
               </div>
-              <p class="personal-id text-center fs-5 fw-bold">
-                <font-awesome-icon
-                  icon="fa-solid fa-circle-user"
-                  class="mt-3 me-2"
-                />{{ userId }}
+              <p class="personal-id text-center fs-5 fw-bold mt-2">
+                {{ userId }}
               </p>
             </div>
             <!-- 目前餘額 -->
-            <div class="personal-balance-info mt-5">
+            <div class="personal-balance-info mt-4">
               <div
                 class="d-flex justify-content-between align-items-center mx-3"
               >
@@ -37,7 +34,7 @@
                 <a href="#" @click.stop.prevent="toggleBalanceVisibility">
                   <img
                     class="img-fluid ms-2 mb-1"
-                    style="max-width: 16px; vertical-align: middle"
+                    style="max-width: 30px; vertical-align: middle"
                     :src="isBalanceHidden ? eyeCloseIcon : eyeIcon"
                     alt="Eye Icon"
                   />
@@ -46,7 +43,7 @@
               <div
                 class="d-flex justify-content-start align-items-center mt-3 mx-3"
               >
-                <p class="personal-balance fw-bold mb-0">
+                <p class="personal-balance fw-bold mb-0 fs-1">
                   <img
                     class="me-2"
                     src="@/assets/images/icon/balance-icon.png"
@@ -93,8 +90,8 @@
             <!-- 未登入時，要出現log in & sign up btn -->
             <div class="row">
               <LoginButtons
-                loginButtonClass="fs-5 fw-bold w-100"
-                signupButtonClass="fs-5 fw-bold w-100 mt-4"
+                loginButtonClass="fs-5 fw-bold winnie-width-48"
+                signupButtonClass="fs-5 fw-bold winnie-width-48"
                 :dismissModal="true"
               />
             </div>
@@ -173,7 +170,7 @@
             <!-- 登出按鈕 -->
             <div class="accordion-item mt-3" v-if="loggedIn">
               <div class="accordion-header" id="headingSeven">
-                <a class="accordion-button fs-5 fw-bold" @click="handleLogout"
+                <a class="accordion-button fs-5 fw-bold" data-bs-dismiss="modal" @click="handleLogout"
                   ><font-awesome-icon
                     icon="fa-solid fa-power-off"
                     class="me-3"
@@ -261,6 +258,21 @@ const handleLogout = () => {
   background: black;
 }
 
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+@media (min-width: 575.98px) and (max-width: 991.98px) {
+  .modal-sm-half {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
 .winnie-modal .accordion-item {
   background-color: transparent;
   border: none;
@@ -318,4 +330,41 @@ const handleLogout = () => {
   border-radius: 10px;
   background-color: #2b3139;
 }
+
+.form-check-input:checked {
+  background-color: #FCD535;
+  border: #2b3139;
+}
+
+.form-check-input:not(:checked) {
+  background-color: #414D5A;
+  border: #2b3139;
+}
+
+.form-check-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-input:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-input:checked {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-input:hover {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-input {
+  outline: none;
+  box-shadow: none;
+}
+
+
 </style>

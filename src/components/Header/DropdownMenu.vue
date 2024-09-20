@@ -69,5 +69,29 @@ const handleClick = (item) => {
 </script>
 
 <style scoped>
-/* 可以根據需求添加自定義樣式 */
+.dropdown-menu {
+  background-color: #1e2329;
+}
+
+.dropdown-item {
+  color: #f8f8f8;
+}
+
+
+.dropdown-item:hover{
+    color: #F8F8F8;
+    background-color: #35485D;
+  }
+
+.dropdown-toggle::after {
+  visibility: hidden;
+}
+
+@media (min-width: 991.98px) {
+  .dropdown-menu-lg-start[data-bs-popper] {
+    right: 0;
+    left: auto;
+    top: 2.5em;
+  }
+}
 </style>

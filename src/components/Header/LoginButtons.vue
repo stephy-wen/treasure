@@ -65,6 +65,12 @@ const signup = () => {
   border-radius: 10px;
 }
 
+.btn-outline-primary:hover {
+  border-color: #fcd535;
+  color: #fcd535;
+  background-color: transparent;
+}
+
 .btn-primary {
   background-color: #fcd535;
   border-color: #fcd535;
@@ -72,4 +78,15 @@ const signup = () => {
   font-weight: 600;
   border-radius: 10px;
 }
+
+.btn-primary:hover {
+  background-color: #e5bf30;
+  border-color: #e5bf30;
+  color: #181a20;
+}
+
+.winnie-width-48 {
+  width: 48%;
+}
+
 </style>

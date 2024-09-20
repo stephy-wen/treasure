@@ -2,7 +2,7 @@
   <div>
     <h1>Welcome, {{ userStore.userInfo?.name }}</h1>
   </div>
-  <div>
+  <div class="mx-lg-5">
     <!-- banner 輪播 -->
     <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
       <Swiper
@@ -26,8 +26,7 @@
             DIVE INTO THE MOST THRILLING TREASURE HUNT OF YOUR LIFE!
           </h1>
           <p class="mt-3 fs-5 d-none d-lg-block">
-            Lorem ipsum dolor sit amet consectetur, Aliquam cursus sed eu id
-            sagittis semper aliquet pellentesque ac. Leo ullaest.
+            Let’s explore the mysteries of the crypto world together and achieve your wealth dreams!
           </p>
         </div>
         <Swiper
@@ -86,7 +85,7 @@
           <img class="me-1 img-fluid" :src="equalizer" alt="" />PLATFORM STATS
         </h1>
       </div>
-      <div class="row justify-content-center mt-5">
+      <div class="row justify-content-center mt-5 w-100">
         <template v-for="(item, index) in statsData" :key="index">
           <div class="col-7 col-lg-3 mt-3 mt-lg-0">
             <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
@@ -278,9 +277,9 @@ onMounted(async () => {
 }
 
 /* card */
-.game-intro {
-  width: 100%;
-  max-width: 1280px;
+.game-intro{
+  width: 70%;
+  max-width: 1800px;
 }
 
 .game-card .more-btn {
@@ -296,9 +295,19 @@ onMounted(async () => {
 }
 
 /* stats */
-.stats {
+.stats{
   width: 100%;
-  max-width: 1280px;
+  max-width: 1800px;
+}
+
+.stats .row {
+  --bs-gutter-x: none;
+}
+
+@media (min-width: 575.98px) {
+  .stats {
+    width: 70%;
+  }
 }
 
 /* state hr */
@@ -340,8 +349,13 @@ onMounted(async () => {
 }
 
 .partnerships {
-  width: 100%;
-  max-width: 1280px;
+  width: 70%;
+  margin-top: 80px;
+}
+@media (min-width: 991.98px) {
+  .partnerships {
+      margin-top: 120px;
+  }
 }
 
 .partner-logo {
@@ -359,4 +373,6 @@ onMounted(async () => {
 .partner-logo:hover img {
   opacity: 0;
 }
+
+
 </style>

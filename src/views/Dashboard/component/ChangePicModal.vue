@@ -132,6 +132,8 @@ const closeModal = () => {
 
 #avatarModal .modal-content {
   background-color: #2b3139;
+  max-height: 500px !important;
+  overflow-y: auto;
 }
 
 #avatarModal .modal-header {
@@ -140,6 +142,10 @@ const closeModal = () => {
 
 #avatarModal .modal-body img {
   width: 48px;
+}
+
+#avatarModal .modal-body img:hover {
+  cursor: pointer;
 }
 
 #avatarModal .modal-footer {
@@ -179,5 +185,18 @@ const closeModal = () => {
   #avatarModal .modal-dialog {
     max-width: 350px;
   }
+}
+
+#avatarModal .modal-content::-webkit-scrollbar {
+  width: 5px;
+  background-color: #2b3139;
+}
+
+#avatarModal .modal-content::-webkit-scrollbar-thumb {
+  background-color: #1e2329;
+  border-radius: 4px;
+}
+#avatarModal .modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
 </style>

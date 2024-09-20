@@ -3,7 +3,7 @@
     <div class="game-title mb-5">
       <p class="fw-bold fs-1">HUNTING GAME</p>
     </div>
-    <div class="search-bar mb-5" style="width: 18rem">
+    <!-- <div class="search-bar mb-5" style="width: 18rem">
       <div class="input-group mb-3">
         <input
           v-model="searchTerm"
@@ -22,7 +22,7 @@
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </button>
       </div>
-    </div>
+    </div> -->
     <div class="game-container">
       <div class="row game-list gy-4">
         <GameCard
@@ -110,6 +110,15 @@ const searchGames = async () => {
   border-color: #bbb;
   border-radius: 0px;
   box-shadow: none;
+  height: 30px;
+}
+
+.search-game-btn {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
 }
 
 .container .search-bar button {

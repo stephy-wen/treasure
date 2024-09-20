@@ -116,7 +116,7 @@
               v-model="confirmPassword"
               @keydown.enter.prevent="handleButtonClick"
             />
-            <label for="floatingInput">Confirm</label>
+            <label for="floatingInput">Confirm Password</label>
             </div>
           </template>
 
@@ -136,9 +136,9 @@
 
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
-            <p v-if="errorMessage" class="error-message mt-5">
+            <p v-if="errorMessage" class="error-message d-flex align-items-center">
+              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
               <pre>{{ errorMessage }}</pre>
-
             </p>
           </template>
         </AuthForm>
@@ -165,7 +165,6 @@ const {
 
 const router = useRouter();
 const route = useRoute();
-
 
 // 定義步驟狀態
 const currentStep = ref(1);
@@ -352,7 +351,7 @@ const handleStepChange = (newStep) => {
 // 表單驗證函數
 const validateStep = () => {
   if (currentStep.value === 1 && !validateEmail(email.value)) {
-    errorMessage.value = "Invalid email format.";
+    errorMessage.value = "Invalid email format";
     console.log("Email format is invalid");
     return false;
   }
@@ -370,15 +369,15 @@ const validatePasswords = () => {
   const errors = [];
   if (password.value !== confirmPassword.value) {
     errors.push(
-      "Password and Confirm password are different. Please re-enter it."
+      "Password and Confirm password are different. Please re-enter it"
     );
   }
 
   const rules = [
-    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
-    { regex: /[0-9]/, message: "Password must contain at least one number." },
-    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
-    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long" },
+    { regex: /[0-9]/, message: "Password must contain at least one number" },
+    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter" },
+    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter" },
   ];
 
   for (const rule of rules) {
@@ -523,6 +522,21 @@ onMounted(() => {
 button.resend-link {
   border: none;
   background-color: transparent;
+  font-weight: 600;
+}
+
+button.resend-link:disabled {
+  cursor: not-allowed;
+  font-weight: 500;
+}
+
+button.resend-link:disabled:hover {
+  color: #1010104D;
+}
+
+button.resend-link:hover {
+  color: #FCD535;
+  cursor: pointer;
 }
 
 .verification-code-input {
@@ -533,6 +547,10 @@ button.resend-link {
   background-color: transparent;
   outline: none;
   box-shadow: none;
+}
+
+.verification-code-input::placeholder {
+  color: #BBB;
 }
 
 .winnie-bg-dark .terms-remind p a{
@@ -559,4 +577,22 @@ button.arrow:hover {
   color: #1E2329;
 }
 
+.error-message {
+  color: #F63E3D;
+}
+
+pre {
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px #f8f8f8 inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #F8F8F8 inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
 </style>

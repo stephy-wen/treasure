@@ -105,4 +105,5 @@ const navigateTo = (item) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

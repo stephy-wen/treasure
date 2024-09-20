@@ -3,15 +3,20 @@
     <!-- screen-size-web -->
     <div class="winnie-account-web container d-none d-sm-block">
       <div class="personal-info d-flex flex-wrap">
-        <div class="col-12 col-lg-8 col-xl-7 d-flex">
+        <div class="col-12 col-lg-8 col-xl-7 d-flex ps-5">
           <div
-            class="col-4 col-md-2 avatar-container text-end text-lg-start pe-3 pe-lg-0"
+            @click="openChangePicModal"  
+            class="col-4 col-md-2 avatar-container text-end text-lg-start me-3"
           >
             <img
               class="avatar-photo"
               :src="userInfo.avatarUrl"
               alt="avatar"
-              @click="openChangePicModal"
+            />
+            <img
+              class="hover-icon"
+              src="@/assets/images/icon/iconPark-edit-two 1.svg"
+              alt=""
             />
           </div>
 
@@ -23,7 +28,7 @@
 
           <div class="col-4 d-flex flex-column">
             <div class="d-flex mb-1">
-              <p>{{ userInfo.name }}</p>
+              <p class="fw-bold">{{ userInfo.name }}</p>
               <a href="#" @click="openNicknameReviseModal">
                 <img
                   class="ms-2"
@@ -37,7 +42,7 @@
                   alt=""
               /></router-link>
             </div>
-            <div class="personal-email">
+            <div class="personal-email fw-bold">
               <p class="winnie-color-gray" style="font-size: 14px">Email</p>
               <p>{{ userInfo.email }}</p>
             </div>
@@ -45,7 +50,7 @@
           <div class="col-4 ps-3 ps-md-2 col-md-6 d-flex flex-column ms-5">
             <div class="mb-1">
               <button
-                class="d-flex align-items-center btn-get-rewards"
+                class="d-flex align-items-center btn-get-rewards fw-bold"
                 @click="openGetRewardsModal"
               >
                 <img
@@ -70,15 +75,16 @@
             />
 
             <div class="personal-id">
-              <p class="winnie-color-gray" style="font-size: 14px">
+              <p class="winnie-color-gray fw-bold" style="font-size: 14px">
                 User ID
                 <img
+                  class="copy-icon ms-1"
                   src="@/assets/images/icon/md-content_copy 1.svg"
                   alt="userId"
                   @click="copyUserId"
                 />
               </p>
-              <p>{{ userInfo.userId }}</p>
+              <p class="fw-bold">{{ userInfo.userId }}</p>
             </div>
           </div>
         </div>
@@ -86,33 +92,91 @@
           class="col-12 col-lg-4 col-xl-5 d-flex flex-column align-items-center align-items-lg-end mt-5 mt-lg-0"
         >
           <div class="personal-balance d-flex align-items-center mb-2 mb-lg-0">
+            <button
+            class="btn-dashboard bck-yellow fw-bold f-color-dark py-0 me-2"
+            @click="goToDepositPage"
+          >
+            Buy Now
+          </button>
             <img src="@/assets/images/icon/balance-icon.png" alt="" />
             <span class="fs-2 fw-bold ms-2">{{ balance }}</span>
           </div>
           <div class="d-flex">
-            <div class="col">
-              <button
-                class="btn-dashboard bck-yellow fw-bold f-color-dark py-0"
-                @click="goToDepositPage"
+            <div class="d-flex col">
+              <el-tooltip
+                class="box-item customized-tooltip"
+                content="20,000"
+                placement="bottom"
               >
-                Buy Now
-              </button>
+                <button
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
+                  type="button"
+                  id="dropdownMenuRewardsList"
+                  aria-expanded="false"
+                >
+                  <img src="@/assets/images/icon/SOL-account.svg" alt="">
+                  <span class="f-color-white fw-bold pe-1">20,00...</span>
+                </button>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="2"
+                placement="bottom"
+              >
+                <button
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
+                  type="button"
+                  id="dropdownMenuRewardsList"
+                  aria-expanded="false"
+                >
+                  <img src="@/assets/images/icon/BNB-account.svg" alt="">
+                  <span class="f-color-white fw-bold pe-1">2</span>
+                </button>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="9,000"
+                placement="bottom"
+              >
+                <button
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
+                  type="button"
+                  id="dropdownMenuRewardsList"
+                  aria-expanded="false"
+                >
+                  <img src="@/assets/images/icon/DOGE-account.svg" alt="">
+                  <span class="f-color-white fw-bold pe-1">9,000</span>
+                </button>
+                </el-tooltip>
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="1"
+                  placement="bottom"
+                >
+                <button
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
+                  type="button"
+                  id="dropdownMenuRewardsList"
+                  aria-expanded="false"
+                >
+                  <img src="@/assets/images/icon/BTC-account.svg" alt="">
+                  <span class="f-color-white fw-bold pe-1">1</span>
+                </button>
+              </el-tooltip>
             </div>
             <div class="col ms-2">
               <div class="dropdown rewards-list-dropdown">
                 <button
-                  class="d-flex flex-row btn-dashboard justify-content-center align-items-center bck-dark"
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark px-3"
                   type="button"
                   id="dropdownMenuRewardsList"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img
-                    class="me-2"
-                    src="@/assets/images/icon/fab fa-btc.svg"
-                    alt=""
-                  />
-                  <span class="f-color-white fw-bold">Rewards</span>
+                  <span class="f-color-white fw-bold" style="font-size: 12px;">more...</span>
                 </button>
                 <!-- rewards-list-start -->
                 <ul
@@ -198,7 +262,7 @@ const headers = [
 ];
 
 const rewardHeaders = [
-  { text: "Round", class: "ps-5" },
+  { text: "Round", class: "ps-3" },
   { text: "Time" },
   { text: "Type", class: "text-end pe-4" },
   { text: "Value", class: "text-end" },
@@ -246,7 +310,7 @@ const formatHistoryData = (data) => {
     },
     {
       image: VerifyIcon,
-      class: "text-center",
+      class: "text-center icon-cursor",
       link: history.transactionUrl,
       target: "_blank",
     },
@@ -354,6 +418,7 @@ onMounted(async () => {
 
 .winnie-account-web .personal-info .avatar-photo {
   width: 72px;
+  cursor: pointer;
 }
 
 .btn-get-rewards {
@@ -365,6 +430,10 @@ onMounted(async () => {
   border-radius: 50px;
 }
 
+.btn-get-rewards:hover {
+  background-color: #414d5a;
+}
+
 .btn-dashboard {
   border: none;
   border-radius: 50px;
@@ -372,12 +441,27 @@ onMounted(async () => {
   height: 35px;
 }
 
+.btn-dashboard-auto {
+  border: none;
+  border-radius: 50px;
+  width: auto;
+  height: 35px;
+}
+
 .bck-yellow {
   background-color: #fcd535;
 }
 
+button.bck-yellow:hover {
+  background-color: #e5bf30;
+}
+
 .bck-dark {
   background-color: #2b3139;
+}
+
+.bck-dark:hover {
+  background-color: #414d5a;
 }
 
 .winnie-account-web .f-color-white {
@@ -537,5 +621,78 @@ onMounted(async () => {
 
 .rewards-list-dropdown .dropdown-menu .leaderboard-container .table {
   --bs-table-bg: transparent;
+}
+
+
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+}
+
+.avatar-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.avatar-container:hover::before {
+  opacity: 1;
+}
+
+.avatar-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.hover-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-container:hover .hover-icon {
+  opacity: 1;
+}
+
+.copy-icon {
+  cursor: pointer;
+}
+
+/* 自定義 tooltip 樣式 */
+.customized-tooltip .el-tooltip__popper {
+  background: linear-gradient(90deg, rgb(159, 229, 151), rgb(204, 229, 129));
+  color: #000; /* 如果需要調整字體顏色 */
+  padding: 5px 10px; /* 調整 padding 確保外觀 */
+}
+
+.customized-tooltip .el-tooltip__popper .el-tooltip__arrow {
+  border-color: transparent; /* 避免箭頭樣式影響 */
+}
+
+.customized-tooltip .el-tooltip__popper .el-tooltip__arrow::before {
+  background: linear-gradient(45deg, #b2e68d, #bce689);
+}
+
+.el-popper.is-dark {
+  background-color: red !important;
+  color: white !important;
 }
 </style>

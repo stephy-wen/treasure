@@ -29,14 +29,12 @@
           class="modal-body text-center d-flex flex-column justify-content-center"
         >
           <div class="vote-full-reminder mx-auto">
-            <img
-              class="mb-3"
-              style="width: 50px"
-              src="@/assets/images/icon/logo.svg"
-              alt=""
-            />
+            <p class="fs-4 fw-bold">
+              Voting Full
+            </p>
+            <br />
             <p class="fs-5">
-              Voting is full. <br />Please wait for the next round.
+              Please wait for the next round.
             </p>
             <p class="winnie-color-gray mt-5 fs-1">{{ countdown }}</p>
           </div>

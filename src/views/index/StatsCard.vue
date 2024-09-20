@@ -25,12 +25,12 @@ const props = defineProps({
 }
 @media (min-width: 991.98px) {
   .stats-number {
-    font-size: 2.85rem;
+      font-size: 2.5rem;
   }
 }
 @media (min-width: 1399.98px) {
   .stats-number {
-    font-size: 4rem;
+      font-size: 3rem;
   }
 }
 

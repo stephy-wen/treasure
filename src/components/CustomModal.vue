@@ -6,7 +6,7 @@
     ref="modalElement"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-md-half modal-fullscreen-lg-down">
+    <div class="modal-dialog modal-sm-half modal-fullscreen-lg-down">
       <div class="modal-content">
         <div class="modal-header">
           <button

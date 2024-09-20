@@ -7,7 +7,7 @@
           class="play-prize d-flex align-items-center justify-content-end ps-5"
         >
           <img :src="gameData.prizeIcon" alt="prize icon" />
-          <p class="ms-2">{{ gameData.prizeAmount }}</p>
+          <p class="ms-2 fw-bold">{{ gameData.prizeAmount }}</p>
         </div>
       </div>
       <div>
@@ -27,7 +27,7 @@
     </div>
     <div class="game-intro mt-3">
       <div class="row">
-        <div class="col-7">
+        <div class="col-sm-6 col-md-7">
           <div
             class="game-intro-title d-flex justify-content-between align-items-start"
           >
@@ -49,14 +49,11 @@
             </div>
           </div>
           <div class="game-intro-content fs-5">
-            The Game is an interactive onchain survival game where contestants
-            buy in, join tribes, compete in daily challenges, and vote each
-            other out over the course of ten days, until one person wins the
-            entire pot.
+            The Game is an interactive on-chain survival game, players join challenges, and the results are revealed once the player limit is reached, with only one winner.<br><span class="fw-bold">One Dollar, One Life — Tyche</span>
           </div>
         </div>
         <div
-          class="col-5 col-xl-4 ms-md-auto d-flex flex-column justify-content-between"
+          class="col-sm-6 col-md-5 col-xl-4 ms-md-auto d-flex flex-column justify-content-between"
         >
           <div class="mt-2 d-flex justify-content-center player-list-hexagon">
             <HexagonButton
@@ -254,6 +251,7 @@ const getPlayerData = async (gameId) => {
       name: player.player,
       votes: player.voteAmount,
       rate: player.voteRate,
+      image: player.playerIconUrl,
     }));
   } catch (error) {
     console.error("取得玩家資料時發生錯誤：", error);

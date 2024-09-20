@@ -44,7 +44,7 @@
                 class="dropdown-item winnie-dropdown-item my-2 px-2 py-1"
                 :to="game.url"
               >
-                <span class="game-type-name fs-5 fw-regular">{{
+                <span class="game-type-name fs-5 fw-regular ps-3">{{
                   game.gameRoom
                 }}</span>
               </router-link>
@@ -108,7 +108,7 @@ const collapseId = computed(() => `collapse${props.index}`);
   font-size: 1rem;
   font-weight: 600;
   background-color: #2b3139;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .winnie-dropdown-item:hover {

@@ -69,7 +69,8 @@
 
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
-            <p v-if="errorMessage" class="error-message mt-5">
+            <p v-if="errorMessage" class="error-message d-flex align-items-center">
+              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -124,7 +125,7 @@ const goBack = () => {
 const handleButtonClick = async () => {
   if (currentStep.value === 1) {
     if (!email.value) {
-      errorMessage.value = "email cannot be empty.";
+      errorMessage.value = "Email cannot be empty";
       return
     }
     handleStepChange(currentStep.value + 1);
@@ -137,7 +138,7 @@ const login = async () => {
   errorMessage.value = ""
 
   if (!password.value) {
-    errorMessage.value = "Password cannot be empty.";
+    errorMessage.value = "Password cannot be empty";
     return
   }
 
@@ -162,6 +163,7 @@ const handleStepChange = (newStep) => {
     currentStep.value = newStep;
   }
 };
+
 </script>
 
 <style scoped>
@@ -299,4 +301,22 @@ button.arrow:hover {
   color: #1E2329;
 }
 
+.error-message {
+  color: #F63E3D;
+}
+
+pre {
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px #f8f8f8 inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #F8F8F8 inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
 </style>
