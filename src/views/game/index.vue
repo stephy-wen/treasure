@@ -12,6 +12,7 @@
           placeholder="Search"
           aria-label="game name"
           aria-describedby="button-addon2"
+          @keydown.enter="searchGames"
         />
         <button
           class="btn btn-outline-secondary search-game-btn"
