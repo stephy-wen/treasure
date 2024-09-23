@@ -138,11 +138,11 @@ const confirmParticipation = async () => {
       const res = await playGame(gameRoomId, attendVote.value);
       if (res.data.success) {
         // 投票成功後通知父組件刷新遊戲資料
-        emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
+        emit("refreshGameDetails");
       }
     } catch (error) {
       // 檢查遊戲，是否投票已滿
-      emit("refreshGameDetails"); // 觸發事件讓父組件重新加載遊戲資料
+      emit("refreshGameDetails");
       if (attendVote.value > voteResult.value) {
         ElMessage.error("超過總votes");
       } else if (error.response.data.message === "Vote is over quantity") {
