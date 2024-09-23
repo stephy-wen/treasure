@@ -49,43 +49,76 @@
                 <div class="circle-number active me-4">1</div>
                 <h5>Select Coin</h5>
               </div>
-              <div class="d-flex justify-content-center">
+              <div class="d-flex justify-content-center align-items-center">
                 <div class="vertical-line active d-none d-md-block me-5"></div>
-                  <!-- Element Plus 下拉选择框 -->
-                  <el-select
-                    v-model="params.supportCoin"
-                    size="large"
-                    placeholder="Select Coin"
-                    v-if="selectShow"
-                    class="d-flex align-items-center my-4 my-sm-0"
+                <div>
+                <!-- Element Plus 下拉选择框 -->
+                <el-select
+                  v-model="params.supportCoin"
+                  size="large"
+                  placeholder="Select Coin"
+                  v-if="selectShow"
+                  class="d-flex align-items-center my-4 my-sm-0 py-2"
+                >
+                  <template #prefix>
+                    <el-image 
+                    v-if="params.supportCoinImagePath"
+                    :src="params.supportCoinImagePath"
+                    style="width: 20px; height: 20px; margin-right: 5px;"
+                    ></el-image>
+                  </template>
+                  <el-option
+                    v-for="item in options.gameRewardHistoryData"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
                   >
-                    <template #prefix>
-                      <el-image 
-                      v-if="params.supportCoinImagePath"
-                      :src="params.supportCoinImagePath"
-                      style="width: 20px; height: 20px; margin-right: 5px;"
-                      ></el-image>
-                    </template>
-                    <el-option
-                      v-for="item in options.supportCoins"
-                      :key="item.value"
-                      :value="item.value"
-                      :label="item.label"
-                    >
-                      <template #default>
-                        <div class="option-content">
-                          <el-image
-                            :src="item.ImagePath"
-                            style="width: 20px; height: 20px; margin-right: 10px;"
-                          ></el-image>
-                          {{ item.label }}
-                        </div>
-                      </template>
-                    </el-option>
-                  </el-select>
+                    <template #default>
+                      <div class="option-content">
+                        <el-image
+                          :src="item.ImagePath"
+                          style="width: 20px; height: 20px; margin-right: 10px;"
+                        ></el-image>
+                        {{ item.label }}
                       </div>
-                    </div>
-                  </div>
+                    </template>
+                  </el-option>
+                </el-select>
+
+                <el-select
+                  size="large"
+                  placeholder="Select Coin"
+                  v-if="selectShow"
+                  class="d-flex align-items-center my-4 my-sm-0"
+                >
+                  <template #prefix>
+                    <el-image 
+                    v-if="params.supportCoinImagePath"
+                    :src="params.supportCoinImagePath"
+                    style="width: 20px; height: 20px; margin-right: 5px;"
+                    ></el-image>
+                  </template>
+                  <el-option
+                    v-for="item in rewardInfoOption"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
+                  >
+                    <template #default>
+                      <div class="option-content">
+                        <el-image
+                          :src="item.ImagePath"
+                          style="width: 20px; height: 20px; margin-right: 10px;"
+                        ></el-image>
+                        {{ item.label }}
+                      </div>
+                    </template>
+                  </el-option>
+                </el-select>
+              </div>
+              </div>
+            </div>
+          </div>
           <!-- Step 2 -->
           <div class="step-container step-two">
             <div>
@@ -172,10 +205,15 @@
                   <span class="input-group-text" id="withdrawUnit">{{params.serviceFeeSymbol}}</span>
                 </div>
 
-                <!-- <div class="col-7 col-sm-5 mt-3 ps-4" style="font-size: 14px;">
-                  <p>1 USD = 1 OCT</p>
-                  <span>Balance : </span><span class="d-inline">{{params.maxWithdrawAmount}}</span>
+                <!-- 帶入該局金額 -->
+                <!-- <div class="company-address mb-4" style="width: fit-content;">
+                  <p class="my-2 py-1 px-3">{{ params.address }}
+                    <font-awesome-icon
+                    icon="fa-solid fa-copy" class="d-inline ms-2"
+                    />
+                  </p>
                 </div> -->
+
               </div>
               <div class="d-flex">
                   <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
@@ -249,6 +287,7 @@ import TRXIcon from '@/assets/images/icon/TRX-account.svg';
 import DOGEIcon from '@/assets/images/icon/DOGE-account.svg';
 import SOLIcon from '@/assets/images/icon/SOL-account.svg';
 import XRPIcon from '@/assets/images/icon/XRP-account.svg';
+import dayjs from "dayjs";
 
 
 
@@ -270,6 +309,8 @@ const userInfo = reactive({});
 const options = reactive({
   supportCoins: [],
   supportNetworks: [],
+  gameRewardHistoryData: [], //存放遊戲獎勵紀錄
+  userRewards: [], // 存放玩家獎項
 })
 
 const iconMap = {
@@ -360,6 +401,18 @@ const getCryptocurrencySetting = async () => {
   }
 };
 
+// api - 發送驗證碼
+const postSendAuthCode = async (type) => {
+  try {
+    const response = await api.account.sendAuthCode(type);
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
 // 申請提出獎項 等等再寫
 const WithdrawReward = async () => {
   const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === params.supportCoin);
@@ -387,16 +440,48 @@ onMounted(async() => {
   Object.assign(userInfo, responseUserInfo.data);
   console.log('userInfo', userInfo);
 
-  if(cryptocurrencySetting) {
-    cryptocurrencySetting.data.reward.supportCoins.forEach((supportCoin) => {
-      options.supportCoins.push ({
-        ImagePath: iconMap[supportCoin.symbol] || '',
-        label: supportCoin.fullName,
-        value: supportCoin.fullName,
-        symbol: supportCoin.symbol,
+  // if(cryptocurrencySetting) {
+  //   cryptocurrencySetting.data.reward.supportCoins.forEach((supportCoin) => {
+  //     options.supportCoins.push ({
+  //       ImagePath: iconMap[supportCoin.symbol] || '',
+  //       label: supportCoin.fullName,
+  //       value: supportCoin.fullName,
+  //       symbol: supportCoin.symbol,
+  //     })
+  //   })
+  // }
+
+  console.log(responseUserInfo.data);
+
+  if(responseUserInfo) {
+    responseUserInfo.data.gameRewardHistoryData.forEach((gameReward) => {
+      options.gameRewardHistoryData.push ({
+        ImagePath: iconMap[gameReward.rewardSymbol] || '',
+        label: gameReward.rewardFullName,
+        value: gameReward.rewardId,
+        round: gameReward.round,
+        time: gameReward.time,
+        amount: gameReward.rewardAmount, 
+        symbol: gameReward.rewardSymbol,
+        network: gameReward.rewardNetwork,
+        fullName: gameReward.rewardFullName,
+        roomId: gameReward.gameRoomId,
+    
+
       })
     })
   }
+  
+  const formatDate = (isoDateString) =>
+  dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
+  
+  
+  const rewardInfoOption = options.gameRewardHistoryData.map((item) => ({
+    label: `Round: ${item.round}, ${formatDate(item.time)}, Amount: ${item.amount}`,
+    value:  item.roomId,
+  }))
+  console.log('id:', rewardInfoOption);
+  console.log('option:', options.gameRewardHistoryData);
 });
 
 const selectShow = ref(true);
