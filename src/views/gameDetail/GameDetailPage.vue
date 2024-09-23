@@ -84,52 +84,40 @@ const loadGameDetails = async () => {
   const gameId = route.params.gameId; // 獲取路由參數中的 gameId
   try {
     // 調用 API 獲取遊戲資料
-    const response = await getGameRoom(gameId);
-    if (response && response.data.data) {
-      votes.value = response.data.data.betQuantityTotal;
-      maxVotes.value = response.data.data.maxQuantity;
-      gid.value = response.data.data.gId;
-      gameDetails.value = response.data.data; // 更新遊戲資料
+    const [gameResponse, accountInfo] = await Promise.all([
+      await getGameRoom(gameId),
+      await getAccountInfo(
+        withGamePlayData,
+        withRewardData,
+        withRewardBalanceData
+      ),
+    ]);
+
+    if (gameResponse && gameResponse.data.data) {
+      const gameData = gameResponse.data.data;
+      votes.value = gameData.betQuantityTotal;
+      maxVotes.value = gameData.maxQuantity;
+      gid.value = gameData.gId;
+      gameDetails.value = gameData; // 更新遊戲資料
     } else {
       console.error("未獲取到有效的遊戲資料");
     }
-    const treasureSpot = await getTreasureSpot(); // 拿header新資料
-    userStore.updateTreasureSpot(treasureSpot);
-    const balance = await getBalanceInfo();
-    userStore.updateBalance(balance);
+
+    if (accountInfo && accountInfo.data.data) {
+      const accountData = accountInfo.data.data;
+
+      const treasureSpot = Array.isArray(accountData.playHistoryData)
+        ? accountData.playHistoryData
+        : [];
+      userStore.updateTreasureSpot(treasureSpot);
+
+      const balance = accountData.balanceData?.balance;
+      userStore.updateBalance(balance);
+    } else {
+      console.error("未獲取到有效的帳戶資料");
+    }
   } catch (error) {
     console.error("獲取遊戲資料時發生錯誤：", error);
-  }
-};
-
-const getTreasureSpot = async () => {
-  try {
-    const res = await getAccountInfo(
-      withGamePlayData,
-      withRewardData,
-      withRewardBalanceData
-    );
-    // 確保 playHistoryData 是一個數組，防止空數據
-    return Array.isArray(res.data.data.playHistoryData)
-      ? res.data.data.playHistoryData
-      : [];
-  } catch (error) {
-    console.error("獲取 Treasure Spot 資料失敗", error);
-    return []; // 如果出錯，返回一個空數組
-  }
-};
-
-const getBalanceInfo = async () => {
-  try {
-    const res = await getAccountInfo(
-      withGamePlayData,
-      withRewardData,
-      withRewardBalanceData
-    );
-    return res.data.data.balanceData.balance;
-  } catch (error) {
-    console.error("獲取 balanceData 資料失敗", error);
-    return []; // 如果出錯，返回一個空數組
   }
 };
 
