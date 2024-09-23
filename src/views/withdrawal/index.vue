@@ -221,7 +221,7 @@
                 <h5>Withdrawl Amount</h5>
               </div>
               <div
-                v-if="params.selectNetwork && params.withdrawAddress"
+                v-if="stepThreeVisible"
                 class="d-flex align-items-center flex-column flex-md-row"
               >
                 <div
@@ -248,10 +248,7 @@
                   }}</span>
                 </div>
               </div>
-              <div
-                v-if="params.selectNetwork && params.withdrawAddress"
-                class="d-flex"
-              >
+              <div v-if="stepThreeVisible" class="d-flex">
                 <div
                   class="vertical-line me-5 d-none d-md-block"
                   style="background-color: transparent"
@@ -374,6 +371,19 @@ const params = reactive({
   serviceFee: "",
   serviceFeeSymbol: "",
 });
+
+const stepThreeVisible = ref(false); // 控制第三步是否顯示
+
+// 當選擇的網路和地址變化時，檢查是否顯示第三步驟
+watch(
+  [() => params.selectNetwork, () => params.withdrawAddress],
+  ([newSelectNetwork, newWithdrawAddress]) => {
+    if (newSelectNetwork && newWithdrawAddress) {
+      // 如果用戶輸入了地址並選擇了網路，顯示第三步驟
+      stepThreeVisible.value = true;
+    }
+  }
+);
 
 const userInfo = reactive({});
 // 監聽異動&圖片更換及網路更新
