@@ -12,6 +12,17 @@ import TRXAccountIcon from "@/assets/images/icon/TRX-account.svg";
 import BTCAccountIcon from "@/assets/images/icon/BTC-account.svg";
 import DOGEAccountIcon from "@/assets/images/icon/DOGE-account.svg";
 import SOLAccountIcon from "@/assets/images/icon/SOL-account.svg";
+import AAVAccountIcon from "@/assets/images/icon/AAVE-account.svg";
+import ADAAccountIcon from "@/assets/images/icon/ADA-account.svg";
+import DOGSAccountIcon from "@/assets/images/icon/DOGS-account.svg";
+import LINKAccountIcon from "@/assets/images/icon/LINK-account.svg";
+import NEARAccountIcon from "@/assets/images/icon/NEAR-account.svg";
+import PEPEAccountIcon from "@/assets/images/icon/PEPE-account.svg";
+import SHIBAccountIcon from "@/assets/images/icon/SHIB-account.svg";
+import SUIAccountIcon from "@/assets/images/icon/SUI-account.svg";
+import TONAccountIcon from "@/assets/images/icon/TON-account.svg";
+import WIFAccountIcon from "@/assets/images/icon/WIF-account.svg";
+
 import USDTIcon from "@/assets/images/icon/USDT.svg";
 import USDCIcon from "@/assets/images/icon/USDC.svg";
 
@@ -48,6 +59,16 @@ export const images = {
   SOLAccountIcon,
   USDTIcon,
   USDCIcon,
+  AAVAccountIcon,
+  ADAAccountIcon,
+  DOGSAccountIcon,
+  LINKAccountIcon,
+  NEARAccountIcon,
+  PEPEAccountIcon,
+  SHIBAccountIcon,
+  SUIAccountIcon,
+  TONAccountIcon,
+  WIFAccountIcon,
 };
 
 // 用來根據 rewardSymbol 獲取對應圖標的函數
@@ -62,7 +83,16 @@ export const getCurrencyIcon = (symbol) => {
     SOL: images.SOLAccountIcon,
     USDT: images.USDTIcon,
     USDC: images.USDCIcon,
-    // 添加其他貨幣的映射
+    AAV: images.AAVAccountIcon,
+    ADA: images.ADAAccountIcon,
+    DOGS: images.DOGSAccountIcon,
+    LINK: images.LINKAccountIcon,
+    NEAR: images.NEARAccountIcon,
+    PEPE: images.PEPEAccountIcon,
+    SHIB: images.SHIBAccountIcon,
+    SUI: images.SUIAccountIcon,
+    TON: images.TONAccountIcon,
+    WIF: images.WIFAccountIcon,
   };
   return icons[symbol]; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
   //return icons[symbol] || images.defaultIcon; // 如果沒有對應的貨幣圖標，使用一個默認的圖標
