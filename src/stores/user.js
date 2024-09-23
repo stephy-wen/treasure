@@ -66,8 +66,12 @@ export const useUserStore = defineStore("user", () => {
     // value can update value, obj must replace all
     userInfo.value = {
       ...userInfo.value,
-      playHistoryData: newPlayHistoryData, // 更新 playHistoryData
+      playHistoryData: newPlayHistoryData,
     };
+  };
+
+  const updateBalance = (newBalance) => {
+    userInfo.value.balanceData.balance = newBalance;
   };
 
   // 定義actions，登出
@@ -89,5 +93,6 @@ export const useUserStore = defineStore("user", () => {
     updateNickname,
     updateAvatar,
     updateTreasureSpot,
+    updateBalance,
   };
 });

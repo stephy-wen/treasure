@@ -93,9 +93,10 @@ const loadGameDetails = async () => {
     } else {
       console.error("未獲取到有效的遊戲資料");
     }
-    const headerData = await getTreasureSpot(); // 拿header新資料
-    console.log(headerData, "headerData");
-    userStore.updateTreasureSpot(headerData);
+    const treasureSpot = await getTreasureSpot(); // 拿header新資料
+    userStore.updateTreasureSpot(treasureSpot);
+    const balance = await getBalanceInfo();
+    userStore.updateBalance(balance);
   } catch (error) {
     console.error("獲取遊戲資料時發生錯誤：", error);
   }
@@ -114,6 +115,20 @@ const getTreasureSpot = async () => {
       : [];
   } catch (error) {
     console.error("獲取 Treasure Spot 資料失敗", error);
+    return []; // 如果出錯，返回一個空數組
+  }
+};
+
+const getBalanceInfo = async () => {
+  try {
+    const res = await getAccountInfo(
+      withGamePlayData,
+      withRewardData,
+      withRewardBalanceData
+    );
+    return res.data.data.balanceData.balance;
+  } catch (error) {
+    console.error("獲取 balanceData 資料失敗", error);
     return []; // 如果出錯，返回一個空數組
   }
 };
@@ -141,7 +156,6 @@ const fetchPageData = async (pageIndex) => {
 
     if (response && response.data.data) {
       currentItems.value = formatHistoryData(response.data.data.items); // 該頁資料的整理
-      console.log(currentItems.value, "");
       totalItems.value = response.data.data.total; // 總筆數
     } else {
       console.error("未獲取到有效的歷史資料");
