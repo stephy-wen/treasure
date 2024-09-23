@@ -83,16 +83,13 @@ const handleResize = () => {
 const loadGameDetails = async () => {
   const gameId = route.params.gameId; // 獲取路由參數中的 gameId
   try {
-    // 調用 API 獲取遊戲資料
+    // 並行調用 API
     const [gameResponse, accountInfo] = await Promise.all([
-      await getGameRoom(gameId),
-      await getAccountInfo(
-        withGamePlayData,
-        withRewardData,
-        withRewardBalanceData
-      ),
+      getGameRoom(gameId),
+      getAccountInfo(withGamePlayData, withRewardData, withRewardBalanceData),
     ]);
 
+    // 確保 API 返回了有效的遊戲數據
     if (gameResponse && gameResponse.data.data) {
       const gameData = gameResponse.data.data;
       votes.value = gameData.betQuantityTotal;
@@ -103,21 +100,24 @@ const loadGameDetails = async () => {
       console.error("未獲取到有效的遊戲資料");
     }
 
+    // 處理 accountInfo 資料，更新寶藏點與餘額
     if (accountInfo && accountInfo.data.data) {
       const accountData = accountInfo.data.data;
 
+      // 確保 playHistoryData 是數組，並更新 store
       const treasureSpot = Array.isArray(accountData.playHistoryData)
         ? accountData.playHistoryData
         : [];
       userStore.updateTreasureSpot(treasureSpot);
 
-      const balance = accountData.balanceData?.balance;
+      // 確保 balanceData 存在並更新 store
+      const balance = accountData.balanceData?.balance || 0;
       userStore.updateBalance(balance);
     } else {
       console.error("未獲取到有效的帳戶資料");
     }
   } catch (error) {
-    console.error("獲取遊戲資料時發生錯誤：", error);
+    console.error("獲取資料時發生錯誤：", error);
   }
 };
 
