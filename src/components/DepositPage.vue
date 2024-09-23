@@ -51,12 +51,15 @@
     <div class="step-container">
       <div>
         <div class="step-title">
-          <div class="circle-number me-4">2</div>
+          <div class="circle-number me-4" :class="{ active: params.supportCoin }">2</div>
           <h5>Select Network</h5>
         </div>
         <div class="d-flex align-items-center justify-content-center">
-          <div class="vertical-line me-5 d-none d-sm-block"></div>
-          <div class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0">
+          <div class="vertical-line me-5 d-none d-sm-block" :class="{ active: params.supportCoin }"></div>
+          <div 
+              class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
+              :style="{ visibility: params.supportCoin ? 'visible' : 'hidden' }"
+          >
             <el-select
               v-model="params.selectNetwork"
               size="large"
@@ -93,10 +96,10 @@
     <div class="step-container">
       <div>
         <div class="step-title">
-          <div class="circle-number me-4">3</div>
+          <div class="circle-number me-4" :class="{ active: params.selectNetwork }">3</div>
           <h5>Deposit Address</h5>
         </div>
-        <div class="d-flex align-items-center flex-column flex-md-row">
+        <div v-if="params.selectNetwork" class="d-flex align-items-center flex-column flex-md-row">
           <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
           <div class="mt-3">
             <!-- <img v-if="!apiIsLoading" class="qrcode-pic" src="@/assets/images/common/qrcode-test.png" alt=""> -->
@@ -124,7 +127,7 @@
             </p>
           </div>
         </div>
-        <div class="d-none d-md-flex align-items-center">
+        <div v-if="params.selectNetwork" class="d-none d-md-flex align-items-center">
           <div class="vertical-line me-5" style="background-color: transparent;"></div>
           <div class="deposit-notice-bk-color p-2 d-md-flex justify-content-between deposit-notice-bottom d-none">
             <p><i class="fa-solid fa-circle-exclamation me-2 winnie-text-white"></i></p>
