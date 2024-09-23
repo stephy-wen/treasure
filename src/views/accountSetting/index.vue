@@ -69,6 +69,7 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 
 import AvatarChange from "./components/AvatarChange.vue";
 import NickNameChange from "./components/NickNameChange.vue";
@@ -94,7 +95,7 @@ const copyUserId = async () => {
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
-      message: "User ID 已成功複製到剪貼板！",
+      message: "User ID 已成功複製！",
       type: "success",
     });
   } catch (error) {
