@@ -122,6 +122,7 @@ const asset = {
   getCryptocurrencySetting: () => apiClient.get("/Asset/CryptocurrencySetting"), // 取得出入金網路、幣種及金額設定
   withdrawApply: (formData) => apiClient.post("/Asset/WithdrawApply", formData), // 出金申請
   getAddress: (formData) => apiClient.post("/Asset/GetAddress", formData), // 取得地址
+  WithdrawReward: (formData) => apiClient.post("/Asset/WithdrawReward", formData), // 提出獎項
 };
 
 // 統一導出模組

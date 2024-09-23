@@ -1,32 +1,41 @@
 <template>
   <div class="app-container">
-    <div class="container tabs mt-5 px-3 px-lg-0">
+    <div class="container winnie-deposit tabs mt-5 px-3 px-lg-0">
       <div class="d-flex justify-content-center align-items-center">
         <div class="p-2 text-center">
-          <a href="deposit">
-            <button class="d-md-none mb-2" onclick="window.location.href='deposit';">
-              <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
+            <router-link to="/account/deposit">
+            <button class="d-md-none mb-2">
+                <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
             </button>
             <p class="fw-bold">Deposit</p>
-          </a>
+            </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">
-          <a href="withdrawal">
-            <button class="d-md-none mb-2" onclick="window.location.href='withdrawal';">
-              <img src="@/assets/images/icon/iconPark-arrow-down 1.svg" alt="">
+            <router-link to="/account/withdrawal">
+            <button class="d-md-none mb-2">
+                <img src="@/assets/images/icon/iconPark-arrow-down 1.svg" alt="">
             </button>
             <p class="fw-bold">Withdraw</p>
-        </a>
+            </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">
-          <a href="../dashboard">
-            <button class="d-md-none mb-2" onclick="window.location.href='../dashboard';">
-              <img src="@/assets/images/icon/antOutline-history 1.svg" alt="">
+            <router-link to="/account/reward">
+            <button class="d-md-none mb-2">
+                <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
+            </button>
+            <p class="fw-bold">Reward</p>
+            </router-link>
+        </div>
+        <div class="divider align-items-center d-none d-md-inline"></div>
+        <div class="p-2 text-center">
+            <router-link to="/dashboard">
+            <button class="d-md-none mb-2">
+                <img src="@/assets/images/icon/antOutline-history 1.svg" alt="">
             </button>
             <p class="fw-bold">History</p>
-          </a>
+            </router-link>
         </div>
       </div>
     </div> 

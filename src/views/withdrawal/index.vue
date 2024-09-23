@@ -24,6 +24,15 @@
             </div>
             <div class="divider align-items-center d-none d-md-inline"></div>
             <div class="p-2 text-center">
+              <router-link to="/account/reward">
+                <button class="d-md-none mb-2">
+                  <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
+                </button>
+                <p class="fw-bold">Reward</p>
+              </router-link>
+            </div>
+            <div class="divider align-items-center d-none d-md-inline"></div>
+            <div class="p-2 text-center">
               <router-link to="/dashboard">
                 <button class="d-md-none mb-2">
                   <img src="@/assets/images/icon/antOutline-history 1.svg" alt="">
@@ -82,12 +91,14 @@
           <div class="step-container step-two">
             <div>
               <div class="step-title">
-                <div class="circle-number me-4">2</div>
+                <div class="circle-number me-4" :class="{ active: params.supportCoin }">2</div>
                 <h5>Withdraw to</h5>
               </div>
               <div class="d-flex align-items-center justify-content-center mb-3 mb-md-0">
-                <div class="vertical-line me-5 d-none d-md-block"></div>
-                <div class="mt-3 mt-md-0 winnie-width-xs-100">
+                <div class="vertical-line me-5 d-none d-md-block" :class="{ active: params.supportCoin }"></div>
+                <div class="mt-3 mt-md-0 winnie-width-xs-100"
+                :style="{ visibility: params.supportCoin ? 'visible' : 'hidden' }"
+                >
                   <!-- 提款地址輸入 -->
                   <el-input
                   v-model="params.withdrawAddress"
@@ -105,7 +116,7 @@
                       placeholder="Select Network"
                       v-if="selectShow"
                     >
-                                        <!-- 提醒 -->
+                  <!-- 提醒 -->
                     <div class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between">
                       <p><i class="fa-solid fa-circle-exclamation me-2 winnie-text-white"></i></p>
                       <p class="text-start deposit-notice-color" style="font-size: 12px;">
@@ -144,32 +155,29 @@
           <div class="step-container step-three">
             <div>
               <div class="step-title">
-                <div class="circle-number me-4">3</div>
+                <div class="circle-number me-4" :class="{ active: params.selectNetwork && params.withdrawAddress }">3</div>
                 <h5>Withdrawl Amount</h5>
               </div>
-              <div class="d-flex align-items-center flex-column flex-md-row">
+              <div v-if="params.selectNetwork && params.withdrawAddress" class="d-flex align-items-center flex-column flex-md-row">
                 <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent; height: 100px;"></div>
                 <div class="input-group my-3 col-12 col-sm-7">
                   <el-input 
                   type="number" 
                   id="inputWithdrawAmount"
-                  class="form-control amount-input" 
+                  size="large"
+                  class="form-control amount-input no-spin-button" 
                   placeholder="Minimum 20 USD" 
                   v-model="params.withdrawAmount" 
                   aria-label="withdraw amount" 
                   aria-describedby="amount"
                   @blur="validateWithdrawAmountOnBlur"
                   />
-                  <button class="max-btn" @click="setMaxWithdrawAmount">MAX</button>
+                  <button class="btn max-btn" @click="setMaxWithdrawAmount">MAX</button>
                   <span class="input-group-text" id="withdrawUnit">{{params.serviceFeeSymbol}}</span>
                 </div>
-
-                <!-- <div class="col-7 col-sm-5 mt-3 ps-4" style="font-size: 14px;">
-                  <p>1 USD = 1 OCT</p>
-                  <span>Balance : </span><span class="d-inline">{{params.maxWithdrawAmount}}</span>
-                </div> -->
+                
               </div>
-              <div class="d-flex">
+              <div v-if="params.selectNetwork && params.withdrawAddress" class="d-flex">
                   <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
                   <div class="info-section">
                       <div class="info-row mb-1 mb-md-2">
@@ -239,6 +247,7 @@ import { ref, onMounted, reactive, watch } from 'vue';
 // 下拉式測試 start
 import USDCicon from '@/assets/images/icon/USDC-account.svg';
 import USDTicon from '@/assets/images/icon/USDT-account.svg';
+
 
 // 輸入內容
 const params = reactive({
@@ -409,25 +418,6 @@ onMounted(async() => {
   }
 })
 
-// // 根据选择的币种更新网络选项
-// const updateNetworks = (coin) => {
-//   // 假设网络数据在 cryptocurrencySetting 数据中
-//   const cryptocurrencySetting = getCryptocurrencySetting();
-
-//   if (cryptocurrencySetting) {
-//     const selectedCoin = cryptocurrencySetting.data.withdraw.supportCoins.find((supportCoin) => supportCoin.fullName === coin);
-//     if (selectedCoin) {
-//       options.supportNetworks = selectedCoin.networks.map((supportNetwork) => ({
-//         label: `${supportNetwork.network} (${supportNetwork.protocol})`,
-//         value: supportNetwork.network,
-//         fullName: supportNetwork.networkFullName,
-//         confirmMins: supportNetwork.confirmMins,
-//         transactionConfirm: supportNetwork.transactionConfirm,
-//       }));
-//     }
-//   }
-// };
-
 const selectShow = ref(true);
 
 // 下拉式測試 end
@@ -566,18 +556,39 @@ function verifyCodeWithAPI(code) {
     text-align: end;
 }
 
-.step-one .form-control:focus{
+.step-one .form-control:focus {
     border-bottom: 1px solid #F8F8F8;
     background-color: transparent;
 }
 
+.btn {
+  --bs-btn-border-color: none;
+}
+
 .max-btn {
-    border: 1px solid #F8F8F8;
+    border-top: 1px solid #6c757d;
+    border-bottom: 1px solid #6c757d;
     background-color: transparent;
     border-radius: 0px;
     color: #F8F8F8;
     padding: 1px 6px;
 }
+
+.max-btn:hover,
+.max-btn:focus,
+.max-btn:active {
+  color: #FCD535;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  border-top: 1px solid #6c757d;
+  border-bottom: 1px solid #6c757d;
+}
+
+.max-btn:focus {
+  color: #F8F8F8;
+}
+
 
 .step-two .form-control {
     background-color: transparent;
@@ -1022,4 +1033,26 @@ width: 160px;
   line-height:30px;
 }
 
+.no-spin-button::-webkit-outer-spin-button,
+.no-spin-button::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spin-button input[type="number"]::-webkit-outer-spin-button,
+.no-spin-button input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-number {
+  -webkit-appearance: textfield;
+}
+.no-number input[type="number"]{
+  -webkit-appearance: textfield;
+}
+
+.el-input__inner {
+  color: #F8F8f8;
+}
 </style>
