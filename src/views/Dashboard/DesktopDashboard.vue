@@ -348,7 +348,7 @@ const copyUserId = async () => {
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
-      message: "User ID 已成功複製到剪貼板！",
+      message: "User ID 已成功複製！",
       type: "success",
     });
   } catch (error) {
