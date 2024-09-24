@@ -328,6 +328,12 @@
                               autofocus
                             />
                           </div>
+                            <!-- 錯誤訊息開始 -->
+                            <p v-if="errorMessage" class="error-message d-flex">
+                              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
+                              <pre>{{ errorMessage }}</pre>
+                            </p>
+                            <!-- 錯誤訊息結束 -->
                         </div>
                         <div class="modal-footer px-5">
                           <button
@@ -339,6 +345,9 @@
                             Confirm
                           </button>
                         </div>
+
+                      
+
                       </div>
                     </div>
                   </div>
@@ -358,6 +367,7 @@ import { ref, onMounted, reactive, watch } from "vue";
 // 下拉式測試 start
 import USDCicon from "@/assets/images/icon/USDC-account.svg";
 import USDTicon from "@/assets/images/icon/USDT-account.svg";
+import { handleApiError } from "@/utils/errorHandler.js";
 
 // 輸入內容
 const params = reactive({
@@ -371,6 +381,8 @@ const params = reactive({
   serviceFee: "",
   serviceFeeSymbol: "",
 });
+
+const errorMessage = ref("");
 
 const stepThreeVisible = ref(false); // 控制第三步是否顯示
 
@@ -401,7 +413,6 @@ watch(
 
       try {
         const networkSetting = await getCryptocurrencySetting(newValue);
-        console.log("NetworkSetting data:", networkSetting);
 
         // 检查 networkSetting.data 是否存在，并从 withdraw 部分获取数据
         if (networkSetting) {
@@ -435,12 +446,9 @@ watch(
       const selectNetwork = options.supportNetworks.find(
         (network) => network.value === newSelectNetwork
       );
-      console.log("Selected Network:", selectNetwork);
       if (selectNetwork) {
         params.serviceFee = selectNetwork?.supportSymbols[0]?.withdrawalFee;
         params.serviceFeeSymbol = selectNetwork?.supportSymbols[0]?.symbol;
-
-        console.log("params.serviceFee", params.serviceFee);
       } else {
         params.serviceFee = "N/A";
         console.error("Selected network not found:", newValue);
@@ -462,8 +470,6 @@ const validateWithdrawAmountOnBlur = () => {
 const getAccountInfo = async () => {
   try {
     const response = await api.userInfo.getAccountInfo();
-    console.log("AccountInfo get successfully:", response);
-
     return response.data;
   } catch (error) {
     console.error("Failed to get CryptocurrencySetting:", error);
@@ -478,8 +484,6 @@ const setMaxWithdrawAmount = () => {
 const getCryptocurrencySetting = async () => {
   try {
     const response = await api.asset.getCryptocurrencySetting();
-    console.log("CryptocurrencySetting get successfully:", response);
-
     return response.data;
   } catch (error) {
     console.error("Failed to get CryptocurrencySetting:", error);
@@ -490,7 +494,7 @@ const getCryptocurrencySetting = async () => {
 const postSendAuthCode = async (type) => {
   try {
     const response = await api.account.sendAuthCode(type);
-    console.log("CryptocurrencySetting get successfully:", response);
+    console.log("驗證信", response);
 
     return response.data;
   } catch (error) {
@@ -531,8 +535,8 @@ const withdrawApply = async () => {
   }
 };
 
+const type = "WithdrawApply";
 const checkFormDataAndSendEmail = async () => {
-  const type = "WithdrawApply";
   await postSendAuthCode(type);
 };
 onMounted(async () => {
@@ -566,6 +570,14 @@ function handleInput(index) {
   if (codes.value[index].length === 1 && index < codes.value.length - 1) {
     inputRefs.value[index + 1].focus();
   }
+
+  // 檢查是否所有欄位都已輸入完畢，然後調用 verifyCode
+  if (index === codes.value.length - 1) {
+    const allFilled = codes.value.every((code) => code.length === 1);
+    if (allFilled) {
+      verifyCode(); // 當輸入到最後一格，並且所有格子都有輸入時調用驗證函數
+    }
+  }
 }
 
 // 當用戶按下 backspace 鍵時，自動退回到前一格
@@ -578,16 +590,26 @@ function handleBackspace(index) {
 // 拼接六個輸入的值，並驗證
 function verifyCode() {
   const fullCode = codes.value.join("");
-  console.log("Full code:", fullCode);
+  console.log("Full code組合驗證碼為:", fullCode);
 
-  // 模擬 API 驗證請求
   verifyCodeWithAPI(fullCode);
 }
 
-function verifyCodeWithAPI(code) {
-  console.log(`正在驗證 ${code}`);
-  // 這裡進行 API 請求來驗證驗證碼是否正確
-}
+const email = ref("winnielin0527a@gmail.com");
+
+const verifyCodeWithAPI = async (code, type) => {
+  try {
+    const response = await api.account.checkVerificationCode(
+      type,
+      email.value,
+      code
+    );
+    console.log(response, "驗證成功");
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = handleApiError(error);
+  }
+};
 </script>
 
 <style scoped>
