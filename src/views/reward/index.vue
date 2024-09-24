@@ -106,7 +106,12 @@
                     size="large"
                     placeholder="Select Reward Info"
                     class="d-flex align-items-center my-4 my-sm-0"
-                    @change="handleStepOneComplete"
+                    @change="
+                      () => {
+                        handleStepOneComplete();
+                        updateRewardDetailsForStepThree();
+                      }
+                    "
                   >
                     <el-option
                       v-for="reward in filteredRewards"
@@ -152,6 +157,7 @@
                     placeholder="Enter your address"
                     size="large"
                     clearable
+                    @input="handleStepTwoComplete"
                   />
                   <!-- 選擇網路 -->
                   <div
@@ -161,6 +167,7 @@
                       v-model="selectedNetwork"
                       size="large"
                       placeholder="Network"
+                      readonly
                       :disabled="true"
                     >
                       <!-- 提醒 -->
@@ -209,6 +216,127 @@
               </div>
             </div>
           </div>
+
+          <!-- Step 3 -->
+          <div v-if="stepTwoComplete" class="step-container step-three">
+            <div>
+              <div class="step-title">
+                <div class="circle-number me-4">3</div>
+                <h5>Withdrawl Amount</h5>
+              </div>
+              <div class="d-flex align-items-center flex-column flex-md-row">
+                <div
+                  class="vertical-line me-5 d-none d-md-block"
+                  style="background-color: transparent; height: 100px"
+                ></div>
+                <div class="input-group my-3 col-12 col-sm-7">
+                  <el-input
+                    type="number"
+                    class="form-control amount-input"
+                    v-model="amount"
+                    :disabled="true"
+                  />
+                  <span class="input-group-text" id="withdrawUnit">{{
+                    serviceFeeSymbol
+                  }}</span>
+                </div>
+              </div>
+              <div class="d-flex">
+                <div
+                  class="vertical-line me-5 d-none d-md-block"
+                  style="background-color: transparent"
+                ></div>
+                <div class="info-section">
+                  <div class="info-row mb-1 mb-md-2">
+                    <span>Available Withdrawal Balance</span>
+                    <span class="d-none d-md-inline"
+                      >{{ amount }} {{ serviceFeeSymbol }}</span
+                    >
+                  </div>
+                  <div class="info-row mb-1 mb-md-2">
+                    <span>Service fee</span>
+                    <span class="d-none d-md-inline"
+                      >{{ serviceFee }} {{ serviceFeeSymbol }}</span
+                    >
+                  </div>
+                  <span class="d-inline d-md-none"
+                    >{{ serviceFee }} {{ serviceFeeSymbol }}</span
+                  >
+                  <!-- withdrawModal -->
+                  <div
+                    class="info-row justify-content-center justify-content-sm-end mt-4 winnie-width-xs-100"
+                  >
+                    <button
+                      class="withdraw-btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#withdrawModal"
+                      @click="checkFormDataAndSendEmail"
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                  <div
+                    class="modal fade"
+                    id="withdrawModal"
+                    tabindex="-1"
+                    aria-labelledby="withdrawModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div
+                          class="modal-header d-flex justify-content-between"
+                        >
+                          <h5 class="modal-title" id="withdrawModalLabel"></h5>
+                          <button
+                            type="button"
+                            class="btn winnie-btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <font-awesome-icon icon="fa-solid fa-xmark" />
+                          </button>
+                        </div>
+                        <div class="modal-body px-5">
+                          <p class="fs-2 fw-bold">Email Verification</p>
+                          <br />
+                          <p class="winnie-text-gray">
+                            We've sent a code to your email. Please enter it
+                            within 30 minutes.
+                          </p>
+                          <br />
+                          <div class="d-flex justify-content-center">
+                            <input
+                              v-for="(code, index) in codes"
+                              :key="index"
+                              ref="inputRefs"
+                              type="text"
+                              class="form-control text-center mx-1 code-input"
+                              maxlength="1"
+                              v-model="codes[index]"
+                              @input="handleInput(index)"
+                              @keydown.backspace="handleBackspace(index)"
+                              autofocus
+                            />
+                          </div>
+                        </div>
+                        <div class="modal-footer px-5">
+                          <button
+                            id="withdrawConfirmButton"
+                            type="button"
+                            class="btn btn-primary w-100 mb-3 mt-3"
+                            @click="withdrawApply"
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -235,19 +363,34 @@ const stepOneComplete = ref(false); // 控制 Step 2 顯示
 const stepTwoComplete = ref(false); // 控制 Step 3 顯示
 const rewardAddress = ref(""); // 用來提款地址
 
+const amount = ref(200);
+const serviceFeeSymbol = ref(0); // 貨幣單位
+const serviceFee = ref(10);
+
 // 取得個人得獎紀錄
 const getUserInfo = async () => {
   try {
     const res = await api.userInfo.getAccountInfo();
     gameRewardHistoryData.value = res.data.data.gameRewardHistoryData;
+    console.log(gameRewardHistoryData.value, "data");
   } catch (error) {
     console.error("獲取歷史時發生錯誤：", error);
   }
 };
 
-// 當選擇幣種改變時
+// 當選擇幣種改變時 變更圖片
 const handleCoinChange = (coin) => {
   selectedCoinImagePath.value = getCurrencyIcon(coin);
+
+  // 找到選中的貨幣資料
+  const selectedCoinData = gameRewardHistoryData.value.find(
+    (reward) => reward.rewardSymbol === coin
+  );
+
+  // // 第三步驟 更新貨幣單位 (serviceFeeSymbol)
+  if (selectedCoinData) {
+    serviceFeeSymbol.value = selectedCoinData.rewardSymbol; // 更新貨幣單位
+  }
 };
 
 // 幣種選單
@@ -274,9 +417,22 @@ const selectedCoinNetworks = computed(() => {
   const selectedCoinData = gameRewardHistoryData.value.find(
     (reward) => reward.rewardSymbol === selectedCoin.value
   );
+  // 第二步驟 網路
   selectedNetwork.value = selectedCoinData?.rewardNetwork;
+
   return selectedCoinData ? [selectedCoinData.rewardNetwork] : []; // 返回該幣種的網路
 });
+
+// 第三步驟 獎勵金額
+const updateRewardDetailsForStepThree = () => {
+  const selectedReward = gameRewardHistoryData.value.find(
+    (reward) => reward.rewardId === selectedRewardInfo.value
+  );
+
+  if (selectedReward) {
+    amount.value = selectedReward.rewardAmount; // 更新獎勵金額
+  }
+};
 
 // 日期格式化
 const formatDate = (isoDateString) => dayjs(isoDateString).format("YYYY/MM/DD");
@@ -290,7 +446,7 @@ const handleStepOneComplete = () => {
 
 // Step 2 完成：當填寫提款地址時顯示 Step 3
 const handleStepTwoComplete = () => {
-  if (!stepTwoComplete.value && params.value.withdrawAddress) {
+  if (!stepTwoComplete.value && rewardAddress.value) {
     stepTwoComplete.value = true; // 一旦設置為 true，保持顯示 Step 3
   }
 };
