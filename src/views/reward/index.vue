@@ -49,43 +49,66 @@
                 <div class="circle-number active me-4">1</div>
                 <h5>Select Coin</h5>
               </div>
-              <div class="d-flex justify-content-center">
+              <div class="d-flex justify-content-center align-items-center">
                 <div class="vertical-line active d-none d-md-block me-5"></div>
-                  <!-- Element Plus 下拉选择框 -->
-                  <el-select
-                    v-model="params.supportCoin"
-                    size="large"
-                    placeholder="Select Coin"
-                    v-if="selectShow"
-                    class="d-flex align-items-center my-4 my-sm-0"
+                <div>
+                <!-- Element Plus 下拉选择框 -->
+                <el-select
+                  v-model="params.supportCoin"
+                  size="large"
+                  placeholder="Select Coin"
+                  v-if="selectShow"
+                  class="d-flex align-items-center my-4 my-sm-0 py-2"
+                >
+                  <template #prefix>
+                    <el-image 
+                    v-if="params.supportCoinImagePath"
+                    :src="params.supportCoinImagePath"
+                    style="width: 20px; height: 20px; margin-right: 5px;"
+                    ></el-image>
+                  </template>
+                  <el-option
+                    v-for="item in options.uniqueRewardCoinType"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
                   >
-                    <template #prefix>
-                      <el-image 
-                      v-if="params.supportCoinImagePath"
-                      :src="params.supportCoinImagePath"
-                      style="width: 20px; height: 20px; margin-right: 5px;"
-                      ></el-image>
-                    </template>
-                    <el-option
-                      v-for="item in options.supportCoins"
-                      :key="item.value"
-                      :value="item.value"
-                      :label="item.label"
-                    >
-                      <template #default>
-                        <div class="option-content">
-                          <el-image
-                            :src="item.ImagePath"
-                            style="width: 20px; height: 20px; margin-right: 10px;"
-                          ></el-image>
-                          {{ item.label }}
-                        </div>
-                      </template>
-                    </el-option>
-                  </el-select>
+                    <template #default>
+                      <div class="option-content">
+                        <el-image
+                          :src="item.ImagePath"
+                          style="width: 20px; height: 20px; margin-right: 10px;"
+                        ></el-image>
+                        {{ item.label }}
                       </div>
-                    </div>
-                  </div>
+                    </template>
+                  </el-option>
+                </el-select>
+
+                <el-select
+                  v-model="params.selectedRewardInfo"
+                  size="large"
+                  placeholder="Select Reward Info"
+                  v-if="selectShow"
+                  class="d-flex align-items-center my-4 my-sm-0"
+                >
+                  <el-option
+                    v-for="reward in options.rewardInfoFilterByCoin"
+                    :key="reward.time"
+                    :value="reward.rewardId"
+                    :label="`${reward.round} - ${reward.amount} - ${reward.time}`"
+                  >
+                    <template #default>
+                      <div class="option-content">
+                        <span>{{ reward.round }} - {{ reward.amount }} - {{ reward.time }}</span>
+                      </div>
+                    </template>
+                  </el-option>
+                </el-select>
+              </div>
+              </div>
+            </div>
+          </div>
           <!-- Step 2 -->
           <div class="step-container step-two">
             <div>
@@ -112,6 +135,7 @@
                       size="large"
                       placeholder="Select Network"
                       v-if="selectShow"
+                      :disabled="true"
                     >
                     <!-- 提醒 -->
                     <div class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between">
@@ -163,7 +187,7 @@
                   id="inputWithdrawAmount"
                   class="form-control amount-input" 
                   placeholder="Minimum 20 USD" 
-                  v-model="params.withdrawAmount" 
+                  v-model="params.amount" 
                   aria-label="withdraw amount" 
                   aria-describedby="amount"
                   @blur="validateWithdrawAmountOnBlur"
@@ -172,17 +196,22 @@
                   <span class="input-group-text" id="withdrawUnit">{{params.serviceFeeSymbol}}</span>
                 </div>
 
-                <!-- <div class="col-7 col-sm-5 mt-3 ps-4" style="font-size: 14px;">
-                  <p>1 USD = 1 OCT</p>
-                  <span>Balance : </span><span class="d-inline">{{params.maxWithdrawAmount}}</span>
+                <!-- 帶入該局金額 -->
+                <!-- <div class="company-address mb-4" style="width: fit-content;">
+                  <p class="my-2 py-1 px-3">{{ params.address }}
+                    <font-awesome-icon
+                    icon="fa-solid fa-copy" class="d-inline ms-2"
+                    />
+                  </p>
                 </div> -->
+
               </div>
               <div class="d-flex">
                   <div class="vertical-line me-5 d-none d-md-block" style="background-color: transparent;"></div>
                   <div class="info-section">
                       <div class="info-row mb-1 mb-md-2">
                           <span>Available Withdrawal Balance</span>
-                          <span class="d-none d-md-inline">{{params.maxWithdrawAmount}} {{params.serviceFeeSymbol}}</span>
+                          <span class="d-none d-md-inline">{{params.amount}} {{params.serviceFeeSymbol}}</span>
                       </div>
                       <div class="info-row mb-1 mb-md-2">
                           <span>Service fee</span>
@@ -241,7 +270,7 @@
 
 <script setup>
 import api from "@/services/modules";
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch, computed } from "vue";
 import BTCIcon from '@/assets/images/icon/BTC-account.svg';
 import BNBIcon from '@/assets/images/icon/BNB-account.svg';
 import ETHIcon from '@/assets/images/icon/ETH-account.svg';
@@ -249,6 +278,7 @@ import TRXIcon from '@/assets/images/icon/TRX-account.svg';
 import DOGEIcon from '@/assets/images/icon/DOGE-account.svg';
 import SOLIcon from '@/assets/images/icon/SOL-account.svg';
 import XRPIcon from '@/assets/images/icon/XRP-account.svg';
+import dayjs from "dayjs";
 
 
 
@@ -260,9 +290,11 @@ import XRPIcon from '@/assets/images/icon/XRP-account.svg';
 const params = reactive({
   supportCoin: '',
   supportCoinImagePath: '',
+  selectedRewardInfo: '',
   withdrawAddress: '',
   selectNetwork: '',
   code: '',
+  amount: '',
 })
 
 const userInfo = reactive({});
@@ -270,6 +302,11 @@ const userInfo = reactive({});
 const options = reactive({
   supportCoins: [],
   supportNetworks: [],
+  gameRewardHistoryData: [], //存放遊戲獎勵紀錄
+  userRewards: [], // 存放玩家獎項
+  rewardInfoOption: [],
+  uniqueRewardCoinType: [],
+  rewardInfoFilterByCoin: [],
 })
 
 const iconMap = {
@@ -283,43 +320,48 @@ const iconMap = {
 }
 
 // 監聽異動&圖片更換及網路更新
-watch(() => params.supportCoin, async (newValue) => {
-  if (newValue) {
-    const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newValue);
-    if (findSupportCoin) {
-      params.supportCoinImagePath = findSupportCoin.ImagePath;
-    }
-  
-    try {
-      const networkSetting = await getCryptocurrencySetting(newValue);
-      console.log("NetworkSetting data:", networkSetting);
-
-      if (networkSetting) {
-        options.supportNetworks = networkSetting.data.reward.supportNetworks.map((network) => ({
-          label: network.networkFullName,
-          value: network.network,
-          protocol: network.protocol,
-          confirmMins: network.confirmMins,
-          fullName: network.networkFullName,
-          supportSymbols: network.supportSymbols,
-        }));
-      } else {
-        console.error("NetworkSetting data is not in expected format:", networkSetting.data);
-      }
-    } catch (error) {
-      console.error("Failed to get NetworkSetting:", error);
-    }
-  }
-});
-
 watch(
   [() => params.selectNetwork, () => params.supportCoin],
-  ([newSelectNetwork, newSupportCoin]) => {
+  async ([newSelectNetwork, newSupportCoin]) => {
+    if (newSupportCoin) {
+      const data = gameRewardHistoryData.value.find((info) => info.rewardNetwork === newSupportCoin)
+      if (data) {
+        params.selectNetwork = data.rewardSymbol;
+      }
+
+      const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newSupportCoin);
+      if (findSupportCoin) {
+        params.supportCoinImagePath = findSupportCoin.ImagePath;
+      }
+    
+      try {
+        const networkSetting = await getCryptocurrencySetting(newSupportCoin);
+        console.log("NetworkSetting data:", networkSetting);
+
+        if (networkSetting) {
+          options.supportNetworks = networkSetting.data.reward.supportNetworks.map((network) => ({
+            label: network.networkFullName,
+            value: network.network,
+            protocol: network.protocol,
+            confirmMins: network.confirmMins,
+            fullName: network.networkFullName,
+            supportSymbols: network.supportSymbols,
+          }));
+        } else {
+          console.error("NetworkSetting data is not in expected format:", networkSetting.data);
+        }
+      } catch (error) {
+        console.error("Failed to get NetworkSetting:", error);
+      }
+    }
+    
     if (params.selectNetwork && params.supportCoin) {
+      console.log("options.supportNetworks:", options.supportNetworks);
+      console.log('params.selectNetwork', params.selectNetwork);
       const selectNetwork = options.supportNetworks.find(
-        (network) => network.value === newSelectNetwork
+        (network) => network.value === params.selectNetwork
       );
-      console.log("Selected Network:", selectNetwork);
+      console.log("Selected Network:", params.selectNetwork);
 
       if (selectNetwork) { 
         params.serviceFee = selectNetwork?.supportSymbols[0]?.withdrawalFee; 
@@ -360,6 +402,18 @@ const getCryptocurrencySetting = async () => {
   }
 };
 
+// api - 發送驗證碼
+const postSendAuthCode = async (type) => {
+  try {
+    const response = await api.account.sendAuthCode(type);
+    console.log("CryptocurrencySetting get successfully:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
 // 申請提出獎項 等等再寫
 const WithdrawReward = async () => {
   const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === params.supportCoin);
@@ -381,22 +435,71 @@ const WithdrawReward = async () => {
   }
 };
 
+const gameRewardHistoryData = ref([]);
 onMounted(async() => {
   const cryptocurrencySetting = await getCryptocurrencySetting(); //取得出入金網路、幣種、金額
   const responseUserInfo = await getAccountInfo(); //取得使用者資訊
   Object.assign(userInfo, responseUserInfo.data);
   console.log('userInfo', userInfo);
 
-  if(cryptocurrencySetting) {
-    cryptocurrencySetting.data.reward.supportCoins.forEach((supportCoin) => {
-      options.supportCoins.push ({
-        ImagePath: iconMap[supportCoin.symbol] || '',
-        label: supportCoin.fullName,
-        value: supportCoin.fullName,
-        symbol: supportCoin.symbol,
-      })
-    })
+  console.log(responseUserInfo.data);
+  if (responseUserInfo) {
+    gameRewardHistoryData.value = responseUserInfo.data.gameRewardHistoryData;
+
+    // 使用 Map 来存储 uniqueRewardCoinType，symbol 作为唯一的 key
+    const rewardMap = new Map();
+    responseUserInfo.data.gameRewardHistoryData.forEach((gameReward) => {
+      // 使用 symbol 作为 key，只有新的 symbol 才会添加
+      rewardMap.set(gameReward.rewardSymbol, {
+        ImagePath: iconMap[gameReward.rewardSymbol] || '',
+        label: gameReward.rewardFullName,
+        value: gameReward.rewardFullName,
+        symbol: gameReward.rewardSymbol,
+      });
+    });
+    console.log('rewardMap', rewardMap);
+    // 将 Map 转换回数组存入 options.uniqueRewardCoinType
+    options.uniqueRewardCoinType = Array.from(rewardMap.values());
+    console.log('options.uniqueRewardCoinType', options.uniqueRewardCoinType);
+
+
+        // 存儲所有獎勵的時間、輪次、金額信息
+    options.rewardInfoOption = responseUserInfo.data.gameRewardHistoryData.map((gameReward) => ({
+      time: dayjs(gameReward.time).format("YYYY/MM/DD HH:mm:ss"),
+      round: gameReward.round,
+      value: gameReward.value,
+    }));
   }
+
+  watch(() => params.supportCoin, (newValue) => {
+      if (newValue) {
+        // 清空選項 避免以前選的coin對應的獎項被保留在這
+        options.rewardInfoFilterByCoin = [];
+        gameRewardHistoryData.value.forEach((gameRewardInfo) => {
+          if (gameRewardInfo.rewardFullName === newValue) {
+            options.rewardInfoFilterByCoin.push({
+              rewardId: gameRewardInfo.rewardId,
+              gameRoomId: gameRewardInfo.gameRoomId,
+              round: gameRewardInfo.round,
+              time: gameRewardInfo.time,
+              amount: gameRewardInfo.rewardAmount, 
+            });
+          }
+        })  
+      }
+  });
+
+  watch(() => params.selectedRewardInfo, (newValue) => {
+    if (newValue) {
+      const info = options.rewardInfoFilterByCoin.find((reward) => reward.rewardId === newValue)
+      if (info) {
+        params.amount = info.amount;
+      }
+    }
+  });
+
+  const formatDate = (isoDateString) =>
+  dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
 });
 
 const selectShow = ref(true);
