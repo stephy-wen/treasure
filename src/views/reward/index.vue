@@ -497,6 +497,14 @@ function handleInput(index) {
   if (codes.value[index].length === 1 && index < codes.value.length - 1) {
     inputRefs.value[index + 1].focus();
   }
+
+  // 檢查是否所有欄位都已輸入完畢，然後調用 verifyCode
+  if (index === codes.value.length - 1) {
+    const allFilled = codes.value.every((code) => code.length === 1);
+    if (allFilled) {
+      verifyCode(); // 當輸入到最後一格，並且所有格子都有輸入時調用驗證函數
+    }
+  }
 }
 
 // 當用戶按下 backspace 鍵時，自動退回到前一格
@@ -515,10 +523,20 @@ function verifyCode() {
   verifyCodeWithAPI(fullCode);
 }
 
-function verifyCodeWithAPI(code) {
-  console.log(`正在驗證 ${code}`);
-  // 這裡進行 API 請求來驗證驗證碼是否正確
-}
+const verifyCodeWithAPI = async (code) => {
+  const type = "WithdrawReward";
+  try {
+    const response = await api.account.checkVerificationCode(
+      type,
+      email.value,
+      code
+    );
+    console.log(response, "驗證成功");
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = handleApiError(error);
+  }
+};
 </script>
 
 <style scoped>
