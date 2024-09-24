@@ -383,6 +383,7 @@ const params = reactive({
 });
 
 const errorMessage = ref("");
+const email = ref("")
 
 const stepThreeVisible = ref(false); // 控制第三步是否顯示
 
@@ -543,6 +544,7 @@ onMounted(async () => {
   const cryptocurrencySetting = await getCryptocurrencySetting();
   const responseUserInfo = await getAccountInfo();
   Object.assign(userInfo, responseUserInfo.data);
+  email.value = userInfo.email;
   console.log("userInfo", userInfo);
   params.maxWithdrawAmount = userInfo.balanceData.balance;
 
@@ -595,9 +597,11 @@ function verifyCode() {
   verifyCodeWithAPI(fullCode);
 }
 
-const email = ref("winnielin0527a@gmail.com");
+// const email = ref("winnielin0527a@gmail.com");
+
 
 const verifyCodeWithAPI = async (code, type) => {
+  console.log(email.value)
   try {
     const response = await api.account.checkVerificationCode(
       type,
