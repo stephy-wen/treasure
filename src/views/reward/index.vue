@@ -146,7 +146,7 @@
                 <div class="mt-3 mt-md-0 winnie-width-xs-100">
                   <!-- 提款地址輸入 -->
                   <el-input
-                    v-model="params.withdrawAddress"
+                    v-model="rewardAddress"
                     class="form-control mb-2"
                     id="exampleFormControlInput1"
                     placeholder="Enter your address"
@@ -158,10 +158,9 @@
                     class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
                   >
                     <el-select
-                      v-model="params.selectNetwork"
+                      v-model="selectedNetwork"
                       size="large"
-                      placeholder="Select Network"
-                      v-if="selectShow"
+                      placeholder="Network"
                       :disabled="true"
                     >
                       <!-- 提醒 -->
@@ -183,10 +182,10 @@
                         </p>
                       </div>
                       <el-option
-                        v-for="network in options.supportNetworks"
-                        :key="network.value"
-                        :value="network.value"
-                        :label="`${network.label} (${network.protocol})`"
+                        v-for="network in selectedCoinNetworks"
+                        :key="network"
+                        :value="network"
+                        :label="network"
                         style="height: 60px"
                       >
                         <template #default>
@@ -197,25 +196,9 @@
                               <span
                                 class="winnie-text-white"
                                 style="color: black"
-                                >{{ network.label }}</span
                               >
-                              <span
-                                class="winnie-text-white"
-                                style="color: black"
-                                >&#8776; {{ network.confirmMins }} 分鐘</span
-                              >
-                            </div>
-                            <div
-                              class="d-flex justify-content-between align-items-center"
-                            >
-                              <span class="winnie-text-gray winnie-fs-small"
-                                >{{ network.fullName }} ({{
-                                  network.protocol
-                                }})</span
-                              >
-                              <span class="winnie-text-gray winnie-fs-small"
-                                >{{ network.confirmMins }} 確認/s</span
-                              >
+                                {{ network }}
+                              </span>
                             </div>
                           </div>
                         </template>
@@ -245,9 +228,12 @@ const userStore = useUserStore();
 const selectedCoin = ref(null);
 const selectedCoinImagePath = ref("");
 const selectedRewardInfo = ref(null);
+const selectedNetwork = ref(null); // 選中的網路
+
 const gameRewardHistoryData = ref([]);
 const stepOneComplete = ref(false); // 控制 Step 2 顯示
 const stepTwoComplete = ref(false); // 控制 Step 3 顯示
+const rewardAddress = ref(""); // 用來提款地址
 
 // 取得個人得獎紀錄
 const getUserInfo = async () => {
@@ -259,12 +245,10 @@ const getUserInfo = async () => {
   }
 };
 
-// 選中的幣種對應的獎勵資訊
-const filteredRewards = computed(() => {
-  return gameRewardHistoryData.value.filter(
-    (reward) => reward.rewardSymbol === selectedCoin.value
-  );
-});
+// 當選擇幣種改變時
+const handleCoinChange = (coin) => {
+  selectedCoinImagePath.value = getCurrencyIcon(coin);
+};
 
 // 幣種選單
 const coinOptions = computed(() => {
@@ -278,10 +262,21 @@ const coinOptions = computed(() => {
   });
 });
 
-// 當選擇幣種改變時
-const handleCoinChange = (coin) => {
-  selectedCoinImagePath.value = getCurrencyIcon(coin);
-};
+// 選中的幣種對應的獎勵資訊
+const filteredRewards = computed(() => {
+  return gameRewardHistoryData.value.filter(
+    (reward) => reward.rewardSymbol === selectedCoin.value
+  );
+});
+
+// 根據選擇的幣種篩選出對應的網路 (rewardNetwork)
+const selectedCoinNetworks = computed(() => {
+  const selectedCoinData = gameRewardHistoryData.value.find(
+    (reward) => reward.rewardSymbol === selectedCoin.value
+  );
+  selectedNetwork.value = selectedCoinData?.rewardNetwork;
+  return selectedCoinData ? [selectedCoinData.rewardNetwork] : []; // 返回該幣種的網路
+});
 
 // 日期格式化
 const formatDate = (isoDateString) => dayjs(isoDateString).format("YYYY/MM/DD");
