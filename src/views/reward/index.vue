@@ -365,7 +365,7 @@ const rewardAddress = ref(""); // 用來提款地址
 
 const amount = ref(200);
 const serviceFeeSymbol = ref(0); // 貨幣單位
-const serviceFee = ref(10);
+const serviceFee = ref(-1);
 
 // 取得個人得獎紀錄
 const getUserInfo = async () => {
@@ -431,6 +431,38 @@ const updateRewardDetailsForStepThree = () => {
 
   if (selectedReward) {
     amount.value = selectedReward.rewardAmount; // 更新獎勵金額
+  }
+
+  getFee(selectedReward);
+};
+
+// get fee
+const getFee = async (selectedReward) => {
+  // 調用 API 獲取提現手續費
+  try {
+    const res = await api.asset.getCryptocurrencySetting();
+    const rewardSettings = res.data.data.reward.supportNetworks;
+    console.log(res);
+    console.log(rewardSettings, "rewardSettings");
+
+    // 在 reward.supportNetworks 中查找匹配的 network
+    // 從api裡面找 已選中的網路
+    const selectedNetworkData = rewardSettings.find(
+      (network) => network.network === selectedNetwork.value
+    );
+
+    if (selectedNetworkData) {
+      // 查找匹配的幣種，並更新手續費
+      const symbolData = selectedNetworkData.supportSymbols.find(
+        (symbol) => symbol.symbol === selectedReward.rewardSymbol
+      );
+
+      if (symbolData) {
+        serviceFee.value = symbolData.withdrawalFee; // 更新手續費
+      }
+    }
+  } catch (error) {
+    console.error("獲取手續費時發生錯誤：", error);
   }
 };
 
