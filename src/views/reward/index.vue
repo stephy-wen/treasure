@@ -68,7 +68,7 @@
                     ></el-image>
                   </template>
                   <el-option
-                    v-for="item in options.gameRewardHistoryData"
+                    v-for="item in options.uniqueRewardCoinType"
                     :key="item.value"
                     :value="item.value"
                     :label="item.label"
@@ -86,31 +86,21 @@
                 </el-select>
 
                 <el-select
+                  v-model="params.selectedRewardInfo"
                   size="large"
-                  placeholder="Select Coin"
+                  placeholder="Select Reward Info"
                   v-if="selectShow"
                   class="d-flex align-items-center my-4 my-sm-0"
                 >
-                  <template #prefix>
-                    <el-image 
-                    v-if="params.supportCoinImagePath"
-                    :src="params.supportCoinImagePath"
-                    style="width: 20px; height: 20px; margin-right: 5px;"
-                    ></el-image>
-                  </template>
                   <el-option
-                    v-for="item in rewardInfoOption"
-                    :key="item.value"
-                    :value="item.value"
-                    :label="item.label"
+                    v-for="reward in options.rewardInfoFilterByCoin"
+                    :key="reward.time"
+                    :value="reward.rewardId"
+                    :label="`${reward.round} - ${reward.amount} - ${reward.time}`"
                   >
                     <template #default>
                       <div class="option-content">
-                        <el-image
-                          :src="item.ImagePath"
-                          style="width: 20px; height: 20px; margin-right: 10px;"
-                        ></el-image>
-                        {{ item.label }}
+                        <span>{{ reward.round }} - {{ reward.amount }} - {{ reward.time }}</span>
                       </div>
                     </template>
                   </el-option>
@@ -145,6 +135,7 @@
                       size="large"
                       placeholder="Select Network"
                       v-if="selectShow"
+                      :disabled="true"
                     >
                     <!-- 提醒 -->
                     <div class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between">
@@ -196,7 +187,7 @@
                   id="inputWithdrawAmount"
                   class="form-control amount-input" 
                   placeholder="Minimum 20 USD" 
-                  v-model="params.withdrawAmount" 
+                  v-model="params.amount" 
                   aria-label="withdraw amount" 
                   aria-describedby="amount"
                   @blur="validateWithdrawAmountOnBlur"
@@ -220,7 +211,7 @@
                   <div class="info-section">
                       <div class="info-row mb-1 mb-md-2">
                           <span>Available Withdrawal Balance</span>
-                          <span class="d-none d-md-inline">{{params.maxWithdrawAmount}} {{params.serviceFeeSymbol}}</span>
+                          <span class="d-none d-md-inline">{{params.amount}} {{params.serviceFeeSymbol}}</span>
                       </div>
                       <div class="info-row mb-1 mb-md-2">
                           <span>Service fee</span>
@@ -279,7 +270,7 @@
 
 <script setup>
 import api from "@/services/modules";
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch, computed } from "vue";
 import BTCIcon from '@/assets/images/icon/BTC-account.svg';
 import BNBIcon from '@/assets/images/icon/BNB-account.svg';
 import ETHIcon from '@/assets/images/icon/ETH-account.svg';
@@ -299,9 +290,11 @@ import dayjs from "dayjs";
 const params = reactive({
   supportCoin: '',
   supportCoinImagePath: '',
+  selectedRewardInfo: '',
   withdrawAddress: '',
   selectNetwork: '',
   code: '',
+  amount: '',
 })
 
 const userInfo = reactive({});
@@ -311,6 +304,9 @@ const options = reactive({
   supportNetworks: [],
   gameRewardHistoryData: [], //存放遊戲獎勵紀錄
   userRewards: [], // 存放玩家獎項
+  rewardInfoOption: [],
+  uniqueRewardCoinType: [],
+  rewardInfoFilterByCoin: [],
 })
 
 const iconMap = {
@@ -324,43 +320,48 @@ const iconMap = {
 }
 
 // 監聽異動&圖片更換及網路更新
-watch(() => params.supportCoin, async (newValue) => {
-  if (newValue) {
-    const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newValue);
-    if (findSupportCoin) {
-      params.supportCoinImagePath = findSupportCoin.ImagePath;
-    }
-  
-    try {
-      const networkSetting = await getCryptocurrencySetting(newValue);
-      console.log("NetworkSetting data:", networkSetting);
-
-      if (networkSetting) {
-        options.supportNetworks = networkSetting.data.reward.supportNetworks.map((network) => ({
-          label: network.networkFullName,
-          value: network.network,
-          protocol: network.protocol,
-          confirmMins: network.confirmMins,
-          fullName: network.networkFullName,
-          supportSymbols: network.supportSymbols,
-        }));
-      } else {
-        console.error("NetworkSetting data is not in expected format:", networkSetting.data);
-      }
-    } catch (error) {
-      console.error("Failed to get NetworkSetting:", error);
-    }
-  }
-});
-
 watch(
   [() => params.selectNetwork, () => params.supportCoin],
-  ([newSelectNetwork, newSupportCoin]) => {
+  async ([newSelectNetwork, newSupportCoin]) => {
+    if (newSupportCoin) {
+      const data = gameRewardHistoryData.value.find((info) => info.rewardNetwork === newSupportCoin)
+      if (data) {
+        params.selectNetwork = data.rewardSymbol;
+      }
+
+      const findSupportCoin = options.supportCoins.find((supportCoin) => supportCoin.value === newSupportCoin);
+      if (findSupportCoin) {
+        params.supportCoinImagePath = findSupportCoin.ImagePath;
+      }
+    
+      try {
+        const networkSetting = await getCryptocurrencySetting(newSupportCoin);
+        console.log("NetworkSetting data:", networkSetting);
+
+        if (networkSetting) {
+          options.supportNetworks = networkSetting.data.reward.supportNetworks.map((network) => ({
+            label: network.networkFullName,
+            value: network.network,
+            protocol: network.protocol,
+            confirmMins: network.confirmMins,
+            fullName: network.networkFullName,
+            supportSymbols: network.supportSymbols,
+          }));
+        } else {
+          console.error("NetworkSetting data is not in expected format:", networkSetting.data);
+        }
+      } catch (error) {
+        console.error("Failed to get NetworkSetting:", error);
+      }
+    }
+    
     if (params.selectNetwork && params.supportCoin) {
+      console.log("options.supportNetworks:", options.supportNetworks);
+      console.log('params.selectNetwork', params.selectNetwork);
       const selectNetwork = options.supportNetworks.find(
-        (network) => network.value === newSelectNetwork
+        (network) => network.value === params.selectNetwork
       );
-      console.log("Selected Network:", selectNetwork);
+      console.log("Selected Network:", params.selectNetwork);
 
       if (selectNetwork) { 
         params.serviceFee = selectNetwork?.supportSymbols[0]?.withdrawalFee; 
@@ -434,54 +435,71 @@ const WithdrawReward = async () => {
   }
 };
 
+const gameRewardHistoryData = ref([]);
 onMounted(async() => {
   const cryptocurrencySetting = await getCryptocurrencySetting(); //取得出入金網路、幣種、金額
   const responseUserInfo = await getAccountInfo(); //取得使用者資訊
   Object.assign(userInfo, responseUserInfo.data);
   console.log('userInfo', userInfo);
 
-  // if(cryptocurrencySetting) {
-  //   cryptocurrencySetting.data.reward.supportCoins.forEach((supportCoin) => {
-  //     options.supportCoins.push ({
-  //       ImagePath: iconMap[supportCoin.symbol] || '',
-  //       label: supportCoin.fullName,
-  //       value: supportCoin.fullName,
-  //       symbol: supportCoin.symbol,
-  //     })
-  //   })
-  // }
-
   console.log(responseUserInfo.data);
+  if (responseUserInfo) {
+    gameRewardHistoryData.value = responseUserInfo.data.gameRewardHistoryData;
 
-  if(responseUserInfo) {
+    // 使用 Map 来存储 uniqueRewardCoinType，symbol 作为唯一的 key
+    const rewardMap = new Map();
     responseUserInfo.data.gameRewardHistoryData.forEach((gameReward) => {
-      options.gameRewardHistoryData.push ({
+      // 使用 symbol 作为 key，只有新的 symbol 才会添加
+      rewardMap.set(gameReward.rewardSymbol, {
         ImagePath: iconMap[gameReward.rewardSymbol] || '',
         label: gameReward.rewardFullName,
-        value: gameReward.rewardId,
-        round: gameReward.round,
-        time: gameReward.time,
-        amount: gameReward.rewardAmount, 
+        value: gameReward.rewardFullName,
         symbol: gameReward.rewardSymbol,
-        network: gameReward.rewardNetwork,
-        fullName: gameReward.rewardFullName,
-        roomId: gameReward.gameRoomId,
-    
+      });
+    });
+    console.log('rewardMap', rewardMap);
+    // 将 Map 转换回数组存入 options.uniqueRewardCoinType
+    options.uniqueRewardCoinType = Array.from(rewardMap.values());
+    console.log('options.uniqueRewardCoinType', options.uniqueRewardCoinType);
 
-      })
-    })
+
+        // 存儲所有獎勵的時間、輪次、金額信息
+    options.rewardInfoOption = responseUserInfo.data.gameRewardHistoryData.map((gameReward) => ({
+      time: dayjs(gameReward.time).format("YYYY/MM/DD HH:mm:ss"),
+      round: gameReward.round,
+      value: gameReward.value,
+    }));
   }
-  
+
+  watch(() => params.supportCoin, (newValue) => {
+      if (newValue) {
+        // 清空選項 避免以前選的coin對應的獎項被保留在這
+        options.rewardInfoFilterByCoin = [];
+        gameRewardHistoryData.value.forEach((gameRewardInfo) => {
+          if (gameRewardInfo.rewardFullName === newValue) {
+            options.rewardInfoFilterByCoin.push({
+              rewardId: gameRewardInfo.rewardId,
+              gameRoomId: gameRewardInfo.gameRoomId,
+              round: gameRewardInfo.round,
+              time: gameRewardInfo.time,
+              amount: gameRewardInfo.rewardAmount, 
+            });
+          }
+        })  
+      }
+  });
+
+  watch(() => params.selectedRewardInfo, (newValue) => {
+    if (newValue) {
+      const info = options.rewardInfoFilterByCoin.find((reward) => reward.rewardId === newValue)
+      if (info) {
+        params.amount = info.amount;
+      }
+    }
+  });
+
   const formatDate = (isoDateString) =>
   dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
-  
-  
-  const rewardInfoOption = options.gameRewardHistoryData.map((item) => ({
-    label: `Round: ${item.round}, ${formatDate(item.time)}, Amount: ${item.amount}`,
-    value:  item.roomId,
-  }))
-  console.log('id:', rewardInfoOption);
-  console.log('option:', options.gameRewardHistoryData);
 });
 
 const selectShow = ref(true);
