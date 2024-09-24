@@ -345,10 +345,13 @@
 
 <script setup>
 import api from "@/services/modules";
+import dayjs from "dayjs";
 import { ref, onMounted, reactive, watch, computed } from "vue";
 import { useUserStore } from "@/stores/user";
-import dayjs from "dayjs";
 import { getCurrencyIcon } from "@/assets/images.js";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const userStore = useUserStore();
 
@@ -485,7 +488,43 @@ const handleStepTwoComplete = () => {
 
 onMounted(async () => {
   await getUserInfo();
+
+  const param = route.params.rewardId; // 獲取網址上的參數
+  console.log(param);
+  if (param) {
+    if (isNaN(param)) {
+      // 如果參數不是數字，則認為是幣種symbol
+      const coinSymbol = param.toUpperCase(); // 將參數轉成大寫
+      handleCoinChange(coinSymbol); // 自動選擇幣種
+    } else {
+      console.log("數字");
+      // 如果參數是數字，則認為是rewardId
+      const rewardId = parseInt(param, 10); // 轉換成數字類型
+      handleRewardIdFromRoute(rewardId); // 自動處理rewardId邏輯
+    }
+  }
 });
+
+// 當rewardId在網址中出現時
+const handleRewardIdFromRoute = (rewardId) => {
+  const selectedReward = gameRewardHistoryData.value.find(
+    (reward) => reward.rewardId === rewardId
+  );
+
+  if (selectedReward) {
+    // Step 1: 選中對應的幣種
+    selectedCoin.value = selectedReward.rewardSymbol;
+    handleCoinChange(selectedReward.rewardSymbol);
+
+    // Step 2: 填充reward資訊
+    selectedRewardInfo.value = selectedReward.rewardId;
+    handleStepOneComplete(); // 顯示第二步
+
+    // Step 3: 更新金額和費用
+    updateRewardDetailsForStepThree();
+    handleStepTwoComplete(); // 顯示第三步
+  }
+};
 
 // 下拉式測試 end
 // Email驗證切分格子測試
