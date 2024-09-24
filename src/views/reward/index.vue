@@ -523,6 +523,24 @@ function verifyCode() {
   verifyCodeWithAPI(fullCode);
 }
 
+// 寄驗證信
+const checkFormDataAndSendEmail = async () => {
+  const type = "WithdrawReward";
+  await postSendAuthCode(type);
+};
+
+// api - 發送驗證碼
+const postSendAuthCode = async (type) => {
+  try {
+    const response = await api.account.sendAuthCode(type);
+    console.log("驗證信", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to get CryptocurrencySetting:", error);
+  }
+};
+
 const verifyCodeWithAPI = async (code) => {
   const type = "WithdrawReward";
   try {

@@ -536,8 +536,8 @@ const withdrawApply = async () => {
   }
 };
 
-const type = "WithdrawApply";
 const checkFormDataAndSendEmail = async () => {
+  const type = "WithdrawApply";
   await postSendAuthCode(type);
 };
 onMounted(async () => {
