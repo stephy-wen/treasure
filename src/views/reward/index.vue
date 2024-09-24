@@ -191,8 +191,8 @@
                   aria-label="withdraw amount" 
                   aria-describedby="amount"
                   @blur="validateWithdrawAmountOnBlur"
+                  :disabled="true"
                   />
-                  <button class="max-btn" @click="setMaxWithdrawAmount">MAX</button>
                   <span class="input-group-text" id="withdrawUnit">{{params.serviceFeeSymbol}}</span>
                 </div>
 
@@ -280,12 +280,6 @@ import SOLIcon from '@/assets/images/icon/SOL-account.svg';
 import XRPIcon from '@/assets/images/icon/XRP-account.svg';
 import dayjs from "dayjs";
 
-
-
-// const {
-//   userInfo: { getGameRewardInfo, getGameRewardHistory },
-//   auth: { getTransactionLog },
-// } = modules;
 
 const params = reactive({
   supportCoin: '',
@@ -475,6 +469,7 @@ onMounted(async() => {
       if (newValue) {
         // 清空選項 避免以前選的coin對應的獎項被保留在這
         options.rewardInfoFilterByCoin = [];
+        params.selectedRewardInfo = '';  // 清空第二個下拉選單的選擇
         gameRewardHistoryData.value.forEach((gameRewardInfo) => {
           if (gameRewardInfo.rewardFullName === newValue) {
             options.rewardInfoFilterByCoin.push({
@@ -503,6 +498,40 @@ onMounted(async() => {
 });
 
 const selectShow = ref(true);
+
+// 下拉式測試 end
+// Email驗證切分格子測試
+const codes = ref(['', '', '', '', '', '']);
+const inputRefs = ref([]); // 這將儲存所有 input 的引用
+
+// 當用戶在一格中輸入後，自動跳到下一格
+function handleInput(index) {
+  if (codes.value[index].length === 1 && index < codes.value.length - 1) {
+    inputRefs.value[index + 1].focus();
+  }
+}
+
+// 當用戶按下 backspace 鍵時，自動退回到前一格
+function handleBackspace(index) {
+  if (codes.value[index] === '' && index > 0) {
+    inputRefs.value[index - 1].focus();
+  }
+}
+
+// 拼接六個輸入的值，並驗證
+function verifyCode() {
+  const fullCode = codes.value.join('');
+  console.log('Full code:', fullCode);
+
+  // 模擬 API 驗證請求
+  verifyCodeWithAPI(fullCode);
+}
+
+function verifyCodeWithAPI(code) {
+  console.log(`正在驗證 ${code}`);
+  // 這裡進行 API 請求來驗證驗證碼是否正確
+}
+
 </script>
 
 <style scoped>
@@ -1104,5 +1133,12 @@ width: 160px;
 
 .el-input__inner {
   color: #F8F8f8;
+}
+</style>
+
+<style>
+.el-input.is-disabled .el-input__wrapper {
+  background-color: transparent;
+  box-shadow: none;
 }
 </style>
