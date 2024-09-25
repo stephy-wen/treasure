@@ -150,15 +150,22 @@
                 <div class="vertical-line me-5 d-none d-md-block"></div>
                 <div class="mt-3 mt-md-0 winnie-width-xs-100">
                   <!-- 提款地址輸入 -->
-                  <el-input
-                    v-model="rewardAddress"
-                    class="form-control mb-2"
-                    id="exampleFormControlInput1"
-                    placeholder="Enter your address"
-                    size="large"
-                    clearable
-                    @input="handleStepTwoComplete"
-                  />
+                  <div class="form-group">
+                    <el-input
+                      v-model="rewardAddress"
+                      class="form-control mb-2"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter your address"
+                      size="large"
+                      clearable
+                      @input="handleStepTwoComplete"
+                      @blur="validateAddress"
+                    />
+                    <!-- 如果地址驗證失敗，顯示紅字錯誤訊息 -->
+                    <p v-if="addressError" class="text-danger">
+                      {{ addressErrorMessage }}
+                    </p>
+                  </div>
                   <!-- 選擇網路 -->
                   <div
                     class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
@@ -253,15 +260,6 @@
                       >{{ amount }} {{ serviceFeeSymbol }}</span
                     >
                   </div>
-                  <div class="info-row mb-1 mb-md-2">
-                    <span>Service fee</span>
-                    <span class="d-none d-md-inline"
-                      >{{ serviceFee }} {{ serviceFeeSymbol }}</span
-                    >
-                  </div>
-                  <span class="d-inline d-md-none"
-                    >{{ serviceFee }} {{ serviceFeeSymbol }}</span
-                  >
                   <!-- withdrawModal -->
                   <div
                     class="info-row justify-content-center justify-content-sm-end mt-4 winnie-width-xs-100"
@@ -325,7 +323,8 @@
                             id="withdrawConfirmButton"
                             type="button"
                             class="btn btn-primary w-100 mb-3 mt-3"
-                            @click="withdrawApply"
+                            @click="WithdrawReward"
+                            :disabled="!formValid"
                           >
                             Confirm
                           </button>
@@ -365,6 +364,17 @@ const gameRewardHistoryData = ref([]);
 const stepOneComplete = ref(false); // 控制 Step 2 顯示
 const stepTwoComplete = ref(false); // 控制 Step 3 顯示
 const rewardAddress = ref(""); // 用來提款地址
+const addressError = ref(false); // 地址驗證錯誤標誌
+const addressErrorMessage = ref(""); // 錯誤訊息
+
+// 定義是否可以提交表單
+const formValid = computed(() => {
+  return (
+    rewardAddress.value !== "" &&
+    !addressError.value &&
+    codes.value.every((code) => code !== "")
+  ); // 地址有效且驗證碼已填
+});
 
 const amount = ref(200);
 const serviceFeeSymbol = ref(0); // 貨幣單位
@@ -483,6 +493,52 @@ const handleStepOneComplete = () => {
 const handleStepTwoComplete = () => {
   if (!stepTwoComplete.value && rewardAddress.value) {
     stepTwoComplete.value = true; // 一旦設置為 true，保持顯示 Step 3
+  }
+};
+
+// 當輸入提款地址時，進行正則驗證
+const validateAddress = () => {
+  const selectedReward = gameRewardHistoryData.value.find(
+    (reward) => reward.rewardId === selectedRewardInfo.value
+  );
+
+  if (selectedReward) {
+    const addressRegex = new RegExp(selectedReward.addressRegex); // 取得該獎勵的 addressRegex
+    if (!addressRegex.test(rewardAddress.value)) {
+      addressError.value = true;
+      addressErrorMessage.value = `Invalid address format. Please use a valid address for ${selectedReward.rewardFullName}.`;
+    } else {
+      addressError.value = false;
+      addressErrorMessage.value = ""; // 清空錯誤訊息
+    }
+  }
+};
+
+// 點擊 Confirm 按鈕後提交表單
+const WithdrawReward = async () => {
+  // 如果地址驗證有誤，不允許提交
+  if (addressError.value) return;
+
+  try {
+    const selectedReward = gameRewardHistoryData.value.find(
+      (reward) => reward.rewardId === selectedRewardInfo.value
+    );
+
+    // 確認選中的獎勵存在
+    if (selectedReward) {
+      const payload = {
+        rewardId: selectedReward.rewardId,
+        gameRoomId: selectedReward.gameRoomId,
+        toAddress: rewardAddress.value, // 提款地址
+        code: codes.value.join(""), // 六位驗證碼
+      };
+
+      // 調用 WithdrawReward API
+      const response = await api.account.withdrawReward(payload);
+      console.log("Withdraw success:", response);
+    }
+  } catch (error) {
+    console.error("Withdraw API call failed:", error);
   }
 };
 
