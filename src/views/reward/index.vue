@@ -31,13 +31,13 @@
             <div class="divider align-items-center d-none d-md-inline"></div>
             <div class="p-2 text-center">
               <router-link to="/account/reward">
-                <button class="d-md-none mb-2">
+                <button class="d-md-none mb-2 winnie-btn-active">
                   <img
                     src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg"
                     alt=""
                   />
                 </button>
-                <p class="fw-bold">Reward</p>
+                <p class="fw-bold winnie-text-active">Reward</p>
               </router-link>
             </div>
             <div class="divider align-items-center d-none d-md-inline"></div>
@@ -1247,6 +1247,16 @@ ul li a .full-name {
 
 .el-input__inner {
   color: #f8f8f8;
+}
+
+.winnie-btn-active {
+  background-color: #414d5a !important;
+}
+
+@media (min-width: 767.98px) {
+  .winnie-text-active {
+  color: #fcd535 !important;
+  }
 }
 </style>
 
