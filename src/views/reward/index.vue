@@ -317,6 +317,12 @@
                               autofocus
                             />
                           </div>
+                          <!-- 錯誤訊息開始 -->
+                          <p v-if="errorMessage" class="error-message d-flex">
+                            <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
+                            <pre>{{ errorMessage }}</pre>
+                          </p>
+                          <!-- 錯誤訊息結束 -->
                         </div>
                         <div class="modal-footer px-5">
                           <button
@@ -324,7 +330,7 @@
                             type="button"
                             class="btn btn-primary w-100 mb-3 mt-3"
                             @click="WithdrawReward"
-                            :disabled="!formValid"
+                            :disabled="!formValid && !emailVerify"
                           >
                             Confirm
                           </button>
@@ -617,7 +623,7 @@ function verifyCode() {
   const fullCode = codes.value.join("");
   console.log("Full code:", fullCode);
 
-  // 模擬 API 驗證請求
+  // API 驗證請求
   verifyCodeWithAPI(fullCode);
 }
 
@@ -638,6 +644,7 @@ const postSendAuthCode = async (type) => {
     console.error("Failed to get CryptocurrencySetting:", error);
   }
 };
+const emailVerify = ref(false);
 
 const verifyCodeWithAPI = async (code) => {
   const type = "WithdrawReward";
@@ -647,9 +654,13 @@ const verifyCodeWithAPI = async (code) => {
       email.value,
       code
     );
+    if (response.data.data) {
+      emailVerify.value = true;
+    }
     console.log(response, "驗證成功");
   } catch (error) {
     console.log(error);
+    emailVerify.value = false;
     errorMessage.value = handleApiError(error);
   }
 };
