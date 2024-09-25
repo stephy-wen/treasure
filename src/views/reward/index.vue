@@ -397,14 +397,15 @@ const getUserInfo = async () => {
 
 // 當選擇幣種改變時 變更圖片
 const handleCoinChange = (coin) => {
-  selectedCoinImagePath.value = getCurrencyIcon(coin);
+  selectedCoin.value = coin; // 更新coin value
+  selectedCoinImagePath.value = getCurrencyIcon(coin); // 更新圖片
 
   // 找到選中的貨幣資料
   const selectedCoinData = gameRewardHistoryData.value.find(
     (reward) => reward.rewardSymbol === coin
   );
 
-  // // 第三步驟 更新貨幣單位 (serviceFeeSymbol)
+  // 第三步驟 更新貨幣單位 (serviceFeeSymbol)
   if (selectedCoinData) {
     serviceFeeSymbol.value = selectedCoinData.rewardSymbol; // 更新貨幣單位
   }
@@ -459,8 +460,6 @@ const getFee = async (selectedReward) => {
   try {
     const res = await api.asset.getCryptocurrencySetting();
     const rewardSettings = res.data.data.reward.supportNetworks;
-    console.log(res);
-    console.log(rewardSettings, "rewardSettings");
 
     // 在 reward.supportNetworks 中查找匹配的 network
     // 從api裡面找 已選中的網路
@@ -552,14 +551,13 @@ onMounted(async () => {
   await getUserInfo();
 
   const param = route.params.rewardId; // 獲取網址上的參數
-  console.log(param);
+
   if (param) {
     if (isNaN(param)) {
       // 如果參數不是數字，則認為是幣種symbol
       const coinSymbol = param.toUpperCase(); // 將參數轉成大寫
       handleCoinChange(coinSymbol); // 自動選擇幣種
     } else {
-      console.log("數字");
       // 如果參數是數字，則認為是rewardId
       const rewardId = parseInt(param, 10); // 轉換成數字類型
       handleRewardIdFromRoute(rewardId); // 自動處理rewardId邏輯
@@ -575,7 +573,6 @@ const handleRewardIdFromRoute = (rewardId) => {
 
   if (selectedReward) {
     // Step 1: 選中對應的幣種
-    selectedCoin.value = selectedReward.rewardSymbol;
     handleCoinChange(selectedReward.rewardSymbol);
 
     // Step 2: 填充reward資訊
