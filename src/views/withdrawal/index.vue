@@ -353,9 +353,6 @@
                             Confirm
                           </button>
                         </div>
-
-                      
-
                       </div>
                     </div>
                   </div>
