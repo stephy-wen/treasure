@@ -111,6 +111,7 @@
                   type="button"
                   id="dropdownMenuRewardsList"
                   aria-expanded="false"
+                  @click="goToRewardPage(item.symbol)"
                 >
                   <img :src="getCurrencyIcon(item.symbol)" alt="" />
                   <span class="f-color-white fw-bold pe-1">{{
@@ -242,6 +243,10 @@ const fetchRewardButtonData = async () => {
   } catch (error) {
     console.error("獲取歷史時發生錯誤：", error);
   }
+};
+
+const goToRewardPage = (symbol) => {
+  router.push({ path: `/reward/${symbol}` }); // 跳转到 reward 页并传递币种作为路径的一部分
 };
 
 // 調用 API 獲取歷史資料

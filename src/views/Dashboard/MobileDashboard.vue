@@ -86,6 +86,28 @@
 
           <div class="container px-3 px-sm-0 mt-3">
             <div class="rewards-detail">
+
+              <div class="d-flex col">
+              <div
+                class="box-item customized-tooltip"
+                v-for="item in rewardButtonData"
+                :key="item.round"
+              >
+                <button
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2 mb-2"
+                  type="button"
+                  id="dropdownMenuRewardsList"
+                  aria-expanded="false"
+                  @click="goToRewardPage(item.symbol)"
+                >
+                  <img :src="getCurrencyIcon(item.symbol)" alt="" />
+                  <span class="f-color-white fw-bold pe-1">{{
+                    item.balance
+                  }}</span>
+                </button>
+              </div>
+            </div>
+
               <div class="d-flex justify-content-center">
                 <div
                   class="accordion accordion-flush"
@@ -196,7 +218,7 @@ import modules from "@/services/modules";
 import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
 
 const {
-  userInfo: { getGameRewardHistory },
+  userInfo: { getGameRewardHistory, getAccountInfo },
   auth: { getTransactionLog },
 } = modules;
 
@@ -214,11 +236,34 @@ const itemsPerPage = ref(5); // 每頁顯示 5 筆
 const totalItems = ref(0); // 總項目數
 const hasMoreData = ref(true); // 是否還有更多數據可加載
 const transactionType = "All";
+const rewardButtonData = ref([]);
+
+const withGamePlayData = false;
+const withRewardData = false;
+const withRewardBalanceData = true;
+
+const fetchRewardButtonData = async () => {
+  try {
+    const res = await getAccountInfo(
+      withGamePlayData,
+      withRewardData,
+      withRewardBalanceData
+    );
+
+    rewardButtonData.value = res.data.data.getRewardBalanceData;
+  } catch (error) {
+    console.error("獲取歷史時發生錯誤：", error);
+  }
+};
 
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
   balance.value = userInfo.value.balanceData.balance.toLocaleString("en-US");
+};
+
+const goToRewardPage = (symbol) => {
+  router.push({ path: `/reward/${symbol}` }); // 跳转到 reward 页并传递币种作为路径的一部分
 };
 
 // 調用 API 獲取歷史資料
@@ -298,11 +343,10 @@ const openGetRewardsModal = () => {
 };
 
 onMounted(async () => {
-  await Promise.all([
-    loadUserInfo(),
-    getRewards(),
-    fetchPageData(currentPage.value),
-  ]);
+  await Promise.all(
+    [loadUserInfo(), getRewards(), fetchPageData(currentPage.value)],
+    fetchRewardButtonData()
+  );
 });
 </script>
 
@@ -399,5 +443,24 @@ onMounted(async () => {
 .accordion-button.collapsed::after,
 .accordion-button:not(.collapsed)::after {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.btn-dashboard-auto {
+  border: none;
+  border-radius: 50px;
+  width: auto;
+  height: 35px;
+}
+
+.bck-dark {
+  background-color: #2b3139;
+}
+
+.bck-dark:hover {
+  background-color: #414d5a;
+}
+
+.f-color-white {
+  color: #f8f8f8;
 }
 </style>
