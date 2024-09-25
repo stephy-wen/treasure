@@ -266,9 +266,7 @@
                   >
                     <button
                       class="withdraw-btn"
-                      data-bs-toggle="modal"
-                      data-bs-target="#withdrawModal"
-                      @click="checkFormDataAndSendEmail"
+                      @click="openWithdrawModal(); checkFormDataAndSendEmail()"
                     >
                       Withdraw
                     </button>
@@ -338,6 +336,41 @@
                       </div>
                     </div>
                   </div>
+                  <!-- Result Modal (新的 Modal) -->
+                  <div
+                    class="modal fade"
+                    id="resultModal"
+                    tabindex="-1"
+                    aria-labelledby="resultModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="resultModalLabel">Withdraw Result</h5>
+                          <button
+                            type="button"
+                            class="btn winnie-btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <font-awesome-icon icon="fa-solid fa-xmark" />
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <!-- 顯示成功或失敗的訊息 -->
+                          <p v-if="isWithdrawSuccess">Withdrawal Successful!</p>
+                          <p v-else>Withdrawal Failed. Please try again.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 新的modal -->
                 </div>
               </div>
             </div>
@@ -360,6 +393,27 @@ import { handleApiError } from "@/utils/errorHandler.js";
 const route = useRoute();
 
 const userStore = useUserStore();
+
+// 定義是否成功的標誌
+const isWithdrawSuccess = ref(false);
+
+// 控制 Withdraw modal 的開關
+const openWithdrawModal = () => {
+  const withdrawModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('withdrawModal'));
+  withdrawModal.show(); // 顯示 Withdraw Modal
+};
+
+// 控制 Withdraw modal 和 Result modal
+const closeWithdrawModal = () => {
+  const withdrawModal = bootstrap.Modal.getInstance(document.getElementById('withdrawModal'));
+  withdrawModal.hide(); // 關閉 Withdraw modal
+};
+
+const openResultModal = () => {
+  const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+  resultModal.show(); // 打開 Result modal
+};
+
 
 // 儲存選擇的幣種與對應圖片
 const selectedCoin = ref(null);
@@ -547,9 +601,18 @@ const WithdrawReward = async () => {
       // 調用 WithdrawReward API
       const response = await api.asset.withdrawReward(payload);
       console.log("Withdraw success:", response);
+
+      // 如果成功，設置成功標誌為 true
+      isWithdrawSuccess.value = true;
     }
   } catch (error) {
+    // 如果失敗，設置成功標誌為 false
+    isWithdrawSuccess.value = false;
     console.error("Withdraw API call failed:", error);
+  } finally {
+    // 關閉 Withdraw Modal，打開 Result Modal
+    closeWithdrawModal();
+    openResultModal();
   }
 };
 
@@ -656,6 +719,7 @@ const verifyCodeWithAPI = async (code) => {
     );
     if (response.data.data) {
       emailVerify.value = true;
+      errorMessage.value = "";
     }
     console.log(response, "驗證成功");
   } catch (error) {
