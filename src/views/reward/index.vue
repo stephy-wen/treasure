@@ -368,6 +368,7 @@ const rewardAddress = ref(""); // 用來提款地址
 const addressError = ref(false); // 地址驗證錯誤標誌
 const addressErrorMessage = ref(""); // 錯誤訊息
 const errorMessage = ref("");
+const email = ref("");
 
 // 定義是否可以提交表單
 const formValid = computed(() => {
@@ -387,6 +388,7 @@ const getUserInfo = async () => {
   try {
     const res = await api.userInfo.getAccountInfo();
     gameRewardHistoryData.value = res.data.data.gameRewardHistoryData;
+    email.value = res.data.data.email;
     console.log(gameRewardHistoryData.value, "data");
   } catch (error) {
     console.error("獲取歷史時發生錯誤：", error);
@@ -518,9 +520,11 @@ const validateAddress = () => {
 
 // 點擊 Confirm 按鈕後提交表單
 const WithdrawReward = async () => {
+  console.log("1");
+
   // 如果地址驗證有誤，不允許提交
   if (addressError.value) return;
-
+  console.log("地址錯誤被中斷");
   try {
     const selectedReward = gameRewardHistoryData.value.find(
       (reward) => reward.rewardId === selectedRewardInfo.value
@@ -536,7 +540,7 @@ const WithdrawReward = async () => {
       };
 
       // 調用 WithdrawReward API
-      const response = await api.account.withdrawReward(payload);
+      const response = await api.asset.withdrawReward(payload);
       console.log("Withdraw success:", response);
     }
   } catch (error) {

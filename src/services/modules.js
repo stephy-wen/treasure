@@ -134,7 +134,7 @@ const asset = {
   withdrawApply: (formData) => apiClient.post("/Asset/WithdrawApply", formData), // 出金申請
   getAddress: (formData) =>
     apiClient.post("/Asset/GetAddress", null, { params: formData }), // 取得地址
-  WithdrawReward: (formData) =>
+  withdrawReward: (formData) =>
     apiClient.post("/Asset/WithdrawReward", formData), // 提出獎項
 };
 
