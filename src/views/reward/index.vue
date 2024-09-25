@@ -349,6 +349,7 @@ import { ref, onMounted, reactive, watch, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { getCurrencyIcon } from "@/assets/images.js";
 import { useRoute } from "vue-router";
+import { handleApiError } from "@/utils/errorHandler.js";
 
 const route = useRoute();
 
@@ -366,6 +367,7 @@ const stepTwoComplete = ref(false); // 控制 Step 3 顯示
 const rewardAddress = ref(""); // 用來提款地址
 const addressError = ref(false); // 地址驗證錯誤標誌
 const addressErrorMessage = ref(""); // 錯誤訊息
+const errorMessage = ref("");
 
 // 定義是否可以提交表單
 const formValid = computed(() => {
