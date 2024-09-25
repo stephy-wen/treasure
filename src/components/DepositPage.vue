@@ -251,13 +251,15 @@ watch(
 );
 
 // api - 取得地址
-const getAddress = async () => {
+const getAddress = async (formData) => {
   try {
-    const formData = {
-      network: params.selectNetwork,
-      symbol: params.supportCoin,
-    };
+    // const formData = {
+    //   network: params.selectNetwork,
+    //   symbol: params.supportCoin,
+    // };
+    console.log("formData", formData);
     const response = await api.asset.getAddress(formData);
+
     console.log("CryptocurrencySetting get successfully:", response);
 
     return response.data;
