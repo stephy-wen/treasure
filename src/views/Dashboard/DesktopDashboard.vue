@@ -111,6 +111,7 @@
                   type="button"
                   id="dropdownMenuRewardsList"
                   aria-expanded="false"
+                  @click="goToRewardPage(item.symbol)"
                 >
                   <img :src="getCurrencyIcon(item.symbol)" alt="" />
                   <span class="f-color-white fw-bold pe-1">{{
@@ -341,6 +342,10 @@ const openNicknameReviseModal = () => {
 
 const goToDepositPage = () => {
   router.push("/account/deposit");
+};
+
+const goToRewardPage = (symbol) => {
+  router.push({ path: `/account/reward/${symbol}` });
 };
 
 // 定義一個方法來複製 userId 到剪貼板
