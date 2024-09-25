@@ -124,6 +124,7 @@
                     visibility: params.supportCoin ? 'visible' : 'hidden',
                   }"
                 >
+                <div class="form-group">
                   <!-- 提款地址輸入 -->
                   <el-input
                     v-model="params.withdrawAddress"
@@ -132,7 +133,13 @@
                     placeholder="Enter your address"
                     size="large"
                     clearable
+                    @blur="validateAddress"
                   />
+                    <!-- 如果地址驗證失敗，顯示紅字錯誤訊息 -->
+                    <p v-if="addressError" class="text-danger">
+                      {{ addressErrorMessage }}
+                    </p>
+                  </div>
                   <!-- 選擇網路 -->
                   <div
                     class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
@@ -341,6 +348,7 @@
                             type="button"
                             class="btn btn-primary w-100 mb-3 mt-3"
                             @click="withdrawApply"
+                            :disabled="!formValid"
                           >
                             Confirm
                           </button>
@@ -363,11 +371,23 @@
 
 <script setup>
 import api from "@/services/modules"; // 引入 API 模組
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch, computed } from "vue";
 // 下拉式測試 start
 import USDCicon from "@/assets/images/icon/USDC-account.svg";
 import USDTicon from "@/assets/images/icon/USDT-account.svg";
 import { handleApiError } from "@/utils/errorHandler.js";
+
+const addressError = ref(false); // 地址驗證錯誤標誌
+const addressErrorMessage = ref(""); // 錯誤訊息
+
+// 定義是否可以提交表單
+const formValid = computed(() => {
+  return (
+    params.withdrawAddress.value !== "" &&
+    !addressError.value &&
+    codes.value.every((code) => code !== "")
+  ); // 地址有效且驗證碼已填
+});
 
 // 輸入內容
 const params = reactive({
@@ -403,6 +423,7 @@ const userInfo = reactive({});
 watch(
   () => params.supportCoin,
   async (newValue) => {
+    await getWithDrawalData(); // 拿資料
     if (newValue) {
       // 更新加密貨幣圖片
       const findSupportCoin = options.supportCoins.find(
@@ -540,20 +561,63 @@ const checkFormDataAndSendEmail = async () => {
   const type = "WithdrawApply";
   await postSendAuthCode(type);
 };
+
+
+// 當輸入提款地址時，進行正則驗證
+const validateAddress = async () => {
+  await getWithDrawalData()
+
+
+  const addressRegex = new RegExp(addressRule.value); // 取得該獎勵的 addressRegex
+  console.log()
+  if (!addressRegex.test(params.withdrawAddress)) {
+    addressError.value = true;
+    addressErrorMessage.value = `Invalid address format. Please use a valid address for ${params.supportCoin}.`;
+  } else {
+    addressError.value = false;
+    addressErrorMessage.value = ""; // 清空錯誤訊息
+  }
+
+};
+
+const supportNetworks = ref([]);
+const filteredData = ref([]);
+const addressRule = ref([])
+const getWithDrawalData = async() => {
+  console.log(params.supportCoin,"選擇的幣種")
+  try {
+    const networkSetting = await getCryptocurrencySetting();
+    supportNetworks.value = networkSetting.data.withdraw.supportNetworks; // 取得網路資料
+    console.log(supportNetworks.value, "api 資料");
+    // 根據所選幣種過濾網路
+    filteredData.value = supportNetworks.value.filter((network) =>
+      network.supportSymbols.some(
+        (symbol) => symbol.symbol === params.supportCoin
+      )
+    );
+    addressRule.value = filteredData.value[0].addressRegex
+    console.log(addressRule.value)
+    
+    console.log(filteredData.value, " 該幣種的所有相關資訊");
+  } catch (error) {
+    console.error("Failed to get NetworkSetting:", error);
+  }
+}
+
+
 onMounted(async () => {
   const cryptocurrencySetting = await getCryptocurrencySetting();
   const responseUserInfo = await getAccountInfo();
+
   Object.assign(userInfo, responseUserInfo.data);
   email.value = userInfo.email;
-  console.log("userInfo", userInfo);
   params.maxWithdrawAmount = userInfo.balanceData.balance;
-
   if (cryptocurrencySetting) {
     cryptocurrencySetting.data.withdraw.supportCoins.forEach((supportCoin) => {
       options.supportCoins.push({
         ImagePath: iconMap[supportCoin.symbol] || "",
         label: supportCoin.fullName,
-        value: supportCoin.fullName,
+        value: supportCoin.symbol,
         symbol: supportCoin.symbol,
       });
     });
