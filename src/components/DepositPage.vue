@@ -75,17 +75,17 @@
               v-if="selectShow"
             >
               <el-option
-                v-for="network in options.supportNetworks"
-                :key="network.value"
-                :value="network.value"
-                :label="`${network.label} (${network.protocol})`"
+                v-for="network in filteredNetworks"
+                :key="network.network"
+                :value="network.network"
+                :label="`${network.network} (${network.protocol})`"
                 style="height: 60px"
               >
                 <template #default>
                   <div class="info">
                     <div class="d-flex justify-content-between">
                       <span class="winnie-text-white" style="color: black">{{
-                        network.label
+                        network.network
                       }}</span>
                       <span class="winnie-text-white" style="color: black"
                         >&#8776; {{ network.confirmMins }} 分鐘</span
@@ -209,6 +209,9 @@ const params = reactive({
 
 const apiIsLoading = ref(false);
 
+// 根據選擇的幣種過濾網路
+const filteredNetworks = ref([]);
+
 const copyAddress = async () => {
   try {
     await navigator.clipboard.writeText(params.address);
@@ -227,6 +230,8 @@ const copyAddress = async () => {
 watch(
   [() => params.supportCoin, () => params.selectNetwork],
   async ([newSupportCoin, newSelectNetwork]) => {
+    console.log(newSupportCoin, "選擇的貨幣");
+    console.log(newSelectNetwork, "選擇的網路");
     if (newSupportCoin && newSelectNetwork) {
       apiIsLoading.value = true;
 
@@ -235,6 +240,7 @@ watch(
         symbol: newSupportCoin,
       };
       const response = await getAddress(formData);
+      console.log(response, "地址");
       if (response?.data?.address) {
         params.address = response.data.address;
       }
@@ -247,7 +253,11 @@ watch(
 // api - 取得地址
 const getAddress = async () => {
   try {
-    const response = await api.asset.getAddress();
+    const formData = {
+      network: params.selectNetwork,
+      symbol: params.supportCoin,
+    };
+    const response = await api.asset.getAddress(formData);
     console.log("CryptocurrencySetting get successfully:", response);
 
     return response.data;
@@ -256,10 +266,14 @@ const getAddress = async () => {
   }
 };
 
+const supportNetworks = ref([]);
+
 // 監聽異動&圖片更換及網路更新
 watch(
   () => params.supportCoin,
   async (newValue) => {
+    console.log(params.supportCoin);
+    console.log(newValue, "newValue");
     if (newValue) {
       // 更新加密貨幣圖片
       const findSupportCoin = options.supportCoins.find(
@@ -269,27 +283,37 @@ watch(
         params.supportCoinImagePath = findSupportCoin.ImagePath;
       }
 
+      // 取得網路
       try {
         const networkSetting = await getCryptocurrencySetting(newValue);
-        console.log("NetworkSetting data:", networkSetting);
+        supportNetworks.value = networkSetting.data.deposit.supportNetworks; // 取得網路資料
+        console.log(supportNetworks.value, "api 資料");
+        // 根據所選幣種過濾網路
+        filteredNetworks.value = supportNetworks.value.filter((network) =>
+          network.supportSymbols.some(
+            (symbol) => symbol.symbol === params.supportCoin
+          )
+        );
+
+        console.log(filteredNetworks.value, " 該幣種的所有網路");
 
         // 检查 networkSetting.data 是否存在，并从 withdraw 部分获取数据
-        if (networkSetting) {
-          // 更新網路選擇框的選項
-          options.supportNetworks =
-            networkSetting.data.deposit.supportNetworks.map((network) => ({
-              label: network.networkFullName,
-              value: network.network,
-              protocol: network.protocol,
-              confirmMins: network.confirmMins,
-              fullName: network.networkFullName,
-            }));
-        } else {
-          console.error(
-            "NetworkSetting data is not in expected format:",
-            networkSetting.data
-          );
-        }
+        // if (networkSetting) {
+        //   // 更新網路選擇框的選項
+        //   options.supportNetworks =
+        //     networkSetting.data.deposit.supportNetworks.map((network) => ({
+        //       label: network.networkFullName,
+        //       value: network.network,
+        //       protocol: network.protocol,
+        //       confirmMins: network.confirmMins,
+        //       fullName: network.networkFullName,
+        //     }));
+        // } else {
+        //   console.error(
+        //     "NetworkSetting data is not in expected format:",
+        //     networkSetting.data
+        //   );
+        // }
       } catch (error) {
         console.error("Failed to get NetworkSetting:", error);
       }
@@ -327,7 +351,7 @@ onMounted(async () => {
       options.supportCoins.push({
         ImagePath: iconMap[supportCoin.symbol] || "",
         label: supportCoin.fullName,
-        value: supportCoin.fullName,
+        value: supportCoin.symbol,
         symbol: supportCoin.symbol,
       });
     });
