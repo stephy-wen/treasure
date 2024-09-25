@@ -664,8 +664,8 @@ function verifyCode() {
 // const email = ref("winnielin0527a@gmail.com");
 
 
-const verifyCodeWithAPI = async (code, type) => {
-  console.log(email.value)
+const verifyCodeWithAPI = async (code) => {
+  const type = "WithdrawApply";
   try {
     const response = await api.account.checkVerificationCode(
       type,
