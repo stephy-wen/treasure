@@ -278,6 +278,7 @@ const ChangePassword = async () => {
     // 發送請求
     const response = await changePassword(passwordPayload);
     if (response.data.success) {
+      currentPasswordValid = true;
       errorMessage.value = "";
     }
   } catch (error) {
