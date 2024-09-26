@@ -121,7 +121,7 @@
           </template>
 
           <!-- 步驟 4: 成功頁面 -->
-          <template v-slot:extra-final v-if="currentStep === 4">
+          <!-- <template v-slot:extra-final v-if="currentStep === 4">
             <div class="text-center">
               <img
                 src="../../assets/images/icon/success.svg"
@@ -132,7 +132,7 @@
                 You updated the password successfully!
               </p>
             </div>
-          </template>
+          </template> -->
 
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
@@ -158,6 +158,7 @@ import ImageSide from "@/components/ImageSide.vue";
 import modules from "@/services/modules.js"; // import API module
 import { handleApiError } from "@/utils/errorHandler.js";
 import { ElMessage } from "element-plus";
+import { useUserStore } from "@/stores/user";
 
 let verificationAttempts = 0;
 
@@ -168,6 +169,7 @@ const {
 
 const router = useRouter();
 const route = useRoute();
+const userStore = useUserStore();
 
 // 定義步驟狀態
 const currentStep = ref(1);
@@ -341,6 +343,12 @@ const registerAccount = async () => {
     if (response.data.success) {
       handleStepChange(currentStep.value + 1);
       errorMessage.value = "";
+
+      // 註冊成功後自動登入
+      await loginUser(userData.email, userData.password);
+      
+      // 跳轉到首頁
+      router.push("/");
     }
   } catch (error) {
     if (error.response && error.response.data.message === "Account is not Exist") {
@@ -350,6 +358,22 @@ const registerAccount = async () => {
     errorMessage.value = handleApiError(error);
   } finally {
     isButtonDisabled.value = false;
+  }
+};
+
+// 自動登入函數
+const loginUser = async (email, password) => {
+  try {
+    const response = await userStore.loginUser({
+      email: email,
+      password: password,
+    });
+    if (response.data.success) {
+      // 設置token或其他必要的用戶狀態
+      userStore.setToken(response.data.data.token);
+    }
+  } catch (error) {
+    errorMessage.value = handleApiError(error);
   }
 };
 
@@ -439,7 +463,7 @@ const buttonText = computed(() => {
     case 3:
       return "Register";
     case 4:
-      return "Go to Homepage";
+      return "Start";
     default:
       return "Next";
   }
