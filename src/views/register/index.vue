@@ -60,7 +60,7 @@
           <template v-slot:extra-input v-if="currentStep === 2">
             <p class="verificationMessage">
               We've sent a verification code to your email. Please enter it
-              below within 30 minutes.
+              below within 5 minutes.
             </p>
             <input
               type="text"
