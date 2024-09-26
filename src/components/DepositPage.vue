@@ -216,12 +216,12 @@ const copyAddress = async () => {
   try {
     await navigator.clipboard.writeText(params.address);
     ElMessage({
-      message: "address 已成功複製！",
+      message: "Address copied successfully.",
       type: "success",
     });
   } catch (error) {
     ElMessage.error({
-      message: "複製失敗，請重試！",
+      message: "Copy failed, please try again!",
       duration: 3000,
     });
   }
@@ -230,8 +230,6 @@ const copyAddress = async () => {
 watch(
   [() => params.supportCoin, () => params.selectNetwork],
   async ([newSupportCoin, newSelectNetwork]) => {
-    console.log(newSupportCoin, "選擇的貨幣");
-    console.log(newSelectNetwork, "選擇的網路");
     if (newSupportCoin && newSelectNetwork) {
       apiIsLoading.value = true;
 
@@ -240,7 +238,7 @@ watch(
         symbol: newSupportCoin,
       };
       const response = await getAddress(formData);
-      console.log(response, "地址");
+
       if (response?.data?.address) {
         params.address = response.data.address;
       }
@@ -253,15 +251,7 @@ watch(
 // api - 取得地址
 const getAddress = async (formData) => {
   try {
-    // const formData = {
-    //   network: params.selectNetwork,
-    //   symbol: params.supportCoin,
-    // };
-    console.log("formData", formData);
     const response = await api.asset.getAddress(formData);
-
-    console.log("CryptocurrencySetting get successfully:", response);
-
     return response.data;
   } catch (error) {
     console.error("Failed to get CryptocurrencySetting:", error);
@@ -289,15 +279,13 @@ watch(
       try {
         const networkSetting = await getCryptocurrencySetting(newValue);
         supportNetworks.value = networkSetting.data.deposit.supportNetworks; // 取得網路資料
-        console.log(supportNetworks.value, "api 資料");
+
         // 根據所選幣種過濾網路
         filteredNetworks.value = supportNetworks.value.filter((network) =>
           network.supportSymbols.some(
             (symbol) => symbol.symbol === params.supportCoin
           )
         );
-
-        console.log(filteredNetworks.value, " 該幣種的所有網路");
 
         // 检查 networkSetting.data 是否存在，并从 withdraw 部分获取数据
         // if (networkSetting) {

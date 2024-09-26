@@ -323,12 +323,12 @@ const copyUserId = async () => {
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
-      message: "User ID 已成功複製！",
+      message: "User ID Copied successfully.",
       type: "success",
     });
   } catch (error) {
     ElMessage.error({
-      message: "複製失敗，請重試！",
+      message: "Copy failed, please try again!",
       duration: 3000,
     });
   }

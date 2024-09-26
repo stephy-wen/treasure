@@ -142,12 +142,12 @@ const copyUserId = async () => {
   try {
     await navigator.clipboard.writeText(userId.value);
     ElMessage({
-      message: "User ID 已成功複製！",
+      message: "User ID Copied successfully.",
       type: "success",
     });
   } catch (error) {
     ElMessage.error({
-      message: "複製失敗，請重試！",
+      message: "Copy failed, please try again!",
       duration: 3000,
     });
   }
@@ -157,12 +157,12 @@ const copyUserLink = async () => {
   try {
     await navigator.clipboard.writeText(referralUrl.value);
     ElMessage({
-      message: "url 已成功複製！",
+      message: "Url Copied successfully.",
       type: "success",
     });
   } catch (error) {
     ElMessage.error({
-      message: "複製失敗，請重試！",
+      message: "Copy failed, please try again!",
       duration: 3000,
     });
   }
