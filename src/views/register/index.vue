@@ -228,7 +228,6 @@ const handleButtonClick = async () => {
 const sendVerificationEmail = async (shouldChangeStep = true) => {
   try {
     const response = await sendVerificationCode(verificationType, email.value);
-    console.log(response, "驗證信已發送");
     // 如果成功 就到下一步
     if (response.data.success) {
       if (shouldChangeStep) {  // 檢查是否應該改變步驟
@@ -247,7 +246,7 @@ const sendVerificationEmail = async (shouldChangeStep = true) => {
 // 驗證驗證碼
 const verifyCode = async () => {
   if (!verificationCode.value) {
-    errorMessage.value = "請輸入驗證碼";
+    errorMessage.value = "Please enter the verification code.";
     isButtonDisabled.value = false;
     return false; // 驗證碼為空，返回 false
   }
@@ -273,7 +272,7 @@ const verifyCode = async () => {
     if (error.response && error.response.data.systemCode === 2005) {
       // 增加錯誤次數
       verificationAttempts += 1;
-      errorMessage.value = "驗證碼不正確";
+      errorMessage.value = "Incorrect verification code.";
 
       // 檢查是否達到 5 次錯誤
       if (verificationAttempts >= 5) {
@@ -283,9 +282,9 @@ const verifyCode = async () => {
         });
       }
     } else if (error.response && error.response.data.systemCode === 2006) {
-      errorMessage.value = "驗證碼已過期";
+      errorMessage.value = "The verification code has expired.";
     } else {
-      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+      errorMessage.value = "server error occurred, please try again later.";
     }
     return false; // 驗證失敗
   } finally {
@@ -345,7 +344,7 @@ const registerAccount = async () => {
     }
   } catch (error) {
     if (error.response && error.response.data.message === "Account is not Exist") {
-      errorMessage.value = "推薦碼錯誤";
+      errorMessage.value = "Incorrect referral code.";
       return
     }
     errorMessage.value = handleApiError(error);
@@ -386,7 +385,7 @@ const validateStep = () => {
   if (currentStep.value === 3) {
     // 如果密碼為空
     if (!password.value) {
-      errorMessage.value = "密碼不得為空";
+      errorMessage.value = "Password cannot be empty.";
       return false;
     }
 

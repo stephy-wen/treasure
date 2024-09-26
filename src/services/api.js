@@ -36,7 +36,7 @@ apiClient.interceptors.response.use(
     // 可在這裡做全局錯誤處理
     if (error.response.status === 401) {
       ElMessage.error({
-        message: "請重新登入！",
+        message: "Please log in again!",
         duration: 3000,
       });
       console.log("Token 過期或無效，請重新登入。");

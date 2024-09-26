@@ -226,7 +226,7 @@ const sendVerificationEmail = async (shouldChangeStep = true) => {
 // 驗證驗證碼
 const verifyCode = async () => {
   if (!verificationCode.value) {
-    errorMessage.value = "請輸入驗證碼";
+    errorMessage.value = "Please enter the verification code.";
     isButtonDisabled.value = false;
     return false; // 驗證碼為空，返回 false
   }
@@ -251,7 +251,7 @@ const verifyCode = async () => {
     if (error.response && error.response.data.systemCode === 2005) {
       // 增加錯誤次數
       verificationAttempts += 1;
-      errorMessage.value = "驗證碼不正確";
+      errorMessage.value = "Incorrect verification code.";
 
       // 檢查是否達到 5 次錯誤
       if (verificationAttempts >= 5) {
@@ -261,9 +261,9 @@ const verifyCode = async () => {
         });
       }
     } else if (error.response && error.response.data.systemCode === 2006) {
-      errorMessage.value = "驗證碼已過期";
+      errorMessage.value = "The verification code has expired.";
     } else {
-      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+      errorMessage.value = "server error occurred, please try again later.";
     }
     return false; // 驗證失敗
   } finally {

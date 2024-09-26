@@ -185,22 +185,22 @@ const handleButtonClick = async () => {
       const isStepValid = validateStep();
 
       if (!isStepValid) return; // 如果前端驗證失敗，阻止後續操作
-      // 初始化錯誤訊息陣列
       const errors = [];
 
       // 如果前端驗證通過，則進行後端驗證，首先驗證碼
       await verifyCode();
+
       // 接著驗證當前密碼，並更新狀態
       await ChangePassword();
 
        // 驗證驗證碼是否正確
       if (!codeVerified) {
-        errors.push("驗證碼不正確");
+        errors.push("The verification code is incorrect.");
       }
 
       // 驗證舊密碼是否正確
       if (!currentPasswordValid) {
-        errors.push("當前密碼不正確");
+        errors.push("The current password is incorrect.");
       }
 
       if (errors.length > 0) {
@@ -213,7 +213,7 @@ const handleButtonClick = async () => {
     } catch (error) {
       // 處理非預期錯誤
       console.error("發生未預期的錯誤", error);
-      errorMessage.value = "發生了一些錯誤，請稍後再試";
+      errorMessage.value = "An error occurred, please try again later.";
     }
   } else {
     returnToLogin();
@@ -259,7 +259,7 @@ const verifyCode = async () => {
       codeVerified = false;
     } else {
       // 處理錯誤
-      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+      errorMessage.value = "server error occurred, please try again later.";
       console.error("驗證失敗", error);
     }
   }
@@ -288,9 +288,9 @@ const ChangePassword = async () => {
     } else {
       currentPasswordValid = true;  // 其他情況下仍然設置為 true
       // 處理錯誤
-      // errorMessage.value = handleApiError(error);
+      errorMessage.value = handleApiError(error);
       console.error("驗證失敗", error);
-      errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+      //errorMessage.value = "server error occurred, please try again later.";
     }
   }
 
@@ -301,34 +301,34 @@ const validateStep = () => {
   const errors = [];
 
   if (!verificationCode.value) {
-    errors.push("請輸入驗證碼");
+    errors.push("Please enter the verification code.");
   }
 
   if (!currentPassword.value) {
-    errors.push("請輸入當前密碼");
+    errors.push("Please enter the current password.");
   }
 
-  // 驗證舊密碼與新密碼是否不同
+  // Verify that the old password and the new password are different
   if (newPassword.value === currentPassword.value) {
-    errors.push("新舊密碼不得相同");
+    errors.push("The new password cannot be the same as the current password.");
   }
 
-  // 驗證新密碼與確認密碼是否一致
+  // Verify that the new password and confirm password match
   if (newPassword.value !== confirmPassword.value) {
-    errors.push("新密碼和確認密碼不一致");
+    errors.push("The new password and confirm password do not match.");
   }
 
-  // 驗證密碼的強度
+  // Validate the strength of the password
   const rules = [
-    { regex: /.{8,}/, message: "密碼長度至少為 8 位" },
-    { regex: /[0-9]/, message: "密碼必須包含至少一個數字" },
-    { regex: /[a-z]/, message: "密碼必須包含至少一個小寫字母" },
-    { regex: /[A-Z]/, message: "密碼必須包含至少一個大寫字母" },
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+    { regex: /[0-9]/, message: "Password must contain at least one number." },
+    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
+    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
   ];
 
   for (const rule of rules) {
     if (!rule.regex.test(newPassword.value)) {
-      errors.push(`新密碼: ${rule.message}`);
+      errors.push(`newPassword: ${rule.message}`);
     }
   }
 
@@ -351,7 +351,7 @@ const sendVerificationEmail = async () => {
       startTimer(); // 啟動新的倒計時
     }
   } catch (error) {
-    errorMessage.value = "伺服器發生錯誤，請稍後再試。";
+    errorMessage.value = "server error occurred, please try again later.";
     console.error("發送驗證信失敗", error);
   }
 };
