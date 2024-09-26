@@ -36,9 +36,8 @@
                     src="@/assets/images/icon/md-warning 1.svg"
                     alt=""
                   />
-                  <p>Current platform points are insufficient !</p>
+                  <p>Increase Balance</p>
                 </div>
-                <p class="mb-3 winnie-text-gray">Current Balance 150 CCT</p>
               </template>
             </DepositPage>
           </div>
