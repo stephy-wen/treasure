@@ -660,7 +660,7 @@ const codes = ref(["", "", "", "", "", ""]);
 const inputRefs = ref([]); // 這將儲存所有 input 的引用
 
 // 當用戶在一格中輸入後，自動跳到下一格
-function handleInput(index) {
+const handleInput = (index) => {
   if (codes.value[index].length === 1 && index < codes.value.length - 1) {
     inputRefs.value[index + 1].focus();
   }
@@ -672,23 +672,23 @@ function handleInput(index) {
       verifyCode(); // 當輸入到最後一格，並且所有格子都有輸入時調用驗證函數
     }
   }
-}
+};
 
 // 當用戶按下 backspace 鍵時，自動退回到前一格
-function handleBackspace(index) {
+const handleBackspace = (index) => {
   if (codes.value[index] === "" && index > 0) {
     inputRefs.value[index - 1].focus();
   }
-}
+};
 
 // 拼接六個輸入的值，並驗證
-function verifyCode() {
+const verifyCode = () => {
   const fullCode = codes.value.join("");
   console.log("Full code:", fullCode);
 
   // API 驗證請求
   verifyCodeWithAPI(fullCode);
-}
+};
 
 // 寄驗證信
 const checkFormDataAndSendEmail = async () => {
