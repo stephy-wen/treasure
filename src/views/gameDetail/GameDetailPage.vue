@@ -83,11 +83,21 @@ const handleResize = () => {
 const loadGameDetails = async () => {
   const gameId = route.params.gameId; // 獲取路由參數中的 gameId
   try {
-    // 並行調用 API
-    const [gameResponse, accountInfo] = await Promise.all([
-      getGameRoom(gameId),
-      getAccountInfo(withGamePlayData, withRewardData, withRewardBalanceData),
-    ]);
+    // 取得 token
+    const token = localStorage.getItem("token");
+
+    // 構建 Promise 列表，先將不需要 token 的 API 放進去
+    const promises = [getGameRoom(gameId)];
+
+    // 如果 token 存在，將需要 token 的 API 加入 Promise 列表
+    if (token) {
+      promises.push(
+        getAccountInfo(withGamePlayData, withRewardData, withRewardBalanceData)
+      );
+    }
+
+    // 使用 Promise.all 來執行所有的 Promise
+    const [gameResponse, accountInfo] = await Promise.all(promises);
 
     // 確保 API 返回了有效的遊戲數據
     if (gameResponse && gameResponse.data.data) {
@@ -114,7 +124,7 @@ const loadGameDetails = async () => {
       const balance = accountData.balanceData?.balance || 0;
       userStore.updateBalance(balance);
     } else {
-      console.error("未獲取到有效的帳戶資料");
+      console.error("No valid account information was obtained.");
     }
   } catch (error) {
     console.error("獲取資料時發生錯誤：", error);
