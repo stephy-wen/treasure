@@ -59,7 +59,11 @@
             </div>
           </div>
           <div class="game-intro-content fs-5">
-            The Game is an interactive on-chain survival game, players join challenges, and the results are revealed once the player limit is reached, with only one winner.<br><span class="fw-bold">One Dollar, One Life — Tyche</span>
+            The Game is an interactive on-chain survival game, players join
+            challenges, and the results are revealed once the player limit is
+            reached, with only one winner.<br /><span class="fw-bold"
+              >One Dollar, One Life — Tyche</span
+            >
           </div>
         </div>
         <div
@@ -240,6 +244,7 @@ const getPlayerData = async (gameId) => {
 
 const refreshGameDetails = () => {
   emit("refreshGameDetails");
+  getPlayerData(route.params.gameId);
 };
 
 // 監聽路由參數 gameId 的變化，當路由變化時重新獲取玩家資料
