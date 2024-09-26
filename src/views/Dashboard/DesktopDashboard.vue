@@ -101,7 +101,7 @@
             <div class="d-flex col">
               <el-tooltip
                 class="box-item customized-tooltip"
-                content="20,000"
+                :content="item.balance"
                 placement="bottom"
                 v-for="item in rewardButtonData"
                 :key="item.round"
