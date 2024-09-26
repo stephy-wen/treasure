@@ -61,6 +61,7 @@
               id="floatingInputPasswordReset"
               placeholder="New Password"
               v-model="password"
+              @input="clearErrorMessage"
               @keydown.enter.prevent="handleButtonClick"
             />
             <label for="floatingInputPasswordReset">Password</label>
@@ -128,6 +129,13 @@ const handleButtonClick = async () => {
       errorMessage.value = "Email cannot be empty";
       return
     }
+
+    // 驗證 Email 格式是否正確
+    if (!validateEmailFormat(email.value)) {
+      errorMessage.value = "Invalid email format";
+      return;
+    }
+
     handleStepChange(currentStep.value + 1);
   } else if (currentStep.value === 2) {
     await login(); // 打登入api
@@ -164,6 +172,16 @@ const handleStepChange = (newStep) => {
   }
 };
 
+// 定義正則表達式來驗證Email格式
+const validateEmailFormat = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// 清除錯誤訊息
+const clearErrorMessage = () => {
+  errorMessage.value = "";
+};
 </script>
 
 <style scoped>
