@@ -267,6 +267,7 @@
                     <button
                       class="withdraw-btn"
                       @click="openWithdrawModal(); checkFormDataAndSendEmail()"
+                      :disabled="!isAddressValid"
                     >
                       Withdraw
                     </button>
@@ -406,6 +407,7 @@ const stepTwoComplete = ref(false); // 控制 Step 3 顯示
 const rewardAddress = ref(""); // 用來提款地址
 const addressError = ref(false); // 地址驗證錯誤標誌
 const addressErrorMessage = ref(""); // 錯誤訊息
+const isAddressValid = ref(false); // 新增一個變數來動態控制按鈕狀態
 const errorMessage = ref("");
 const email = ref("");
 
@@ -549,9 +551,11 @@ const validateAddress = () => {
     if (!addressRegex.test(rewardAddress.value)) {
       addressError.value = true;
       addressErrorMessage.value = `Invalid address format. Please use a valid address for ${selectedReward.rewardFullName}.`;
+      isAddressValid.value = false; // 地址無效，禁用按鈕
     } else {
       addressError.value = false;
       addressErrorMessage.value = ""; // 清空錯誤訊息
+      isAddressValid.value = true; // 地址有效，啟用按鈕
     }
   }
 };
