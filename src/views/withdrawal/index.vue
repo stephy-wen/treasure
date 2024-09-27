@@ -395,7 +395,8 @@ const formValid = computed(() => {
   return (
     params.withdrawAddress !== "" &&
     !addressError.value &&
-    codes.value.every((code) => code !== "")
+    codes.value.every((code) => code !== "") &&
+    isValid.value === true
   ); // 地址有效且驗證碼已填
 });
 
@@ -491,7 +492,7 @@ watch(
 
 // 校验输入金额是否在最小值和最大值范围内
 const validateWithdrawAmountOnBlur = () => {
-  if (params.withdrawAmount && params.withdrawAmount < 20) {
+  if (params.withdrawAmount && params.withdrawAmount < 30) {
     params.withdrawAmount = 30;
   } else if (params.withdrawAmount > params.maxWithdrawAmount) {
     params.withdrawAmount = params.maxWithdrawAmount;
