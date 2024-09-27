@@ -1003,9 +1003,31 @@ const verifyCodeWithAPI = async (code) => {
   align-items: center;
 }
 
-#withdrawModal .modal-content {
+#withdrawModal .modal-content,
+#resultModal .modal-content {
   background-color: #181a20;
   border: 1px solid #414d5a;
+}
+
+#resultModal .modal-header {
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+#resultModal .modal-header h5 {
+  font-size: 32px;
+  padding: 10px;
+}
+
+#resultModal .modal-body {
+  font-size: 20px;
+  padding: 16px 28px;
+}
+
+#resultModal .modal-footer {
+  border-top: none;
+  padding: 10px;
 }
 
 #withdrawModal .modal-footer button {
