@@ -101,7 +101,7 @@
             <div class="d-flex col">
               <el-tooltip
                 class="box-item customized-tooltip"
-                :content="item.balance"
+                :content="item.balance.toString()"
                 placement="bottom"
                 v-for="item in rewardButtonData"
                 :key="item.round"
@@ -183,8 +183,8 @@ import GetRewardsModal from "./component/GetRewardsModal.vue";
 import NicknameReviseModal from "./component/NicknameReviseModal.vue";
 import TableComponent from "@/components/TableComponent.vue";
 import Pagination from "@/components/Pagination.vue";
-
 import VerifyIcon from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import VerifyBlackIcon from "@/assets/images/icon/arcoDesign-launch 1-black.svg";
 import UploadIcon from "@/assets/images/icon/md-file_upload Copy 2.svg";
 import Point from "@/assets/images/icon/balance-icon.png";
 
