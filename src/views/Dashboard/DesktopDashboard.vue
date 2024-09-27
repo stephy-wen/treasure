@@ -289,6 +289,7 @@ const formatHistoryData = (data) => {
       class: "text-center icon-cursor",
       link: history.transactionUrl,
       target: "_blank",
+      blackImage: VerifyBlackIcon,
     },
   ]);
 };

@@ -54,6 +54,13 @@
                 />
               </a>
               <img
+                v-else-if="cell.blackImage"
+                class="img-fluid"
+                :style="cell.imageStyle ? cell.imageStyle : ''"
+                :src="cell.blackImage"
+                alt=""
+              />
+              <img
                 v-else-if="cell.image"
                 class="img-fluid"
                 :style="cell.imageStyle ? cell.imageStyle : ''"
@@ -134,7 +141,7 @@ const props = defineProps({
   border-radius: 0px;
 }
 
-.icon-cursor img{
+.icon-cursor img {
   cursor: pointer;
 }
 </style>
