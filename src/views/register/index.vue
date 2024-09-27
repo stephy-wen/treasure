@@ -12,7 +12,7 @@
         <AuthForm
           :title="formTitle"
           :buttonText="buttonText"
-          :totalSteps="4"
+          :totalSteps="3"
           :currentStep="currentStep"
           @goToLogin="returnToLogin"
           :handleButtonClick="handleButtonClick"
@@ -60,7 +60,7 @@
           <template v-slot:extra-input v-if="currentStep === 2">
             <p class="verificationMessage">
               We've sent a verification code to your email. Please enter it
-              below within 5 minutes.
+              below within 10 minutes.
             </p>
             <input
               type="text"
@@ -137,7 +137,7 @@
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
             <p v-if="errorMessage" class="error-message d-flex align-items-center">
-              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
+              <!-- <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt=""> -->
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -279,7 +279,7 @@ const verifyCode = async () => {
       // 檢查是否達到 5 次錯誤
       if (verificationAttempts >= 5) {
         ElMessage.error({
-          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 60 minutes to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
+          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 1 minute to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
           duration: 3000,
         });
       }
@@ -341,17 +341,13 @@ const registerAccount = async () => {
     // 發送註冊請求
     const response = await register(userData);
     if (response.data.success) {
-      handleStepChange(currentStep.value + 1);
-      errorMessage.value = "";
-
       // 註冊成功後自動登入
+      errorMessage.value = "";
       await loginUser(userData.email, userData.password);
-      
-      // 跳轉到首頁
       router.push("/");
     }
   } catch (error) {
-    if (error.response && error.response.data.message === "Account is not Exist") {
+    if (error.response && error.response.data.message === "Account is not Exist.") {
       errorMessage.value = "Incorrect referral code.";
       return
     }
@@ -428,20 +424,20 @@ const validatePasswords = () => {
   const errors = [];
   if (password.value !== confirmPassword.value) {
     errors.push(
-      "Password and Confirm password are different. Please re-enter it"
+      "Password and Confirm password are different."
     );
   }
 
   const rules = [
-    { regex: /.{8,}/, message: "Password must be at least 8 characters long" },
-    { regex: /[0-9]/, message: "Password must contain at least one number" },
-    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter" },
-    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter" },
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+    { regex: /[0-9]/, message: "Password must contain at least one number." },
+    { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
+    { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
   ];
 
   for (const rule of rules) {
     if (!rule.regex.test(password.value)) {
-      errors.push(`Password: ${rule.message}`);
+      errors.push(`${rule.message}`);
     }
   }
 
@@ -462,8 +458,6 @@ const buttonText = computed(() => {
       return "Verify";
     case 3:
       return "Register";
-    case 4:
-      return "Start";
     default:
       return "Next";
   }
@@ -633,8 +627,10 @@ button.arrow:hover {
 
 pre {
   font-family: "Inter", sans-serif !important;
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 0px;
+  overflow: visible;
+  text-align: start;
 }
 
 input:-webkit-autofill,
