@@ -151,7 +151,7 @@
               </p>
             </div>
             <p class="my-2">Minimum deposit 10 USD</p>
-            <p class="my-2 winnie-text-gray">1 USD = 1 OCT</p>
+            <p class="my-2 winnie-text-gray">1 USD = 1 POINT</p>
             <p
               class="text-start deposit-notice-color d-md-none"
               style="font-size: 12px"
