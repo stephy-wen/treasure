@@ -287,6 +287,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#withdrawModal"
                       @click="checkFormDataAndSendEmail"
+                      :disabled="!isAddressValid"
                     >
                       Withdraw
                     </button>
@@ -376,11 +377,13 @@ import { handleApiError } from "@/utils/errorHandler.js";
 
 const addressError = ref(false); // 地址驗證錯誤標誌
 const addressErrorMessage = ref(""); // 錯誤訊息
+const isAddressValid = ref(false); // 新增一個變數來動態控制按鈕狀態
+
 
 // 定義是否可以提交表單
 const formValid = computed(() => {
   return (
-    params.withdrawAddress.value !== "" &&
+    params.withdrawAddress !== "" &&
     !addressError.value &&
     codes.value.every((code) => code !== "")
   ); // 地址有效且驗證碼已填
@@ -564,17 +567,17 @@ const checkFormDataAndSendEmail = async () => {
 const validateAddress = async () => {
   await getWithDrawalData()
 
-
   const addressRegex = new RegExp(addressRule.value); // 取得該獎勵的 addressRegex
   console.log()
   if (!addressRegex.test(params.withdrawAddress)) {
     addressError.value = true;
     addressErrorMessage.value = `Invalid address format. Please use a valid address for ${params.supportCoin}.`;
+    isAddressValid.value = false; // 地址無效，禁用按鈕
   } else {
     addressError.value = false;
     addressErrorMessage.value = ""; // 清空錯誤訊息
+    isAddressValid.value = true; // 地址有效，啟用按鈕
   }
-
 };
 
 const supportNetworks = ref([]);
@@ -891,6 +894,13 @@ const verifyCodeWithAPI = async (code) => {
   background-color: #fcd535;
   padding: 8px 30px;
   color: #2b3139;
+}
+
+.withdraw-btn:disabled {
+  background-color:  #2b3139;
+  color: #F8F8F8;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 @media (max-width: 575.98px) {
