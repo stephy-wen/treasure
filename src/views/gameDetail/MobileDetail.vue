@@ -106,9 +106,9 @@
               @closeModal="showWinnerModal = false"
             />
 
-            <button class="btn btn-outline-primary" @click="openWinnerModal">
+            <!-- <button class="btn btn-outline-primary" @click="openWinnerModal">
               WinnerModal
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
