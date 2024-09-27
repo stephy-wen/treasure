@@ -337,39 +337,12 @@
                     </div>
                   </div>
                   <!-- Result Modal (新的 Modal) -->
-                  <div
-                    class="modal fade"
-                    id="resultModal"
-                    tabindex="-1"
-                    aria-labelledby="resultModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="resultModalLabel">Withdraw Result</h5>
-                          <button
-                            type="button"
-                            class="btn winnie-btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <font-awesome-icon icon="fa-solid fa-xmark" />
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <!-- 顯示成功或失敗的訊息 -->
-                          <p v-if="isWithdrawSuccess">Withdrawal Successful!</p>
-                          <p v-else>Withdrawal Failed. Please try again.</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ResultModal
+                    :isSuccess="isWithdrawSuccess"
+                    successMessage="Withdrawal Successful!"
+                    errorMessage="Withdrawal Failed. Please try again."
+                    @close="closeResultModal"
+                  />
                   <!-- 新的modal -->
                 </div>
               </div>
@@ -384,6 +357,7 @@
 <script setup>
 import api from "@/services/modules";
 import dayjs from "dayjs";
+import ResultModal from '@/components/ResultModal.vue';
 import { ref, onMounted, reactive, watch, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { getCurrencyIcon } from "@/assets/images.js";
@@ -412,6 +386,11 @@ const closeWithdrawModal = () => {
 const openResultModal = () => {
   const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
   resultModal.show(); // 打開 Result modal
+};
+
+const closeResultModal = () => {
+  const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+  resultModal.hide(); // 關閉 Result modal
 };
 
 
@@ -582,7 +561,7 @@ const WithdrawReward = async () => {
   console.log("1");
 
   // 如果地址驗證有誤，不允許提交
-  if (addressError.value) return;
+  // if (addressError.value) return;
   console.log("地址錯誤被中斷");
   try {
     const selectedReward = gameRewardHistoryData.value.find(
