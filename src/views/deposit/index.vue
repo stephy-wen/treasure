@@ -3,50 +3,59 @@
     <div class="container winnie-deposit tabs mt-5 px-3 px-lg-0">
       <div class="d-flex justify-content-center align-items-center">
         <div class="p-2 text-center">
-            <router-link to="/account/deposit">
-            <button class="d-md-none mb-2">
-                <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
+          <router-link to="/account/deposit">
+            <button class="d-md-none mb-2 winnie-btn-active">
+              <img
+                src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg"
+                alt=""
+              />
             </button>
-            <p class="fw-bold">Deposit</p>
-            </router-link>
+            <p class="fw-bold winnie-text-active">Deposit</p>
+          </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">
-            <router-link to="/account/withdrawal">
+          <router-link to="/account/withdrawal">
             <button class="d-md-none mb-2">
-                <img src="@/assets/images/icon/iconPark-arrow-down 1.svg" alt="">
+              <img
+                src="@/assets/images/icon/iconPark-arrow-down 1.svg"
+                alt=""
+              />
             </button>
             <p class="fw-bold">Withdraw</p>
-            </router-link>
+          </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">
-            <router-link to="/account/reward">
+          <router-link to="/account/reward">
             <button class="d-md-none mb-2">
-                <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
+              <img
+                src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg"
+                alt=""
+              />
             </button>
             <p class="fw-bold">Reward</p>
-            </router-link>
+          </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">
-            <router-link to="/dashboard">
+          <router-link to="/dashboard">
             <button class="d-md-none mb-2">
-                <img src="@/assets/images/icon/antOutline-history 1.svg" alt="">
+              <img src="@/assets/images/icon/antOutline-history 1.svg" alt="" />
             </button>
             <p class="fw-bold">History</p>
-            </router-link>
+          </router-link>
         </div>
       </div>
-    </div> 
+    </div>
     <div class="d-flex justify-content-center">
-      <DepositPage/>
+      <DepositPage />
     </div>
   </div>
 </template>
 
 <script setup>
-import DepositPage from '../../components/DepositPage.vue';
+import DepositPage from "../../components/DepositPage.vue";
 </script>
 
 <style scoped>
@@ -56,376 +65,368 @@ import DepositPage from '../../components/DepositPage.vue';
   flex-direction: column;
 }
 .container {
-    width: 100%;
+  width: 100%;
 }
 /* deposit */
 
 @media (min-width: 575.98px) and (max-width: 767.98px) {
-   .winnie-deposit .container {
-        width: 75%;
-    }
+  .winnie-deposit .container {
+    width: 75%;
   }
-
+}
 
 /* .winnie-deposit {
     height: calc(100vh - 200px);
 } */
 
 .winnie-deposit a p {
-    color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .winnie-deposit a button {
-    color: #F8F8F8;
-    background-color: #2B3139;
-    border-radius: 4px;
-    padding: 10px;
-    border: none;
+  color: #f8f8f8;
+  background-color: #2b3139;
+  border-radius: 4px;
+  padding: 10px;
+  border: none;
 }
 
 .winnie-deposit a button:hover,
 .winnie-deposit a button:focus {
-    color: #F8F8F8;
-    background-color: #414D5A;
+  color: #f8f8f8;
+  background-color: #414d5a;
 }
 
 .winnie-deposit .vertical-line {
-    width: 1px;
-    background-color: #414D5A;
-    height: 100px;
-    margin: 0 20px;
+  width: 1px;
+  background-color: #414d5a;
+  height: 100px;
+  margin: 0 20px;
 }
 
 .winnie-deposit .vertical-line.active {
-    background-color: #F8F8F8;
+  background-color: #f8f8f8;
 }
 
-.step-one .form-control{
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #BBB;
-    padding: 8px;
-    outline: none;
-    border-radius: 0px;
-    color: #F8F8F8;
-    text-align: end;
+.step-one .form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #bbb;
+  padding: 8px;
+  outline: none;
+  border-radius: 0px;
+  color: #f8f8f8;
+  text-align: end;
 }
 
-.step-one .form-control:focus{
-    border-bottom: 1px solid #F8F8F8;
-    background-color: transparent;
+.step-one .form-control:focus {
+  border-bottom: 1px solid #f8f8f8;
+  background-color: transparent;
 }
 
 .max-btn {
-    border: 1px solid #F8F8F8;
-    background-color: transparent;
-    border-radius: 0px;
-    color: #F8F8F8;
+  border: 1px solid #f8f8f8;
+  background-color: transparent;
+  border-radius: 0px;
+  color: #f8f8f8;
 }
 
 .step-two .form-control {
-    background-color: transparent;
-    color: #F8F8F8;
-    border: 1px solid #6c757d;
+  background-color: transparent;
+  color: #f8f8f8;
+  border: 1px solid #6c757d;
 }
 
 .step-two .form-control::placeholder {
-    color: #6c757d;
+  color: #6c757d;
 }
 
 .step-three .form-control {
-    background-color: transparent;
-    border: 1px solid #6c757d;
-    color: #F8F8F8;
-    border-right: none;
+  background-color: transparent;
+  border: 1px solid #6c757d;
+  color: #f8f8f8;
+  border-right: none;
 }
 
-
 .step-three .input-group {
-    width: 100%;
+  width: 100%;
 }
 
 .step-three .info-section {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .step-three .info-section .info-row {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .step-three .input-group input {
-    color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .step-container .step-three .input-group {
-    width: 280px;
-    background-color: transparent;
+  width: 280px;
+  background-color: transparent;
 }
 
 .step-three .info-section {
-    width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 420px) and (max-width: 575.98px) {
-    .step-container .step-three .input-group,
-    .step-three .info-section {
-            width: 380px;
-        }
+  .step-container .step-three .input-group,
+  .step-three .info-section {
+    width: 380px;
+  }
 }
 @media (min-width: 575.98px) {
-    .step-container .step-three .input-group,
-    .step-three .info-section {
-        width: 400px;
-    }
+  .step-container .step-three .input-group,
+  .step-three .info-section {
+    width: 400px;
+  }
 }
 @media (min-width: 767.98px) {
-.step-container .step-three .input-group,
-.step-three .info-section {
+  .step-container .step-three .input-group,
+  .step-three .info-section {
     width: 534px;
-}
+  }
 }
 @media (min-width: 991.98px) {
-.step-container .step-three .input-group,
-.step-three .info-section {
+  .step-container .step-three .input-group,
+  .step-three .info-section {
     width: 600px;
-}
+  }
 }
 
 #depositRemindModal {
-    background-color: rgba(0, 0, 0, 0.50);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #depositRemindModal .modal-header {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 #depositRemindModal .modal-footer {
-    border-top: none;
+  border-top: none;
 }
 
-#depositRemindModal button{
-    background-color: #FCD535;
-    color: #181A20;
+#depositRemindModal button {
+  background-color: #fcd535;
+  color: #181a20;
 }
 
-#depositRemindModal .modal-content{
-    border: 1px solid #414D5A;
+#depositRemindModal .modal-content {
+  border: 1px solid #414d5a;
 }
 
 /* 共用 */
 
 .divider {
-    width: 1px;
-    height: 30px;
-    background-color:#BBB;
-    margin: 0px 30px;
+  width: 1px;
+  height: 30px;
+  background-color: #bbb;
+  margin: 0px 30px;
 }
 
-
 @media (min-width: 575.98px) {
-.step-container {
-        display: flex;
-        align-items: flex-start;
-        /* margin-bottom: 30px; */
-    }
+  .step-container {
+    display: flex;
+    align-items: flex-start;
+    /* margin-bottom: 30px; */
+  }
 }
 
 .circle-number {
-    width: 40px;
-    height: 40px;
-    background-color: #2B3139;
-    color: #3D3D3D;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: #2b3139;
+  color: #3d3d3d;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
-.circle-number.active{
-    background-color: #414D5A;
-    color: #F8F8F8;
+.circle-number.active {
+  background-color: #414d5a;
+  color: #f8f8f8;
 }
 
 .step-title {
-    display: flex;
-    align-items: center;
-    /* margin-bottom: 10px; */
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 10px; */
 }
 
-
-
-.dropdown-menu{
-    background-color: #2B3139;
-    --bs-dropdown-link-hover-bg: #414D5A;
+.dropdown-menu {
+  background-color: #2b3139;
+  --bs-dropdown-link-hover-bg: #414d5a;
 }
-
 
 ul li a img {
-    max-width: 24px;
+  max-width: 24px;
 }
 
-ul li a .abbr{
-    font-weight: bold;
-    color: #F8F8F8;
+ul li a .abbr {
+  font-weight: bold;
+  color: #f8f8f8;
 }
-ul li a .full-name{
-    color: #BBB;
+ul li a .full-name {
+  color: #bbb;
 }
 
-.step-container .dropdown-toggle{
-    width: 280px;
-    background-color: transparent;
-}
-@media (min-width: 420px) and (max-width: 575.98px) {
-    .step-container .dropdown-toggle {
-            width: 380px;
-        }
-}
-@media (min-width: 575.98px) {
 .step-container .dropdown-toggle {
-    width: 400px;
-}
-}
-@media (min-width: 767.98px) {
-.step-container .dropdown-toggle{
-    width: 534px;
-}
-}
-@media (min-width: 991.98px) {
-.step-container .dropdown-toggle{
-    width: 600px;
-}
-}
-
-
-.step-container ul.dropdown-menu {
-width: 280px;
+  width: 280px;
+  background-color: transparent;
 }
 @media (min-width: 420px) and (max-width: 575.98px) {
-.step-container ul.dropdown-menu {
+  .step-container .dropdown-toggle {
     width: 380px;
-}
+  }
 }
 @media (min-width: 575.98px) {
-.step-container ul.dropdown-menu {
+  .step-container .dropdown-toggle {
     width: 400px;
-}
+  }
 }
 @media (min-width: 767.98px) {
-.step-container ul.dropdown-menu {
+  .step-container .dropdown-toggle {
     width: 534px;
-}
+  }
 }
 @media (min-width: 991.98px) {
-.step-container ul.dropdown-menu {
+  .step-container .dropdown-toggle {
     width: 600px;
+  }
 }
+
+.step-container ul.dropdown-menu {
+  width: 280px;
+}
+@media (min-width: 420px) and (max-width: 575.98px) {
+  .step-container ul.dropdown-menu {
+    width: 380px;
+  }
+}
+@media (min-width: 575.98px) {
+  .step-container ul.dropdown-menu {
+    width: 400px;
+  }
+}
+@media (min-width: 767.98px) {
+  .step-container ul.dropdown-menu {
+    width: 534px;
+  }
+}
+@media (min-width: 991.98px) {
+  .step-container ul.dropdown-menu {
+    width: 600px;
+  }
 }
 
 .winnie-text-white {
-    color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .winnie-text-gray {
-    color: #BBB;
+  color: #bbb;
 }
 
 .deposit-notice-color {
-    color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .deposit-notice-bk-color {
-    background-color: #414D5A;
-    border-radius: 8px;
+  background-color: #414d5a;
+  border-radius: 8px;
 }
 
 .winnie-fs-small {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .company-address {
-    border: 1px solid #565e64;
-    color: #F8F8F8;
-    border-radius: 8px;
+  border: 1px solid #565e64;
+  color: #f8f8f8;
+  border-radius: 8px;
 }
 
 .deposit-notice-bottom {
-    width: 280px;
+  width: 280px;
 }
 @media (min-width: 420px) and (max-width: 575.98px) {
-    .deposit-notice-bottom {
-            width: 380px;
-        }
+  .deposit-notice-bottom {
+    width: 380px;
+  }
 }
 @media (min-width: 575.98px) {
-    .deposit-notice-bottom {
-        width: 400px;
-    }
+  .deposit-notice-bottom {
+    width: 400px;
+  }
 }
 
 @media (min-width: 767.98px) {
-.deposit-notice-bottom {
+  .deposit-notice-bottom {
     width: 534px;
-}
+  }
 }
 @media (min-width: 991.98px) {
-.deposit-notice-bottom {
+  .deposit-notice-bottom {
     width: 600px;
-}
+  }
 }
 
 .company-address p {
-font-size: 16px;
+  font-size: 16px;
 }
 @media (min-width: 767.98px) {
-.company-address p {
+  .company-address p {
     font-size: 14px;
-}
+  }
 }
 
 .qrcode-pic {
-width: 160px;
+  width: 160px;
 }
 
 @media (min-width: 767.98px) {
-.qrcode-pic {
+  .qrcode-pic {
     width: 120px;
-    }
+  }
 }
 @media (min-width: 991.98px) {
-.qrcode-pic {
+  .qrcode-pic {
     width: 170px;
-    }
+  }
 }
 
 @media (max-width: 768px) {
-    .company-address p {
-        word-wrap: break-word;
-        word-break: break-all;
-    }
+  .company-address p {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 
 .form-control {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .form-control:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .winnie-btn-close {
-    background-color: #2B3139;
-    color: #F8F8F8;
-    border-radius: 50px;
-    border: none;
+  background-color: #2b3139;
+  color: #f8f8f8;
+  border-radius: 50px;
+  border: none;
 }
 
 .winnie-btn-close:hover {
-    background-color: #414D5A;
+  background-color: #414d5a;
 }
-
 </style>

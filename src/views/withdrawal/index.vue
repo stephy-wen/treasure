@@ -19,13 +19,13 @@
             <div class="divider align-items-center d-none d-md-inline"></div>
             <div class="p-2 text-center">
               <router-link to="/account/withdrawal">
-                <button class="d-md-none mb-2">
+                <button class="d-md-none mb-2 winnie-btn-active">
                   <img
                     src="@/assets/images/icon/iconPark-arrow-down 1.svg"
                     alt=""
                   />
                 </button>
-                <p class="fw-bold">Withdraw</p>
+                <p class="fw-bold winnie-text-active">Withdraw</p>
               </router-link>
             </div>
             <div class="divider align-items-center d-none d-md-inline"></div>
@@ -241,7 +241,7 @@
                     id="inputWithdrawAmount"
                     size="large"
                     class="form-control amount-input no-spin-button"
-                    placeholder="Minimum 20 USD"
+                    placeholder="Minimum 30 USD"
                     v-model="params.withdrawAmount"
                     aria-label="withdraw amount"
                     aria-describedby="amount"
@@ -284,8 +284,6 @@
                   >
                     <button
                       class="withdraw-btn"
-                      data-bs-toggle="modal"
-                      data-bs-target="#withdrawModal"
                       @click="checkFormDataAndSendEmail"
                       :disabled="!isAddressValid"
                     >
@@ -293,11 +291,14 @@
                     </button>
                   </div>
                   <div
-                    class="modal fade"
+                     v-if="isOpenEmailVerificationModal"
+                    class="modal fade show"
                     id="withdrawModal"
                     tabindex="-1"
                     aria-labelledby="withdrawModalLabel"
                     aria-hidden="true"
+                     role="dialog"
+                    style="display: block"
                   >
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
@@ -308,8 +309,7 @@
                           <button
                             type="button"
                             class="btn winnie-btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
+                             @click="isOpenEmailVerificationModal = false"
                           >
                             <font-awesome-icon icon="fa-solid fa-xmark" />
                           </button>
@@ -357,6 +357,11 @@
                       </div>
                     </div>
                   </div>
+                   <!-- withdraw Modal -->
+                   <WithdrawModal
+                    :isOpen="showWithdrawModal"
+                    @closeModal="showWithdrawModal = false"
+                  />
                 </div>
               </div>
             </div>
@@ -374,9 +379,14 @@ import { ref, onMounted, reactive, watch, computed } from "vue";
 import USDCicon from "@/assets/images/icon/USDC-account.svg";
 import USDTicon from "@/assets/images/icon/USDT-account.svg";
 import { handleApiError } from "@/utils/errorHandler.js";
+import WithdrawModal from "../../components/WithdrawModal.vue";
 
 const addressError = ref(false); // 地址驗證錯誤標誌
 const addressErrorMessage = ref(""); // 錯誤訊息
+const showWithdrawModal = ref(false);
+const isValid = ref(false);
+const isOpenEmailVerificationModal = ref(false);
+
 const isAddressValid = ref(false); // 新增一個變數來動態控制按鈕狀態
 
 
@@ -482,7 +492,7 @@ watch(
 // 校验输入金额是否在最小值和最大值范围内
 const validateWithdrawAmountOnBlur = () => {
   if (params.withdrawAmount && params.withdrawAmount < 20) {
-    params.withdrawAmount = 20;
+    params.withdrawAmount = 30;
   } else if (params.withdrawAmount > params.maxWithdrawAmount) {
     params.withdrawAmount = params.maxWithdrawAmount;
   }
@@ -551,14 +561,18 @@ const withdrawApply = async () => {
 
   try {
     const response = await api.asset.withdrawApply(formData);
+    isOpenEmailVerificationModal.value = false;
+    showWithdrawModal.value = true;
     console.log("successfully:", response);
   } catch (error) {
+    isOpenEmailVerificationModal.value = false;
     console.error("Failed:", error);
   }
 };
 
 const checkFormDataAndSendEmail = async () => {
   const type = "WithdrawApply";
+  isOpenEmailVerificationModal.value = true;
   await postSendAuthCode(type);
 };
 
@@ -650,6 +664,7 @@ function handleInput(index) {
 function handleBackspace(index) {
   if (codes.value[index] === "" && index > 0) {
     inputRefs.value[index - 1].focus();
+    errorMessage.value = '';
   }
 }
 
@@ -672,6 +687,8 @@ const verifyCodeWithAPI = async (code) => {
       email.value,
       code
     );
+    errorMessage.value = '';
+    isValid.value = true;
     console.log(response, "驗證成功");
   } catch (error) {
     console.log(error);
@@ -903,6 +920,13 @@ const verifyCodeWithAPI = async (code) => {
   opacity: 0.6;
 }
 
+.withdraw-btn:disabled {
+  background-color:  #2b3139;
+  color: #F8F8F8;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 575.98px) {
   .winnie-withdraw .withdraw-btn {
     width: 100%;
@@ -923,13 +947,13 @@ const verifyCodeWithAPI = async (code) => {
   background-color: #f8f8f8;
 }
 
-#withdrawModal,
+#withdrawModal, #withdrawSuccessModal,
 #withdrawRemindModal,
 #depositRemindModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-#withdrawModal .form-control {
+#withdrawModal .form-control, #withdrawSuccessModal .form-control{
   border: none;
   border-bottom: 1px solid #bbbbbb;
   background-color: transparent !important;
@@ -938,40 +962,47 @@ const verifyCodeWithAPI = async (code) => {
   transition: border-color 0.3s ease;
 }
 
-#withdrawModal .form-control:focus {
+#withdrawModal .form-control:focus,
+#withdrawSuccessModal .form-control:focus {
   border-color: #f8f8f8;
   outline: none;
 }
 
 #withdrawModal .modal-header,
+#withdrawSuccessModal .modal-header,
 #withdrawRemindModal .modal-header,
 #depositRemindModal .modal-header {
   border-bottom: none;
 }
 
 #withdrawModal .modal-footer,
+#withdrawSuccessModal .modal-footer,
 #withdrawRemindModal .modal-footer,
 #depositRemindModal .modal-footer {
   border-top: none;
 }
 
-#withdrawModal .modal-dialog {
+#withdrawModal .modal-dialog,
+#withdrawSuccessModal .modal-dialog {
   display: flex;
   align-items: center;
 }
 
-#withdrawModal .modal-content {
+#withdrawModal .modal-content,
+#withdrawSuccessModal .modal-content {
   background-color: #181a20;
   border: 1px solid #414d5a;
 }
 
-#withdrawModal .modal-footer button {
+#withdrawModal .modal-footer button,
+#withdrawSuccessModal .modal-footer button {
   background-color: #2b3139;
   border: none;
   color: #f8f8f8;
 }
 
-#withdrawModal button#withdrawConfirmButton:hover {
+#withdrawModal button#withdrawConfirmButton:hover,
+#withdrawSuccessModal button#withdrawConfirmButton:hover {
   background-color: #414d5a;
 }
 
@@ -1280,5 +1311,15 @@ ul li a .full-name {
 
 .el-input__inner {
   color: #f8f8f8;
+}
+
+.winnie-btn-active {
+  background-color: #414d5a !important;
+}
+
+@media (min-width: 767.98px) {
+  .winnie-text-active {
+  color: #fcd535 !important;
+  }
 }
 </style>

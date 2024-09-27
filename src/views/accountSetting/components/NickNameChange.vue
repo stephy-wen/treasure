@@ -69,7 +69,7 @@
               </p>
               <div class="text-center mt-5">
                 <button
-                  class="mt-5 save-btn btn btn-primary"
+                  class="mt-5 save-btn btn btn-primary w-100"
                   type="button"
                   @click="saveNickname"
                 >
@@ -179,7 +179,7 @@ onMounted(() => {
 
 <style scoped>
 .modal-content {
-  background-color: #2b3139;
+  background-color: #181a20;
   color: #f8f8f8;
 }
 
@@ -193,5 +193,45 @@ onMounted(() => {
 
 .white {
   color: white;
+}
+
+.nickname-change a {
+  color: #f8f8f8;
+}
+
+#changeNicknameModal input {
+  background-color: transparent;
+  border: 1px solid #414d5a;
+  color: #f8f8f8;
+}
+
+#changeNicknameModal input:focus {
+  box-shadow: none;
+}
+
+#changeNicknameModal button.save-btn {
+  background-color: #414d5a;
+  color: #f8f8f8;
+  width: 230px;
+  border: none;
+  border-radius: 50px;
+  height: 47px;
+}
+
+#changeNicknameModal .modal-header {
+  border-bottom: none;
+}
+
+#changeNicknameModal .modal-footer {
+  border-top: none;
+}
+
+#changeNicknameModal .modal-header {
+  border-bottom: 1px solid #414d5a;
+}
+
+#nicknameHelpBlock {
+  color: #bbb;
+  text-align: end;
 }
 </style>

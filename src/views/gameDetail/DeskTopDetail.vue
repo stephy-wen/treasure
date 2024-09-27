@@ -106,9 +106,6 @@
             />
 
             <!-- maxParticipantsModal-->
-            <button class="btn btn-primary" @click="openVotingFullModal">
-              Launch demo modal
-            </button>
             <VotingFullModal
               :isOpen="showVotingFullModal"
               @closeModal="showVotingFullModal = false"
@@ -119,9 +116,6 @@
               :winnerInfo="WinnerData"
               @closeModal="showWinnerModal = false"
             />
-            <button class="btn btn-outline-primary" @click="openWinnerModal">
-              WinnerModal
-            </button>
           </div>
         </div>
       </div>

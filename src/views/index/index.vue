@@ -26,7 +26,8 @@
             DIVE INTO THE MOST THRILLING TREASURE HUNT OF YOUR LIFE!
           </h1>
           <p class="mt-3 fs-5 d-none d-lg-block">
-            Let’s explore the mysteries of the crypto world together and achieve your wealth dreams!
+            Let’s explore the mysteries of the crypto world together and achieve
+            your wealth dreams!
           </p>
         </div>
         <Swiper
@@ -44,7 +45,7 @@
             class="more-btn px-5 py-2 fs-5"
             onclick="window.location.href='game/game-list';"
           >
-            GAMES
+            START GAME
           </button>
         </div>
       </div>
@@ -277,9 +278,15 @@ onMounted(async () => {
 }
 
 /* card */
-.game-intro{
+.game-intro {
   width: 70%;
   max-width: 1800px;
+}
+
+.card-intro p {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  word-spacing: 1px;
 }
 
 .game-card .more-btn {
@@ -291,11 +298,11 @@ onMounted(async () => {
 }
 
 .game-card .more-btn:hover {
-  background-color: #fcd535;
+  background-color: #e5bf30;
 }
 
 /* stats */
-.stats{
+.stats {
   width: 100%;
   max-width: 1800px;
 }
@@ -354,7 +361,7 @@ onMounted(async () => {
 }
 @media (min-width: 991.98px) {
   .partnerships {
-      margin-top: 120px;
+    margin-top: 120px;
   }
 }
 
@@ -373,6 +380,4 @@ onMounted(async () => {
 .partner-logo:hover img {
   opacity: 0;
 }
-
-
 </style>

@@ -31,7 +31,7 @@
             </h5>
           </div>
           <div class="modal-body container px-4">
-            <div class="text-center mt-1 mb-5">
+            <div class="text-center mt-1 mb-4">
               <img
                 style="width: 65px !important"
                 :src="tempSelectedAvatarUrl"
@@ -62,7 +62,7 @@
           <div class="modal-footer py-4">
             <button
               type="button"
-              class="btn btn-primary save-btn"
+              class="btn btn-primary save-btn w-75"
               @click="saveAvatar"
             >
               Save
@@ -181,7 +181,7 @@ onMounted(() => {
 }
 
 .modal-content {
-  background-color: #2b3139;
+  background-color: #181a20;
   color: #f8f8f8;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -206,16 +206,25 @@ onMounted(() => {
 
 .save-btn {
   margin: 0 auto;
-  background-color: #414d5a;
+  background-color: #2b3139;
   color: #f8f8f8;
   width: 230px;
   border: none;
   border-radius: 50px;
+  height: 47px;
 }
 
 .select-avatar img {
   height: 58px;
   width: 58px;
   border-radius: 50px;
+}
+
+#changeAvatarModal .modal-header {
+  border-bottom: none;
+}
+
+#changeAvatarModal .modal-footer {
+  border-top: none;
 }
 </style>

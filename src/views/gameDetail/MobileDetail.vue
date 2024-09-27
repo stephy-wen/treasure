@@ -95,9 +95,6 @@
               @closeModal="closeInsufficientFundsModal"
             />
             <!-- maxParticipantsModal-->
-            <button class="btn btn-primary" @click="openVotingFullModal">
-              Launch demo modal
-            </button>
             <VotingFullModal
               :isOpen="showVotingFullModal"
               @closeModal="showVotingFullModal = false"

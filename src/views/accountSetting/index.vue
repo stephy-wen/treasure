@@ -111,4 +111,51 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.winnie-account .log-out-link a {
+  color: #f8f8f8;
+}
+
+.winnie-dialog-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  transition: transform 0.4s ease-in-out;
+}
+
+.modal.fade .winnie-dialog-bottom {
+  transform: translateY(100%);
+}
+
+.modal.show .winnie-dialog-bottom {
+  transform: translateY(0);
+}
+
+#changeAvatarModal .modal-dialog,
+#changeAvatarModal .modal-content {
+  background-color: #2b3139;
+  color: #f8f8f8;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+#changeAvatarModal button.save-btn,
+#changeNicknameModal button.save-btn {
+  background-color: #414d5a;
+  color: #f8f8f8;
+  width: 280px;
+  border: none;
+  border-radius: 10px;
+  height: 47px;
+}
+
+#nicknameRevisePhoneModal .modal-dialog .modal-content {
+  background-color: #181a20;
+}
+
+#changeNicknameModal .modal-header {
+  border-bottom: 1px solid #414d5a;
+}
+</style>
