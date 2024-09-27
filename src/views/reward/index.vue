@@ -929,6 +929,13 @@ const verifyCodeWithAPI = async (code) => {
   color: #2b3139;
 }
 
+.withdraw-btn:disabled {
+  background-color:  #2b3139;
+  color: #F8F8F8;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 575.98px) {
   .winnie-withdraw .withdraw-btn {
     width: 100%;
