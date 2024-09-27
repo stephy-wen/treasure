@@ -123,7 +123,7 @@ const saveNickname = async () => {
   // 判斷新暱稱是否與上次暱稱一樣
   if (nickname.value === originalNickname.value) {
     ElMessage({
-      message: "暱稱與上次相同，無需修改！",
+      message: "The nickname is the same as before, no changes needed.",
       type: "warning",
       duration: 3000,
     });
@@ -133,7 +133,7 @@ const saveNickname = async () => {
   // 有一個判斷沒寫  如果這次的暱稱與上次暱稱一樣 則不發送api
   if (!nickname.value) {
     ElMessage({
-      message: "nickname 不得為空！",
+      message: "Nickname cannot be empty.",
       type: "error",
       duration: 3000,
     });
@@ -143,7 +143,6 @@ const saveNickname = async () => {
   try {
     // 調用 API 發送修改請求
     await changeNickname(nickname.value);
-    console.log("Nickname updated successfully!");
     emit("upDataNickname", nickname.value);
 
     // 更新 originalNickname 為新的暱稱

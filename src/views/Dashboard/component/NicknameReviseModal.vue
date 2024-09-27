@@ -6,7 +6,6 @@
     id="nicknameReviseModal"
     tabindex="-1"
     aria-labelledby="nicknameReviseModalLabel"
-    aria-hidden="true"
     role="dialog"
     style="display: block"
   >
@@ -42,7 +41,9 @@
               aria-describedby="nicknameHelpBlock"
               v-model="nickname"
             />
-            <div id="nicknameHelpBlock" class="form-text">15/20</div>
+            <div id="nicknameHelpBlock" class="form-text">
+              {{ nickname.length }}/20
+            </div>
           </div>
           <div class="nickname-notice">
             <p style="font-size: 14px">
@@ -97,13 +98,16 @@ const props = defineProps({
 
 const emit = defineEmits(["closeModal", "upDataNickname"]);
 const modal = ref(null); // 用於存儲模態框的 DOM 元素
-const nickname = ref(props.userName);
+
+const nickname = ref(props.userName); // 用戶當前暱稱（即輸入框中顯示的暱稱）
+const originalNickname = ref(""); // 存儲用戶上次保存的暱稱 （作為比較用）
 
 // 監聽 props.userName 的變化，並更新本地的 userName
 watch(
   () => props.userName,
   (newUserName) => {
     nickname.value = newUserName;
+    originalNickname.value = newUserName; // 確保兩者同步，作為比較基準
   }
 );
 
@@ -115,20 +119,32 @@ const closeModal = () => {
 
 // 保存並發送 API 請求
 const saveNickname = async () => {
-  if (!nickname.value) {
+  if (nickname.value === originalNickname.value) {
     ElMessage({
-      message: "nickname 不得為空！",
-      type: "error",
+      message: "The nickname is the same as before, no changes needed.",
+      type: "warning",
       duration: 3000,
     });
     return;
   }
 
+  if (!nickname.value) {
+    ElMessage({
+      message: "Nickname cannot be empty.",
+      type: "error",
+      duration: 3000,
+    });
+    return;
+  }
+  // 用戶輸入 -> 比較 -> 發送請求 -> 更新狀態。
   try {
     // 調用 API 發送修改請求
     await changeNickname(nickname.value);
-    console.log("Nickname updated successfully!");
     emit("upDataNickname", nickname.value);
+
+    // 更新 originalNickname 為最新的暱稱（下次比較用）
+    originalNickname.value = nickname.value;
+    ElMessage.success("Nickname updated successfully!");
     // 更新完成後，關閉模態框
     closeModal();
   } catch (error) {
@@ -176,7 +192,7 @@ const saveNickname = async () => {
 }
 
 #nicknameReviseModal .winnie-btn-close:hover {
-    background-color: #414D5A;
+  background-color: #414d5a;
 }
 
 .nickname-notice-bk-color {
@@ -196,7 +212,7 @@ const saveNickname = async () => {
 }
 
 #nicknameReviseModal input::placeholder {
-  color: #BBB;
+  color: #bbb;
 }
 
 #nicknameReviseModal input:focus {
