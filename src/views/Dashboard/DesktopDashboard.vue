@@ -151,7 +151,7 @@
               </div>
             </div>
           </div>
-          <div v-else>尚無資料</div>
+          <!-- <div v-else>尚無資料</div> -->
         </div>
       </div>
       <div class="account-form mt-5">
