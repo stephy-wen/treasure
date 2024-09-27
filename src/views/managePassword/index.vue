@@ -103,7 +103,7 @@
           
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
-            <p v-if="errorMessage" class="error-message mt-5">
+            <p v-if="errorMessage" class="error-message">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -310,7 +310,7 @@ const validateStep = () => {
 
   // Verify that the old password and the new password are different
   if (newPassword.value === currentPassword.value) {
-    errors.push("The new password cannot be the same as the current password.");
+    errors.push("New password must differ from the current password.");
   }
 
   // Verify that the new password and confirm password match
@@ -328,7 +328,7 @@ const validateStep = () => {
 
   for (const rule of rules) {
     if (!rule.regex.test(newPassword.value)) {
-      errors.push(`newPassword: ${rule.message}`);
+      errors.push(`${rule.message}`);
     }
   }
 
@@ -428,6 +428,14 @@ onMounted(async () => {
     width: 100%;
     background-color: #f8f8f8;
   }
+}
+
+pre {
+  font-family: "Inter", sans-serif !important;
+  font-size: 13px;
+  margin-bottom: 0px;
+  overflow: visible;
+  text-align: start;
 }
 
 .winnie-back-btn {

@@ -75,8 +75,8 @@
           <!-- 步驟 2: 驗證碼 -->
           <template v-slot:extra-input v-if="currentStep === 2">
             <p class="mb-4 text-start" style="color: #75797e">
-              We've sent a code to <span id="userEmail"></span>.<br>Please enter it
-              within 30 minutes.
+              We've sent a code to your email.<br>Please enter it
+              within 10 minutes.
             </p>
             <input
               type="text"
@@ -129,7 +129,6 @@
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
             <p v-if="errorMessage" class="error-message d-flex">
-              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -256,7 +255,7 @@ const verifyCode = async () => {
       // 檢查是否達到 5 次錯誤
       if (verificationAttempts >= 5) {
         ElMessage.error({
-          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 60 minutes to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
+          message: "If you enter the wrong authentication code 5 times consecutively, your account will be automatically locked for 1 minute to protect your security. Beware of telecommunication fraud. Our customer support will never ask for your password or authentication code.",
           duration: 3000,
         });
       }
@@ -351,14 +350,14 @@ const handleStepChange = (newStep) => {
 // 表單驗證函數
 const validateStep = () => {
   if (currentStep.value === 1 && !validateEmail(email.value)) {
-    errorMessage.value = "Invalid email format";
+    errorMessage.value = "Invalid email format.";
     return false;
   }
 
   if (currentStep.value === 4) {
     // 如果密碼為空
     if (!newPassword.value) {
-      errorMessage.value = "密碼不得為空";
+      errorMessage.value = "Password cannot be empty";
       return false;
     }
 
@@ -377,26 +376,26 @@ const validatePasswords = () => {
   const errors = [];
   if (newPassword.value !== confirmPassword.value) {
     errors.push(
-      "Password and Confirm password are different. Please re-enter it."
+      "Password and Confirm password are different."
     );
   }
 
   const rules = [
-    { regex: /.{8,}/, message: "Password must be at least 8 characters long" },
-    { regex: /[0-9]/, message: "Password must contain at least one number" },
+    { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+    { regex: /[0-9]/, message: "Password must contain at least one number." },
     {
       regex: /[a-z]/,
       message: "Password must contain at least one lowercase letter",
     },
     {
       regex: /[A-Z]/,
-      message: "Password must contain at least one uppercase letter",
+      message: "Password must contain at least one uppercase letter.",
     },
   ];
 
   for (const rule of rules) {
     if (!rule.regex.test(newPassword.value)) {
-      errors.push(`Password: ${rule.message}`);
+      errors.push(`${rule.message}`);
     }
   }
 
@@ -611,8 +610,10 @@ button.arrow:hover {
 
 pre {
   font-family: "Inter", sans-serif !important;
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 0px;
+  overflow: visible;
+  text-align: start;
 }
 
 .verification-code-input {

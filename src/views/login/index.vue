@@ -71,7 +71,6 @@
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
             <p v-if="errorMessage" class="error-message d-flex align-items-center">
-              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -126,13 +125,13 @@ const goBack = () => {
 const handleButtonClick = async () => {
   if (currentStep.value === 1) {
     if (!email.value) {
-      errorMessage.value = "Email cannot be empty";
+      errorMessage.value = "Email cannot be empty.";
       return
     }
 
     // 驗證 Email 格式是否正確
     if (!validateEmailFormat(email.value)) {
-      errorMessage.value = "Invalid email format";
+      errorMessage.value = "Invalid email format.";
       return;
     }
 
@@ -146,7 +145,7 @@ const login = async () => {
   errorMessage.value = ""
 
   if (!password.value) {
-    errorMessage.value = "Password cannot be empty";
+    errorMessage.value = "Password cannot be empty.";
     return
   }
 
@@ -325,8 +324,9 @@ button.arrow:hover {
 
 pre {
   font-family: "Inter", sans-serif !important;
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 0px;
+  text-align: start;
 }
 
 input:-webkit-autofill,
