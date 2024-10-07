@@ -3,15 +3,12 @@
     <div class="container winnie-deposit tabs mt-5 px-3 px-lg-0">
       <div class="d-flex justify-content-center align-items-center">
         <div class="p-2 text-center">
-          <router-link to="/account/deposit">
+            <router-link to="/account/deposit">
             <button class="d-md-none mb-2 winnie-btn-active">
-              <img
-                src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg"
-                alt=""
-              />
+                <img src="@/assets/images/icon/semiDesign-semi-icons-plus 1.svg" alt="">
             </button>
             <p class="fw-bold winnie-text-active">Deposit</p>
-          </router-link>
+            </router-link>
         </div>
         <div class="divider align-items-center d-none d-md-inline"></div>
         <div class="p-2 text-center">

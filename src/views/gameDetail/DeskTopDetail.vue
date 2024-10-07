@@ -86,7 +86,11 @@
                 'disabled-button': gameData.votes === gameData.totalVotes,
               }"
             >
-              START
+              {{
+                gameData.votes === gameData.totalVotes
+                  ? "Round Closed"
+                  : "START"
+              }}
             </button>
 
             <!-- Join Modal -->
@@ -151,6 +155,10 @@ const props = defineProps({
   gameDetails: {
     type: Object,
     required: true,
+  },
+  showWinner: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -261,6 +269,16 @@ const refreshGameDetails = () => {
   emit("refreshGameDetails");
   getPlayerData(route.params.gameId); // 當收到更新資料也一同變更玩家資料
 };
+
+// watch showWinner to open WinnerModal
+// watch(
+//   () => props.showWinner,
+//   (newVal) => {
+//     if (newVal) {
+//       showWinnerModal.value = true;
+//     }
+//   }
+// );
 
 // 監聽路由參數 gameId 的變化，當路由變化時重新獲取玩家資料
 watch(

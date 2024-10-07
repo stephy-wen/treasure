@@ -28,6 +28,8 @@
                 placeholder="Email"
                 v-model="email"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -84,6 +86,8 @@
               placeholder="Verification Code"
               v-model="verificationCode"
               @keydown.enter.prevent="handleButtonClick"
+              spellcheck="false"
+              autocomplete="off"
             />
           </template>
 
@@ -96,6 +100,8 @@
                 placeholder="New Password"
                 v-model="newPassword"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
               />
               <label for="floatingInput">New Password</label>
             </div>
@@ -106,6 +112,8 @@
                 placeholder="Confirm Password"
                 v-model="confirmPassword"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
               />
               <label for="floatingInput">Confirm Password</label>
             </div>

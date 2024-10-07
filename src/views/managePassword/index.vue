@@ -31,6 +31,8 @@
                   id="managePasswordCurrentPassword"
                   v-model="currentPassword"
                   @keydown.enter.prevent
+                  spellcheck="false"
+                  autocomplete="off"
                 />
               </div>
             </div>
@@ -45,6 +47,8 @@
                 id="managePasswordNewPassword"
                 v-model="newPassword"
                 @keydown.enter.prevent
+                spellcheck="false"
+                autocomplete="off"
               />
             </div>
             <div class="mb-3">
@@ -58,6 +62,8 @@
                 placeholder="Enter your new password again"
                 v-model="confirmPassword"
                 @keydown.enter.prevent
+                spellcheck="false"
+                autocomplete="off"
               />
             </div>
             <div class="mb-3">
@@ -72,6 +78,8 @@
                   v-model="verificationCode"
                   placeholder="Enter code"
                   @keydown.enter.prevent="handleButtonClick"
+                  spellcheck="false"
+                  autocomplete="off"
                 />
                 <!-- 測試 -->
                 <p class="d-flex align-items-center gap-1">

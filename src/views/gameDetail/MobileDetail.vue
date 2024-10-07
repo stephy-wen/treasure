@@ -78,7 +78,11 @@
                 'disabled-button': gameData.votes === gameData.totalVotes,
               }"
             >
-              START
+              {{
+                gameData.votes === gameData.totalVotes
+                  ? "Round Closed"
+                  : "START"
+              }}
             </button>
             <!-- Join Modal -->
             <JoinGameModal
@@ -142,6 +146,10 @@ const props = defineProps({
   gameDetails: {
     type: Object,
     required: true,
+  },
+  showWinner: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -240,6 +248,7 @@ const getPlayerData = async (gameId) => {
 };
 
 const refreshGameDetails = () => {
+  console.log("接收到join");
   emit("refreshGameDetails");
   getPlayerData(route.params.gameId);
 };

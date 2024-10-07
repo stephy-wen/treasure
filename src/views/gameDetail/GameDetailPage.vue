@@ -8,11 +8,17 @@
 
       <!-- 遊戲區塊 -->
       <template v-if="Object.keys(gameDetails).length > 0">
-        <MobileDetail v-if="isMobile" :gameDetails="gameDetails" />
+        <MobileDetail
+          v-if="isMobile"
+          :gameDetails="gameDetails"
+          @refreshGameDetails="loadGameDetails"
+          :showWinner="showWinner"
+        />
         <DeskTopDetail
           v-else
           :gameDetails="gameDetails"
           @refreshGameDetails="loadGameDetails"
+          :showWinner="showWinner"
         />
       </template>
       <hr class="my-5" />
@@ -29,6 +35,7 @@
     </div>
     <!-- 分頁組件 -->
     <Pagination
+      v-if="currentItems.length > 0"
       :totalItems="totalItems"
       :itemsPerPage="itemsPerPage"
       @page-changed="fetchPageData"
@@ -42,6 +49,7 @@ import { onMounted, ref, onBeforeUnmount, provide, watch } from "vue";
 import { useRoute } from "vue-router";
 import modules from "@/services/modules.js";
 import verify from "@/assets/images/icon/arcoDesign-launch 1.svg";
+import { useRouter } from "vue-router";
 
 import MobileDetail from "./MobileDetail.vue";
 import DeskTopDetail from "./DeskTopDetail.vue";
@@ -50,6 +58,7 @@ import Pagination from "@/components/Pagination.vue";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
+const router = useRouter();
 
 // 引入 API 模組
 const {
@@ -65,6 +74,8 @@ const isMobile = ref(window.innerWidth < 575.98);
 const gameDetails = ref({}); // 初始化遊戲資料
 const votes = ref(null); // 使用 ref 來讓 votes 成為響應式變量
 const maxVotes = ref(null);
+const isGameEnded = ref(null);
+const nextRoundGameRoomId = ref(null);
 const route = useRoute(); // 獲取路由對象
 
 // 項目總數和每頁項目數
@@ -74,20 +85,28 @@ const totalItems = ref(0); // 總項目數
 const itemsPerPage = ref(5); // 每頁顯示 5 筆
 const pageCache = ref({}); // 緩存每一頁的資料
 
+// 父層通知子層顯示Winner Modal
+const showWinner = ref(false);
+let timerId = null; // 記錄 setTimeout 的 id
+
 // 處理視窗大小變化
 const handleResize = () => {
   isMobile.value = window.innerWidth < 575.98;
 };
 
 // 定義重新獲取遊戲資料的函數
-const loadGameDetails = async () => {
-  const gameId = route.params.gameId; // 獲取路由參數中的 gameId
+const loadGameDetails = async (gameId) => {
+  const id = gameId || route.params.gameId; // 獲取路由參數中的 gameId
+
   try {
+    // 停止當前的輪詢，避免多次重複輪詢
+    stopPolling();
+
     // 取得 token
     const token = localStorage.getItem("token");
 
     // 構建 Promise 列表，先將不需要 token 的 API 放進去
-    const promises = [getGameRoom(gameId)];
+    const promises = [getGameRoom(id)];
 
     // 如果 token 存在，將需要 token 的 API 加入 Promise 列表
     if (token) {
@@ -98,6 +117,7 @@ const loadGameDetails = async () => {
 
     // 使用 Promise.all 來執行所有的 Promise
     const [gameResponse, accountInfo] = await Promise.all(promises);
+    console.log(gameResponse.data.data, "遊戲房的資料");
 
     // 確保 API 返回了有效的遊戲數據
     if (gameResponse && gameResponse.data.data) {
@@ -106,8 +126,38 @@ const loadGameDetails = async () => {
       maxVotes.value = gameData.maxQuantity;
       gid.value = gameData.gId;
       gameDetails.value = gameData; // 更新遊戲資料
+
+      console.log(`當前房間 ID: ${id}`);
+      console.log(`贏家名稱: ${gameData.winnerName}`);
+      console.log(`下一局房間 ID: ${gameData.nextGameRoomId}`);
+      // 如果有 winnerName，顯示贏家彈窗
+      if (gameData.winnerName) {
+        showWinner.value = true; // 通知子層顯示贏家彈窗
+        stopPolling(); // 停止輪詢
+
+        // 如果有下一局的房號，立即加載
+        if (gameData.nextGameRoomId) {
+          console.log(`取得新房號 ${gameData.nextGameRoomId}，立即加載`);
+          // 更新 URL，這裡假設你有 router 來進行導航
+          router.push({
+            name: "GameDetail",
+            params: { gameId: gameData.nextGameRoomId },
+          });
+
+          await loadGameDetails(gameData.nextGameRoomId);
+          console.log("有贏家資訊 並且有新房");
+        }
+      } else {
+        // 如果還沒有贏家，且房間已經結束，開始下一次輪詢
+        if (votes.value === maxVotes.value) {
+          console.log("滿房了");
+          startPolling(id);
+        }
+      }
     } else {
-      console.error("未獲取到有效的遊戲資料");
+      console.log("遊戲資料獲取失敗");
+      // 繼續嘗試輪詢以防錯誤
+      stopPolling();
     }
 
     // 處理 accountInfo 資料，更新寶藏點與餘額
@@ -128,6 +178,25 @@ const loadGameDetails = async () => {
     }
   } catch (error) {
     console.error("獲取資料時發生錯誤：", error);
+    stopPolling();
+  }
+};
+
+// 開始輪詢的函數
+const startPolling = (gameId) => {
+  if (timerId) {
+    return; // 已有定時器在運行，避免重複輪詢
+  }
+  timerId = setTimeout(async () => {
+    await loadGameDetails(gameId);
+  }, 5000);
+};
+
+// 停止輪詢的函數
+const stopPolling = () => {
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
   }
 };
 

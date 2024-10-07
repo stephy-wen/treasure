@@ -28,6 +28,8 @@
                 id="floatingInputEmailRegister"
                 placeholder="Email"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
               />
               <label for="floatingInput">Email</label>
             </div>
@@ -39,6 +41,8 @@
                 placeholder="Referral code (optional)"
                 v-model="referralCode"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
               />
               <label for="floatingInput">Referral code (optional)</label>
             </div>
@@ -68,6 +72,8 @@
               placeholder="Verification Code"
               v-model="verificationCode"
               @keydown.enter.prevent="handleButtonClick"
+              spellcheck="false"
+              autocomplete="off"
             />
           </template>
 
@@ -105,6 +111,8 @@
               placeholder="New Password"
               v-model="password"
               @keydown.enter.prevent="handleButtonClick"
+              spellcheck="false"
+              autocomplete="off"
             />
             <label for="floatingInput">Password</label>
             </div>
@@ -115,6 +123,8 @@
               class="form-control input-field"
               v-model="confirmPassword"
               @keydown.enter.prevent="handleButtonClick"
+              spellcheck="false"
+              autocomplete="off"
             />
             <label for="floatingInput">Confirm Password</label>
             </div>

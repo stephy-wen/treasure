@@ -87,7 +87,7 @@
           <div class="d-flex col">
             <div
               class="box-item customized-tooltip"
-              v-for="item in rewardButtonData"
+              v-for="item in filteredRewardButtonData"
               :key="item.round"
             >
               <button
@@ -203,7 +203,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
@@ -225,7 +225,18 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const showGetRewardsModal = ref(false);
-const userInfo = ref({});
+const userInfo = ref({
+  name: "",
+  userId: "",
+  avatarUrl:
+    "https://defiweb.oss-ap-northeast-1.aliyuncs.com/images/icon/NFT/14.png",
+  email: "",
+  balanceData: {
+    symbol: "POINT",
+    balance: 0.0,
+    lockedBalance: 0.0,
+  },
+});
 const balance = ref(null); // 改為響應式變量
 const currentData = ref([]);
 const rewardsData = ref([]);
@@ -241,6 +252,11 @@ const rewardButtonData = ref([]);
 const withGamePlayData = false;
 const withRewardData = false;
 const withRewardBalanceData = true;
+
+// 使用 computed 來過濾掉 balance 為 0 的項目
+const filteredRewardButtonData = computed(() => {
+  return rewardButtonData.value.filter((item) => item.balance > 0);
+});
 
 const fetchRewardButtonData = async () => {
   try {
@@ -260,6 +276,7 @@ const fetchRewardButtonData = async () => {
 const loadUserInfo = async () => {
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
   balance.value = userInfo.value.balanceData.balance.toLocaleString("en-US");
+  userInfo.value.email = maskEmail(userInfo.value.email); // 隱藏 email 部分內容
 };
 
 // 調用 API 獲取歷史資料
@@ -340,6 +357,13 @@ const openGetRewardsModal = () => {
 
 const goToRewardPage = (symbol) => {
   router.push({ path: `/account/reward/${symbol}` }); // 跳转到 reward 页并传递币种作为路径的一部分
+};
+
+const maskEmail = (email) => {
+  const [localPart, domain] = email.split("@");
+  const maskedLocalPart =
+    localPart.length <= 3 ? `${localPart}***` : `${localPart.slice(0, 3)}***`;
+  return `${maskedLocalPart}@${domain}`;
 };
 
 onMounted(async () => {

@@ -97,13 +97,13 @@
             <img src="@/assets/images/icon/balance-icon.png" alt="" />
             <span class="fs-2 fw-bold ms-2">{{ balance }}</span>
           </div>
-          <div class="d-flex" v-if="rewardButtonData.length > 0">
+          <div class="d-flex mt-5" v-if="rewardButtonData.length > 0">
             <div class="d-flex col">
               <el-tooltip
                 class="box-item customized-tooltip"
                 :content="item.balance.toString()"
                 placement="bottom"
-                v-for="item in rewardButtonData"
+                v-for="item in filteredRewardButtonData"
                 :key="item.round"
               >
                 <button
@@ -164,6 +164,7 @@
       </div>
 
       <Pagination
+        v-if="tableData.length > 0"
         :totalItems="totalItems"
         :itemsPerPage="itemsPerPage"
         @page-changed="fetchPageData"
@@ -173,7 +174,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
@@ -203,8 +204,19 @@ const userStore = useUserStore();
 const showChangePicModal = ref(false);
 const showGetRewardsModal = ref(false);
 const showNicknameReviseModal = ref(false);
-const userInfo = ref({});
-const balance = ref(null); // 改為響應式變量
+const userInfo = ref({
+  name: "",
+  userId: "",
+  avatarUrl:
+    "https://defiweb.oss-ap-northeast-1.aliyuncs.com/images/icon/NFT/14.png",
+  email: "",
+  balanceData: {
+    symbol: "POINT",
+    balance: 0.0,
+    lockedBalance: 0.0,
+  },
+});
+const balance = ref(0); // 改為響應式變量
 const tableData = ref([]);
 const rewardsData = ref([]);
 const totalItems = ref(0); // 總項目數
@@ -230,6 +242,11 @@ const rewardHeaders = [
   { text: "Value", class: "text-end" },
   { text: "Withdraw", class: "text-center" },
 ];
+
+// 使用 computed 來過濾掉 balance 為 0 的項目
+const filteredRewardButtonData = computed(() => {
+  return rewardButtonData.value.filter((item) => item.balance > 0);
+});
 
 const fetchRewardButtonData = async () => {
   try {
@@ -378,7 +395,21 @@ const onAvatarChanged = (newAvatarUrl) => {
 // 加載用戶信息的函數
 const loadUserInfo = async () => {
   userInfo.value = await userStore.fetchUserInfo(); // 調用 API 更新 userInfo
-  balance.value = userInfo.value.balanceData.balance.toLocaleString("en-US");
+
+  balance.value = userInfo.value?.balanceData?.balance?.toLocaleString("en-US");
+  userInfo.value.email = userInfo.value?.email
+    ? maskEmail(userInfo.value.email)
+    : ""; // 隱藏 email 部分內容
+};
+
+// 定義隱藏 email 的函數
+const maskEmail = (email) => {
+  const [localPart, domain] = email.split("@");
+  if (localPart.length <= 3) {
+    return `${localPart}***@${domain}`; // 如果前綴少於或等於3個字母，全顯示然後加***
+  }
+  const maskedLocalPart = `${localPart.slice(0, 3)}***`;
+  return `${maskedLocalPart}@${domain}`;
 };
 
 onMounted(async () => {

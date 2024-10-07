@@ -27,6 +27,8 @@
                 placeholder="Email"
                 v-model="email"
                 @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+               
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -63,6 +65,8 @@
               v-model="password"
               @input="clearErrorMessage"
               @keydown.enter.prevent="handleButtonClick"
+              spellcheck="false"
+              autocomplete="off"
             />
             <label for="floatingInputPasswordReset">Password</label>
             </div>
@@ -88,7 +92,10 @@ import { useUserStore } from "@/stores/user";
 import AuthForm from "@/components/AuthForm/AuthForm.vue";
 import FormSide from "@/components/FormSide.vue";
 import ImageSide from "@/components/ImageSide.vue";
+import modules from "@/services/modules.js"; // import API module
 const router = useRouter();
+
+
 
 // 定義步驟狀態
 const currentStep = ref(1);
@@ -129,6 +136,13 @@ const handleButtonClick = async () => {
       return
     }
 
+    const emailCheck = await handleCheckEmail();
+
+    if(emailCheck) {
+      errorMessage.value = "Email does not exist"
+      return
+    }
+ 
     // 驗證 Email 格式是否正確
     if (!validateEmailFormat(email.value)) {
       errorMessage.value = "Invalid email format.";
@@ -140,6 +154,19 @@ const handleButtonClick = async () => {
     await login(); // 打登入api
   }
 };
+
+const handleCheckEmail = async() => {
+  try {
+    console.log(123)
+    const res = await modules.account.CheckEmail(email.value)
+    console.log(res.data.data)
+    return res.data.data
+    console.log(res.data.data)
+    console.log(res,"確認是否有存在email")
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const login = async () => {
   errorMessage.value = ""
