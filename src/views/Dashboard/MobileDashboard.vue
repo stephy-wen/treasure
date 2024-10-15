@@ -84,7 +84,7 @@
             <span class="fw-bold" style="font-size: 32px">{{ balance }}</span>
           </div>
 
-          <div class="d-flex col">
+          <div class="container d-flex flex-wrap col">
             <div
               class="box-item customized-tooltip"
               v-for="item in filteredRewardButtonData"
@@ -107,9 +107,9 @@
 
           <div class="container px-3 px-sm-0 mt-3">
             <div class="rewards-detail">
-              <div class="d-flex justify-content-center">
+              <div class="d-flex justify-content-center w-100">
                 <div
-                  class="accordion accordion-flush"
+                  class="accordion accordion-flush w-100"
                   id="accordionRewardsItem"
                 >
                   <div class="accordion-item">
@@ -335,14 +335,24 @@ const formatHistoryData = (data) => {
 const formatDate = (isoDateString) =>
   dayjs(isoDateString).format("YYYY/MM/DD HH:mm:ss");
 
+const isCopyCoolDown = ref(false);
+
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
+  if (isCopyCoolDown.value) return;
+
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
       message: "User ID Copied successfully.",
       type: "success",
     });
+
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",
@@ -469,5 +479,24 @@ onMounted(async () => {
 .accordion-button.collapsed::after,
 .accordion-button:not(.collapsed)::after {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.bck-dark {
+  background-color: #2b3139;
+}
+
+.bck-dark:hover {
+  background-color: #414d5a;
+}
+
+.f-color-white {
+  color: #f8f8f8;
+}
+
+.btn-dashboard-auto {
+  border: none;
+  border-radius: 50px;
+  width: auto;
+  height: 45px;
 }
 </style>

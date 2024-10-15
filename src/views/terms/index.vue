@@ -20,7 +20,7 @@
     <!-- Main Content -->
     <div class="container content">
       <h1 class="mb-3 fw-bold">Terms of Service</h1>
-      <p>Updated December 05, 2023</p>
+      <p>Updated October 05, 2024</p>
       <div
         class="accordion accordion-flush d-md-none"
         id="accordionFlushExample"
@@ -80,134 +80,83 @@
       <div id="introduction" class="my-5">
         <h2 class="mb-3 fw-bold">1. Introduction</h2>
         <p>
-          HUNTER Games is an onchain gaming interface maintained by a
-          decentralized team of developers. It facilitates interaction with the
-          HUNTER Games smart contracts deployed on the Blast blockchain.<br /><br />These
-          Terms of Service govern your use of the HUNTER Games website (the
-          “Website”) and any associated services (the “Services”).<br /><br />Win
-          or lose in our suite of crypto games, you’re getting rewarded. With
-          every move you make, your pile of Points only grows — and your
-          leaderboard ranking increases. Complete daily tasks and hit new
-          milestones to progress, then take home your cut of a huge reward at
-          the end of every season.
+          Tyche1 Games is an on-chain gaming interface maintained by a decentralized team of developers, designed to facilitate interaction with the Tyche1 Games smart contracts deployed on the BNB blockchain.
+          <br /><br />
+          These Terms of Service govern your use of the Tyche1 Games website (the "Website") and any associated services (the "Services").
         </p>
       </div>
       <div id="modificationAgreement" class="my-5">
         <h2 class="mb-3 fw-bold">2. Modification of this Agreement</h2>
         <p>
-          We reserve the right, in our sole discretion, to modify this
-          Agreement. All modifications become effective when they are posted,
-          and we will notify you by updating the date at the top of the
-          Agreement.<br /><br />You can find the latest version in effect at:
+          We reserve the right, in our sole discretion, to modify this Agreement. All modifications become effective when they are posted, and we will notify you by updating the date at the top of the Agreement.
+          <br /><br />
+          You can find the latest version in effect at: Tyche1.com
         </p>
       </div>
       <div id="conditionsOfUse" class="my-5">
         <h2 class="mb-3 fw-bold">3. Conditions of use</h2>
         <p>
-          3.1. As a condition of your use of the Services, you represent,
-          warrant, covenant and agree that:<br /><br />
-          1. Your use of the Services is at your sole option, discretion and
-          risk;<br /><br />2. You acknowledge that HUNTER Games does not at any
-          time hold any user funds and that all interactions are directly from
-          your digital wallet;<br /><br />3. You acknowledge that all game
-          results and payouts are computed directly via smart contracts deployed
-          on the Blast blockchain;<br /><br />4. You accept and acknowledge that
-          the prevailing market value of cryptocurrencies can change
-          dramatically;<br /><br />5. You have not been diagnosed or classified
-          as a compulsive or problem gambler;<br /><br />6. You are not
-          currently self-excluded from any gambling sites or gambling
-          premises,<br /><br />7. You participate in games provided by HUNTER
-          Games on your own behalf and not on behalf of any other person;<br /><br />8.
-          You participate in games provided by HUNTER Games strictly in your
-          personal and non-professional capacity and for recreational and
-          entertainment purposes only;<br /><br />9. You are accessing the
-          Website from a jurisdiction in which it is legal to do so, and will
-          not use our Services while located in any jurisdiction that prohibits
-          the placing and/or accepting of bets online and/or playing casino
-          and/or live games or which otherwise prohibits access to or use of the
-          Services;<br /><br />10. You acknowledge that we are not liable for
-          any outages, slowness, capacity constraints or other deficiencies
-          affecting the telecommunications networks or internet services
-          required for you to access and use the Services;
+          As a condition of your use of the Services, you represent, warrant, covenant and agree that:
+          <br /><br />
+          1. Your use of the Services is at your sole option, discretion and risk;
+          <br /><br />
+          2. You acknowledge that Tyche1 Games does not at any time use any user funds and that all interactions are directly from your digital wallet;
+          <br /><br />
+          3. You acknowledge that all game results;
+          <br /><br />
+          4. You accept and acknowledge that the prevailing market value of cryptocurrencies can change dramatically;
+          <br /><br />
+          5. You have not been diagnosed or classified as a compulsive or problem gambler;
+          <br /><br />
+          6. You are not currently self-excluded from any gambling sites or gambling premises,
+          <br /><br />
+          7. You participate in games provided by Tyche1 Games on your own behalf and not on behalf of any other person;
+          <br /><br />
+          8. You participate in games provided by Tyche1 Games strictly in your personal and non-professional capacity and for recreational and entertainment purposes only;
+          <br /><br />
+          9. You are accessing the Website from a jurisdiction in which it is legal to do so, and will not use our Services while located in any jurisdiction that prohibits the placing and/or accepting of bets online and/or playing casino and/or live games or which otherwise prohibits access to or use of the Services;
+          <br /><br />
+          10. You acknowledge that we are not liable for any outages, slowness, capacity constraints or other deficiencies affecting the telecommunications networks or internet services required for you to access and use the Services;
         </p>
       </div>
       <div id="disclaimers" class="my-5">
         <h2 class="mb-3 fw-bold">4. Disclaimers</h2>
         <p>
-          We do not represent or warrant that access to the front-end interface
-          will be continuous, uninterrupted, timely, or secure; that the
-          information contained in the interface will be accurate, reliable,
-          complete, or current; or that the Interface will be free from errors,
-          defects, viruses, or other harmful elements.
+          We do not represent or warrant that access to the front-end interface will be continuous, uninterrupted, timely, or secure; that the information contained in the interface will be accurate, reliable, complete, or current; or that the Interface will be free from errors, defects, viruses, or other harmful elements.
         </p>
       </div>
       <div id="proprietaryRights" class="my-5">
         <h2 class="mb-3 fw-bold">5. Proprietary Rights</h2>
         <p>
-          We own the intellectual property generated by core contributors to
-          HUNTER Games for the use of HUNTER Games, including (but not limited
-          to) software, text, designs, images, and copyrights. Unless otherwise
-          stated, HUNTER Games reserves exclusive rights to its intellectual
-          property.
+          We own the intellectual property generated by core contributors to Tyche1 Games for the use of Tyche1 Games, including (but not limited to) software, text, designs, images, and copyrights. Unless otherwise stated, Tyche1 Games reserves exclusive rights to its intellectual property.
         </p>
       </div>
       <div id="eligibility" class="my-5">
         <h2 class="mb-3 fw-bold">6. Eligibility</h2>
         <p>
-          To access or use the front-end interface, you represent that you are
-          at least the age of majority in your jurisdiction. You further
-          represent that your access and use of the front-end interface will
-          fully comply with all applicable laws and regulations and that you
-          will not access or use the front-end interface to conduct, promote, or
-          otherwise facilitate any illegal activity.<br /><br />
-          Furthermore, you represent that neither you nor any entity you
-          represent are included in any trade embargoes or sanctions list
-          (“Subject to Restrictions”), nor resident, citizen, national or agent
-          of, or an entity organized, incorporated or doing business in such
-          territories (“Restricted Territories”).
+          To access or use the front-end interface, you represent that you are at least the age of majority in your jurisdiction. You further represent that your access and use of the front-end interface will fully comply with all applicable laws and regulations and that you will not access or use the front-end interface to conduct, promote, or otherwise facilitate any illegal activity.
+          <br /><br />
+          Furthermore, you represent that neither you nor any entity you represent are included in any trade embargoes or sanctions list (“Subject to Restrictions”), nor resident, citizen, national or agent of, or an entity organized, incorporated or doing business in such territories (“Restricted Territories”).
         </p>
       </div>
       <div id="privacy" class="my-5">
         <h2 class="mb-3 fw-bold">7. Privacy</h2>
         <p>
-          When you use the front-end interface, the only information we collect
-          from you is your blockchain wallet address, completed transaction
-          hashes, and token identifiers. We do not collect any personal
-          information from you. We do, however, use third-party services like
-          Google Analytics, which may receive your publicly available personal
-          information. We do not take responsibility for any information you
-          make public on the Blast blockchain by taking actions through the
-          front-end interface.
+          When you use the front-end interface, the only information we collect from you is your blockchain wallet address, completed transaction hashes, and token identifiers. We do not collect any personal information from you. We do, however, use third-party services like Google Analytics, which may receive your publicly available personal information. We do not take responsibility for any information you make public on the BNB blockchain by taking actions through the front-end interface.
         </p>
       </div>
       <div id="privacy" class="my-5">
         <h2 class="mb-3 fw-bold">8. Prohibited Activity</h2>
         <p>
-          You agree not to engage in any of the following categories of
-          prohibited activity in relation to your access and use of the
-          front-end interface: Transacting in any Restricted Territory or
-          interacting with any blockchain addresses controlled indirectly or
-          directly by persons or entities Subject to Restrictions, that is,
-          included in any trade embargoes or sanctions list.
+          You agree not to engage in any of the following categories of prohibited activity in relation to your access and use of the front-end interface: Transacting in any Restricted Territory or interacting with any blockchain addresses controlled indirectly or directly by persons or entities Subject to Restrictions, that is, included in any trade embargoes or sanctions list.
         </p>
       </div>
       <div id="privacy" class="my-5">
         <h2 class="mb-3 fw-bold">9. Limitation of Liability</h2>
         <p>
-          HUNTER Games is in no way liable for any damages of any form resulting
-          from your access or use of HUNTER Games software, including (but not
-          limited to) any loss of profit, digital assets, or intangible
-          property, and assumes no liability or responsibility for any errors,
-          omissions, mistakes, or inaccuracies in the content provided on HUNTER
-          Games-controlled software or media;<br /><br />
-          unauthorized access or use of any server or database controlled by
-          HUNTER Games; bugs, viruses etc. in the software; suspension of
-          service; or any conduct of any third party whatsoever. Furthermore,
-          any hyperlink or reference to a third party website, product, or
-          person that is shared or published in any software or other channel by
-          HUNTER Games is for your convenience only, and does not constitute an
-          endorsement. We accept no legal responsibility for content or
-          information of such third party sites.
+          Tyche1 Games is in no way liable for any damages of any form resulting from your access or use of Tyche1 Games software, including (but not limited to) any loss of profit, digital assets, or intangible property, and assumes no liability or responsibility for any errors, omissions, mistakes, or inaccuracies in the content provided on Tyche1 Games-controlled software or media;
+          <br /><br />
+          unauthorized access or use of any server or database controlled by Tyche1 Games; bugs, viruses etc. in the software; suspension of service; or any conduct of any third party whatsoever. Furthermore, any hyperlink or reference to a third party website, product, or person that is shared or published in any software or other channel by Tyche1 Games is for your convenience only, and does not constitute an endorsement. We accept no legal responsibility for content or information of such third party sites.
         </p>
       </div>
     </div>

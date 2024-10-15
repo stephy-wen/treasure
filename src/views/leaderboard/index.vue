@@ -106,7 +106,7 @@ const getData = async (pageIndex) => {
     console.log(response.data.data.items);
   } catch (error) {
     ElMessage.error({
-      message: "無法取得排行榜，請稍後再試！",
+      message: "Unable to retrieve the leaderboard, please try again later！",
       duration: 3000,
     });
   }

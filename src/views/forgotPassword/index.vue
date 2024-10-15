@@ -5,7 +5,7 @@
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
           <button @click="goBack" class="arrow mb-3">
-            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" style="height: 30px;"/>
           </button>
         </div>
         <!-- 返回按鈕 -->
@@ -632,6 +632,7 @@ pre {
   background-color: transparent;
   outline: none;
   box-shadow: none;
+  color: #212529;
 }
 
 .verification-code-input::placeholder {

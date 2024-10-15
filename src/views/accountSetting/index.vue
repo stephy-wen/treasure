@@ -90,14 +90,23 @@ const onNicknameChanged = (newNickname) => {
   userStore.updateNickname(newNickname);
 };
 
+const isCopyCoolDown = ref(false); // 狀態變量來控制冷卻時間
+
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
+  if (isCopyCoolDown.value) return;
+
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
       message: "User ID copied successfully.",
       type: "success",
     });
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",

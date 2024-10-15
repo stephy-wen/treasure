@@ -345,6 +345,14 @@
                     @close="closeResultModal"
                   />
                   <!-- 新的modal -->
+
+                  <!-- 維尼做的reward modal -->
+                  <!-- <WithdrawModal
+                    :isOpen="showWithdrawModal"
+                    :title="modalTitle"
+                    :amount="amount"
+                    @closeModal="showWithdrawModal = false"
+                  /> -->
                 </div>
               </div>
             </div>

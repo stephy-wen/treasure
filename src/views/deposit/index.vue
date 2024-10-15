@@ -44,9 +44,10 @@
           </router-link>
         </div>
       </div>
-    </div>
+
     <div class="d-flex justify-content-center">
       <DepositPage />
+    </div>
     </div>
   </div>
 </template>

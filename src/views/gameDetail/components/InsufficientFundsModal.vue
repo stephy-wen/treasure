@@ -13,8 +13,13 @@
     <!-- modal -->
     <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header pb-0 d-flex justify-content-between">
-          <h5 class="modal-title" id="insufficientBalanceModalLabel"></h5>
+        <div class="modal-header pb-0 d-flex justify-content-between ms-4">
+          <h5
+            class="modal-title deposit-title"
+            id="insufficientBalanceModalLabel"
+          >
+            {{ title }}
+          </h5>
           <button
             type="button"
             class="btn winnie-btn-close"
@@ -63,6 +68,7 @@ onMounted(() => {
 
 const props = defineProps({
   isOpen: Boolean,
+  title: String,
 });
 
 // console.log("isOpen prop in InsufficientFundsModal:", props.isOpen);

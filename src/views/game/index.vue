@@ -25,21 +25,26 @@
       </div>
     </div> -->
     <div class="game-container">
-      <div class="row game-list gy-4">
-        <GameCard
+      <div class="row game-list gy-1 gy-md-2 px-0">
+        <div
           v-for="(game, index) in games"
           :key="index"
-          :imageSrc="game.imageSrc"
-          :gameName="game.gameName"
-          :gameType="game.gameType"
-          :phoneIconSrc="game.phoneIconSrc"
-          :feeIconSrc="game.feeIconSrc"
-          :fee="game.fee"
-          :peopleIconSrc="game.peopleIconSrc"
-          :participants="game.participants"
-          :totalParticipants="game.totalParticipants"
-          :gameId="game.gameId"
-        />
+          :class="index < 2 ? 'col-12 col-md-6 px-1 limited-height' : 'col-6 col-sm-4 col-lg-3 px-1'"
+        >
+          <GameCard
+            :index="index"
+            :imageSrc="game.imageSrc"
+            :gameName="game.gameName"
+            :gameType="game.gameType"
+            :phoneIconSrc="game.phoneIconSrc"
+            :feeIconSrc="game.feeIconSrc"
+            :fee="game.fee"
+            :peopleIconSrc="game.peopleIconSrc"
+            :participants="game.participants"
+            :totalParticipants="game.totalParticipants"
+            :gameId="game.gameId"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -136,5 +141,12 @@ const searchGames = async () => {
 
 .container .search-bar .form-control::placeholder {
   color: #bbb;
+}
+</style>
+
+<style>
+.limited-height .card-img-top {
+  height: 400px !important;
+  object-fit: cover;
 }
 </style>

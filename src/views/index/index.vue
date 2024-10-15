@@ -1,7 +1,4 @@
 <template>
-  <div>
-    <h1>Welcome, {{ userStore.userInfo?.name }}</h1>
-  </div>
   <div class="mx-lg-5">
     <!-- banner 輪播 -->
     <div class="swiper-banner justify-content-center mx-auto mt-0 mt-lg-5">
@@ -17,17 +14,15 @@
     <div>
       <div class="text-center">
         <p class="game-title fw-bolder d-sm-none mt-5" style="font-size: 3rem">
-          <span style="color: #fcd535">T</span>HE GAME
+          <span style="color: #fcd535">TYCHE1 </span>
+          <span style="color: #F8F8F8">GAMES</span>
         </p>
       </div>
       <div class="game-card mt-5">
-        <div class="card-intro text-center mx-2">
-          <h1 class="fw-bolder">
-            DIVE INTO THE MOST THRILLING TREASURE HUNT OF YOUR LIFE!
-          </h1>
-          <p class="mt-3 fs-5 d-none d-lg-block">
-            Let’s explore the mysteries of the crypto world together and achieve
-            your wealth dreams!
+        <div class="card-intro text-center mx-2 d-none d-sm-block">
+          <p class="fw-bold" style="font-size: 70px; letter-spacing: 3px;">
+            <span style="color: #fcd535;">TYCHE1</span>
+            <span class="ms-3" style="color: #F8F8F8;">GAMES</span>
           </p>
         </div>
         <Swiper
@@ -51,21 +46,37 @@
       </div>
     </div>
 
+    <!-- PLATFORM stats -->
+    <div class="stats mx-auto mt-5">
+      <div class="stats-intro text-start">
+        <h1 class="fw-bolder mt-5">
+          <img class="me-1 img-fluid" :src="equalizer" alt="" />PLATFORM STATS
+        </h1>
+      </div>
+      <div class="row justify-content-center mt-5 w-100">
+        <template v-for="(item, index) in statsData" :key="index">
+          <div class="winnie-width mt-3 mt-lg-0">
+            <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
+            <StatsCard :title="item.title" :number="item.number" />
+          </div>
+          <hr
+            class="vertical-divider d-none d-lg-block"
+            v-if="index < statsData.length - 1"
+          />
+        </template>
+      </div>
+    </div>
+
     <!-- game-intro -->
     <div class="game-intro mx-auto mt-5">
       <div class="row">
-        <div class="col-12 col-xl-8 my-auto text-center text-xl-start">
-          <h1 class="fw-bolder">LOST TREASURE</h1>
-          <p class="mt-3 fs-5 d-block d-sm-none">
-            It's teeming with stories of sudden wealth in various forms.
+        <div class="col-12 col-xl-8 my-auto text-start">
+          <h1 class="fw-bolder">Game Instructions</h1>
+          <p class="mt-3 fs-5 d-block d-sm-none fw-bold">
+            A provably fair algorithm is used to draw the coin prizes.<br>Winner revealed when voting is filled.
           </p>
-          <p class="mt-5 fs-5 d-none d-sm-block">
-            The only venue for serious degens seeking serious rewards.
-            <br />
-            Built by a veteran team with a track record of delivering provably
-            fair,
-            <br />
-            fun on-chain games and innovative reward systems.
+          <p class="mt-5 fs-5 fw-bold d-none d-sm-block">
+            A provably fair algorithm is used to draw the coin prizes.<br>Winner revealed when voting is filled.<br>You can buy a ticket for $1.
           </p>
         </div>
         <div class="col-12 col-xl-4 text-center">
@@ -79,30 +90,9 @@
       </div>
     </div>
 
-    <!-- PLATFORM stats -->
-    <div class="stats mx-auto mt-5">
-      <div class="stats-intro text-center text-lg-start">
-        <h1 class="fw-bolder mt-5">
-          <img class="me-1 img-fluid" :src="equalizer" alt="" />PLATFORM STATS
-        </h1>
-      </div>
-      <div class="row justify-content-center mt-5 w-100">
-        <template v-for="(item, index) in statsData" :key="index">
-          <div class="col-7 col-lg-3 mt-3 mt-lg-0">
-            <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
-            <StatsCard :title="item.title" :number="item.number" />
-          </div>
-          <hr
-            class="vertical-divider d-none d-lg-block"
-            v-if="index < statsData.length - 1"
-          />
-        </template>
-      </div>
-    </div>
-
     <!-- Partnerships -->
     <div class="partnerships mx-auto">
-      <div class="partnerships-intro text-center text-lg-start">
+      <div class="partnerships-intro text-start">
         <h1 class="fw-bolder my-5">OUR FRIENDS</h1>
       </div>
       <div class="row text-center align-items-center">
@@ -170,9 +160,41 @@ console.log(userStore.userInfo?.name, "NAME");
 
 const hoverIndex = ref(null);
 const homePageData = ref([]);
-const banner = ref([]);
+const banner = ref([
+  {
+    mobileImage: bannerSM01,
+    image: banner01,
+    alt: "Default Banner",
+    link: "#",
+  },
+  {
+    mobileImage: bannerSM02,
+    image: banner02,
+    alt: "Default Banner",
+    link: "#",
+  },
+]);
 const gameRoomList = ref([]);
-const statsData = ref([]);
+
+// const gameRoomList = ref([
+//   {
+//     mobileImage: XRP,
+//     image: XRP,
+//     alt: "Card",
+//     link: `/game`, // 生成每個遊戲房的路由連結
+//   },
+//   {
+//     mobileImage: ETH,
+//     image: ETH,
+//     alt: "Card",
+//     link: `/game`, // 生成每個遊戲房的路由連結
+//   },
+// ]);
+const statsData = ref([
+  { title: "Total Players", number: 0 },
+  { title: "Total Game Volume", number: "$100" },
+  { title: "Total Game Rounds", number: 0 },
+]);
 // 輪播圖片數據
 
 // 配置 coverflow 效果
@@ -243,10 +265,10 @@ const handleRoomData = (obj) => {
 
 const handleBannerData = (obj) => {
   const bannerData = obj.map((item) => ({
-    mobileImage: item.smallUrl,
-    image: item.url,
+    mobileImage: item.smallUrl || bannerSM01,
+    image: item.url || banner01,
     alt: "Banner",
-    link: "/game/game-list",
+    link: item.linkUrl,
   }));
   return bannerData;
 };
@@ -279,8 +301,14 @@ onMounted(async () => {
 
 /* card */
 .game-intro {
-  width: 70%;
+  width: 85%;
   max-width: 1800px;
+}
+
+@media (min-width: 575.98px) {
+  .game-intro {
+    width: 70%;
+  }
 }
 
 .card-intro p {
@@ -303,17 +331,33 @@ onMounted(async () => {
 
 /* stats */
 .stats {
-  width: 100%;
+  width: 85%;
   max-width: 1800px;
+}
+
+@media (min-width: 575.98px) {
+  .stats {
+    width: 70%;
+  }
 }
 
 .stats .row {
   --bs-gutter-x: none;
 }
 
-@media (min-width: 575.98px) {
-  .stats {
-    width: 70%;
+@media (max-width: 991.98px) {
+  .stats .winnie-width {
+    background-color: #1e2329;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 991.98px) {
+  .stats .winnie-width {
+    width: 25%;
   }
 }
 
@@ -356,9 +400,17 @@ onMounted(async () => {
 }
 
 .partnerships {
-  width: 70%;
+  width: 85%;
   margin-top: 80px;
+  max-width: 1800px;
 }
+
+@media (min-width: 575.98px) {
+  .partnerships {
+    width: 70%;
+  }
+}
+
 @media (min-width: 991.98px) {
   .partnerships {
     margin-top: 120px;

@@ -1,19 +1,22 @@
 <template>
-  <div class="col-6 col-sm-4 col-lg-3 winnie-xs-style px-1 px-md-2">
+  <div class="winnie-xs-style px-0">
     <router-link :to="{ name: 'GameDetail', params: { gameId: gameId } }">
       <div class="card winnie-p-xs-2 p-3">
         <div class="game-card-img position-relative">
           <img
             :src="imageSrc"
             class="card-img-top img-fluid mx-auto"
-            style="max-width: 250px"
+            style="max-width: 1200px"
             alt="..."
           />
         </div>
         <div class="card-body pt-2 px-0">
           <div class="d-flex justify-content-between align-items-center">
             <div class="room-title">
-              <span class="card-title game-list-name fs-6">{{ gameName }}</span>
+              <span 
+              :class="index < 2 ? 'fs-3 fw-bold' : 'fs-6'"
+              class="card-title game-list-name"
+              >{{ gameName }}</span>
               <span
                 class="d-none d-xxl-inline card-title game-list-type ms-1"
                 style="font-size: 14px"
@@ -22,23 +25,35 @@
             </div>
             <img
               class="img-fluid mt-1"
-              style="max-height: 38px; margin-right: -4px"
+              :style="{ maxHeight: index < 2 ? '50px' : '38px', marginRight: '-4px' }"
               :src="phoneIconSrc"
               alt=""
             />
           </div>
           <div class="text-start">
-            <p class="game-list-type mt-1 mb-2">THE POT</p>
+            <p 
+            class="game-list-type mt-1 mb-2"
+            :class="index < 2 ? 'd-none' : ''"
+            >THE POT</p>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
+              <span 
+                v-if="index < 2" 
+                class="me-2" 
+                :style="{ color: '#BBB', fontSize: '1rem' }"
+              >THE POT
+              </span>
               <img
                 class="me-1 img-fluid"
-                style="width: 28px"
+                :style="{ width: index < 2 ? '40px' : '28px'}" 
                 :src="feeIconSrc"
                 alt=""
               />
-              <span class="game-list-fee fs-6">{{ fee }}</span>
+              <span 
+              class="game-list-fee"
+              :class="index < 2 ? 'fs-5' : 'fs-6'"
+              >{{ fee }}</span>
             </div>
             <div class="d-flex align-items-center">
               <img
@@ -47,7 +62,9 @@
                 :src="peopleIconSrc"
                 alt=""
               />
-              <span class="card-text game-list-people"
+              <span 
+              class="card-text game-list-people"
+              :style="{ fontSize: index < 2 ? '1rem' : '0.85rem'}"
                 >{{ participants }} / {{ totalParticipants }}</span
               >
             </div>
@@ -63,6 +80,7 @@ import { defineProps } from "vue";
 
 const props = defineProps({
   gameId: String, // 接收 gameId
+  index: Number,
   link: String,
   imageSrc: String,
   gameName: String,

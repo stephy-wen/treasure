@@ -137,14 +137,23 @@ const closeModal = () => {
   emit("closeModal");
 };
 
+const isCopyCoolDown = ref(false);
+
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
+  if (isCopyCoolDown.value) return;
   try {
     await navigator.clipboard.writeText(userId.value);
     ElMessage({
       message: "User ID Copied successfully.",
       type: "success",
     });
+
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",
@@ -154,12 +163,19 @@ const copyUserId = async () => {
 };
 
 const copyUserLink = async () => {
+  if (isCopyCoolDown.value) return;
   try {
     await navigator.clipboard.writeText(referralUrl.value);
     ElMessage({
       message: "Url Copied successfully.",
       type: "success",
     });
+
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",

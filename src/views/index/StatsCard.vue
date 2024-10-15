@@ -1,6 +1,7 @@
 <template>
-  <div class="stats-content mx-auto text-center" style="width: fit-content">
+  <div class="stats-content mx-auto text-start text-lg-center ps-4">
     <p class="fw-bold stats-title">{{ title }}</p>
+    <div class="yellow-line"></div>
     <p class="fw-bolder mt-2 stats-number">{{ number }}</p>
   </div>
 </template>
@@ -41,6 +42,23 @@ const props = defineProps({
 @media (min-width: 1399.98px) {
   .stats-title {
     font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .yellow-line {
+  width: 45%;
+  height: 4px;
+  background-color: #FCD535;
+  margin-top: 8px;
+  border-radius: 8px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .yellow-line {
+  width: 45%;
+  min-width: 160px;
   }
 }
 </style>

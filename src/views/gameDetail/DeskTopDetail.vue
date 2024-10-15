@@ -12,7 +12,7 @@
       </div>
       <div>
         <div class="player-limit d-flex ps-3 align-items-center">
-          <p class="d-flex align-items-center me-3">
+          <p class="d-flex align-items-center me-3 fw-bold">
             <img
               class="me-2"
               style="max-width: 24px"
@@ -20,7 +20,7 @@
               alt=""
             />Vote
           </p>
-          <span>{{ gameData.votes }} / {{ gameData.totalVotes }}</span>
+          <span class="fw-bold">{{ gameData.votes }} / {{ gameData.totalVotes }}</span>
           <!-- 動態的參加数 -->
         </div>
       </div>
@@ -33,7 +33,7 @@
           >
             <h1 class="fw-bold">{{ gameDetails.name }}</h1>
             <div class="d-flex flex-column">
-              <p class="d-block">ROUND {{ gameDetails.round }}</p>
+              <p class="d-block fw-bold">ROUND {{ gameDetails.round }}</p>
               <img
                 class="dollar-width"
                 :src="gameData.dollarIcon"
@@ -48,24 +48,27 @@
               />
             </div>
           </div>
-          <div class="game-intro-content fs-5">
+          <div class="game-intro-content">
+            <span style="font-size: 14px;">
             The Game is an interactive on-chain survival game, players join
             challenges, and the results are revealed once the player limit is
-            reached, with only one winner.<br /><span class="fw-bold"
-              >One Dollar, One Life — Tyche</span
-            >
+            reached, with only one winner.</span>
+            <br /><br />
+            <span class="fw-bold fs-6" style="margin-bottom: 10px; display: inline-block;">GAME INSTRUCTIONS</span><br />
+            <span style="font-size: 14px;">A provably fair algorithm is used to draw the coin prizes.</span><br />
+            <span style="font-size: 14px;">Winner revealed when voting is filled.</span>
           </div>
         </div>
         <div
           class="col-sm-6 col-md-5 col-xl-4 ms-md-auto d-flex flex-column justify-content-between"
         >
-          <div class="mt-2 d-flex justify-content-center player-list-hexagon">
+          <div class="mt-2 d-flex justify-content-center player-list-hexagon" style="flex-direction: row-reverse;">
             <HexagonButton
               v-for="(image, index) in hexagonImages"
               :key="index"
               class="ms-1"
               :backgroundImage="image"
-              :isClickable="index === hexagonImages.length - 1"
+              :isClickable="index === 0"
               @openModal="openModal"
             />
 
@@ -80,7 +83,7 @@
           <div class="game-attend mt-3">
             <button
               class="game-attend-btn py-4 fs-1 fw-bold"
-              @click="openJoinGameModal"
+              @click="handleButtonClick"
               :disabled="gameData.votes === gameData.totalVotes"
               :class="{
                 'disabled-button': gameData.votes === gameData.totalVotes,
@@ -107,6 +110,7 @@
             <InsufficientFundsModal
               :isOpen="showInsufficientFundsModal"
               @closeModal="closeInsufficientFundsModal"
+              title="Deposit"
             />
 
             <!-- maxParticipantsModal-->
@@ -129,10 +133,11 @@
 
 <script setup>
 import { ref, defineProps, computed, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { getCurrencyIcon } from "@/assets/images.js";
 import { showErrorNotification } from "@/utils/errorHandler.js";
 import modules from "@/services/modules.js";
+import { useUserStore } from "@/stores/user";
 
 import HexagonButton from "./components/HexagonButton.vue";
 import PlayerListModal from "./components/PlayerListModal.vue";
@@ -174,7 +179,12 @@ const playData = ref({});
 const hexagonImages = ref([]);
 const playListData = ref([]);
 const route = useRoute(); // 獲取路由對象
+const router = useRouter();
+const userStore = useUserStore();
 let iconImage;
+
+const isLoggedIn = userStore.isLoggedIn;
+console.log(isLoggedIn, "game isLoggedIn");
 
 const gameData = computed(() => ({
   title: props.gameDetails.name,
@@ -187,13 +197,16 @@ const gameData = computed(() => ({
   dollarIcon: dollar, // 固定美元圖標
 }));
 
-if (props.gameDetails.betSymbol === "POINT") {
-  iconImage = backgroundImage01;
-}
+// if (props.gameDetails.betSymbol === "POINT") {
+//   iconImage = backgroundImage01;
+// }
+
+console.log(props.gameDetails);
 
 // join game data
 const JoinGame = ref({
-  backgroundImage: iconImage,
+  // backgroundImage: iconImage,
+  backgroundImage: props.gameDetails.attendImgUrl,
   round: props.gameDetails.round,
   title: props.gameDetails.name,
   betUnitAmount: props.gameDetails.betUnitAmount,
@@ -230,6 +243,14 @@ const openJoinGameModal = () => {
   }
 };
 
+const handleButtonClick = () => {
+  if (isLoggedIn) {
+    openJoinGameModal();
+  } else {
+    router.push("/login");
+  }
+};
+
 const openVotingFullModal = () => {
   showVotingFullModal.value = true;
 };
@@ -244,9 +265,9 @@ const getPlayerData = async (gameId) => {
     playData.value = res.data.data; // 這邊就是所有玩家資料的array
 
     // 使用 map 將玩家的 playerIconUrl 提取出來
-    hexagonImages.value = playData.value
-      .map((player) => player.playerIconUrl)
-      .slice(0, 8);
+    hexagonImages.value = [defaultAvatar] // 在開頭加上預設圖片
+      .concat(playData.value.map((player) => player.playerIconUrl)) // 拼接玩家圖像
+      .slice(0, 8); // 確保只取前 8 個
 
     // 如果玩家不足 8 個，用預設圖片補齊
     while (hexagonImages.value.length < 8) {
@@ -770,5 +791,9 @@ onMounted(() => {
   color: #666666;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.game-intro-content span {
+  letter-spacing: 0.2px;
 }
 </style>

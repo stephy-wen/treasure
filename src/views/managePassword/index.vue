@@ -4,8 +4,8 @@
       <FormSide>
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
-          <button @click="goBack" class="arrow mb-3">
-            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
+          <button @click="goBack" class="arrow mb-3 p-0">
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" style="height: 30px;"/>
           </button>
         </div>
         <!-- 返回按鈕 -->
@@ -16,6 +16,8 @@
           :currentStep="currentStep"
           :handleButtonClick="handleButtonClick"
           @goToLogin="returnToLogin"
+          :marginBottom="'20px !important'"
+          :textAlign="'start !important'"
         >
           <!-- 步驟 1: 輸入原密碼、新密碼、Email驗證 -->
           <template v-slot:extra-password v-if="currentStep === 1">
@@ -97,15 +99,6 @@
                 <!-- 測試 -->
               </div>
             </div>
-            <p
-              v-if="currentStep === 1"
-              class="mb-1 text-start"
-              style="color: #75797e; font-size: 12px"
-            >
-              To protect your account, you won't be able to withdraw funds or
-              use P2P trading to sell crypto for 24 hours after you reset or
-              change your account password.
-            </p>
           </template>
 
           
@@ -492,10 +485,6 @@ pre {
   outline: none;
 }
 
-.winnie-bg-dark .manage-pw-form .winnie-back-btn {
-  top: 4rem;
-}
-
 @media (min-width: 991.98px) and (max-width: 1199.98px) {
   .winnie-bg-dark .manage-pw-container .fs-1 {
     font-size: calc(0.75rem + 1.5vw) !important;
@@ -506,7 +495,7 @@ pre {
 }
 
 @media (min-width: 991.98px) {
-  .winnie-bg-dark .manage-pw-form .winnie-back-btn {
+  .winnie-back-btn {
     right: 4rem;
     top: 1.75rem;
   }

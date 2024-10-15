@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container d-none d-sm-block">
     <!-- screen-size-web -->
     <div class="winnie-account-web container d-none d-sm-block">
       <div class="personal-info d-flex flex-wrap">
@@ -97,8 +97,11 @@
             <img src="@/assets/images/icon/balance-icon.png" alt="" />
             <span class="fs-2 fw-bold ms-2">{{ balance }}</span>
           </div>
-          <div class="d-flex mt-5" v-if="rewardButtonData.length > 0">
-            <div class="d-flex col">
+
+          <!-- <div v-else>尚無資料</div> -->
+        </div>
+        <div class="d-flex mt-5 w-100" v-if="rewardButtonData.length > 0">
+            <div class="d-flex col justify-content-end flex-wrap">
               <el-tooltip
                 class="box-item customized-tooltip"
                 :content="item.balance.toString()"
@@ -107,7 +110,7 @@
                 :key="item.round"
               >
                 <button
-                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2"
+                  class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark ms-2 px-2 mb-2"
                   type="button"
                   id="dropdownMenuRewardsList"
                   aria-expanded="false"
@@ -119,10 +122,8 @@
                   }}</span>
                 </button>
               </el-tooltip>
-            </div>
 
-            <div class="col ms-2">
-              <div class="dropdown rewards-list-dropdown">
+              <div class="dropdown rewards-list-dropdown ms-2">
                 <button
                   class="d-flex flex-row btn-dashboard-auto justify-content-center align-items-center bck-dark px-3"
                   type="button"
@@ -151,10 +152,8 @@
               </div>
             </div>
           </div>
-          <!-- <div v-else>尚無資料</div> -->
-        </div>
       </div>
-      <div class="account-form mt-5">
+      <div class="account-form my-5">
         <TableComponent
           Title=""
           :headers="headers"
@@ -168,6 +167,7 @@
         :totalItems="totalItems"
         :itemsPerPage="itemsPerPage"
         @page-changed="fetchPageData"
+        class="mt-auto"
       />
     </div>
   </div>
@@ -220,7 +220,7 @@ const balance = ref(0); // 改為響應式變量
 const tableData = ref([]);
 const rewardsData = ref([]);
 const totalItems = ref(0); // 總項目數
-const itemsPerPage = ref(5); // 每頁顯示 5 筆
+const itemsPerPage = ref(10); // 每頁顯示 5 筆
 const transactionType = "All";
 const rewardButtonData = ref([]);
 
@@ -366,14 +366,23 @@ const goToRewardPage = (symbol) => {
   router.push({ path: `/account/reward/${symbol}` });
 };
 
+const isCopyCoolDown = ref(false);
+
 // 定義一個方法來複製 userId 到剪貼板
 const copyUserId = async () => {
+  if (isCopyCoolDown.value) return;
   try {
     await navigator.clipboard.writeText(userInfo.value.userId);
     ElMessage({
       message: "User ID Copied successfully.",
       type: "success",
     });
+
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",
@@ -422,6 +431,12 @@ onMounted(async () => {
 
 <style scoped>
 /* web */
+.app-container {
+  min-height: 77vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   max-width: 1200px;
 }
@@ -574,8 +589,26 @@ button.bck-yellow:hover {
 @media (min-width: 991.98px) {
   .rewards-list-dropdown .dropdown-menu {
     width: 660px;
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+    .rewards-list-dropdown .dropdown-menu::-webkit-scrollbar {
+    width: 5px;
+    background-color: #2b3139;
+  }
+
+  .rewards-list-dropdown .dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: #1e2329;
+    border-radius: 4px;
+  }
+
+  .rewards-list-dropdown .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
   }
 }
+
+
 
 /* setting */
 

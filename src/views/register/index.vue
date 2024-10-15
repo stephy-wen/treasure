@@ -5,7 +5,7 @@
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
           <button @click="goBack" class="arrow mb-3">
-            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" style="height: 30px;"/>
           </button>
         </div>
         <!-- 返回按鈕 -->
@@ -236,6 +236,7 @@ const handleButtonClick = async () => {
   }
 };
 
+
 // 發驗證信
 const sendVerificationEmail = async (shouldChangeStep = true) => {
   try {
@@ -411,7 +412,7 @@ const validateStep = () => {
     errorMessage.value = "Invalid email format.";
     return false;
   }
-// 針對第三步的驗證
+  // 針對第三步的驗證
   if (currentStep.value === 3) {
     // 如果密碼為空
     if (!password.value) {
@@ -614,10 +615,11 @@ button.resend-link:hover {
 
 .winnie-log-in-link a {
   color: #181A20;
+  border-bottom: 1px solid #181A20;
 }
 
 .winnie-log-in-link a:hover {
-  color: #FCD535;
+  border-bottom-color: transparent;
   cursor: pointer;
 }
 

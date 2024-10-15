@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="app-container">
     <!-- main -->
-    <div class="d-flex justify-content-center">
-      <div class="winnie-withdraw">
-        <div class="container tabs mt-5 px-3 px-lg-0">
+        <div class="winnie-withdraw container tabs mt-5 px-3 px-lg-0">
           <div class="d-flex justify-content-center align-items-center">
             <div class="p-2 text-center">
               <router-link to="/account/deposit">
@@ -53,322 +51,329 @@
               </router-link>
             </div>
           </div>
-        </div>
-
-        <div class="container px-3 px-sm-0 mt-5">
-          <div class="step-container step-one">
-            <div>
-              <div class="step-title">
-                <div class="circle-number active me-4">1</div>
-                <h5>Select Coin</h5>
-              </div>
-              <div class="d-flex justify-content-center">
-                <div class="vertical-line active d-none d-md-block me-5"></div>
-                <!-- Element Plus 下拉选择框 -->
-                <el-select
-                  v-model="params.supportCoin"
-                  size="large"
-                  placeholder="Select Coin"
-                  v-if="selectShow"
-                  class="d-flex align-items-center my-4 my-sm-0"
-                >
-                  <template #prefix>
-                    <el-image
-                      v-if="params.supportCoinImagePath"
-                      :src="params.supportCoinImagePath"
-                      style="width: 20px; height: 20px; margin-right: 5px"
-                    ></el-image>
-                  </template>
-                  <el-option
-                    v-for="item in options.supportCoins"
-                    :key="item.value"
-                    :value="item.value"
-                    :label="item.label"
+        
+        <div class="d-flex justify-content-center">
+          <div class="withdraw-page px-3 px-sm-0 mt-5">
+            <div class="step-container step-one">
+              <div>
+                <div class="step-title">
+                  <div class="circle-number active me-4">1</div>
+                  <h5>Select Coin</h5>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="vertical-line active d-none d-sm-block me-5"></div>
+                  <!-- Element Plus 下拉选择框 -->
+                  <el-select
+                    v-model="params.supportCoin"
+                    size="large"
+                    placeholder="Select Coin"
+                    v-if="selectShow"
+                    class="d-flex align-items-center justify-content-center my-4 my-sm-0"
                   >
-                    <template #default>
-                      <div class="option-content">
-                        <el-image
-                          :src="item.ImagePath"
-                          style="width: 20px; height: 20px; margin-right: 10px"
-                        ></el-image>
-                        {{ item.label }}
-                      </div>
+                    <template #prefix>
+                      <el-image
+                        v-if="params.supportCoinImagePath"
+                        :src="params.supportCoinImagePath"
+                        style="width: 20px; height: 20px; margin-right: 5px"
+                      ></el-image>
                     </template>
-                  </el-option>
-                </el-select>
+                    <el-option
+                      v-for="item in options.supportCoins"
+                      :key="item.value"
+                      :value="item.value"
+                      :label="item.label"
+                      class="winnie-text-white"
+                    >
+                      <template #default>
+                        <div class="option-content">
+                          <el-image
+                            :src="item.ImagePath"
+                            style="width: 20px; height: 20px; margin-right: 10px"
+                          ></el-image>
+                          {{ item.label }}
+                        </div>
+                      </template>
+                    </el-option>
+                  </el-select>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- Step 2 -->
-          <div class="step-container step-two">
-            <div>
-              <div class="step-title">
-                <div
-                  class="circle-number me-4"
-                  :class="{ active: params.supportCoin }"
-                >
-                  2
-                </div>
-                <h5>Withdraw to</h5>
-              </div>
-              <div
-                class="d-flex align-items-center justify-content-center mb-3 mb-md-0"
-              >
-                <div
-                  class="vertical-line me-5 d-none d-md-block"
-                  :class="{ active: params.supportCoin }"
-                ></div>
-                <div
-                  class="mt-3 mt-md-0 winnie-width-xs-100"
-                  :style="{
-                    visibility: params.supportCoin ? 'visible' : 'hidden',
-                  }"
-                >
-                <div class="form-group">
-                  <!-- 提款地址輸入 -->
-                  <el-input
-                    v-model="params.withdrawAddress"
-                    class="form-control mb-2"
-                    id="exampleFormControlInput1"
-                    placeholder="Enter your address"
-                    size="large"
-                    clearable
-                    @blur="validateAddress"
-                  />
-                    <!-- 如果地址驗證失敗，顯示紅字錯誤訊息 -->
-                    <p v-if="addressError" class="text-danger">
-                      {{ addressErrorMessage }}
-                    </p>
-                  </div>
-                  <!-- 選擇網路 -->
+            <!-- Step 2 -->
+            <div class="step-container step-two">
+              <div>
+                <div class="step-title">
                   <div
-                    class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
+                    class="circle-number me-4"
+                    :class="{ active: params.supportCoin }"
                   >
-                    <el-select
-                      v-model="params.selectNetwork"
+                    2
+                  </div>
+                  <h5>Withdraw to</h5>
+                </div>
+                <div
+                  class="d-flex align-items-center justify-content-center w-100"
+                >
+                  <div
+                    class="vertical-line me-5 d-none d-sm-block"
+                    :class="{ active: params.supportCoin }"
+                  ></div>
+                  <div
+                    class="mt-3 mt-md-0 w-100"
+                    :style="{
+                      visibility: params.supportCoin ? 'visible' : 'hidden',
+                    }"
+                  >
+                  <div class="form-group">
+                    <!-- 提款地址輸入 -->
+                    <el-input
+                      v-model="params.withdrawAddress"
+                      class="form-control mb-2"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter your address"
                       size="large"
-                      placeholder="Select Network"
-                      v-if="selectShow"
+                      clearable
+                      @blur="validateAddress"
+                    />
+                      <!-- 如果地址驗證失敗，顯示紅字錯誤訊息 -->
+                      <p v-if="addressError" class="text-danger">
+                        {{ addressErrorMessage }}
+                      </p>
+                    </div>
+                    <!-- 選擇網路 -->
+                    <div
+                      class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
                     >
-                      <!-- 提醒 -->
-                      <div
-                        class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between"
+                      <el-select
+                        v-model="params.selectNetwork"
+                        size="large"
+                        placeholder="Select Network"
+                        v-if="selectShow"
+                        class="d-flex align-items-center justify-content-start"
                       >
-                        <p>
-                          <i
-                            class="fa-solid fa-circle-exclamation me-2 winnie-text-white"
-                          ></i>
-                        </p>
-                        <p
-                          class="text-start deposit-notice-color"
-                          style="font-size: 12px"
+                        <!-- 提醒 -->
+                        <!-- <div
+                          class="deposit-notice-bk-color m-2 p-2 d-flex justify-content-between"
                         >
-                          Please note that only supported networks on Binance
-                          platform are shown, if you deposit via another network
-                          your assets may be lost.
-                        </p>
-                      </div>
-                      <el-option
-                        v-for="network in options.supportNetworks"
-                        :key="network.value"
-                        :value="network.value"
-                        :label="`${network.label} (${network.protocol})`"
-                        style="height: 60px"
-                      >
-                        <template #default>
-                          <div class="info">
-                            <div
-                              class="d-flex justify-content-between align-items-center"
-                            >
-                              <span
-                                class="winnie-text-white"
-                                style="color: black"
-                                >{{ network.label }}</span
+                          <p>
+                            <font-awesome-icon
+                              icon="fa-solid fa-circle-exclamation"
+                              class="winnie-text-white me-2"
+                            />
+                          </p>
+                          <p
+                            class="text-start deposit-notice-color"
+                            style="font-size: 12px;"
+                          >
+                            Please note that only supported networks on Binance
+                            platform are shown, if you deposit via another network
+                            your assets may be lost.
+                          </p>
+                        </div> -->
+                        <el-option
+                          v-for="network in options.supportNetworks"
+                          :key="network.value"
+                          :value="network.value"
+                          :label="`${network.label} (${network.protocol})`"
+                          style="height: 60px;"
+                        >
+                          <template #default>
+                            <div class="info">
+                              <div
+                                class="d-flex justify-content-between align-items-center"
                               >
-                              <span
-                                class="winnie-text-white"
-                                style="color: black"
-                                >&#8776; {{ network.confirmMins }} 分鐘</span
+                                <span
+                                  class="winnie-text-white"
+                                  >{{ network.label }}</span
+                                >
+                                <span
+                                  class="winnie-text-white"
+                                  >&#8776; {{ network.confirmMins }} mins</span
+                                >
+                              </div>
+                              <div
+                                class="d-flex justify-content-between align-items-center"
                               >
+                                <span class="winnie-text-gray winnie-fs-small"
+                                  >{{ network.fullName }} ({{
+                                    network.protocol
+                                  }})</span
+                                >
+                                <span class="winnie-text-gray winnie-fs-small"
+                                  >{{ network.confirmMins }} mins</span
+                                >
+                              </div>
                             </div>
-                            <div
-                              class="d-flex justify-content-between align-items-center"
-                            >
-                              <span class="winnie-text-gray winnie-fs-small"
-                                >{{ network.fullName }} ({{
-                                  network.protocol
-                                }})</span
-                              >
-                              <span class="winnie-text-gray winnie-fs-small"
-                                >{{ network.confirmMins }} 確認/s</span
-                              >
-                            </div>
-                          </div>
-                        </template>
-                      </el-option>
-                    </el-select>
+                          </template>
+                        </el-option>
+                      </el-select>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Step 3 -->
-          <div class="step-container step-three">
-            <div>
-              <div class="step-title">
+            <!-- Step 3 -->
+            <div class="step-container step-three">
+              <div class="w-100">
+                <div class="step-title">
+                  <div
+                    class="circle-number me-4"
+                    :class="{
+                      active: params.selectNetwork && params.withdrawAddress,
+                    }"
+                  >
+                    3
+                  </div>
+                  <h5>Withdrawl Amount</h5>
+                </div>
                 <div
-                  class="circle-number me-4"
-                  :class="{
-                    active: params.selectNetwork && params.withdrawAddress,
-                  }"
+                  v-if="stepThreeVisible"
+                  class="d-flex align-items-center flex-column flex-sm-row"
                 >
-                  3
-                </div>
-                <h5>Withdrawl Amount</h5>
-              </div>
-              <div
-                v-if="stepThreeVisible"
-                class="d-flex align-items-center flex-column flex-md-row"
-              >
-                <div
-                  class="vertical-line me-5 d-none d-md-block"
-                  style="background-color: transparent; height: 100px"
-                ></div>
-                <div class="input-group my-3 col-12 col-sm-7">
-                  <el-input
-                    type="number"
-                    id="inputWithdrawAmount"
-                    size="large"
-                    class="form-control amount-input no-spin-button"
-                    placeholder="Minimum 30 USD"
-                    v-model="params.withdrawAmount"
-                    aria-label="withdraw amount"
-                    aria-describedby="amount"
-                    @blur="validateWithdrawAmountOnBlur"
-                  />
-                  <button class="btn max-btn" @click="setMaxWithdrawAmount">
-                    MAX
-                  </button>
-                  <span class="input-group-text" id="withdrawUnit">{{
-                    params.serviceFeeSymbol
-                  }}</span>
-                </div>
-              </div>
-              <div v-if="stepThreeVisible" class="d-flex">
-                <div
-                  class="vertical-line me-5 d-none d-md-block"
-                  style="background-color: transparent"
-                ></div>
-                <div class="info-section">
-                  <div class="info-row mb-1 mb-md-2">
-                    <span>Available Withdrawal Balance</span>
-                    <span class="d-none d-md-inline"
-                      >{{ params.maxWithdrawAmount }}
-                      {{ params.serviceFeeSymbol }}</span
-                    >
-                  </div>
-                  <div class="info-row mb-1 mb-md-2">
-                    <span>Service fee</span>
-                    <span class="d-none d-md-inline"
-                      >{{ params.serviceFee }}
-                      {{ params.serviceFeeSymbol }}</span
-                    >
-                  </div>
-                  <span class="d-inline d-md-none"
-                    >{{ params.serviceFee }} {{ params.serviceFeeSymbol }}</span
-                  >
-                  <!-- withdrawModal -->
                   <div
-                    class="info-row justify-content-center justify-content-sm-end mt-4 winnie-width-xs-100"
-                  >
-                    <button
-                      class="withdraw-btn"
-                      @click="checkFormDataAndSendEmail"
-                      :disabled="!isAddressValid"
-                    >
-                      Withdraw
+                    class="vertical-line me-5 d-none d-sm-block"
+                    style="background-color: transparent; height: 100px"
+                  ></div>
+                  <div class="input-group my-3 winnie-width-100">
+                    <el-input
+                      type="number"
+                      id="inputWithdrawAmount"
+                      size="large"
+                      class="form-control amount-input no-spin-button"
+                      placeholder="Minimum 30 USD"
+                      v-model.number="params.withdrawAmount"
+                      aria-label="withdraw amount"
+                      aria-describedby="amount"
+                      @blur="validateWithdrawAmountOnBlur"
+                    />
+                    <button class="btn max-btn" @click="setMaxWithdrawAmount">
+                      MAX
                     </button>
+                    <span class="input-group-text" id="withdrawUnit">{{
+                      params.serviceFeeSymbol
+                    }}</span>
                   </div>
+                </div>
+                <div v-if="stepThreeVisible" class="d-flex">
                   <div
-                     v-if="isOpenEmailVerificationModal"
-                    class="modal fade show"
-                    id="withdrawModal"
-                    tabindex="-1"
-                    aria-labelledby="withdrawModalLabel"
-                    aria-hidden="true"
-                     role="dialog"
-                    style="display: block"
-                  >
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <div
-                          class="modal-header d-flex justify-content-between"
-                        >
-                          <h5 class="modal-title" id="withdrawModalLabel"></h5>
-                          <button
-                            type="button"
-                            class="btn winnie-btn-close"
-                             @click="isOpenEmailVerificationModal = false"
+                    class="vertical-line me-5 d-none d-sm-block"
+                    style="background-color: transparent"
+                  ></div>
+                  <div class="info-section w-100">
+                    <div class="info-row mb-1 mb-md-2">
+                      <span>Available Withdrawal Balance</span>
+                      <span class="d-none d-md-inline"
+                        >{{ params.maxWithdrawAmount }}
+                        {{ params.serviceFeeSymbol }}</span
+                      >
+                    </div>
+                    <span class="d-inline d-md-none"
+                      >{{ params.maxWithdrawAmount }} {{ params.serviceFeeSymbol }}</span
+                    >
+                    <div class="info-row mb-1 mb-md-2 mt-3 mt-md-0">
+                      <span>Service fee</span>
+                      <span class="d-none d-md-inline"
+                        >{{ params.serviceFee }}
+                        {{ params.serviceFeeSymbol }}</span
+                      >
+                    </div>
+                    <span class="d-inline d-md-none"
+                      >{{ params.serviceFee }} {{ params.serviceFeeSymbol }}</span
+                    >
+                    <!-- withdrawModal -->
+                    <div
+                      class="info-row justify-content-center justify-content-sm-end mt-4"
+                    >
+                      <button
+                        class="withdraw-btn"
+                        @click="checkFormDataAndSendEmail"
+                        :disabled="!isAddressValid"
+                      >
+                        Withdraw
+                      </button>
+                    </div>
+                    <div
+                      v-if="isOpenEmailVerificationModal"
+                      class="modal fade show"
+                      id="withdrawModal"
+                      tabindex="-1"
+                      aria-labelledby="withdrawModalLabel"
+                      aria-hidden="true"
+                      role="dialog"
+                      style="display: block"
+                    >
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div
+                            class="modal-header d-flex justify-content-between"
                           >
-                            <font-awesome-icon icon="fa-solid fa-xmark" />
-                          </button>
-                        </div>
-                        <div class="modal-body px-5">
-                          <p class="fs-2 fw-bold">Email Verification</p>
-                          <br />
-                          <p class="winnie-text-gray">
-                            We've sent a code to your email. Please enter it
-                            within 30 minutes.
-                          </p>
-                          <br />
-                          <div class="d-flex justify-content-center">
-                            <input
-                              v-for="(code, index) in codes"
-                              :key="index"
-                              ref="inputRefs"
-                              type="text"
-                              class="form-control text-center mx-1 code-input"
-                              maxlength="1"
-                              v-model="codes[index]"
-                              @input="handleInput(index)"
-                              @keydown.backspace="handleBackspace(index)"
-                              autofocus
-                            />
+                            <h5 class="modal-title" id="withdrawModalLabel"></h5>
+                            <button
+                              type="button"
+                              class="btn winnie-btn-close"
+                              @click="isOpenEmailVerificationModal = false"
+                            >
+                              <font-awesome-icon icon="fa-solid fa-xmark" />
+                            </button>
                           </div>
-                            <!-- 錯誤訊息開始 -->
-                            <p v-if="errorMessage" class="error-message d-flex">
-                              <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
-                              <pre>{{ errorMessage }}</pre>
+                          <div class="modal-body px-5">
+                            <p class="fs-2 fw-bold">Email Verification</p>
+                            <br />
+                            <p class="winnie-text-gray">
+                              We've sent a code to your email. Please enter it
+                              within 30 minutes.
                             </p>
-                            <!-- 錯誤訊息結束 -->
-                        </div>
-                        <div class="modal-footer px-5">
-                          <button
-                            id="withdrawConfirmButton"
-                            type="button"
-                            class="btn btn-primary w-100 mb-3 mt-3"
-                            @click="withdrawApply"
-                            :disabled="!formValid"
-                          >
-                            Confirm
-                          </button>
+                            <br />
+                            <div class="d-flex justify-content-center">
+                              <input
+                                v-for="(code, index) in codes"
+                                :key="index"
+                                ref="inputRefs"
+                                type="text"
+                                class="form-control text-center mx-1 code-input"
+                                maxlength="1"
+                                v-model="codes[index]"
+                                @input="handleInput(index)"
+                                @keydown.backspace="handleBackspace(index)"
+                                autofocus
+                              />
+                            </div>
+                              <!-- 錯誤訊息開始 -->
+                              <p v-if="errorMessage" class="error-message d-flex">
+                                <img src="@/assets/images/icon/antOutline-close 1.svg" class="me-2" style="width: 14px;" alt="">
+                                <pre>{{ errorMessage }}</pre>
+                              </p>
+                              <!-- 錯誤訊息結束 -->
+                          </div>
+                          <div class="modal-footer px-5">
+                            <button
+                              id="withdrawConfirmButton"
+                              type="button"
+                              class="btn btn-primary w-100 mb-3 mt-3"
+                              @click="withdrawApply"
+                              :disabled="!formValid"
+                            >
+                              Confirm
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <!-- withdraw Modal -->
+                    <WithdrawModal
+                      :isOpen="showWithdrawModal"
+                      :title="modalTitle"
+                      :amount="params.withdrawAmount"
+                      :txid="params.withdrawAddress"
+                      @closeModal="showWithdrawModal = false"
+                    />
                   </div>
-                   <!-- withdraw Modal -->
-                   <WithdrawModal
-                    :isOpen="showWithdrawModal"
-                    @closeModal="showWithdrawModal = false"
-                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -389,6 +394,10 @@ const isOpenEmailVerificationModal = ref(false);
 
 const isAddressValid = ref(false); // 新增一個變數來動態控制按鈕狀態
 
+const modalTitle = ref("Withdraw")
+const amount = ref(0)
+const transactionId = ref("");
+
 
 // 定義是否可以提交表單
 const formValid = computed(() => {
@@ -406,7 +415,7 @@ const params = reactive({
   supportCoinImagePath: "",
   withdrawAddress: "",
   selectNetwork: "",
-  withdrawAmount: "",
+  withdrawAmount: 0,
   maxWithdrawAmount: "",
   code: "",
   serviceFee: "",
@@ -699,6 +708,15 @@ const verifyCodeWithAPI = async (code) => {
 </script>
 
 <style scoped>
+.app-container {
+  min-height: 77vh;
+  display: flex;
+  flex-direction: column;
+}
+.container {
+    width: 100%;
+}
+
 /* email test */
 .verification-container {
   max-width: 300px;
@@ -714,12 +732,6 @@ const verifyCodeWithAPI = async (code) => {
 
 .container {
   width: 100%;
-}
-
-@media (max-width: 420px) {
-  .winnie-width-xs-100 {
-    width: 100% !important;
-  }
 }
 
 .winnie-withdraw a p {
@@ -848,9 +860,6 @@ const verifyCodeWithAPI = async (code) => {
   border-right: none;
 }
 
-.step-three .input-group {
-  width: 90%;
-}
 
 .step-three .info-section {
   margin-top: 20px;
@@ -893,6 +902,17 @@ const verifyCodeWithAPI = async (code) => {
     width: 400px;
   }
 }
+
+.step-three .input-group.winnie-width-100 {
+  width: 100%;;
+}
+
+@media (min-width: 575.98px) and (max-width: 767.98px) {
+  .step-three .input-group.winnie-width-100  {
+    width: 400px !important;
+  }
+}
+
 @media (min-width: 767.98px) {
   .step-container .step-three .input-group,
   .step-three .info-section {
@@ -937,14 +957,14 @@ const verifyCodeWithAPI = async (code) => {
   }
 }
 
-.winnie-withdraw .vertical-line {
+.vertical-line {
   width: 1px;
   background-color: #414d5a;
   height: 130px;
   margin: 0 20px;
 }
 
-.winnie-withdraw .vertical-line.active {
+.vertical-line.active {
   background-color: #f8f8f8;
 }
 
@@ -1020,6 +1040,12 @@ const verifyCodeWithAPI = async (code) => {
 
 /* 共用 */
 
+@media (max-width: 575.98px) {
+  .withdraw-page {
+  width: 100%;
+  }
+}
+
 .divider {
   width: 1px;
   height: 30px;
@@ -1077,27 +1103,27 @@ ul li a .full-name {
   color: #bbb;
 }
 
-.step-container .dropdown-toggle {
+.step-container .dropdown-toggle, .el-input__wrapper {
   width: 280px;
   background-color: transparent;
 }
 @media (min-width: 420px) and (max-width: 575.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle, .el-input__wrapper {
     width: 380px;
   }
 }
 @media (min-width: 575.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle, .el-input__wrapper {
     width: 400px;
   }
 }
 @media (min-width: 767.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle, .el-input__wrapper {
     width: 534px;
   }
 }
 @media (min-width: 991.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle, .el-input__wrapper {
     width: 600px;
   }
 }
@@ -1141,6 +1167,29 @@ ul li a .full-name {
 .deposit-notice-bk-color {
   background-color: #414d5a;
   border-radius: 8px;
+  width: 270px;
+}
+
+@media (min-width: 420px) and (max-width: 575.98px) {
+  .deposit-notice-bk-color {
+    max-width: 300px;
+  }
+}
+@media (min-width: 575.98px) {
+  .deposit-notice-bk-color {
+    max-width: 340px;
+  }
+}
+
+@media (min-width: 767.98px) {
+  .deposit-notice-bk-color {
+    max-width: 400px;
+  }
+}
+@media (min-width: 991.98px) {
+  .deposit-notice-bk-color {
+    max-width: 580px;
+  }
 }
 
 .winnie-fs-small {
@@ -1229,27 +1278,27 @@ ul li a .full-name {
 }
 </style>
 <style>
-.step-container .el-select__wrapper {
-  width: 280px;
+.step-container .el-select__wrapper, .step-two .form-control {
+  width: 100%;
   background-color: transparent;
 }
-@media (min-width: 420px) and (max-width: 575.98px) {
-  .step-container .el-select__wrapper {
-    width: 380px;
+@media (min-width: 420px) {
+  .step-container .el-select__wrapper, .step-two .form-control {
+    width: 100%;
   }
 }
 @media (min-width: 575.98px) {
-  .step-container .el-select__wrapper {
+  .step-container .el-select__wrapper, .step-two .form-control {
     width: 400px;
   }
 }
 @media (min-width: 767.98px) {
-  .step-container .el-select__wrapper {
+  .step-container .el-select__wrapper, .step-two .form-control {
     width: 534px;
   }
 }
 @media (min-width: 991.98px) {
-  .step-container .el-select__wrapper {
+  .step-container .el-select__wrapper, .step-two .form-control {
     width: 600px;
   }
 }
