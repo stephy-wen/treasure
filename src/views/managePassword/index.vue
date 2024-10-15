@@ -20,8 +20,8 @@
           :textAlign="'start !important'"
         >
           <!-- 步驟 1: 輸入原密碼、新密碼、Email驗證 -->
-          <template v-slot:extra-password v-if="currentStep === 1">
-            <div class="mb-3">
+          <template v-slot:extra-password>
+            <div class="mb-3" v-show="currentStep === 1">
               <div id="passwordInputContainer" class="mb-3">
                 <label for="inputPassword" class="form-label"
                   >Current password</label
@@ -110,8 +110,8 @@
           </template>
 
           <!-- 步驟 2: 成功頁面 -->
-          <template v-slot:extra-final v-if="currentStep === 2">
-            <div class="text-center">
+          <template v-slot:extra-final>
+            <div class="text-center" v-show="currentStep === 2">
               <img
                 src="../../assets/images/icon/success.svg"
                 alt="Success"

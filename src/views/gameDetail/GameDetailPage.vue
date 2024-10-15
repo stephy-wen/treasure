@@ -97,6 +97,7 @@ const handleResize = () => {
 // 定義重新獲取遊戲資料的函數
 const loadGameDetails = async (gameId) => {
   const id = gameId || route.params.gameId; // 獲取路由參數中的 gameId
+  const isStatic = route.query.static === "true"; // 檢查路由中的 query 是否包含 `static=true`
 
   try {
     // 停止當前的輪詢，避免多次重複輪詢
@@ -130,13 +131,14 @@ const loadGameDetails = async (gameId) => {
       console.log(`當前房間 ID: ${id}`);
       console.log(`贏家名稱: ${gameData.winnerName}`);
       console.log(`下一局房間 ID: ${gameData.nextGameRoomId}`);
+
       // 如果有 winnerName，顯示贏家彈窗
       if (gameData.winnerName) {
         showWinner.value = true; // 通知子層顯示贏家彈窗
         stopPolling(); // 停止輪詢
 
-        // 如果有下一局的房號，立即加載
-        if (gameData.nextGameRoomId) {
+        // 如果有下一局的房號，且當前不是靜態模式，立即加載
+        if (gameData.nextGameRoomId && !isStatic) {
           console.log(`取得新房號 ${gameData.nextGameRoomId}，立即加載`);
           // 更新 URL，這裡假設你有 router 來進行導航
           router.push({

@@ -19,9 +19,10 @@
           :isButtonDisabled="isButtonDisabled"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
-          <template v-slot:email-input v-if="currentStep === 1">
-            <div id="emailInputContainerRegister" class="form-floating mb-3">
+          <template v-slot:email-input >
+            <div id="emailInputContainerRegister" class="form-floating mb-3" v-show="currentStep === 1">
               <input
+                v-focus
                 v-model="email"
                 type="email"
                 class="form-control"
@@ -33,7 +34,7 @@
               />
               <label for="floatingInput">Email</label>
             </div>
-            <div id="referralCodeInput" class="form-floating mb-3">
+            <div id="referralCodeInput" class="form-floating mb-3" v-show="currentStep === 1">
               <input
                 type="text"
                 class="form-control"
@@ -49,8 +50,8 @@
           </template>
 
           <!-- 步驟 1: 插入隱私政策或提醒內容 -->
-          <template v-slot:extra-content v-if="currentStep === 1">
-            <div id="termsRemind" class="terms-remind mt-5 mb-3">
+          <template v-slot:extra-content >
+            <div id="termsRemind" class="terms-remind mt-5 mb-3" v-show="currentStep === 1">
               <p class="fs-6">
                 By using this site, you agree to the <a
                   href="/terms-of-service"
@@ -62,32 +63,35 @@
 
           <!-- 步驟 2: 驗證碼 -->
           <template v-slot:extra-input v-if="currentStep === 2">
-            <p class="verificationMessage">
-              We've sent a verification code to your email. Please enter it
-              below within 10 minutes.
-            </p>
-            <input
-              type="text"
-              class="input-field verification-code-input my-3 w-100"
-              placeholder="Verification Code"
-              v-model="verificationCode"
-              @keydown.enter.prevent="handleButtonClick"
-              spellcheck="false"
-              autocomplete="off"
-            />
+            <div>
+              <p class="verificationMessage">
+                We've sent a verification code to your email. Please enter it
+                below within 10 minutes.
+              </p>
+              <input
+                v-focus
+                type="text"
+                class="input-field verification-code-input my-3 w-100"
+                placeholder="Verification Code"
+                v-model="verificationCode"
+                @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
+              />
+            </div>
           </template>
 
-          <!-- 步驟 3: 插入設置密碼或返回首頁的鏈接 -->
+          <!-- 步驟 3: 重寄驗證碼 -->
           <template v-slot:extra-action>
             <div
               id="logInLink"
               class="text-start winnie-log-in-link position-absolute"
             >
-              <p class="mb-0" v-if="currentStep === 1 || currentStep === 3">
+              <p class="mb-0" v-show="currentStep === 1 || currentStep === 3">
                 Already have an account?
                 <a @click="returnToLogin" class="fw-bold">Log In</a>
               </p>
-              <p id="resendMessage" v-if="currentStep === 2" class="resend mt-2">
+              <p id="resendMessage" v-show="currentStep === 2" class="resend mt-2">
                 Didn't receive anything? <br />
                 <button
                   id="resendCode"
@@ -97,36 +101,37 @@
                 >
                   Resend code
                 </button>
-                <span v-if="isTimerActive"> ({{ timer }}s)</span>
+                <span v-show="isTimerActive"> ({{ timer }}s)</span>
               </p>
             </div>
           </template>
 
           <!-- 步驟 3: 設置密碼 -->
-          <template v-slot:extra-password v-if="currentStep === 3">
-            <div class="form-floating mb-3">
-            <input
-              type="password"
-              class="form-control input-field"
-              placeholder="New Password"
-              v-model="password"
-              @keydown.enter.prevent="handleButtonClick"
-              spellcheck="false"
-              autocomplete="off"
-            />
-            <label for="floatingInput">Password</label>
+          <template v-slot:extra-password >
+            <div class="form-floating mb-3" v-show="currentStep === 3">
+              <input
+                v-focus
+                type="password"
+                class="form-control input-field"
+                placeholder="New Password"
+                v-model="password"
+                @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
+              />
+              <label for="floatingInput">Password</label>
             </div>
-            <div class="form-floating mb-3">
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              class="form-control input-field"
-              v-model="confirmPassword"
-              @keydown.enter.prevent="handleButtonClick"
-              spellcheck="false"
-              autocomplete="off"
-            />
-            <label for="floatingInput">Confirm Password</label>
+            <div class="form-floating mb-3" v-show="currentStep === 3">
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                class="form-control input-field"
+                v-model="confirmPassword"
+                @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
+              />
+              <label for="floatingInput">Confirm Password</label>
             </div>
           </template>
 

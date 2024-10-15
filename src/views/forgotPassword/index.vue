@@ -19,10 +19,12 @@
           :isButtonDisabled="isButtonDisabled"
         >
           <!-- 步驟 1: Email 和推薦碼 -->
-          <template v-slot:email-input v-if="currentStep === 1">
-            <div class="form-floating mb-3">
+          <template v-slot:email-input >
+            <div class="form-floating mb-3" v-show="currentStep === 1">
               <input
+            
                 id="floatingInputEmailReset"
+                ref="emailInputRef"
                 class="form-control"
                 type="email"
                 placeholder="Email"
@@ -38,7 +40,7 @@
           <!-- 步驟 1: 插入隱私政策或提醒內容 -->
           <template v-slot:extra-content>
             <p
-              v-if="currentStep === 1"
+              v-show="currentStep === 1"
               class="mb-5 text-start fs-6"
               style="color: #75797e"
             >
@@ -46,7 +48,7 @@
               use P2P trading to sell crypto for 24 hours after you reset or
               change your account password.
             </p>
-            <p v-if="currentStep === 3">
+            <p v-show="currentStep === 3">
               Complete the puzzle to verify you're not a robot.
             </p>
           </template>
@@ -54,13 +56,13 @@
           <!-- 步驟 1: 插入設置密碼或返回首頁的鏈接 -->
           <template v-slot:extra-action>
             <router-link
-              v-if="currentStep === 1 || currentStep === 4"
+              v-show="currentStep === 1 || currentStep === 4"
               to="login"
               class="text-decoration-underline winnie-reset-password-link"
               >Return to login
             </router-link>
 
-            <p id="resendMessage" v-if="currentStep === 2" class="resend mt-2 text-start">
+            <p id="resendMessage" v-show="currentStep === 2" class="resend mt-2 text-start">
               Didn't receive anything? <br />
               <button
                 id="resendCode"
@@ -70,34 +72,39 @@
               >
                 Resend code
               </button>
-              <span v-if="isTimerActive"> ({{ timer }}s)</span>
+              <span v-show="isTimerActive"> ({{ timer }}s)</span>
             </p>
           </template>
 
           <!-- 步驟 2: 驗證碼 -->
-          <template v-slot:extra-input v-if="currentStep === 2">
-            <p class="mb-4 text-start" style="color: #75797e">
-              We've sent a code to your email.<br>Please enter it
-              within 10 minutes.
-            </p>
-            <input
-              type="text"
-              class="input-field verification-code-input w-100 mb-3"
-              placeholder="Verification Code"
-              v-model="verificationCode"
-              @keydown.enter.prevent="handleButtonClick"
-              spellcheck="false"
-              autocomplete="off"
-            />
+          <template v-slot:extra-input>
+            <div v-show="currentStep === 2">
+              <p class="mb-4 text-start" style="color: #75797e">
+                We've sent a code to your email.<br>Please enter it
+                within 10 minutes.
+              </p>
+              <input
+           
+                type="text"
+                class="input-field verification-code-input w-100 mb-3"
+                ref="verificationCodeInputRef"
+                placeholder="Verification Code"
+                v-model="verificationCode"
+                @keydown.enter.prevent="handleButtonClick"
+                spellcheck="false"
+                autocomplete="off"
+              />
+            </div>
           </template>
 
           <!-- 步驟 4: 設置密碼 -->
-          <template v-slot:extra-password v-if="currentStep === 4">
-            <div class="form-floating mb-3">
+          <template v-slot:extra-password>
+            <div class="form-floating mb-3" v-show="currentStep === 4">
               <input
                 type="password"
                 class="input-field form-control"
                 placeholder="New Password"
+                ref="passwordInputRef"
                 v-model="newPassword"
                 @keydown.enter.prevent="handleButtonClick"
                 spellcheck="false"
@@ -105,11 +112,12 @@
               />
               <label for="floatingInput">New Password</label>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-3" v-show="currentStep === 4">
               <input
                 type="password"
                 class="input-field form-control"
                 placeholder="Confirm Password"
+                ref="confirmPasswordInputRef"
                 v-model="confirmPassword"
                 @keydown.enter.prevent="handleButtonClick"
                 spellcheck="false"
@@ -117,26 +125,27 @@
               />
               <label for="floatingInput">Confirm Password</label>
             </div>
-            
           </template>
 
           <!-- 步驟 5: 成功頁面 -->
-          <template v-slot:extra-final v-if="currentStep === 5">
-            <div class="text-center">
-              <img
-                src="../../assets/images/icon/success.svg"
-                alt="Success"
-                class="success-image"
-              />
-              <p class="success-message mt-3">
-                You updated the password successfully!
-              </p>
+          <template v-slot:extra-final>
+            <div v-show="currentStep === 5">
+              <div class="text-center">
+                <img
+                  src="../../assets/images/icon/success.svg"
+                  alt="Success"
+                  class="success-image"
+                />
+                <p class="success-message mt-3">
+                  You updated the password successfully!
+                </p>
+              </div>
             </div>
           </template>
 
           <!-- 插入錯誤訊息 -->
           <template v-slot:error>
-            <p v-if="errorMessage" class="error-message d-flex">
+            <p v-show="errorMessage" class="error-message d-flex">
               <pre>{{ errorMessage }}</pre>
             </p>
           </template>
@@ -148,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import AuthForm from "@/components/AuthForm/AuthForm.vue";
@@ -158,6 +167,12 @@ import modules from "@/services/modules.js"; // import API module
 import { handleApiError } from "@/utils/errorHandler.js";
 
 let verificationAttempts = 0;
+
+// 定義 refs for input fields
+const emailInputRef = ref(null);
+const verificationCodeInputRef = ref(null);
+const passwordInputRef = ref(null);
+const confirmPasswordInputRef = ref(null);
 
 const {
   account: {
@@ -187,6 +202,30 @@ const testEmail = "nalsonlionmedia+16@gmail.com";
 const verificationError = ref(null);
 
 const isButtonDisabled = ref(false);
+
+// 監聽步驟變化
+watch(currentStep, (newStep, oldStep) => {
+  // 取消舊步驟的焦點
+  if (oldStep === 1 && emailInputRef.value) {
+    emailInputRef.value.blur(); // 取消 email 輸入框的焦點
+  } else if (oldStep === 2 && verificationCodeInputRef.value) {
+    verificationCodeInputRef.value.blur(); // 取消驗證碼的焦點
+  } else if (oldStep === 4) {
+    if (passwordInputRef.value) passwordInputRef.value.blur(); // 取消密碼框的焦點
+    if (confirmPasswordInputRef.value) confirmPasswordInputRef.value.blur(); // 取消確認密碼框的焦點
+  }
+
+  // 根據新步驟設置焦點
+  if (newStep === 1 && emailInputRef.value) {
+    emailInputRef.value.focus();
+  } else if (newStep === 2 && verificationCodeInputRef.value) {
+    verificationCodeInputRef.value.focus();
+  } else if (newStep === 4) {
+    if (passwordInputRef.value) passwordInputRef.value.focus();
+    if (confirmPasswordInputRef.value) confirmPasswordInputRef.value.focus();
+  }
+});
+
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = () => {
@@ -441,6 +480,13 @@ const formTitle = computed(() => {
     return "Puzzle Verification";
   } else if (currentStep.value === 4) {
     return "Reset Password";
+  }
+});
+
+// 在組件掛載時設置初始焦點
+onMounted(() => {
+  if (currentStep.value === 1 && emailInputRef.value) {
+    emailInputRef.value.focus(); // 設置第一步的 email 輸入框焦點
   }
 });
 </script>
