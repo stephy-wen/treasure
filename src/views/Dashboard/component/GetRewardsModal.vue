@@ -9,6 +9,9 @@
     role="dialog"
     style="display: block"
   >
+    <!-- Custom Modal Backdrop -->
+    <div v-if="isOpen" class="custom-backdrop"></div>
+
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header pb-0 d-flex justify-content-between">
@@ -31,7 +34,7 @@
               alt=""
             />
             <p class="f-color-white fw-bolder">
-              Get a Mystery Box<br />worth up to 50 USDT in crypto
+              Get a Mystery Box<br />worth up to 10 Points in crypto
             </p>
           </div>
           <div class="container invite-info">
@@ -59,7 +62,7 @@
                   class="btn btn-outline-secondary"
                   type="button"
                   id="button-addon2"
-                  @click="copyUserLink"
+                  @click="copyLink"
                 >
                   <img
                     src="@/assets/images/icon/md-content_copy 1.svg"
@@ -162,7 +165,7 @@ const copyUserId = async () => {
   }
 };
 
-const copyUserLink = async () => {
+const copyLink = async () => {
   if (isCopyCoolDown.value) return;
   try {
     await navigator.clipboard.writeText(referralUrl.value);
@@ -188,6 +191,7 @@ const copyUserLink = async () => {
 <style scoped>
 #getRewardsModal .modal-content {
   background-color: #2b3139;
+  border: 1px solid #414d5a;
 }
 
 #getRewardsModal .modal-header {
@@ -230,5 +234,15 @@ const copyUserLink = async () => {
 .invite-link button:hover,
 .invite-code button:hover {
   background-color: #414d5a;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>

@@ -9,6 +9,9 @@
     role="dialog"
     style="display: block"
   >
+      <!-- Custom Modal Backdrop -->
+      <div v-if="isOpen" class="custom-backdrop"></div>
+
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-between">
@@ -156,6 +159,7 @@ const saveNickname = async () => {
 <style scoped>
 #nicknameReviseModal .modal-content {
   background-color: #2b3139;
+  border: 1px solid #414D5A;
 }
 
 #nicknameReviseModal .modal-header {
@@ -222,5 +226,15 @@ const saveNickname = async () => {
 
 #nicknameReviseModal .winnie-container-nickname {
   width: 80%;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>

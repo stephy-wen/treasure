@@ -26,7 +26,7 @@ const home = {
 const account = {
   register: (userData) => apiClient.post("/Account/Register", userData),
 
-  CheckEmail: (email) =>
+  checkEmail: (email) =>
     apiClient.post(`/Account/CheckEmail`, { email: email }),
 
   changePassword: (passwordPayload) =>
@@ -56,6 +56,9 @@ const account = {
       newPassword,
       code,
     }),
+
+  checkRefererId: (refererId) =>
+    apiClient.post("/Account/CheckRefererId", { refererId }),
 };
 
 // user module

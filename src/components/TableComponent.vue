@@ -94,8 +94,6 @@ const props = defineProps({
   customClass: String,
   imageFirst: { type: Boolean, default: false }, // 控制圖片和文字的顯示順序
 });
-
-console.log(props.data.length);
 </script>
 
 <style scoped>

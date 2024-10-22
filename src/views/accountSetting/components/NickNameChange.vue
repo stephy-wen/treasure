@@ -67,18 +67,17 @@
                 language, our official names (i.e. product names), or names of
                 other trading platforms
               </p>
-              <div class="text-center mt-5">
-                <button
-                  class="mt-5 save-btn btn btn-primary w-100"
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button
+                  class="mb-3 save-btn btn btn-primary w-75"
                   type="button"
                   @click="saveNickname"
                 >
                   Submit
                 </button>
-              </div>
-            </div>
           </div>
-          <div class="modal-footer"></div>
         </div>
       </div>
     </div>

@@ -10,6 +10,9 @@
     role="dialog"
     style="display: block"
   >
+    <!-- Custom Modal Backdrop -->
+    <div v-if="isOpen" class="custom-backdrop"></div>
+
     <div
       class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down"
     >
@@ -117,6 +120,7 @@ watch(
 
 #winnerModal .modal-dialog .modal-content {
   min-height: 500px;
+  border: 1px solid #414d5a;
 }
 
 #winnerModal .modal-footer .winnie-color-gray {
@@ -125,5 +129,15 @@ watch(
 
 .modal-content {
   background-color: transparent;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>

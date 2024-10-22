@@ -101,6 +101,10 @@ const props = defineProps({
   font-size: 0.85rem;
 }
 
+.game-container .card:hover {
+  border: 1px solid #414D5A;
+}
+
 .container .game-container .card .game-list-name,
 .container .game-container .card .game-list-fee {
   color: #f8f8f8;

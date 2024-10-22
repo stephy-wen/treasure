@@ -1,3 +1,4 @@
+import { useUserStore } from "@/stores/user";
 import { createRouter, createWebHistory } from "vue-router";
 
 import Index from "../views/index/index.vue";
@@ -88,6 +89,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  const token = localStorage.getItem("token");
+
+  if (token && !userStore.userInfo) {
+    try {
+      await userStore.fetchUserInfo();
+    } catch (error) {
+      console.error("Failed to fetch user info in route guard:", error);
+    }
+  }
+
+  next();
 });
 
 export default router;

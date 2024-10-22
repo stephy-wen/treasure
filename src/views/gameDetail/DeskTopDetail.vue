@@ -20,7 +20,9 @@
               alt=""
             />Vote
           </p>
-          <span class="fw-bold">{{ gameData.votes }} / {{ gameData.totalVotes }}</span>
+          <span class="fw-bold"
+            >{{ gameData.votes }} / {{ gameData.totalVotes }}</span
+          >
           <!-- 動態的參加数 -->
         </div>
       </div>
@@ -49,20 +51,32 @@
             </div>
           </div>
           <div class="game-intro-content">
-            <span style="font-size: 14px;">
-            The Game is an interactive on-chain survival game, players join
-            challenges, and the results are revealed once the player limit is
-            reached, with only one winner.</span>
+            <span style="font-size: 14px">
+              The Game is an interactive on-chain treasure hunting game, players
+              join challenges, and the results are revealed once the player
+              limit is reached, with only one winner.</span
+            >
             <br /><br />
-            <span class="fw-bold fs-6" style="margin-bottom: 10px; display: inline-block;">GAME INSTRUCTIONS</span><br />
-            <span style="font-size: 14px;">A provably fair algorithm is used to draw the coin prizes.</span><br />
-            <span style="font-size: 14px;">Winner revealed when voting is filled.</span>
+            <span
+              class="fw-bold fs-6"
+              style="margin-bottom: 10px; display: inline-block"
+              >GAME INSTRUCTIONS</span
+            ><br />
+            <span style="font-size: 14px"
+              >A provably fair algorithm is used to draw the coin prizes.</span
+            ><br />
+            <span style="font-size: 14px"
+              >Winner revealed when voting is filled.</span
+            >
           </div>
         </div>
         <div
           class="col-sm-6 col-md-5 col-xl-4 ms-md-auto d-flex flex-column justify-content-between"
         >
-          <div class="mt-2 d-flex justify-content-center player-list-hexagon" style="flex-direction: row-reverse;">
+          <div
+            class="mt-2 d-flex justify-content-center player-list-hexagon"
+            style="flex-direction: row-reverse"
+          >
             <HexagonButton
               v-for="(image, index) in hexagonImages"
               :key="index"
@@ -184,7 +198,6 @@ const userStore = useUserStore();
 let iconImage;
 
 const isLoggedIn = userStore.isLoggedIn;
-console.log(isLoggedIn, "game isLoggedIn");
 
 const gameData = computed(() => ({
   title: props.gameDetails.name,
@@ -200,8 +213,6 @@ const gameData = computed(() => ({
 // if (props.gameDetails.betSymbol === "POINT") {
 //   iconImage = backgroundImage01;
 // }
-
-console.log(props.gameDetails);
 
 // join game data
 const JoinGame = ref({

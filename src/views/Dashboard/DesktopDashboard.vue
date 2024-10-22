@@ -237,8 +237,8 @@ const headers = [
 
 const rewardHeaders = [
   { text: "Round", class: "ps-3" },
-  { text: "Time" },
-  { text: "Type", class: "text-end pe-4" },
+  { text: "Time", class: "text-center" },
+  { text: "Type", class: "text-center" },
   { text: "Value", class: "text-end" },
   { text: "Withdraw", class: "text-center" },
 ];
@@ -328,12 +328,12 @@ const formatDate = (isoDateString) =>
 const formatRewardsData = (data) => {
   return data.map((reward) => {
     return [
-      { text: reward.round, class: "ps-5" }, // rewardId
+      { text: reward.round, class: "ps-3 text-center" }, // rewardId
       { text: formatDate(reward.time) }, // 格式化的日期
       {
         text: reward.rewardSymbol + " " + reward.rewardFullName,
         image: getCurrencyIcon(reward.rewardSymbol),
-        class: "text-end pe-4",
+        class: "text-start",
       }, // 幣種符號及圖標
       { text: reward.rewardAmount, class: "text-end" }, // 獎勵數量
       {
@@ -448,6 +448,9 @@ onMounted(async () => {
 
 .winnie-account-web .personal-info .avatar-photo {
   width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
   cursor: pointer;
 }
 
@@ -584,6 +587,7 @@ button.bck-yellow:hover {
 
 .rewards-list-dropdown .dropdown-menu {
   width: 500px;
+  border: 1px solid #414D5A;
 }
 
 @media (min-width: 991.98px) {
@@ -604,7 +608,7 @@ button.bck-yellow:hover {
   }
 
   .rewards-list-dropdown .dropdown-menu::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    background-color: #414D5A;
   }
 }
 

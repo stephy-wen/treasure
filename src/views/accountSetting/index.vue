@@ -49,7 +49,7 @@
         />
 
         <div class="d-flex justify-content-between login-pw-change mb-4">
-          <p>Login Password</p>
+          <p>Log in Password</p>
           <router-link to="/manage-password">
             <img src="@/assets/images/icon/ze-arrow 1 Copy 2.svg" alt="" />
           </router-link>

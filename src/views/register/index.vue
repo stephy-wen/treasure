@@ -18,15 +18,13 @@
           :handleButtonClick="handleButtonClick"
           :isButtonDisabled="isButtonDisabled"
         >
-          <!-- 步驟 1: Email 和推薦碼 -->
+          <!-- Step 1: Email and Referral Code -->
           <template v-slot:email-input >
             <div id="emailInputContainerRegister" class="form-floating mb-3" v-show="currentStep === 1">
               <input
-                v-focus
                 v-model="email"
                 type="email"
                 class="form-control"
-                id="floatingInputEmailRegister"
                 placeholder="Email"
                 @keydown.enter.prevent="handleButtonClick"
                 spellcheck="false"
@@ -38,7 +36,6 @@
               <input
                 type="text"
                 class="form-control"
-                id="floatingInputReferralCode"
                 placeholder="Referral code (optional)"
                 v-model="referralCode"
                 @keydown.enter.prevent="handleButtonClick"
@@ -61,7 +58,7 @@
             </div>
           </template>
 
-          <!-- 步驟 2: 驗證碼 -->
+          <!-- Step 2: Resend Code -->
           <template v-slot:extra-input v-if="currentStep === 2">
             <div>
               <p class="verificationMessage">
@@ -69,7 +66,6 @@
                 below within 10 minutes.
               </p>
               <input
-                v-focus
                 type="text"
                 class="input-field verification-code-input my-3 w-100"
                 placeholder="Verification Code"
@@ -94,7 +90,6 @@
               <p id="resendMessage" v-show="currentStep === 2" class="resend mt-2">
                 Didn't receive anything? <br />
                 <button
-                  id="resendCode"
                   class="resend-link px-0"
                   @click="resendCode"
                   :disabled="isTimerActive"
@@ -110,7 +105,6 @@
           <template v-slot:extra-password >
             <div class="form-floating mb-3" v-show="currentStep === 3">
               <input
-                v-focus
                 type="password"
                 class="form-control input-field"
                 placeholder="New Password"
@@ -230,7 +224,13 @@ const handleButtonClick = async () => {
   isButtonDisabled.value = true; // 禁用按鈕
 
   if (currentStep.value === 1) {
-    sendVerificationEmail(); // 點下一步之後可以發驗證信
+    const refererCheck = await handleRefererId(); // 檢查推薦碼
+    console.log(refererCheck,"refererCheck")
+    if (!refererCheck) {
+      isButtonDisabled.value = false; // 解除按鈕禁用
+      return; // 推薦碼無效，停止後續步驟
+    }
+    await sendVerificationEmail(); // 點下一步之後可以發驗證信
   } else if (currentStep.value === 2) {
     const hasVerifyCode = await verifyCode(); // 驗證驗證碼
     if (!hasVerifyCode) return; // 如果驗證碼驗證失敗，則停止
@@ -241,6 +241,26 @@ const handleButtonClick = async () => {
   }
 };
 
+// 推薦碼查驗
+const handleRefererId = async() => {
+   if (!referralCode.value) {
+    // 如果沒有推薦碼，直接通過檢查
+    return true;
+  }
+  try {
+    const res = await modules.account.checkRefererId(referralCode.value);
+    if (res.data.data) {
+      return true; // 推薦碼有效，通過檢查
+    } else {
+      errorMessage.value = "Invalid referral code."; // 推薦碼無效
+      return false;
+    }
+  } catch (error) {
+    console.log(error)
+    errorMessage.value = "Failed to validate referral code."; // 出現錯誤
+    return false;
+  }
+}
 
 // 發驗證信
 const sendVerificationEmail = async (shouldChangeStep = true) => {
@@ -417,6 +437,7 @@ const validateStep = () => {
     errorMessage.value = "Invalid email format.";
     return false;
   }
+
   // 針對第三步的驗證
   if (currentStep.value === 3) {
     // 如果密碼為空
@@ -583,6 +604,7 @@ button.resend-link {
   border: none;
   background-color: transparent;
   font-weight: 600;
+  color: #181A20;
 }
 
 button.resend-link:disabled {
@@ -607,6 +629,7 @@ button.resend-link:hover {
   background-color: transparent;
   outline: none;
   box-shadow: none;
+  color: #181A20;
 }
 
 .verification-code-input::placeholder {

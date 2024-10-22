@@ -10,12 +10,15 @@
     role="dialog"
     style="display: block"
   >
+    <!-- Custom Modal Backdrop -->
+    <div v-if="isOpen" class="custom-backdrop"></div>
+  
     <!-- modal -->
     <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header pb-0 d-flex justify-content-between ms-4">
           <h5
-            class="modal-title deposit-title"
+            class="modal-title deposit-title fw-bold"
             id="insufficientBalanceModalLabel"
           >
             {{ title }}
@@ -331,5 +334,19 @@ const closeModal = () => {
 .winnie-btn-close:hover {
   background-color: #414d5a;
   color: #f8f8f8;
+}
+
+#insufficientBalanceModal .modal-dialog .modal-content {
+  border: 1px solid #414D5A;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>

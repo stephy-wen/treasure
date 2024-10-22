@@ -143,6 +143,11 @@ const getMaxWidth = computed(() => (window.innerWidth < 768 ? "30px" : "32px"));
   font-size: 1rem;
 }
 
+#playerListModal .table .player-list-name img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 #playerListModal .table thead {
   color: #BBB;
 }

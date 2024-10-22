@@ -72,21 +72,13 @@ const userAvatar = computed(() => userStore.userInfo?.avatarUrl || "");
 
 let isLoggedIn = computed(() => userStore.isLoggedIn);
 console.log(isLoggedIn.value, "isLoggedIn");
+console.log(userStore.userInfo, "HEADER");
 
 /*
 display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
 display: 'anonym' 表示只有在用户未登录时显示该链接（如 Sign in 和 Sign up）。
 display: 'authorized' 表示只有在用户登录后显示该链接（如 New Post, Settings, Profile）。
 */
-
-// 如果pinia被清空 在組件加載時再打一次api
-onMounted(async () => {
-  const token = localStorage.getItem("token");
-  if (token && !userStore.userInfo) {
-    // 如果 token 存在並且 userInfo 為空，調用 API 獲取資料
-    await userStore.fetchUserInfo();
-  }
-});
 
 // 為了避免 資料還沒取回 先顯示改由動態計算
 const playHistoryData = computed(() => gameData.value?.playHistoryData || []);

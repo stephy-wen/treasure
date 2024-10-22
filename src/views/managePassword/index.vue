@@ -382,7 +382,6 @@ const resendCode = async () => {
 
 
 onMounted(async () => {
-  await userStore.fetchUserInfo(); // get email
   await sendVerificationEmail();
 });
 </script>

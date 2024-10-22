@@ -14,7 +14,7 @@
             <div id="aboutTyche1" class="mt-1 mb-5 mt-md-5">
             <h1 class="fw-bold d-none d-md-inline">Troubleshooting Guide</h1>
             <p class="mt-3 mb-0 winnie-color-white fw-bold fs-3">My various display errors</p>
-            <p class="mt-1">Most of the time, random wallet errors can be solved by following these steps:</p>
+            <p class="mt-1">Most of the time, random errors can be solved by following these steps:</p>
             <p class="mt-3">1. Clear your browser cache<br>2. Refresh the page and try again</p>
             <p class="mt-3">If you’ve tried these steps and are still encountering issues, please be sure to email us at <a href="mailto:support@tyche1.com">support@tyche1.com</a> to let us know.</p>
             <p class="mt-3 mb-0 winnie-color-white fw-bold fs-3">My issue isn't listed here</p>

@@ -50,9 +50,7 @@
                   <a href="#introduction">1. Introduction</a>
                 </li>
                 <li class="my-2">
-                  <a href="#modificationAgreement"
-                    >2. Modification of this Agreement</a
-                  >
+                  <a href="#modificationAgreement">2. Modification of this Agreement</a>
                 </li>
                 <li class="my-2">
                   <a href="#conditionsOfUse">3. Conditions of use</a>
@@ -145,13 +143,13 @@
           When you use the front-end interface, the only information we collect from you is your blockchain wallet address, completed transaction hashes, and token identifiers. We do not collect any personal information from you. We do, however, use third-party services like Google Analytics, which may receive your publicly available personal information. We do not take responsibility for any information you make public on the BNB blockchain by taking actions through the front-end interface.
         </p>
       </div>
-      <div id="privacy" class="my-5">
+      <div id="prohibitedActivity" class="my-5">
         <h2 class="mb-3 fw-bold">8. Prohibited Activity</h2>
         <p>
           You agree not to engage in any of the following categories of prohibited activity in relation to your access and use of the front-end interface: Transacting in any Restricted Territory or interacting with any blockchain addresses controlled indirectly or directly by persons or entities Subject to Restrictions, that is, included in any trade embargoes or sanctions list.
         </p>
       </div>
-      <div id="privacy" class="my-5">
+      <div id="limitationOfLiability" class="my-5">
         <h2 class="mb-3 fw-bold">9. Limitation of Liability</h2>
         <p>
           Tyche1 Games is in no way liable for any damages of any form resulting from your access or use of Tyche1 Games software, including (but not limited to) any loss of profit, digital assets, or intangible property, and assumes no liability or responsibility for any errors, omissions, mistakes, or inaccuracies in the content provided on Tyche1 Games-controlled software or media;
@@ -240,8 +238,9 @@
   border-right: 1px solid #f8f8f8;
 }
 
-.winnie-terms .side-nav a:hover,
-.winnie-terms .side-nav a:focus {
+.winnie-terms .side-nav li a:hover,
+.winnie-terms .side-nav li a:focus,
+.winnie-terms .side-nav li a:active {
   border-right: 3px solid #fcd535;
 }
 
@@ -250,12 +249,14 @@
 }
 
 .winnie-terms .accordion-body li:hover,
-.winnie-terms .accordion-body li:focus {
+.winnie-terms .accordion-body li:focus,
+.winnie-terms .accordion-body li:active {
   border-right: 3px solid #fcd535;
 }
 
 .winnie-terms .accordion-body li:hover a,
-.winnie-terms .accordion-body li:focus a {
+.winnie-terms .accordion-body li:focus a,
+.winnie-terms .accordion-body li:active a {
   color: #fcd535;
 }
 

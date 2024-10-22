@@ -60,7 +60,7 @@
           </div>
           <div class="game-intro-content">
             <span class="fs-6">
-            The Game is an interactive on-chain survival game, players join
+            The Game is an interactive on-chain treasure hunting game, players join
             challenges, and the results are revealed once the player limit is
             reached, with only one winner.</span>
             <br /><br />

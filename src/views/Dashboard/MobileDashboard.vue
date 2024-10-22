@@ -4,8 +4,7 @@
       <div class="personal-info text-center">
         <div class="avatar-photo">
           <img
-            class="my-3"
-            style="width: 60px"
+            class="my-3 avatar-photo-size"
             src="@/assets/images/icon/NFT/09.png"
             alt=""
           />
@@ -23,7 +22,7 @@
       </div>
 
       <div class="d-flex justify-content-center">
-        <div class="winnie-account-detail">
+        <div class="winnie-account-detail w-100">
           <div class="container tabs my-3 px-3">
             <div class="d-flex justify-content-center align-items-center">
               <!-- redirect deposit -->
@@ -498,5 +497,12 @@ onMounted(async () => {
   border-radius: 50px;
   width: auto;
   height: 45px;
+}
+
+.avatar-photo .avatar-photo-size {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 </style>

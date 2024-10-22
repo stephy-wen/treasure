@@ -46,43 +46,41 @@
       </div>
     </div>
 
-    <!-- PLATFORM stats -->
+        <!-- PLATFORM stats -->
     <div class="stats mx-auto mt-5">
       <div class="stats-intro text-start">
         <h1 class="fw-bolder mt-5">
           <img class="me-1 img-fluid" :src="equalizer" alt="" />PLATFORM STATS
         </h1>
       </div>
-      <div class="row justify-content-center mt-5 w-100">
-        <template v-for="(item, index) in statsData" :key="index">
-          <div class="winnie-width mt-3 mt-lg-0">
-            <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
-            <StatsCard :title="item.title" :number="item.number" />
-          </div>
-          <hr
-            class="vertical-divider d-none d-lg-block"
-            v-if="index < statsData.length - 1"
-          />
-        </template>
+      <div class="row justify-content-center mt-4 w-100">
+        <div class="d-flex flex-column flex-lg-row justify-content-between">
+          <template v-for="(item, index) in statsData" :key="index">
+            <div class="winnie-width mt-3 mt-lg-0 winnie-stats-bk py-2 col mx-lg-2">
+              <!-- 迭代統計數據數組，渲染 StatsCard 組件 -->
+              <StatsCard :title="item.title" :number="item.number" />
+            </div>
+          </template>
+        </div>
       </div>
     </div>
 
     <!-- game-intro -->
     <div class="game-intro mx-auto mt-5">
       <div class="row">
-        <div class="col-12 col-xl-8 my-auto text-start">
-          <h1 class="fw-bolder">Game Instructions</h1>
+        <div class="col-12 col-xl-8 text-start">
+          <h1 class="fw-bolder">GAME INSTRUCTIONS</h1>
           <p class="mt-3 fs-5 d-block d-sm-none fw-bold">
             A provably fair algorithm is used to draw the coin prizes.<br>Winner revealed when voting is filled.
           </p>
-          <p class="mt-5 fs-5 fw-bold d-none d-sm-block">
+          <p class="mt-4 fs-5 fw-bold d-none d-sm-block">
             A provably fair algorithm is used to draw the coin prizes.<br>Winner revealed when voting is filled.<br>You can buy a ticket for $1.
           </p>
         </div>
-        <div class="col-12 col-xl-4 text-center">
+        <div class="col-12 col-xl-4 text-center mt-3 mt-xl-0">
           <img
-            class="img-fluid w-100 mt-5"
-            style="max-width: 400px"
+            class="img-fluid w-50"
+            style="max-width: 400px; min-width: 220px;"
             :src="diamondSM"
             alt="diamond"
           />
@@ -91,13 +89,13 @@
     </div>
 
     <!-- Partnerships -->
-    <div class="partnerships mx-auto">
+    <div class="partnerships mx-auto mt-4">
       <div class="partnerships-intro text-start">
-        <h1 class="fw-bolder my-5">OUR FRIENDS</h1>
+        <h1 class="fw-bolder">OUR FRIENDS</h1>
       </div>
       <div class="row text-center align-items-center">
         <div
-          class="col-6 col-lg-3 mt-3"
+          class="col-6 col-lg-3 mt-4"
           v-for="(logo, index) in logos"
           :key="index"
         >
@@ -305,7 +303,7 @@ onMounted(async () => {
   max-width: 1800px;
 }
 
-@media (min-width: 575.98px) {
+@media (min-width: 1199.98px) {
   .game-intro {
     width: 70%;
   }
@@ -335,7 +333,7 @@ onMounted(async () => {
   max-width: 1800px;
 }
 
-@media (min-width: 575.98px) {
+@media (min-width: 1199.98px) {
   .stats {
     width: 70%;
   }
@@ -399,21 +397,20 @@ onMounted(async () => {
   }
 }
 
+.winnie-stats-bk {
+  background-color: #1E2329;
+  border-radius: 8px;
+}
+
+/* partnerships */
 .partnerships {
   width: 85%;
-  margin-top: 80px;
   max-width: 1800px;
 }
 
-@media (min-width: 575.98px) {
+@media (min-width: 1199.98px) {
   .partnerships {
     width: 70%;
-  }
-}
-
-@media (min-width: 991.98px) {
-  .partnerships {
-    margin-top: 120px;
   }
 }
 

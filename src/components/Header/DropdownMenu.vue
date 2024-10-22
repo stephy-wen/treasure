@@ -8,7 +8,7 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <img :src="iconSrc" :alt="iconAlt" style="width: 17px; height: 17px;"/>
+      <img :src="iconSrc" :alt="iconAlt" style="width: 17px; height: 17px" />
     </a>
     <ul
       class="dropdown-menu dropdown-menu-lg-start px-3 py-3 fw-bold"
@@ -63,7 +63,6 @@ const props = defineProps({
 const emit = defineEmits(["select"]);
 
 const handleClick = (item) => {
-  console.log(item);
   emit("select", item);
 };
 </script>
@@ -77,11 +76,10 @@ const handleClick = (item) => {
   color: #f8f8f8;
 }
 
-
-.dropdown-item:hover{
-    color: #F8F8F8;
-    background-color: #35485D;
-  }
+.dropdown-item:hover {
+  color: #f8f8f8;
+  background-color: #35485d;
+}
 
 .dropdown-toggle::after {
   visibility: hidden;
@@ -92,7 +90,7 @@ const handleClick = (item) => {
     right: 0;
     left: auto;
     top: 2.5em;
-    border: 1px solid #414D5A;
+    border: 1px solid #414d5a;
   }
 }
 </style>

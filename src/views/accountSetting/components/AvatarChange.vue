@@ -1,7 +1,7 @@
 <!-- src/components/AvatarChange.vue -->
 <template>
   <div
-    class="d-flex justify-content-between align-items-center avactar-change mb-4"
+    class="d-flex justify-content-between align-items-center avatar-change mb-4"
   >
     <p>Avatar</p>
     <a href="#" @click.prevent="openModal">
@@ -185,6 +185,8 @@ onMounted(() => {
   color: #f8f8f8;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 .winnie-dialog-bottom {

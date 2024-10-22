@@ -6,12 +6,12 @@
         <!-- 返回按鈕 -->
         <div class="position-absolute winnie-back-btn">
           <button @click="goBack" class="arrow mb-3">
-            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" />
+            <font-awesome-icon icon="fa-solid fa-arrow-left fs-4" style="height: 30px;" />
           </button>
         </div>
         <!-- 返回按鈕 -->
         <AuthForm
-          title="Login"
+          title="Log in"
           :buttonText="buttonText"
           :totalSteps="2"
           :currentStep="currentStep"
@@ -21,6 +21,7 @@
           <template v-slot:email-input v-if="currentStep === 1">
             <div class="form-floating mb-3">
               <input
+                ref="emailInput"
                 type="email"
                 class="form-control"
                 id="floatingInputEmailReset"
@@ -28,7 +29,7 @@
                 v-model="email"
                 @keydown.enter.prevent="handleButtonClick"
                 spellcheck="false"
-               
+                autocomplete="off"
               />
               <label for="floatingInputEmailReset">Email</label>
             </div>
@@ -39,15 +40,15 @@
             v-slot:extra-action
             v-if="currentStep === 1 || currentStep === 2"
           >
-            <div class="d-flex justify-content-between mb-3">
-              <router-link to="/forgot-password" class="winnie-forget-pw-link"
+            <div class="d-flex justify-content-end mb-3">
+              <router-link to="/forgot-password" class="winnie-forget-pw-link" style="font-size: 13px; margin-top: -5px; letter-spacing: 0.5px;"
                 >Forgot your password?
               </router-link>
             </div>
-            <div class="text-center winnie-sign-up-link position-absolute">
+            <div class="text-center winnie-sign-up-link">
               <p class="mb-0">
                 Don't have an account?
-                <router-link to="/register" class="fw-bold"
+                <router-link to="/register" class="fw-bold winnie-hover-link"
                   >Sign up
                 </router-link>
               </p>
@@ -58,6 +59,7 @@
           <template v-slot:extra-password v-if="currentStep === 2">
           <div class="form-floating mb-3">
             <input
+              ref="passwordInput"
               type="password"
               class="form-control input-field"
               id="floatingInputPasswordReset"
@@ -85,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
@@ -105,6 +107,10 @@ const password = ref("");
 
 const errorMessage = ref("");
 const userStore = useUserStore();
+
+// 定義 ref 用於 email 輸入框
+const emailInput = ref(null);
+const passwordInput = ref(null);
 
 // 計算當前步驟的按鈕文字
 const buttonText = computed(() => {
@@ -130,6 +136,8 @@ const goBack = () => {
 
 // 針對不同步驟的處理邏輯
 const handleButtonClick = async () => {
+  errorMessage.value = ""
+
   if (currentStep.value === 1) {
     if (!email.value) {
       errorMessage.value = "Email cannot be empty.";
@@ -138,15 +146,16 @@ const handleButtonClick = async () => {
 
     const emailCheck = await handleCheckEmail();
 
-    if(emailCheck) {
-      errorMessage.value = "Email does not exist"
-      return
-    }
- 
     // 驗證 Email 格式是否正確
     if (!validateEmailFormat(email.value)) {
       errorMessage.value = "Invalid email format.";
       return;
+    }
+
+    if(!emailCheck) {
+      // errorMessage.value = "Email does not exist"
+      errorMessage.value = "account not found."
+      return
     }
 
     handleStepChange(currentStep.value + 1);
@@ -157,12 +166,8 @@ const handleButtonClick = async () => {
 
 const handleCheckEmail = async() => {
   try {
-    console.log(123)
-    const res = await modules.account.CheckEmail(email.value)
-    console.log(res.data.data)
+    const res = await modules.account.checkEmail(email.value)
     return res.data.data
-    console.log(res.data.data)
-    console.log(res,"確認是否有存在email")
   } catch (error) {
     console.log(error)
   }
@@ -191,6 +196,36 @@ const login = async () => {
   } 
 };
 
+onMounted(() => {
+  // 當頁面掛載時手動聚焦 email 輸入框
+  if (currentStep.value === 1) {
+    focusEmailInput();
+  }
+});
+
+watch(currentStep, (newStep) => {
+  if (newStep === 1) {
+    // 在步驟變回1的時候也聚焦
+    focusEmailInput();
+  } else if (newStep === 2) {
+    focusPasswordInput();
+  }
+});
+
+const focusEmailInput = () => {
+  nextTick(() => {
+    emailInput.value?.focus(); // 確保 DOM 已經更新後聚焦
+  });
+};
+
+const focusPasswordInput = () => {
+  nextTick(() => {
+    passwordInput.value?.focus(); // 確保 DOM 已經更新後聚焦
+  });
+};
+
+
+
 // 步驟變更邏輯
 const handleStepChange = (newStep) => {
   if (currentStep.value <= 2) {
@@ -208,6 +243,7 @@ const validateEmailFormat = (email) => {
 const clearErrorMessage = () => {
   errorMessage.value = "";
 };
+
 </script>
 
 <style scoped>
@@ -282,18 +318,19 @@ const clearErrorMessage = () => {
 
 .winnie-bg-dark .login-container .winnie-sign-up-link a{
   color: #181A20;
+  border-bottom: 1px solid #181A20;
 }
 
 .winnie-bg-dark .login-container .winnie-sign-up-link a:hover{
-  color: #FCD535;
+  border-bottom-color: transparent;
 }
 
 .winnie-bg-dark .login-container .winnie-forget-pw-link {
-  color: #181A20;
+  color: #BBB;
 }
 
 .winnie-bg-dark .login-container .winnie-forget-pw-link:hover {
-  color: #FCD535;
+  color: #181A20;
 }
 
 .winnie-bg-dark .login-form .winnie-back-btn{

@@ -59,7 +59,7 @@
               v-show="currentStep === 1 || currentStep === 4"
               to="login"
               class="text-decoration-underline winnie-reset-password-link"
-              >Return to login
+              >Return to log in
             </router-link>
 
             <p id="resendMessage" v-show="currentStep === 2" class="resend mt-2 text-start">

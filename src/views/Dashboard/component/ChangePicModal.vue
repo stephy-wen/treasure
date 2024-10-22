@@ -10,6 +10,9 @@
       role="dialog"
       style="display: block"
     >
+      <!-- Custom Modal Backdrop -->
+      <div v-if="isOpen" class="custom-backdrop"></div>
+
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header d-flex justify-content-between">
@@ -29,7 +32,8 @@
           <div class="modal-body container">
             <div class="text-center mt-1 mb-5">
               <img
-                style="width: 65px !important"
+                style="width: 65px"
+                class="selected-avatar"
                 :src="selectedAvatarUrl"
                 alt="Selected Avatar"
               />
@@ -47,6 +51,7 @@
                       :src="avatar.url"
                       alt="Avatar"
                       @click="selectAvatar(avatar)"
+                      class="avatar-img"
                       :class="{ 'avatar-img': selectedAvatarId === avatar.id }"
                     />
                   </div>
@@ -54,7 +59,7 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer mx-auto mb-5">
+          <div class="modal-footer mx-auto mb-3">
             <button
               type="button"
               class="btn btn-primary save-btn"
@@ -134,6 +139,7 @@ const closeModal = () => {
   background-color: #2b3139;
   max-height: 500px !important;
   overflow-y: auto;
+  border: 1px solid #414D5A;
 }
 
 #avatarModal .modal-header {
@@ -146,6 +152,13 @@ const closeModal = () => {
 
 #avatarModal .modal-body img:hover {
   cursor: pointer;
+}
+
+.avatar-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 #avatarModal .modal-footer {
@@ -198,5 +211,22 @@ const closeModal = () => {
 }
 #avatarModal .modal-content::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+.selected-avatar {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>

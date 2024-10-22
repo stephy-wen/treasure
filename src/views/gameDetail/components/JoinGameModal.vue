@@ -9,8 +9,11 @@
     role="dialog"
     style="display: block"
   >
+    <!-- Custom Modal Backdrop -->
+    <div v-if="isOpen" class="custom-backdrop"></div>
+
     <div
-      class="modal-dialog mx-auto modal-dialog-centered modal-fullscreen-sm-down"
+      class="modal-dialog mx-auto modal-dialog-centered"
     >
       <div
         class="modal-content modal-background"
@@ -190,7 +193,7 @@ const confirmParticipation = async () => {
 #joinModal .modal-content {
   color: #f8f8f8;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border: none;
+  border: 1px solid #414d5a;
 }
 
 #joinModal .attend-times-btn button {
@@ -240,5 +243,15 @@ const confirmParticipation = async () => {
 
 .game-attend #joinModal .modal-footer button.attend-confirm-btn:hover {
   background-color: #e5bf30;
+}
+
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 </style>
