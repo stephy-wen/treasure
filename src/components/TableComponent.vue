@@ -14,62 +14,71 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in data" :key="index">
-          <td
-            v-for="(cell, colIndex) in row"
-            :key="colIndex"
-            :class="cell.class"
-          >
-            <!-- 如果 imageFirst 為 true，先顯示圖片，然後顯示文字 -->
-            <template v-if="imageFirst">
-              <!-- 檢查是否有 link，如果有則包裹在 <a> 中 -->
-              <a v-if="cell.link" :href="cell.link" :target="cell.target">
+        <template v-if="data.length > 0">
+          <tr v-for="(row, index) in data" :key="index">
+            <td
+              v-for="(cell, colIndex) in row"
+              :key="colIndex"
+              :class="cell.class"
+            >
+              <!-- 如果 imageFirst 為 true，先顯示圖片，然後顯示文字 -->
+              <template v-if="imageFirst">
+                <!-- 檢查是否有 link，如果有則包裹在 <a> 中 -->
+                <a v-if="cell.link" :href="cell.link" :target="cell.target">
+                  <img
+                    v-if="cell.image"
+                    class="img-fluid"
+                    :src="cell.image"
+                    alt=""
+                  />
+                </a>
+                <!-- 如果沒有 link，則直接顯示圖片 -->
                 <img
-                  v-if="cell.image"
+                  v-else-if="cell.image"
                   class="img-fluid"
                   :src="cell.image"
                   alt=""
                 />
-              </a>
-              <!-- 如果沒有 link，則直接顯示圖片 -->
-              <img
-                v-else-if="cell.image"
-                class="img-fluid"
-                :src="cell.image"
-                alt=""
-              />
-              {{ cell.text }}
-            </template>
+                {{ cell.text }}
+              </template>
 
-            <!-- 如果 imageFirst 為 false，先顯示文字，然後顯示圖片 -->
-            <template v-else>
-              {{ cell.text }}
-              <a v-if="cell.link" :href="cell.link" :target="cell.target">
+              <!-- 如果 imageFirst 為 false，先顯示文字，然後顯示圖片 -->
+              <template v-else>
+                {{ cell.text }}
+                <a v-if="cell.link" :href="cell.link" :target="cell.target">
+                  <img
+                    v-if="cell.image"
+                    class="img-fluid"
+                    :style="cell.imageStyle ? cell.imageStyle : ''"
+                    :src="cell.image"
+                    alt=""
+                  />
+                </a>
                 <img
-                  v-if="cell.image"
+                  v-else-if="cell.blackImage"
+                  class="img-fluid"
+                  :style="cell.imageStyle ? cell.imageStyle : ''"
+                  :src="cell.blackImage"
+                  alt=""
+                />
+                <img
+                  v-else-if="cell.image"
                   class="img-fluid"
                   :style="cell.imageStyle ? cell.imageStyle : ''"
                   :src="cell.image"
                   alt=""
                 />
-              </a>
-              <img
-                v-else-if="cell.blackImage"
-                class="img-fluid"
-                :style="cell.imageStyle ? cell.imageStyle : ''"
-                :src="cell.blackImage"
-                alt=""
-              />
-              <img
-                v-else-if="cell.image"
-                class="img-fluid"
-                :style="cell.imageStyle ? cell.imageStyle : ''"
-                :src="cell.image"
-                alt=""
-              />
-            </template>
-          </td>
-        </tr>
+              </template>
+            </td>
+          </tr>
+        </template>
+
+        <!-- 如果 data 沒有資料，顯示 "No data" -->
+        <template v-else>
+          <tr>
+            <td :colspan="headers.length" class="text-center">No data</td>
+          </tr>
+        </template>
       </tbody>
     </table>
   </div>
@@ -85,6 +94,8 @@ const props = defineProps({
   customClass: String,
   imageFirst: { type: Boolean, default: false }, // 控制圖片和文字的顯示順序
 });
+
+console.log(props.data.length);
 </script>
 
 <style scoped>
@@ -116,6 +127,13 @@ const props = defineProps({
 
 .leaderboard-container .table img {
   max-width: 35px;
+}
+
+.leaderboard-container .leaderboard-name img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
   margin-right: 10px;
 }
 

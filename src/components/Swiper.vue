@@ -18,7 +18,7 @@
       >
         <!-- 圖片有手機板 區分時 -->
         <!-- 如果有區分手機和桌面圖片 -->
-        <router-link :to="item.link" v-if="item.mobileImage && item.image">
+        <a :href="item.link" v-if="item.mobileImage && item.image">
           <img
             class="img-fluid d-md-none rounded-0"
             :src="item.mobileImage"
@@ -29,7 +29,7 @@
             :src="item.image"
             :alt="item.alt"
           />
-        </router-link>
+        </a>
 
         <!-- 如果沒有區分，只有一個通用圖片 -->
         <router-link :to="item.link" v-else>
@@ -121,8 +121,18 @@ const shouldLoop = computed(() => props.swiperData.length >= 3); // 根據 slide
   object-fit: cover;
 }
 
+.game-card .index-banner {
+  width: 100%;
+  aspect-ratio: 510 / 797;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .game-card .index-banner img {
   border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 767.98px) {

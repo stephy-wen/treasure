@@ -9,7 +9,7 @@
           <div class="circle-number active me-4">1</div>
           <h5>Select Coin</h5>
         </div>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center w-100">
           <div class="vertical-line active d-none d-sm-block me-5"></div>
           <!-- Element Plus 下拉选择框 -->
           <el-select
@@ -17,7 +17,7 @@
             size="large"
             placeholder="Select Coin"
             v-if="selectShow"
-            class="d-flex align-items-center my-4 my-sm-0"
+            class="d-flex align-items-center justify-content-center my-4 my-sm-0"
           >
             <template #prefix>
               <el-image
@@ -31,6 +31,7 @@
               :key="item.value"
               :value="item.value"
               :label="item.label"
+              class="winnie-text-white"
             >
               <template #default>
                 <div class="option-content">
@@ -59,13 +60,13 @@
           </div>
           <h5>Select Network</h5>
         </div>
-        <div class="d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
           <div
             class="vertical-line me-5 d-none d-sm-block"
             :class="{ active: params.supportCoin }"
           ></div>
           <div
-            class="dropdown dropdown-coin d-flex align-items-center my-2 my-sm-0"
+            class="dropdown dropdown-coin d-flex align-items-center justify-content-center w-100"
             :style="{ visibility: params.supportCoin ? 'visible' : 'hidden' }"
           >
             <el-select
@@ -73,22 +74,23 @@
               size="large"
               placeholder="Select Network"
               v-if="selectShow"
+              class="my-4 my-sm-0 d-flex align-items-center justify-content-center"
             >
               <el-option
                 v-for="network in filteredNetworks"
                 :key="network.network"
                 :value="network.network"
                 :label="`${network.network} (${network.protocol})`"
-                style="height: 60px"
+                style="height: auto"
               >
                 <template #default>
                   <div class="info">
                     <div class="d-flex justify-content-between">
-                      <span class="winnie-text-white" style="color: black">{{
+                      <span class="winnie-text-white" style="color: #f8f8f8">{{
                         network.network
                       }}</span>
-                      <span class="winnie-text-white" style="color: black"
-                        >&#8776; {{ network.confirmMins }} 分鐘</span
+                      <span class="winnie-text-white" style="color: #f8f8f8"
+                        >&#8776; {{ network.confirmMins }} mins</span
                       >
                     </div>
                     <div class="d-flex justify-content-between">
@@ -96,7 +98,7 @@
                         >{{ network.fullName }} ({{ network.protocol }})</span
                       >
                       <span class="winnie-text-gray winnie-fs-small"
-                        >{{ network.confirmMins }} 確認/s</span
+                        >{{ network.confirmMins }} mins</span
                       >
                     </div>
                   </div>
@@ -121,47 +123,58 @@
           <h5>Deposit Address</h5>
         </div>
         <div
-          v-if="params.selectNetwork"
-          class="d-flex align-items-center flex-column flex-md-row"
+          class="d-flex justify-content-center justify-content-md-start w-100"
         >
           <div
-            class="vertical-line me-5 d-none d-md-block"
+            class="vertical-line me-5 d-none d-sm-block d-md-none"
             style="background-color: transparent"
           ></div>
-          <div class="mt-3">
-            <!-- <img v-if="!apiIsLoading" class="qrcode-pic" src="@/assets/images/common/qrcode-test.png" alt=""> -->
-            <vue-qr
-              v-if="!apiIsLoading"
-              class="qrcode-pic"
-              :text="params.address"
-              :size="200"
-            ></vue-qr>
-            <div v-else>123</div>
-          </div>
-          <div class="mt-3 ms-3">
-            <p class="my-2">Address</p>
-            <div class="company-address mb-4" style="width: fit-content">
-              <p class="my-2 py-1 px-3">
-                {{ params.address }}
+          <div
+            v-if="params.selectNetwork"
+            class="d-flex align-items-center flex-column flex-md-row"
+          >
+            <div
+              class="vertical-line me-5 d-none d-md-block"
+              style="background-color: transparent"
+            ></div>
+            <div class="mt-3">
+              <!-- <img v-if="!apiIsLoading" class="qrcode-pic" src="@/assets/images/common/qrcode-test.png" alt=""> -->
+              <vue-qr
+                v-if="!apiIsLoading"
+                class="qrcode-pic"
+                :text="params.address"
+                :size="200"
+              ></vue-qr>
+            </div>
+            <div class="mt-3 ms-2 ms-sm-0 ms-md-3 mx-lg-4">
+              <p class="my-2">Address</p>
+              <div
+                class="company-address mb-4 d-flex justify-content-between align-items-center mx-auto w-100"
+              >
+                <p class="my-2 py-1 ps-3">
+                  {{ params.address }}
+                </p>
                 <font-awesome-icon
                   icon="fa-solid fa-copy"
-                  class="d-inline ms-2"
+                  class="d-inline px-3"
                   @click="copyAddress"
                 />
+              </div>
+              <p class="my-2">Minimum deposit 10 USD</p>
+              <p class="my-2 winnie-text-gray">1 USD = 1 Point</p>
+              <p
+                class="text-start deposit-notice-color d-md-none"
+                style="font-size: 12px"
+              >
+                <font-awesome-icon
+                  icon="fa-solid fa-circle-exclamation"
+                  class="winnie-text-white me-2"
+                />
+                Please note that only supported networks on Binance platform are
+                shown, if you deposit via another
+                network your assets may be lost.
               </p>
             </div>
-            <p class="my-2">Minimum deposit 10 USD</p>
-            <p class="my-2 winnie-text-gray">1 USD = 1 POINT</p>
-            <p
-              class="text-start deposit-notice-color d-md-none"
-              style="font-size: 12px"
-            >
-              <i
-                class="fa-solid fa-circle-exclamation me-2 winnie-text-white"
-              ></i
-              >Please note that only supported networks on Binance platform are
-              shown, if you deposit via another network your assets may be lost.
-            </p>
           </div>
         </div>
         <div
@@ -176,9 +189,10 @@
             class="deposit-notice-bk-color p-2 d-md-flex justify-content-between deposit-notice-bottom d-none"
           >
             <p>
-              <i
-                class="fa-solid fa-circle-exclamation me-2 winnie-text-white"
-              ></i>
+              <font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"
+                class="winnie-text-white me-2"
+              />
             </p>
             <p class="text-start deposit-notice-color" style="font-size: 12px">
               Please note that only supported networks on Binance platform are
@@ -188,16 +202,93 @@
         </div>
       </div>
     </div>
+
+    <!-- withdraw Modal -->
+    <WithdrawModal
+      :isOpen="showSuccessModal"
+      :title="modalTitle"
+      :amount="sockDepositAmount"
+      :txid="sockTransactionId"
+      @closeModal="showSuccessModal = false"
+    />
   </div>
 </template>
 
 <script setup>
 import api from "@/services/modules"; // 引入 API 模組
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch, onBeforeUnmount } from "vue";
 import { ElMessage } from "element-plus";
 import USDCicon from "@/assets/images/icon/USDC-account.svg";
 import USDTicon from "@/assets/images/icon/USDT-account.svg";
 import VueQr from "vue-qr/src/packages/vue-qr.vue";
+import { useUserStore } from "@/stores/user";
+import WithdrawModal from "@/components/WithdrawModal.vue";
+
+const userStore = useUserStore();
+const memberId = ref(null);
+const userInfo = ref({});
+
+console.log(memberId, "memberId");
+
+// create websocket connect
+const socketUrl = "wss://test.tyche1.com:8443/ws/notification";
+const sockMessage = ref(""); // 存儲從後端接收到的消息
+
+let socket;
+
+const showSuccessModal = ref(false);
+const modalTitle = ref("Deposit successful!");
+const sockDepositAmount = ref(0);
+const sockTransactionId = ref("");
+
+const connectWebSocket = () => {
+  socket = new WebSocket(socketUrl);
+
+  // 2. 當 WebSocket 連接成功
+  socket.onopen = () => {
+    console.log("WebSocket connection established");
+
+    if (!memberId.value) {
+      console.log("MemberId 不能為空！");
+      return;
+    }
+    const initialData = JSON.stringify({ memberId: memberId.value });
+    console.log("發送數據: " + initialData);
+    socket.send(initialData); // 發送 JSON 數據
+  };
+
+  // 3. 當收到後端發來的消息
+  socket.onmessage = (event) => {
+    console.log(event);
+    const data = JSON.parse(event.data);
+    console.log("Received message from server:", data);
+
+    // 假設後端推送的消息格式為 { type: 'depositSuccess', message: 'Deposit successful!' }
+    if (data) {
+      sockMessage.value = "Deposit successful!";
+      sockDepositAmount.value = data[data.length - 1].Amount;
+      sockTransactionId.value = data[data.length - 1].Txid;
+      showSuccessModal.value = true; // open modal
+
+      // // 顯示入金成功的通知
+      // ElMessage({
+      //   message: "Deposit successful!",
+      //   type: "success",
+      //   duration: 5000,
+      // });
+    }
+  };
+
+  // 4. 當 WebSocket 連接關閉
+  socket.onclose = () => {
+    console.log("WebSocket connection closed");
+  };
+
+  // 5. 當 WebSocket 出現錯誤
+  socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+  };
+};
 
 // 輸入內容
 const params = reactive({
@@ -205,6 +296,7 @@ const params = reactive({
   supportCoinImagePath: "",
   selectNetwork: "",
   address: "",
+  originAddress: "",
 });
 
 const apiIsLoading = ref(false);
@@ -212,13 +304,25 @@ const apiIsLoading = ref(false);
 // 根據選擇的幣種過濾網路
 const filteredNetworks = ref([]);
 
+const isCopyCoolDown = ref(false);
+
 const copyAddress = async () => {
+  if (isCopyCoolDown.value) {
+    return; // 如果冷卻中，直接返回，不顯示提示
+  }
+
   try {
-    await navigator.clipboard.writeText(params.address);
+    await navigator.clipboard.writeText(params.originAddress);
     ElMessage({
       message: "Address copied successfully.",
       type: "success",
     });
+
+    isCopyCoolDown.value = true;
+
+    setTimeout(() => {
+      isCopyCoolDown.value = false;
+    }, 3000);
   } catch (error) {
     ElMessage.error({
       message: "Copy failed, please try again!",
@@ -241,12 +345,21 @@ watch(
 
       if (response?.data?.address) {
         params.address = response.data.address;
+        params.originAddress = response.data.address;
       }
 
       apiIsLoading.value = false;
     }
   }
 );
+
+const maskAddress = (address) => {
+  // 提取前 13 個字符和最後 4 個字符
+  const prefix = address.slice(0, 13);
+  const suffix = address.slice(-4);
+  // 組合成所需的格式
+  return `${prefix}...${suffix}`;
+};
 
 // api - 取得地址
 const getAddress = async (formData) => {
@@ -345,6 +458,21 @@ onMounted(async () => {
         symbol: supportCoin.symbol,
       });
     });
+  }
+
+  userInfo.value = await userStore.fetchUserInfo();
+  if (!userInfo.value) {
+    userInfo.value = {}; // 確保 userInfo 是一個空對象
+  }
+  memberId.value = userInfo.value?.userId;
+  console.log(userInfo.value);
+  connectWebSocket();
+});
+
+// 7. 組件卸載時關閉 WebSocket 連接
+onBeforeUnmount(() => {
+  if (socket) {
+    socket.close();
   }
 });
 
@@ -479,6 +607,12 @@ a button:focus {
   }
 }
 
+@media (max-width: 575.98px) {
+  .deposit-page {
+    width: 100%;
+  }
+}
+
 /* 共用 */
 
 .divider {
@@ -543,22 +677,30 @@ ul li a .full-name {
   background-color: transparent;
 }
 @media (min-width: 420px) and (max-width: 575.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle,
+  .el-popper,
+  .el-select-dropdown {
     width: 380px;
   }
 }
 @media (min-width: 575.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle,
+  .el-popper,
+  .el-select-dropdown {
     width: 400px;
   }
 }
 @media (min-width: 767.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle,
+  .el-popper,
+  .el-select-dropdown {
     width: 534px;
   }
 }
 @media (min-width: 991.98px) {
-  .step-container .dropdown-toggle {
+  .step-container .dropdown-toggle,
+  .el-popper,
+  .el-select-dropdown {
     width: 600px;
   }
 }
@@ -640,12 +782,7 @@ ul li a .full-name {
 }
 
 .company-address p {
-  font-size: 16px;
-}
-@media (min-width: 767.98px) {
-  .company-address p {
-    font-size: 14px;
-  }
+  font-size: 14px;
 }
 
 .qrcode-pic {
@@ -696,12 +833,13 @@ ul li a .full-name {
 
 <style>
 .step-container .el-select__wrapper {
-  width: 280px;
+  width: 100%;
   background-color: transparent;
 }
-@media (min-width: 420px) and (max-width: 575.98px) {
+
+@media (min-width: 420px) {
   .step-container .el-select__wrapper {
-    width: 380px;
+    width: 100%;
   }
 }
 @media (min-width: 575.98px) {
@@ -718,6 +856,10 @@ ul li a .full-name {
   .step-container .el-select__wrapper {
     width: 600px;
   }
+}
+
+.company-address {
+  width: fit-content;
 }
 
 .option-content {
@@ -751,5 +893,44 @@ ul li a .full-name {
 
 .step-container .el-input.form-control {
   padding: 0px;
+}
+
+.fa-copy {
+  cursor: pointer;
+}
+
+.d-winnie-text {
+  display: none;
+}
+
+@media (min-width: 470px) {
+  .d-winnie-text {
+    display: block;
+  }
+}
+
+.el-select-dropdown {
+  background-color: #1e2329;
+}
+
+.el-select-dropdown__item {
+  background-color: #1e2329;
+}
+
+.el-select-dropdown__item.selected {
+  background-color: #414d5a;
+}
+
+.el-select-dropdown__item:hover {
+  background-color: #414d5a;
+}
+
+.el-select-dropdown__item.is-hovering {
+  background-color: #414d5a;
+}
+
+select,
+input {
+  font-size: 16px;
 }
 </style>

@@ -10,7 +10,9 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <font-awesome-icon icon="fa-solid fa-circle-user" class="me-2" />
+      <div>
+        <img class="me-2 w-4" :src="userAvatar" alt="User Avatar" />
+      </div>
       <p class="personal-id text-center fs-6 fw-bold mb-0">{{ userId }}</p>
     </a>
     <ul
@@ -19,12 +21,7 @@
       aria-labelledby="dropdownMenuMember"
     >
       <div class="text-center mt-1">
-        <img
-          class="img-fluid"
- 
-          :src="userAvatar"
-          alt="User Avatar"
-        />
+        <img class="img-fluid user-avatar" :src="userAvatar" alt="User Avatar" />
         <p class="fs-6 fw-bold mt-2">
           {{ userId }}
         </p>
@@ -33,13 +30,12 @@
       <div class="personal-balance-info mt-4">
         <div class="d-flex justify-content-center align-items-center mt-3 mx-2">
           <img
-              class="me-2 img-fluid balance-icon"
-              style="max-width: 30px; vertical-align: middle"
-              src="@/assets/images/icon/balance-icon.png"
-              alt="Balance Icon"
-            />
+            class="me-2 img-fluid balance-icon"
+            style="max-width: 30px; vertical-align: middle"
+            src="@/assets/images/icon/balance-icon.png"
+            alt="Balance Icon"
+          />
           <p class="personal-balance fw-bold mb-0 w-100">
-
             {{
               isBalanceHidden ? maskBalance : balance.toLocaleString("en-US")
             }}
@@ -96,13 +92,14 @@ import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import eyeIcon from "@/assets/images/icon/antOutline-eye.svg"; // 顯示金額圖標
 import eyeCloseIcon from "@/assets/images/icon/antOutline-eye-close.svg"; // 隱藏金額圖標
+import defaultAvatarUrl from "@/assets/images/icon/default-Icon.png";
 
 const router = useRouter();
 const isBalanceHidden = ref(false);
 
 // 計算屬性，用來生成與金額位數相同的星號
 const maskBalance = computed(() => {
-  return "*".repeat(props.balance.toString().length); // 生成與金額長度相同的星號
+  return "*".repeat(5); // 生成與金額長度相同的星號
 });
 
 // 切換顯示/隱藏金額的狀態
@@ -126,14 +123,22 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.w-4 {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+  object-fit: cover;
+}
 .dropdown-menu {
   background-color: #1e2329;
 }
 
-.dropdown-item:hover{
-    color: #F8F8F8;
-    background-color: #35485D;
-  }
+.dropdown-item:hover {
+  color: #f8f8f8;
+  background-color: #35485d;
+}
 
 .collapse .dropdown-member-info p {
   color: #f8f8f8;
@@ -148,9 +153,9 @@ const props = defineProps({
   color: #f8f8f8;
 }
 
-.collapse .dropdown-member-info .winnie-member-info:hover{
-    background-color: #35485D;
-  }
+.collapse .dropdown-member-info .winnie-member-info:hover {
+  background-color: #35485d;
+}
 
 .navbar .btn-primary {
   background-color: #fcd535;
@@ -177,6 +182,7 @@ const props = defineProps({
     right: 0;
     left: auto;
     top: 2.5em;
+    border: 1px solid #414D5A;
   }
 }
 
@@ -189,4 +195,14 @@ const props = defineProps({
   text-align: end;
 }
 
+.user-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dropdown-member-info li {
+  cursor: pointer;
+}
 </style>

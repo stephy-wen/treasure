@@ -71,6 +71,7 @@ const balance = computed(() => userStore.userInfo?.balanceData?.balance || 0);
 const userAvatar = computed(() => userStore.userInfo?.avatarUrl || "");
 
 let isLoggedIn = computed(() => userStore.isLoggedIn);
+console.log(isLoggedIn.value, "isLoggedIn");
 
 /*
 display: 'all' 表示无论用户是否登录都显示该链接（如 Home）。
@@ -149,14 +150,14 @@ const navItems = ref([
     ],
     display: "authorized",
   },
-  {
-    id: "2",
-    label: "Leaderboard",
-    dropdown: false,
-    routeName: "Leaderboard", // 使用路由名称
-    url: "leaderboard",
-    display: "all",
-  },
+  // {
+  //   id: "2",
+  //   label: "Leaderboard",
+  //   dropdown: false,
+  //   routeName: "Leaderboard", // 使用路由名称
+  //   url: "leaderboard",
+  //   display: "all",
+  // },
 ]);
 
 const navLinks = computed(() =>
@@ -239,6 +240,9 @@ const handleLogout = async () => {
 header {
   background-color: #181a20;
   color: #fff;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 header nav ul li {

@@ -138,7 +138,7 @@
                           src="@/assets/images/icon/md-info.svg"
                           alt=""
                         />
-                        About OneChance
+                        About Tyche1
                       </router-link>
                     </li>
                     <li class="my-2 py-2 text-start">
@@ -155,8 +155,8 @@
                 </div>
               </div>
             </div>
-            <!-- 語言下拉式 -->
-            <div class="accordion-item mt-3">
+            <!-- 語言下拉式 尚未完成 先隱藏 -->
+            <!-- <div class="accordion-item mt-3">
               <div class="accordion-header" id="headingFive">
                 <select
                   class="form-select ms-3 w-auto"
@@ -166,11 +166,11 @@
                   <option value="1">繁體中文</option>
                 </select>
               </div>
-            </div>
+            </div> -->
             <!-- 登出按鈕 -->
             <div class="accordion-item mt-3" v-if="loggedIn">
               <div class="accordion-header" id="headingSeven">
-                <a class="accordion-button fs-5 fw-bold" data-bs-dismiss="modal" @click="handleLogout"
+                <a class="accordion-button fs-5 fw-bold no-arrow" data-bs-dismiss="modal" @click="handleLogout"
                   ><font-awesome-icon
                     icon="fa-solid fa-power-off"
                     class="me-3"
@@ -178,8 +178,8 @@
                 >
               </div>
             </div>
-            <!-- 更換主題色的選項 -->
-            <div class="accordion-item mt-3">
+            <!-- 更換主題色的選項 尚未完成 先隱藏-->
+            <!-- <div class="accordion-item mt-3">
               <div class="form-check form-switch me-auto ms-4">
                 <input
                   class="form-check-input"
@@ -191,7 +191,7 @@
                   <img src="@/assets/images/icon/md-wb_sunny.svg" alt="" />
                 </label>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -255,7 +255,7 @@ const handleLogout = () => {
 <style scoped>
 .modal-header,
 .modal-body {
-  background: black;
+  background: #181A20;
 }
 
 .modal-header {
@@ -366,5 +366,27 @@ const handleLogout = () => {
   box-shadow: none;
 }
 
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
 
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.no-arrow::after {
+  display: none;
+}
+
+a.fs-5 {
+  color: #F8F8F8;
+  font-weight: 600;
+}
+
+.personal-photo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover
+}
 </style>

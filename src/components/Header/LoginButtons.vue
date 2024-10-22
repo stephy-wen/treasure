@@ -65,10 +65,10 @@ const signup = () => {
   border-radius: 10px;
 }
 
-.btn-outline-primary:hover {
-  border-color: #fcd535;
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  border-color: #fcd535 !important;
   color: #fcd535;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .btn-primary {
@@ -79,9 +79,9 @@ const signup = () => {
   border-radius: 10px;
 }
 
-.btn-primary:hover {
-  background-color: #e5bf30;
-  border-color: #e5bf30;
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #e5bf30 !important;
+  border-color: #e5bf30 !important;
   color: #181a20;
 }
 

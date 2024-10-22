@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import About from "../views/About.vue";
 import Index from "../views/index/index.vue";
-import Login from "../views/Login.vue";
+import Login from "../views/login/index.vue";
 
 const routes = [
   {
@@ -31,11 +30,6 @@ const routes = [
     path: "/manage-password",
     name: "managePassword",
     component: () => import("../views/managePassword/index.vue"),
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
   },
   {
     path: "/game/game-list",

@@ -23,16 +23,18 @@
       </template>
 
       <!-- 語系及導覽 -->
-      <div class="d-flex">
+      <!-- <div class="d-flex"> -->
+
         <!-- 語系下拉式 -->
-        <DropdownMenu
+        <!-- <DropdownMenu
           menuId="dropdownMenuLanguage"
           :iconSrc="mdLanguage"
           iconAlt="Language Icon"
           :items="languageOptions"
           @select="switchLanguage"
           dropdownClass="dropdown-language"
-        />
+        /> -->
+
         <!-- 導覽下拉式 -->
         <DropdownMenu
           menuId="dropdownMenuFaq"
@@ -42,11 +44,12 @@
           @select="navigateTo"
           dropdownClass="dropdown-faq"
         />
+
         <!-- 切換主題顏色 月亮icon -->
-        <a href="#">
+        <!-- <a href="#">
           <img src="@/assets/images/icon/arcoDesign-moon.svg" alt="" />
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -68,7 +71,7 @@ const languageOptions = [
 
 const faqOptions = [
   {
-    label: "About OneChance",
+    label: "About Tyche1",
     href: "/about",
     icon: mdInfo,
   },
@@ -106,4 +109,5 @@ const navigateTo = (item) => {
 </script>
 
 <style scoped>
+
 </style>

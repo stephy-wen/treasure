@@ -8,7 +8,7 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <img :src="iconSrc" :alt="iconAlt" />
+      <img :src="iconSrc" :alt="iconAlt" style="width: 17px; height: 17px;"/>
     </a>
     <ul
       class="dropdown-menu dropdown-menu-lg-start px-3 py-3 fw-bold"
@@ -24,8 +24,8 @@
             v-if="item.icon"
             :src="item.icon"
             :alt="item.label"
-            class="me-2"
-            style="width: 24px"
+            class="me-2 mb-1"
+            style="width: 22px"
           />
           {{ item.label }}
         </a>
@@ -92,6 +92,7 @@ const handleClick = (item) => {
     right: 0;
     left: auto;
     top: 2.5em;
+    border: 1px solid #414D5A;
   }
 }
 </style>

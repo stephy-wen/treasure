@@ -4,8 +4,8 @@
       <div class="transaction-month mb-3">
         <p>{{ month }}</p>
       </div>
-      <div class="d-flex justify-content-center">
-        <div class="accordion accordion-flush" id="accordionTransactionDetail">
+      <div class="d-flex justify-content-center w-100">
+        <div class="accordion accordion-flush w-100" id="accordionTransactionDetail">
           <div
             v-for="(transaction, index) in transactions"
             :key="index"
@@ -115,7 +115,7 @@ const onLoadMore = () => {
   box-shadow: none;
 }
 
-.winnie-account .accordion {
+/* .winnie-account .accordion {
   width: 276px;
 }
 
@@ -123,7 +123,7 @@ const onLoadMore = () => {
   .winnie-account .accordion {
     width: 380px;
   }
-}
+} */
 
 .winnie-account .more-btn button {
   width: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <Header v-if="isMobile || (!isMobile && !isShow)" />
+  <Header v-if="isMobile || !isShow" />
   <router-view />
   <Footer v-if="!isShow" />
 </template>
@@ -28,11 +28,11 @@ watchEffect(() => {
 
 // 檢測螢幕大小並切換樣式
 const checkDevice = () => {
-  isMobile.value = window.innerWidth <= 768; // 設定768px為手機和桌面的臨界點
+  isMobile.value = window.innerWidth <= 991.98; // 設定768px為手機和桌面的臨界點
 };
 
 onMounted(() => {
-  checkDevice(); // 初次挂载时运行一次
+  checkDevice();
   window.addEventListener("resize", checkDevice); // 監聽視窗大小變化
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
-  <ul class="navbar-nav me-auto ms-2 mb-2 mb-lg-0">
+  <ul class="navbar-nav ms-auto ms-2 mb-2 mb-lg-0">
     <li
-      v-for="item in links"
+      v-for="(item, index) in links"
       :key="item.id"
       class="nav-item"
       :class="{ dropdown: item.dropdown }"
@@ -17,6 +17,11 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
+          <font-awesome-icon
+            v-if="index === 0"
+            icon="fa-solid fa-rocket"
+            class="d-inline me-2"
+          />
           {{ item.label }}
           <font-awesome-icon 
           icon="fa-solid fa-angle-down" 
@@ -52,6 +57,11 @@
           class="winnie-nav-link fs-6"
           :to="{ name: item.routeName }"
         >
+          <font-awesome-icon
+            v-if="index === 0"
+            icon="fa-solid fa-rocket"
+            class="d-inline me-2"
+          />
           {{ item.label }}
         </router-link>
       </template>
@@ -129,7 +139,7 @@ const props = defineProps({
 ul li a {
   color: #f8f8f8;
   text-decoration: none;
-  padding: 10px 5px;
+  padding: 10px 20px;
   font-weight: 600;
 }
 @media (min-width: 1199.98px) {
@@ -157,6 +167,7 @@ nav ul li a:hover {
 .custom-dropdown-menu {
   max-height: 300px;
   overflow-y: auto;
+  border: 1px solid #414d5a;
 }
 
 .custom-dropdown-menu::-webkit-scrollbar {
@@ -167,9 +178,5 @@ nav ul li a:hover {
 .custom-dropdown-menu::-webkit-scrollbar-thumb {
   background-color: #2B3139;
   border-radius: 4px;
-}
-
-.custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* 滚动条悬停时的颜色 */
 }
 </style>

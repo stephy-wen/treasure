@@ -1,6 +1,6 @@
 <template>
   <div class="auth-form">
-    <div id="formTitle" class="form-title text-center mb-5">
+    <div id="formTitle" class="form-title text-center mb-5" :style="{ marginBottom: marginBottom, textAlign: textAlign }">
       <p class="fs-1 fw-bold">{{ title }}</p>
     </div>
 
@@ -55,6 +55,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  marginBottom: {
+    type: String,
+    default: '10px'
+  },
+  textAlign: {
+    type: String,
+    default: 'start'
+  }
 });
 
 const emit = defineEmits(["update:currentStep"]);
@@ -81,6 +89,8 @@ const nextStep = () => {
   color: #f8f8f8;
   border: none;
   --bs-btn-active-bg: #2b3139;
+  --bs-btn-hover-bg: #2B3139;
+  --bs-btn-focus-shadow-rgb: transparent;
 }
 
 .btn-primary:hover {

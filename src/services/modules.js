@@ -26,6 +26,9 @@ const home = {
 const account = {
   register: (userData) => apiClient.post("/Account/Register", userData),
 
+  CheckEmail: (email) =>
+    apiClient.post(`/Account/CheckEmail`, { email: email }),
+
   changePassword: (passwordPayload) =>
     apiClient.put("/Account/ChangePassword", passwordPayload),
 

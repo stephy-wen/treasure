@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import { useUserStore } from "../stores/user";
 
 const router = useRouter();
 
@@ -41,9 +42,12 @@ apiClient.interceptors.response.use(
       });
       console.log("Token 過期或無效，請重新登入。");
 
-      // 清除本地存儲的 token
-      localStorage.removeItem("token");
-      window.location.href("/login");
+      const useStore = useUserStore();
+
+      // 使用 logoutUser 來清除 token 和 userInfo
+      useStore.logoutUser();
+
+      window.location.href = "/login";
       // router.push("/login");
     }
     return Promise.reject(error);

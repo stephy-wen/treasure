@@ -4,6 +4,7 @@ import "normalize.css";
 import router from "./router";
 import i18n from "./i18n/i18n";
 import App from "./App.vue";
+import { focusDirective } from "./directives/focus"; // 導入自定義指令
 
 // 引入Element
 import ElementPlus from "element-plus";
@@ -26,6 +27,7 @@ import {
   faChartSimple,
   faCircleInfo,
   faCircleQuestion,
+  faCircleExclamation,
   faMagnifyingGlass,
   faXmark,
   faArrowLeft,
@@ -41,6 +43,7 @@ library.add(
   faChartSimple,
   faCircleInfo,
   faCircleQuestion,
+  faCircleExclamation,
   faMagnifyingGlass,
   faXmark,
   faArrowLeft,
@@ -59,4 +62,5 @@ createApp(App)
   .use(router)
   .use(i18n)
   .use(ElementPlus)
+  .directive("focus", focusDirective) // 全局註冊 v-focus 指令
   .mount("#app");

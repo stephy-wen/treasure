@@ -1,7 +1,7 @@
 <template>
   <footer class="mt-5" style="background-color: #181a20">
     <hr class="w-75 mx-auto" />
-    <p>lionbin© 2024</p>
+    <p style="font-size: 14px; color: #737B86;">© 2024 Tyche1.com. All Rights Reserved.</p>
   </footer>
 </template>
 

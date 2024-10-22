@@ -4,11 +4,26 @@ import { defineStore } from "pinia";
 import api from "../services/modules"; // 引入 API 模組
 import { login } from "../services/auth";
 
+// 定義一個函數來返回初始的 userInfo 結構
+const getDefaultUserInfo = () => ({
+  name: "",
+  userId: "",
+  avatarUrl:
+    "https://defiweb.oss-ap-northeast-1.aliyuncs.com/images/icon/NFT/14.png",
+  email: "",
+  balanceData: {
+    symbol: "POINT",
+    balance: 0.0,
+    lockedBalance: 0.0,
+  },
+});
+
 export const useUserStore = defineStore("user", () => {
   // 定義狀態 state
   const token = ref(localStorage.getItem("token") || "");
   const userInfo = ref(null);
   const errorMessage = ref("");
+  //const userInfo = ref(getDefaultUserInfo());
 
   // 判斷是否已登入
   const isLoggedIn = computed(() => !!token.value);
@@ -71,7 +86,13 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const updateBalance = (newBalance) => {
-    userInfo.value.balanceData.balance = newBalance;
+    if (!userInfo.value) {
+      userInfo.value = {}; // 如果 userInfo.value 尚未定義，先初始化為空對象
+    }
+    if (!userInfo.value.balanceData) {
+      userInfo.value.balanceData = {}; // 如果 balanceData 尚未定義，先初始化為空對象
+    }
+    userInfo.value.balanceData.balance = newBalance; // 更新 balance 值
   };
 
   // 定義actions，登出

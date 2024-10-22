@@ -41,7 +41,7 @@
             </div>
             <li v-for="game in section.games" :key="game.gid" class="mx-0">
               <router-link
-                class="dropdown-item winnie-dropdown-item my-2 px-2 py-1"
+                class="dropdown-item winnie-dropdown-item my-2 px-2 py-1 d-flex align-items-center"
                 :to="game.url"
               >
                 <span class="game-type-name fs-5 fw-regular ps-3">{{
@@ -90,6 +90,10 @@ const collapseId = computed(() => `collapse${props.index}`);
   color: #f8f8f8;
 }
 
+.winnie-modal .accordion-button:focus {
+  box-shadow: none;
+}
+
 .accordion-button:not([data-bs-toggle])::after {
   display: none;
 }
@@ -109,6 +113,7 @@ const collapseId = computed(() => `collapse${props.index}`);
   font-weight: 600;
   background-color: #2b3139;
   border-radius: 6px;
+  height: 45px;
 }
 
 .winnie-dropdown-item:hover {
